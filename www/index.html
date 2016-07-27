@@ -80,7 +80,8 @@
 
             function confirm_activate_push(){
                 if(document.getElementById('inputUid').value && document.getElementById('inputCode').value){
-                    request({ method: 'POST', url: 'http://casotp.univ-lr.fr:3000/users/'+document.getElementById('inputUid').value+'/methods/push/activate/'+document.getElementById('inputCode').value+'/'+gcm_id+'/'+platform+'/'+ manufacturer +'/'+ model }, function(response) {
+                    //request({ method: 'POST', url: 'http://casotp.univ-lr.fr:3000/users/'+document.getElementById('inputUid').value+'/methods/push/activate/'+document.getElementById('inputCode').value+'/'+gcm_id+'/'+platform+'/'+ manufacturer +'/'+ model }, function(response) {
+                    request({ method: 'POST', url: 'http://localhost:3000/users/'+document.getElementById('inputUid').value+'/methods/push/activate/'+document.getElementById('inputCode').value+'/'+gcm_id+'/'+platform+'/'+ manufacturer +'/'+ model }, function(response) {
                         if (response.code == "Ok") {
                             uid = document.getElementById('inputUid').value;
                             storage.setItem('uid', document.getElementById('inputUid').value);
