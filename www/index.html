@@ -111,8 +111,8 @@
             }
 
             function accept() {
-                //request({ method: 'POST', url: 'http://casotp.univ-lr.fr:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
-                request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
+                request({ method: 'POST', url: 'http://casotp.univ-lr.fr:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
+                //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
                     if (response.code == "Ok") {
                     } else {
                         console.log(response);

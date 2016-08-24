@@ -1,0 +1,139 @@
+.push-navbar {
+    position: relative;
+    background-color: #2196f3;
+    height: 50px;
+    width: 100%;
+    min-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.push-navbar-content {
+    display: flex;
+    position: absolute;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    left: 50%;
+    height: 90%;
+    width: 95%;
+    min-width: 95%;
+}
+
+.push-navbar-btn-left {
+    display: flex;
+    height: 100%;
+    text-align: center;
+    margin-right: 5%;
+}
+
+.push-navbar-title {
+    display: flex;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.push-navbar-title *,
+.push-navbar-btn-left * {
+    margin: auto;
+}
+
+.push-panel {
+    display: flex;
+}
+
+.push-panel .list-block {
+    margin: 0;
+}
+
+.push-panel-header {
+    display: flex;
+    background-color: #2196f3;
+    min-height: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.push-panel-header * {
+    margin: auto;
+}
+
+.push-launching-screen {
+    position: relative;
+    background-color: #2196f3;
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.push-launching-logo {
+    position: relative;
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
+    min-width: 320px;
+    top: 20%;
+}
+
+.push-launching-logo:before {
+    padding-top: 133%;
+    content: '';
+    display: block;
+}
+
+.push-launching-logo * {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+}
+
+.push-launching-img {
+    background-image: url("../img/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: white;
+    height: 75%;
+    border-radius: 125%;
+}
+
+.push-launching-title {
+    background-image: url("../img/title.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    top: 75%;
+    height: 25%;
+}
+
+i.icon.icon-push-home {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/home.svg");
+}
+
+i.icon.icon-push-settings {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/settings.svg");
+}

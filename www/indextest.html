@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Esup-OTP-Push</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- Path to Framework7 Library CSS-->
+    <!-- <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css"> -->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/esup-otp-push.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <div class="panel panel-left panel-cover push-panel">
+        <!-- Left panel content goes here -->
+        <div class="push-panel-header">
+            <p>Menu</p>
+        </div>
+        <div class="list-block">
+            <ul>
+                <li>
+                    <a href="home.html" onclick="$('.panel-overlay').click()" class="item-link item-content">
+                        <div class="item-media"><i class="icon icon-push-home"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Accueil</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html" onclick="$('.panel-overlay').click()" class="item-link item-content">
+                        <div class="item-media"><i class="icon icon-push-settings"></i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Paramètres</div>
+                            <div class="item-after"></div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="login-screen">
+        <div class="view">
+            <div class="page">
+                <div class="page-content login-screen-content">
+                    <div class="login-screen-title">Esup-OTP-Push</div>
+                    <form>
+                        <div class="list-block">
+                            <ul>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Username</div>
+                                        <div class="item-input">
+                                            <input type="text" name="username" placeholder="Your username">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Password</div>
+                                        <div class="item-input">
+                                            <input type="password" name="password" placeholder="Your password">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list-block">
+                            <ul>
+                                <li><a href="#" class="item-link list-button">Sign In</a></li>
+                            </ul>
+                            <div class="list-block-label">
+                                <p><a href="#" class="close-login-screen" hidden="true" id="close-login-screen">Close Login Screen</a></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Views-->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class-->
+        <div class="view view-main">
+            <!-- Top Navbar-->
+            <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+            <div class="pages navbar-through toolbar-through">
+                <!-- Page, data-page contains page name-->
+                <div data-page="index" class="page">
+                    <!-- Scrollable page content-->
+                    <div class="page-content">
+                        <div class="push-launching-screen">
+                            <div class="push-launching-logo">
+                                <div class="push-launching-img"></div>
+                                <div class="push-launching-title"></div>
+                            </div>
+                        </div>
+                        <a href="#" class="open-login-screen" hidden="true" id="open-login-screen">Open Login Screen</a>
+                        <a href="home.html" class="open-login-screen" hidden="true" id="open-home">Home</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Toolbar-->
+            <!-- <div class="toolbar">
+            </div> -->
+        </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/esup-otp-push.js"></script>
+</body>
+<div hidden="true">Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
+</html>
