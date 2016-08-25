@@ -1,164 +1,93 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <title>Hello World</title>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
-        <script type="text/javascript">
 
-            var storage = window.localStorage;
+<head>
+    <meta charset="utf-8">
+    <title>Esup-OTP-Push</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!-- Path to Framework7 Library CSS-->
+    <!-- <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css"> -->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/esup-otp-push.css">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
 
-            function request(opts, callback, next) {
-                var req = new XMLHttpRequest();
-                req.open(opts.method, opts.url, true);
-                req.onerror = function(e) { console.log(e); };
-                req.onreadystatechange = function(aEvt) {
-                    if (req.readyState == 4) {
-                        if (req.status == 200) {
-                            var responseObject = JSON.parse(req.responseText);
-                            if (typeof(callback) === "function") callback(responseObject);
-                        }
-                        if (typeof(next) === "function") next();
-                    }
-                };
-                req.send(null);
-            }
-
-            document.addEventListener("deviceready",onDeviceReady,false);
-            function onDeviceReady(){
-                console.log("Device Ready");
-                // window.plugins.sim.getSimInfo(successGetSimInfosCallback, errorGetSimInfosCallback);
-                $("#platform").html(device.platform);
-                platform = device.platform;
-                manufacturer = device.manufacturer;
-                model = device.model;
-                $("#model").html(model);
-
-                var push = PushNotification.init({ "android": {"senderID": "499931336963"},
-                    "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
-
-                push.on('registration', function(data) {
-                    console.log(data.registrationId);
-                    $("#gcm_id").html(data.registrationId);
-                    gcm_id = data.registrationId;
-                    checkDeviceInfos()
-                });
-
-                push.on('notification', function(data) {
-                    console.log(JSON.stringify(data));
-                    additionalData = data.additionalData;
-                    $("#onNotification").show();
-                });
-
-                push.on('error', function(e) {
-                    console.log(e.message);
-                    alert(e.message);
-                });
-            }
-
-            function confirm_activate_push(){
-                if(document.getElementById('inputUid').value && document.getElementById('inputCode').value){
-                    //request({ method: 'POST', url: 'http://casotp.univ-lr.fr:3000/users/'+document.getElementById('inputUid').value+'/methods/push/activate/'+document.getElementById('inputCode').value+'/'+gcm_id+'/'+platform+'/'+ manufacturer +'/'+ model }, function(response) {
-                    request({ method: 'POST', url: 'http://localhost:3000/users/'+document.getElementById('inputUid').value+'/methods/push/activate/'+document.getElementById('inputCode').value+'/'+gcm_id+'/'+platform+'/'+ manufacturer +'/'+ model }, function(response) {
-                        if (response.code == "Ok") {
-                            uid = document.getElementById('inputUid').value;
-                            storage.setItem('uid', document.getElementById('inputUid').value);
-                            welcome(document.getElementById('inputUid').value);
-                        } else {
-                            console.log(response);
-                        }
-                    });
-                }else alert("Veuillez entrer l'identifiant et le code d'activation")
-            }
-
-            function checkDeviceInfos(){
-                if(!uid){
-                    console.log("L'appareil n'est pas synchronisé");
-                    if(gcm_id && manufacturer && model)$('#confirmationForm').show();
-                }else {
-                    $("#uid").html(uid);
-                    welcome(uid);
-                    console.log("L'appareil est synchronisé");
-                }
-            }
-
-            function welcome(name){
-                $('#confirmationForm').hide();
-                $('#welcomeHome').html("Bienvenue "+name + " "+gcm_id);
-                $('#home').show();
-            }
-
-            function accept() {
-                request({ method: 'POST', url: 'http://casotp.univ-lr.fr:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
-                //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
-                    if (response.code == "Ok") {
-                    } else {
-                        console.log(response);
-                        alert(JSON.stringify(response));
-                    }
-                    decline();
-                })
-            }
-
-            function decline() {
-                additionalData = null;
-                $('#onNotification').hide();
-            }
-
-            var gcm_id, platform,manufacturer,model, additionalData;
-            var uid = storage.getItem('uid');
-            checkDeviceInfos();
-        </script>
-    </head>
-    <body>
-        <h1>Push Notification Example</h1>
-
-        Your GCM ID : <br/>
-        <p id="gcm_id"></p>
-
-        Your Phone infos : <br/>
-        <div id="device_infos">
-            <p id="platform"></p>
-            <p id="model"></p>
-        </div>
-        <div id="confirmationForm" hidden="true">
-            <input type="text" id="inputUid" name="uid" placeholder="Identifiant"><br>
-            <input type="text" id="inputCode" name="activation_code" placeholder="Code d'activation"><br>
-            <button onclick="confirm_activate_push()">Confirmer synchronisation</button>
-        </div>
-
-        <div id="home" hidden="true">
-            <h2 id="welcomeHome"></h2>
-            <div id="onNotification" hidden="true">
-                <p id="requestInfos"></p>
-                <button id="accept" onclick="accept();">Accepter</button>
-                <button id="decline" onclick="decline();">Décliner</button>
+<body>
+<!-- Status bar overlay for fullscreen mode-->
+<div class="statusbar-overlay"></div>
+<!-- Panels overlay-->
+<div class="panel-overlay"></div>
+<div class="panel panel-left panel-cover push-panel">
+    <!-- Left panel content goes here -->
+    <div class="push-panel-header">
+        <p>Menu</p>
+    </div>
+    <div class="list-block">
+        <ul>
+            <li>
+                <a href="home.html" onclick="myApp.closePanel();" class="item-link item-content">
+                    <div class="item-media"><i class="icon icon-push-home"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">Accueil</div>
+                        <div class="item-after"></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="settings.html" onclick="myApp.closePanel();" class="item-link item-content">
+                    <div class="item-media"><i class="icon icon-push-settings"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">Paramètres</div>
+                        <div class="item-after"></div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- Views-->
+<div class="views">
+    <!-- Your main view, should have "view-main" class-->
+    <div class="view view-main">
+        <!-- Top Navbar-->
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+            <!-- Page, data-page contains page name-->
+            <div data-page="index" class="page">
+                <!-- Scrollable page content-->
+                <div class="page-content">
+                    <div class="push-launching-logo">
+                    </div>
+                    <a href="#" class="open-login-screen" hidden="true" id="open-login-screen">Open Login Screen</a>
+                    <a href="home.html" hidden="true" id="open-home">Home</a>
+                </div>
             </div>
         </div>
+        <!-- Bottom Toolbar-->
+        <!-- <div class="toolbar">
+        </div> -->
+    </div>
+</div>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="js/framework7.min.js"></script>
+<!-- Path to your app js-->
+<script type="text/javascript" src="js/esup-otp-push.js"></script>
+</body>
+<div hidden="true">Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+        href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a
+        href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+</div>
 
-        <p id="synchronised"></p>
-        <p id="console"></p>
-    </body>
 </html>
