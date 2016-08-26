@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="org.esupportail.esup_otp_push" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Esup_OTP_Push</name>
+    <name>Esup OTP Push</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Push application for login
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="abouskine@gmail.com" href="http://bouskine.eu">
+        Alex Bouskine
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
