@@ -55,7 +55,7 @@ function push() {
     push.on('notification', function (data) {
         console.log(JSON.stringify(data));
         additionalData = data.additionalData;
-        $("#onNotification").show();
+        $('#buttonNotification')[0].click();
     });
 
     push.on('error', function (e) {
@@ -123,6 +123,26 @@ function register() {
     });
 };
 
+function notification() {
+    myApp.modal({
+        text: "Demande de connexion",
+        title: "",
+        buttons: [{
+            text: "Décliner",
+            close : true,
+            onClick: function() {
+                flush();
+            }
+        }, {
+            text: "Accepter",
+            bold: true,
+            onClick: function() {
+                accept();
+            }
+        }]
+    });
+};
+
 function confirm_activate_push(userId, code) {
     if (userId && code) {
         request({
@@ -136,10 +156,10 @@ function confirm_activate_push(userId, code) {
             if (response.code == "Ok") {
                 uid = userId;
                 storage.setItem('uid', userId);
-                alert(storage.getItem('uid'));
+                myApp.alert("Synchronisation effectuée", "");
             } else {
                 console.log(response);
-                alert(response);
+                myApp.alert(JSON.stringify(response), "");
             }
         });
     } else alert("Veuillez entrer l'identifiant et le code d'activation")
@@ -152,18 +172,35 @@ function accept() {
     }, function (response) {
         //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
         if (response.code == "Ok") {
+            myApp.alert("Vous êtes connecté", "");
         } else {
+            myApp.alert(JSON.stringify(response), "");
             console.log(response);
-            alert(JSON.stringify(response));
         }
-        decline();
+        flush();
     })
 }
 
-function decline() {
+function flush() {
     additionalData = null;
 }
 
+function desync(){
+    request({
+        method: 'DELETE',
+        url: 'http://casotp.univ-lr.fr:3000/users/' + uid + '/methods/push/' + gcm_id
+    }, function (response) {
+        //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
+        if (response.code == "Ok") {
+            uid = null;
+            storage.removeItem('uid');
+            myApp.alert("Votre compte est désynchronisé", "");
+        } else {
+            myApp.alert(JSON.stringify(response), "");
+            console.log(response);
+        }
+    })
+}
 function request(opts, callback, next) {
     var req = new XMLHttpRequest();
     req.open(opts.method, opts.url, true);
@@ -185,9 +222,13 @@ function request(opts, callback, next) {
 function home_register() {
     $('#welcome').hide();
     $('#register').show();
+    $('#unregistered').show();
+    $('#registered').hide();
 }
 
 function home_welcome() {
     $('#welcome').show();
     $('#register').hide();
+    $('#unregistered').hide();
+    $('#registered').show();
 }
