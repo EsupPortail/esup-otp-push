@@ -13,6 +13,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     console.log("Device Ready");
+    if (cordova.platformId != 'android') {
+        StatusBar.backgroundColorByHexString("#212121");
+    }
     platform = device.platform;
     manufacturer = device.manufacturer;
     model = device.model;

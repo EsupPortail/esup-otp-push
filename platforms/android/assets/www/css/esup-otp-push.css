@@ -1,6 +1,6 @@
 .push-navbar {
     position: relative;
-    background-color: #2196f3;
+    background-color: #212121;
     height: 50px;
     width: 100%;
     min-width: 100%;
@@ -53,7 +53,7 @@
 
 .push-panel-header {
     display: flex;
-    background-color: #2196f3;
+    background-color: #212121;
     min-height: 72px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -65,29 +65,6 @@
 
 .push-panel-header * {
     margin: auto;
-}
-
-.push-launching-logo {
-    position: relative;
-    margin: auto;
-    width: 50%;
-    max-width: 320px;
-    min-width: 240px;
-    background-image: url("../img/logo.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    border-radius: 100%;
-}
-
-.login-screen-content {
-    background-color: whitesmoke;
-}
-
-.push-launching-logo:before {
-    padding-top: 100%;
-    content: '';
-    display: block;
 }
 
 i.icon.icon-push-home {

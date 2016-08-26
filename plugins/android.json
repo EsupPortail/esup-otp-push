@@ -16,6 +16,12 @@
         },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "org.esupportail.esup_otp_push"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
         }
     },
     "dependent_plugins": {}
