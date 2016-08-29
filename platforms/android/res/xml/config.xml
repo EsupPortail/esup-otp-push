@@ -28,12 +28,12 @@
     <splash density="port-ldpi" src="res/screen/splash.png" />
     <splash density="port-mdpi" src="res/screen/splash.png" />
     <splash density="port-xhdpi" src="res/screen/splash.png" />
-    <name>Esup_OTP_Push</name>
+    <name>Esup OTP Push</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Push application for login
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="abouskine@gmail.com" href="http://bouskine.eu">
+        Alex Bouskine
     </author>
     <content src="index.html" />
     <access origin="*" />
