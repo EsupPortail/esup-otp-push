@@ -22,6 +22,9 @@
         },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "org.esupportail.esup_otp_push"
+        },
+        "phonegap-plugin-barcodescanner": {
+            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
         }
     },
     "dependent_plugins": {}

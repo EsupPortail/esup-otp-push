@@ -5,9 +5,10 @@ var myApp = new Framework7();
 
 var storage = window.localStorage;
 var uid = storage.getItem('uid');
+var url = storage.getItem('url');
 var gcm_id, platform, manufacturer, model, additionalData, push;
 
-setInterval(checkAccount, 500);
+var timer = setInterval(checkAccount, 500);
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -107,10 +108,11 @@ function checkAccount() {
 }
 
 function register() {
+    clearInterval(timer);
     myApp.modal({
         text: "Entrez votre identifiant et code d'activation",
         title: "",
-        afterText: '<div class="input-field modal-input-double"><input type="text" name="modal-uid" placeholder="' + "Identifiant" + '" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="password" name="modal-activationCode" placeholder="' + "Code d'activation" + '" class="modal-text-input" required></div>',
+        afterText: '<div class="input-field modal-input-double"><input type="text" name="modal-uid" placeholder="' + "Identifiant" + '" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="password" name="modal-activationCode" placeholder="' + "Code d'activation" + '" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="text" name="modal-url" placeholder="' + "Adresse" + '" class="modal-text-input" required></div>',
         buttons: [{
             text: "Annuler",
             close : true
@@ -121,57 +123,90 @@ function register() {
         onClick: function(modal, index) {
             var userId = $(modal).find('.modal-text-input[name="modal-uid"]').val();
             var code = $(modal).find('.modal-text-input[name="modal-activationCode"]').val();
-            if (index === 1) confirm_activate_push(userId, code);
+            var modalUrl = $(modal).find('.modal-text-input[name="modal-url"]').val();
+            if (index === 1){
+                confirm_activate_push(userId, code, modalUrl);
+                setInterval(checkAccount, 500);
+            }
         }
     });
 };
 
-function notification() {
+function notification(){
+    if(additionalData.action=='auth'){
+        notification_auth();
+    } else if(additionalData.action ="desync"){
+        notification_desync();
+    }
+}
+function notification_auth() {
+    clearInterval(timer);
     myApp.modal({
-        text: "Demande de connexion",
+        text: additionalData.text,
         title: "",
         buttons: [{
             text: "Décliner",
             close : true,
             onClick: function() {
                 flush();
+                setInterval(checkAccount, 500);
             }
         }, {
             text: "Accepter",
             bold: true,
             onClick: function() {
                 accept();
+                setInterval(checkAccount, 500);
             }
         }]
     });
 };
 
-function confirm_activate_push(userId, code) {
-    if (userId && code) {
+function notification_desync() {
+    clearInterval(timer);
+    myApp.modal({
+        text: additionalData.text,
+        title: "",
+        buttons: [
+            {
+                text: 'Ok',
+                bold: true,
+                onClick: function(){
+                    setInterval(checkAccount, 500);
+                }
+            }
+        ]
+    })
+    uid = null;
+    url = null;
+    storage.removeItem('uid');
+    storage.removeItem('url');
+};
+
+function confirm_activate_push(userId, code, modalUrl) {
+    if (userId && code && modalUrl) {
         request({
             method: 'POST',
-            url: 'http://casotp.univ-lr.fr:3000/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+            url: 'http://'+modalUrl+'/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
         }, function (response) {
-            /*        request({
-             method: 'POST',
-             url: 'http://localhost:3000/users/' + document.getElementById('inputUid').value + '/methods/push/activate/' + document.getElementById('inputCode').value + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
-             }, function (response) {*/
             if (response.code == "Ok") {
                 uid = userId;
                 storage.setItem('uid', userId);
+                url = modalUrl;
+                storage.setItem('url', modalUrl);
                 myApp.alert("Synchronisation effectuée", "");
             } else {
                 console.log(response);
                 myApp.alert(JSON.stringify(response), "");
             }
         });
-    } else alert("Veuillez entrer l'identifiant et le code d'activation")
+    } else alert("Veuillez entrer l'identifiant, le code d'activation ainsi que l'adresse du service")
 }
 
 function accept() {
     request({
         method: 'POST',
-        url: 'http://casotp.univ-lr.fr:3000/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
+        url: 'http://'+url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
     }, function (response) {
         //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
         if (response.code == "Ok") {
@@ -191,12 +226,11 @@ function flush() {
 function desync(){
     request({
         method: 'DELETE',
-        url: 'http://casotp.univ-lr.fr:3000/users/' + uid + '/methods/push/' + gcm_id
+        url: 'http://'+url+'/users/' + uid + '/methods/push/' + gcm_id
     }, function (response) {
-        //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
+        uid = null;
+        storage.removeItem('uid');
         if (response.code == "Ok") {
-            uid = null;
-            storage.removeItem('uid');
             myApp.alert("Votre compte est désynchronisé", "");
         } else {
             myApp.alert(JSON.stringify(response), "");
@@ -215,23 +249,60 @@ function request(opts, callback, next) {
             if (req.status == 200) {
                 var responseObject = JSON.parse(req.responseText);
                 if (typeof(callback) === "function") callback(responseObject);
-            }
+            }else myApp.alert("Le serveur est inaccessible. L'adresse enregistrée n'est peut être pas correcte.", "");
             if (typeof(next) === "function") next();
         }
     };
     req.send(null);
 }
 
+function scan(){
+    cordova.plugins.barcodeScanner.scan(
+        function (result) {
+            if(!result.cancelled)
+            {
+                activateViaScan(result);
+            }
+            else
+            {
+                alert("Scan annulé");
+            }
+        },
+        function (error) {
+            alert("Scan raté: " + error);
+        }
+    );
+}
+
+function activateViaScan(result){
+    request({
+        method: 'POST',
+        url: 'http://'+result.text.split('/')[0]+'/users/' + result.text.split('/')[2] + '/methods/push/activate/' + result.text.split('/')[5] + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+    }, function (response) {
+        if (response.code == "Ok") {
+            uid = result.text.split('/')[2];
+            url = result.text.split('/')[0];
+            storage.setItem('uid', result.text.split('/')[2]);
+            storage.setItem('url', result.text.split('/')[0]);
+            myApp.alert("Synchronisation effectuée", "");
+        } else {
+            console.log(response);
+            myApp.alert(JSON.stringify(response), "");
+        }
+    });
+}
+
 function home_register() {
-    $('#welcome').hide();
-    $('#register').show();
-    $('#unregistered').show();
-    $('#registered').hide();
+    $('#notice').html(unregNotice);
+    $('#activation_settings').html(unregActivationSettings);
 }
 
 function home_welcome() {
-    $('#welcome').show();
-    $('#register').hide();
-    $('#unregistered').hide();
-    $('#registered').show();
+    $('#notice').html(regNotice);
+    $('#activation_settings').html(regActivationSettings);
 }
+
+var regNotice = '<p class="notice">Connectez-vous sur un service nécessitant une authentification sécurisée. <br>Si vous sélectionnez la méthode "Notification Android" vous recevrez une notification ainsi qu\'une demande de connexion. Acceptez cette demande. Vous êtes connecté. </p>';
+var unregNotice = '<p class="notice">Afin de pouvoir utiliser ce service, modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l\'application Esup-OTP-Manager, un code d\'activation vous est alors affiché. <br> Cliquez ensuite sur le bouton "Activation" d\'Esup-OTP-Push et entrez votre identifiant ainsi que le code affiché. Un message vous confirmera l\'activation de ce service. <br> <a onclick="scan();" class="button button-fill button-raised color-green">Activation</a> </p>';
+var regActivationSettings = '<p> <a onclick="desync();" class="button button-fill button-raised color-red">Désynchroniser le compte</a> </p>';
+var unregActivationSettings = '<p> <a onclick="scan();" class="button button-fill button-raised color-green">Activation</a> <p>Si vous ne pouvez pas scanner le code :</p> <a onclick="register();" class="button button-fill button-raised color-green">Activation sans scan</a> </p>';

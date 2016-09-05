@@ -13,7 +13,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     console.log("Device Ready");
-    StatusBar.backgroundColorByHexString("#2196f3");
+    if (cordova.platformId != 'android') {
+        StatusBar.backgroundColorByHexString("#212121");
+    }
     platform = device.platform;
     manufacturer = device.manufacturer;
     model = device.model;
@@ -124,9 +126,16 @@ function register() {
     });
 };
 
-function notification() {
+function notification(){
+    if(additionalData.action=='auth'){
+        notification_auth();
+    } else if(additionalData.action ="desync"){
+        notification_desync();
+    }
+}
+function notification_auth() {
     myApp.modal({
-        text: "Demande de connexion",
+        text: additionalData.text,
         title: "",
         buttons: [{
             text: "Décliner",
@@ -142,6 +151,21 @@ function notification() {
             }
         }]
     });
+};
+
+function notification_desync() {
+    myApp.modal({
+        text: additionalData.text,
+        title: "",
+        buttons: [
+            {
+                text: 'Ok',
+                bold: true
+            }
+        ]
+    })
+    uid = null;
+    storage.removeItem('uid');
 };
 
 function confirm_activate_push(userId, code) {
@@ -191,10 +215,10 @@ function desync(){
         method: 'DELETE',
         url: 'http://casotp.univ-lr.fr:3000/users/' + uid + '/methods/push/' + gcm_id
     }, function (response) {
+        uid = null;
+        storage.removeItem('uid');
         //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
         if (response.code == "Ok") {
-            uid = null;
-            storage.removeItem('uid');
             myApp.alert("Votre compte est désynchronisé", "");
         } else {
             myApp.alert(JSON.stringify(response), "");
@@ -223,13 +247,13 @@ function request(opts, callback, next) {
 function home_register() {
     $('#welcome').hide();
     $('#register').show();
-    $('#unregistered').show();
+    $('.unregistered').show();
     $('#registered').hide();
 }
 
 function home_welcome() {
     $('#welcome').show();
     $('#register').hide();
-    $('#unregistered').hide();
+    $('.unregistered').hide();
     $('#registered').show();
 }
