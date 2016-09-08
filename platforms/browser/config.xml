@@ -22,6 +22,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <icon src="res/icon.png" />
+    <preference name="loadUrlTimeoutValue" value="120000" />
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="FadeSplashScreenDuration" value="500" />
