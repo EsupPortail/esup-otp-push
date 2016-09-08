@@ -187,7 +187,7 @@ function confirm_activate_push(userId, code, modalUrl) {
     if (userId && code && modalUrl) {
         request({
             method: 'POST',
-            url: 'http://'+modalUrl+'/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+            url: modalUrl+'/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
         }, function (response) {
             if (response.code == "Ok") {
                 uid = userId;
@@ -206,7 +206,7 @@ function confirm_activate_push(userId, code, modalUrl) {
 function accept() {
     request({
         method: 'POST',
-        url: 'http://'+url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
+        url: url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
     }, function (response) {
         //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
         if (response.code == "Ok") {
@@ -226,7 +226,7 @@ function flush() {
 function desync(){
     request({
         method: 'DELETE',
-        url: 'http://'+url+'/users/' + uid + '/methods/push/' + gcm_id
+        url: url+'/users/' + uid + '/methods/push/' + gcm_id
     }, function (response) {
         uid = null;
         storage.removeItem('uid');
@@ -249,7 +249,7 @@ function request(opts, callback, next) {
             if (req.status == 200) {
                 var responseObject = JSON.parse(req.responseText);
                 if (typeof(callback) === "function") callback(responseObject);
-            }else myApp.alert("Le serveur est inaccessible. L'adresse enregistrée n'est peut être pas correcte.", "");
+            }else myApp.alert("Le serveur est inaccessible. L'adresse enregistrée n'est peut être pas correcte."+opts.url, "");
             if (typeof(next) === "function") next();
         }
     };
@@ -277,7 +277,7 @@ function scan(){
 function activateViaScan(result){
     request({
         method: 'POST',
-        url: 'http://'+result.text.split('/')[0]+'/users/' + result.text.split('/')[2] + '/methods/push/activate/' + result.text.split('/')[5] + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+        url: result.text.split('/')[0]+'/users/' + result.text.split('/')[2] + '/methods/push/activate/' + result.text.split('/')[5] + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
     }, function (response) {
         if (response.code == "Ok") {
             uid = result.text.split('/')[2];
