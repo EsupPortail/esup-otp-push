@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_picker_name">Ohjelmat</string>
+    <string name="bookmark_picker_name">Kirjanmerkit</string>
+    <string name="button_add_calendar">Lisää kalenteriin</string>
+    <string name="button_add_contact">Lisää yhteystieto</string>
+    <string name="button_book_search">Kirjahaku</string>
+    <string name="button_cancel">Peruuta</string>
+    <string name="button_custom_product_search">Mukautettu haku</string>
+    <string name="button_dial">Soita numeroon</string>
+    <string name="button_email">Lähetä sähköpostia</string>
+    <string name="button_get_directions">Hae ajo-ohjeet</string>
+    <string name="button_mms">Lähetä multimediaviesti</string>
+    <string name="button_ok">OK</string>
+    <string name="button_open_browser">Avaa selain</string>
+    <string name="button_product_search">Tuotehaku</string>
+    <string name="button_search_book_contents">Hae kirjan sisältö</string>
+    <string name="button_share_app">Ohjelma</string>
+    <string name="button_share_bookmark">Kirjanmerkki</string>
+    <string name="button_share_by_email">Jaa sähköpostilla</string>
+    <string name="button_share_by_sms">Jaa tekstiviestillä</string>
+    <string name="button_share_clipboard">Leikepöytä</string>
+    <string name="button_share_contact">Kontakti</string>
+    <string name="button_show_map">Näytä kartta</string>
+    <string name="button_sms">Lähetä tekstiviesti</string>
+    <string name="button_web_search">Haku netistä</string>
+    <string name="button_wifi">Yhdistä verkkoon</string>
+    <string msgid="4770915072144378781" name="common_google_play_services_api_unavailable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> tarvitsee yhtä tai useampaa Google Play Palvelua, jotka eivät ole tällä hetkellä käytettävissä. Ota yhteyttä kehittäjään."</string>
+    <string msgid="2050101795821476669" name="common_google_play_services_enable_button">"Ota Google Play -palv. käyttöön"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ei toimi, ellet ota Google Play Palveluita käyttöön."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Ota Google Play Palvelut käyttöön"</string>
+    <string msgid="7118643132557593940" name="common_google_play_services_install_button">"Asenna Google Play Palvelut"</string>
+    <string msgid="1666261992894286769" name="common_google_play_services_install_text_phone">"<ns1:g id="APP_NAME">%1$s</ns1:g> ei toimi ilman Google Play Palveluita, jotka puuttuvat puhelimestasi."</string>
+    <string msgid="1701766622451829291" name="common_google_play_services_install_text_tablet">"<ns1:g id="APP_NAME">%1$s</ns1:g> ei toimi ilman Google Play Palveluita, jotka puuttuvat tabletistasi."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Asenna Google Play Palvelut"</string>
+    <string msgid="479501935061677276" name="common_google_play_services_invalid_account_text">"Kyseistä tiliä ei ole tällä laitteella. Valitse toinen tili."</string>
+    <string msgid="5775407690646375078" name="common_google_play_services_invalid_account_title">"Tili ei kelpaa"</string>
+    <string msgid="6857745590248226927" name="common_google_play_services_network_error_text">"Google Play Palveluiden käyttöön tarvitaan verkkoyhteys."</string>
+    <string msgid="4183541461338112307" name="common_google_play_services_network_error_title">"Verkkovirhe"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Virhe Google Play -palveluissa"</string>
+    <string msgid="8897126254633757462" name="common_google_play_services_resolution_required_text">"Suorita sovelluksen <ns1:g id="APP_NAME">%1$s</ns1:g> edellyttämä toiminto."</string>
+    <string msgid="7524004365913123453" name="common_google_play_services_resolution_required_title">"Google Play Palvelut edellyttävät toimia"</string>
+    <string msgid="3111284987662714014" name="common_google_play_services_restricted_profile_text">"Tilien käyttöä rajoitetulla profiililla ei tueta."</string>
+    <string msgid="8137798410446890929" name="common_google_play_services_restricted_profile_title">"Rajoitettu profiili"</string>
+    <string msgid="2431909537598981235" name="common_google_play_services_sign_in_failed_text">"Määritettyyn tiliin kirjauduttaessa tapahtui virhe. Valitse toinen tili."</string>
+    <string msgid="4402642931312190213" name="common_google_play_services_sign_in_failed_title">"Kirjautuminen epäonnistui."</string>
+    <string msgid="9089562800660647919" name="common_google_play_services_unknown_issue">"Sovelluksella <ns1:g id="APP_NAME">%1$s</ns1:g> on ongelmia Google Play Palveluiden kanssa. Jos ongelma ei poistu, ota yhteyttä sovelluksen kehittäjään."</string>
+    <string msgid="1064791666906610763" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> käyttää Google Play Palveluita, joita laitteesi ei tue. Ota yhteyttä laitteen valmistajaan."</string>
+    <string msgid="539866123733096737" name="common_google_play_services_unsupported_title">"Google Play Palvelut"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Päivitä"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ei toimi, ellet päivitä Google Play Palveluita."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Päivitä Google Play Palvelut"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ei toimi ilman Google Play Palveluita, joita päivitetään tällä hetkellä."</string>
+    <string msgid="2270671469198016014" name="common_google_play_services_updating_title">"Google Play Palveluita päivitetään"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Uusi Google Play Palveluiden versio tarvitaan. Se päivittyy pian."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Avaa puhelimessa"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Kirjaudu sisään"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Kirjaudu Google-tilille"</string>
+    <string name="contents_contact">Yhteystiedot</string>
+    <string name="contents_email">Sähköpostiosoite</string>
+    <string name="contents_location">Karttakoordinaatit</string>
+    <string name="contents_phone">Puhelinnumero</string>
+    <string name="contents_sms">Tekstiviestin osoite</string>
+    <string name="contents_text">Teksti</string>
+    <string name="history_clear_one_history_text">Tyhjennä</string>
+    <string name="history_clear_text">Tyhjennä historia</string>
+    <string name="history_email_title">Viivakoodien historia</string>
+    <string name="history_empty">Tyhjä</string>
+    <string name="history_empty_detail">Ei tallennettuja viivakoodeja</string>
+    <string name="history_send">Lähetä historia</string>
+    <string name="history_title">Historia</string>
+    <string name="menu_encode_mecard">Käytä MECARD:ia</string>
+    <string name="menu_encode_vcard">Käytä vCard:ia</string>
+    <string name="menu_help">Ohje</string>
+    <string name="menu_history">Historia</string>
+    <string name="menu_settings">Asetukset</string>
+    <string name="menu_share">Jaa</string>
+    <string name="msg_bulk_mode_scanned">Toistotila: viivakoodi luettu ja tallennetttu</string>
+    <string name="msg_camera_framework_bug">Valitettavasti Androidin kameran toimiinta häiriintyi. Joudut ehkä käynnistämään laitteen uudelleen.</string>
+    <string name="msg_default_format">Muoto</string>
+    <string name="msg_default_meta">Metatiedot</string>
+    <string name="msg_default_mms_subject">Hei</string>
+    <string name="msg_default_status">Aseta viivakoodi neliön sisälle skannataksesi sen.</string>
+    <string name="msg_default_time">Aika</string>
+    <string name="msg_default_type">Tyyppi</string>
+    <string name="msg_encode_contents_failed">Viivakoodia ei voitu muodostaa annetusta datasta.</string>
+    <string name="msg_error">Virhe</string>
+    <string name="msg_google_books">Google</string>
+    <string name="msg_google_product">Google</string>
+    <string name="msg_intent_failed">Valitettavasti pyydettyä sovellusta ei voitu käynnistää. Viivakoodin sisältö voi olla virheellinen.</string>
+    <string name="msg_invalid_value">Virheellinen arvo</string>
+    <string name="msg_redirect">Uudelleenohjaus</string>
+    <string name="msg_sbc_book_not_searchable">Valitettavasti tämä kirja ei ole haettavissa.</string>
+    <string name="msg_sbc_failed">Valitettavasti haussa tapahtui virhe.</string>
+    <string name="msg_sbc_no_page_returned">Sivua ei löydy/ei vastausta</string>
+    <string name="msg_sbc_page">Sivu</string>
+    <string name="msg_sbc_results">Tulokset</string>
+    <string name="msg_sbc_searching_book">Haetaan kirjaa\u2026</string>
+    <string name="msg_sbc_snippet_unavailable">Kappaletta ei saatavilla</string>
+    <string name="msg_share_explanation">Voit jakaa dataa näyttämällä viivakoodin laitteesi näytöllä ja lukemalla sen toisella laitteella.</string>
+    <string name="msg_share_text">Tai kirjoita tekstiä ja lopeta Enterillä</string>
+    <string name="msg_sure">Oletko varma?</string>
+    <string name="msg_unmount_usb">SD-kortti ei ole käytettävissä.</string>
+    <string name="preferences_actions_title">Kun viivakoodi löytyy\u2026</string>
+    <string name="preferences_auto_focus_title">Käytä automaattista tarkennusta</string>
+    <string name="preferences_auto_open_web_title">Avaa Web-sivujen automaattisesti</string>
+    <string name="preferences_bulk_mode_summary">Skannaa ja tallenna viivakoodeja jatkuvasti</string>
+    <string name="preferences_bulk_mode_title">Jatkuva skannaus</string>
+    <string name="preferences_copy_to_clipboard_title">Kopioi leikepöydälle</string>
+    <string formatted="false" name="preferences_custom_product_search_summary">Seuraavat korvataan: %s = sisältö, %f = formaatti, %t = tyyppi</string>
+    <string name="preferences_custom_product_search_title">Mukautettu hakukone</string>
+    <string name="preferences_decode_1D_industrial_title">1D Industrial</string>
+    <string name="preferences_decode_1D_product_title">1D Tuote</string>
+    <string name="preferences_decode_Aztec_title">Aztec</string>
+    <string name="preferences_decode_Data_Matrix_title">Data Matrix</string>
+    <string name="preferences_decode_PDF417_title">PDF417 (β)</string>
+    <string name="preferences_decode_QR_title">QR-koodit</string>
+    <string name="preferences_device_bug_workarounds_title">Laitteen vikojen kiertäminen</string>
+    <string name="preferences_disable_barcode_scene_mode_title">Ei viivakoodin näkymätilaa</string>
+    <string name="preferences_disable_continuous_focus_summary">Käytä vain vakiotarkennusta</string>
+    <string name="preferences_disable_continuous_focus_title">Ei jatkuvaa tarkennusta</string>
+    <string name="preferences_disable_exposure_title">Ei valotusta</string>
+    <string name="preferences_disable_metering_title">Ei mittausta</string>
+    <string name="preferences_front_light_auto">Automaattinen</string>
+    <string name="preferences_front_light_off">Pois</string>
+    <string name="preferences_front_light_on">Päällä</string>
+    <string name="preferences_front_light_summary">Parantaa joissain laitteissa hämärässä skannaamista, mutta voi aiheuttaa häikäisyongelmia. Ei toimi kaikissa puhelimissa.</string>
+    <string name="preferences_front_light_title">Käytä etuosan valoa</string>
+    <string name="preferences_general_title">Yleiset asetukset</string>
+    <string name="preferences_history_summary">Säilytä skannaa historia</string>
+    <string name="preferences_history_title">Lisää Historia</string>
+    <string name="preferences_invert_scan_summary">Etsi valkoisia viivakoodeja mustalla taustalla. Ei toimi kaikilla laitteilla.</string>
+    <string name="preferences_invert_scan_title">Käänteinen (negatiivin) skannaus</string>
+    <string name="preferences_name">Asetukset</string>
+    <string name="preferences_orientation_title">Ei automaattista kiertoa</string>
+    <string name="preferences_play_beep_title">Piippaus</string>
+    <string name="preferences_remember_duplicates_summary">Jos sama viivakoodi skannetaan useasti, tallenna jokainen skannauskerta historiaan</string>
+    <string name="preferences_remember_duplicates_title">Muista kaksoiskappaleet</string>
+    <string name="preferences_result_title">Tuloksien asetukset</string>
+    <string name="preferences_scanning_title">Kun skannataan viivakoodeja, dekoodaa\u2026</string>
+    <string name="preferences_search_country">Etsi maasta</string>
+    <string name="preferences_supplemental_summary">Yritä hakea lisätietoja viivakoodin sisällöstä</string>
+    <string name="preferences_supplemental_title">Hae lisää tietoa</string>
+    <string name="preferences_vibrate_title">Värinä</string>
+    <string name="result_address_book">Löydettiin yhteystietoja</string>
+    <string name="result_calendar">Löydettiin kalenteritapahtuma</string>
+    <string name="result_email_address">Löydettiin sähköpostiosoite</string>
+    <string name="result_geo">Löydettiin koordinaatteja</string>
+    <string name="result_isbn">Löydettiin kirja</string>
+    <string name="result_product">Löydettiin tuote</string>
+    <string name="result_sms">Löydettiin tekstiviestinumero</string>
+    <string name="result_tel">Löydettiin puhelinnumero</string>
+    <string name="result_text">Löydettiin teksti</string>
+    <string name="result_uri">Löydettin URL-osoite</string>
+    <string name="result_wifi">Löydettiin asetukset langattomalle yhteydelle</string>
+    <string name="sbc_name">Googlen kirjahaku</string>
+    <string name="wifi_changing_network">Pyydetään yhteyttä verkkoon\u2026</string>
+</resources>

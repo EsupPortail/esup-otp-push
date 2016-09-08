@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/release/color/common_plus_signin_btn_text_dark.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/color/common_plus_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/release/color/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/color/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/release/color/common_google_signin_btn_text_light.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/color/common_google_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/release/color/common_plus_signin_btn_text_light.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/color/common_plus_signin_btn_text_light.xml"
+    }
+]

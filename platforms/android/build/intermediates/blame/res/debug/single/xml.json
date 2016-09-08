@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/xml/config.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/res/xml/config.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/xml/preferences.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/xml/preferences.xml"
+    }
+]

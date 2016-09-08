@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_icon_light.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_icon_light.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/flip_camera.png",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/drawable/flip_camera.png"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_icon_dark.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_icon_dark.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_text_dark.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_text_light.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_icon_light.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_icon_light.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/launcher_icon.png",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/drawable/launcher_icon.png"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_icon_dark.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_icon_dark.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/share_via_barcode.png",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/drawable/share_via_barcode.png"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_text_light.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_text_light.xml"
+    }
+]

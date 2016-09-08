@@ -1,0 +1,596 @@
+[
+    {
+        "outputFile": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/release/values-zu/values-zu.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 105,
+                    "endColumn": 266,
+                    "endOffset": 367
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 323,
+                        "endColumn": 266,
+                        "endOffset": 585
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 372,
+                    "endColumn": 136,
+                    "endOffset": 504
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 590,
+                        "endColumn": 136,
+                        "endOffset": 722
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 509,
+                    "endColumn": 207,
+                    "endOffset": 712
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 727,
+                        "endColumn": 207,
+                        "endOffset": 930
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 717,
+                    "endColumn": 136,
+                    "endOffset": 849
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 935,
+                        "endColumn": 136,
+                        "endOffset": 1067
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 854,
+                    "endColumn": 131,
+                    "endOffset": 981
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 1072,
+                        "endColumn": 131,
+                        "endOffset": 1199
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 986,
+                    "endColumn": 228,
+                    "endOffset": 1210
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 1204,
+                        "endColumn": 228,
+                        "endOffset": 1428
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 1215,
+                    "endColumn": 235,
+                    "endOffset": 1446
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 1433,
+                        "endColumn": 235,
+                        "endOffset": 1664
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 1451,
+                    "endColumn": 130,
+                    "endOffset": 1577
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1669,
+                        "endColumn": 130,
+                        "endOffset": 1795
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 1582,
+                    "endColumn": 186,
+                    "endOffset": 1764
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1800,
+                        "endColumn": 186,
+                        "endOffset": 1982
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 1769,
+                    "endColumn": 134,
+                    "endOffset": 1899
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1987,
+                        "endColumn": 134,
+                        "endOffset": 2117
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 1904,
+                    "endColumn": 179,
+                    "endOffset": 2079
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 2122,
+                        "endColumn": 179,
+                        "endOffset": 2297
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 2084,
+                    "endColumn": 126,
+                    "endOffset": 2206
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 2302,
+                        "endColumn": 126,
+                        "endOffset": 2424
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 2211,
+                    "endColumn": 138,
+                    "endOffset": 2345
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 2429,
+                        "endColumn": 138,
+                        "endOffset": 2563
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 2350,
+                    "endColumn": 182,
+                    "endOffset": 2528
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 2568,
+                        "endColumn": 182,
+                        "endOffset": 2746
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 2533,
+                    "endColumn": 149,
+                    "endOffset": 2678
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 2751,
+                        "endColumn": 149,
+                        "endOffset": 2896
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 2683,
+                    "endColumn": 182,
+                    "endOffset": 2861
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 2901,
+                        "endColumn": 182,
+                        "endOffset": 3079
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 2866,
+                    "endColumn": 134,
+                    "endOffset": 2996
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 3084,
+                        "endColumn": 134,
+                        "endOffset": 3214
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 3001,
+                    "endColumn": 193,
+                    "endOffset": 3190
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 3219,
+                        "endColumn": 193,
+                        "endOffset": 3408
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 3195,
+                    "endColumn": 136,
+                    "endOffset": 3327
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 3413,
+                        "endColumn": 136,
+                        "endOffset": 3545
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 3332,
+                    "endColumn": 230,
+                    "endOffset": 3558
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 323,
+                        "endColumn": 230,
+                        "endOffset": 549
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 3563,
+                    "endColumn": 244,
+                    "endOffset": 3803
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 4,
+                        "startOffset": 3550,
+                        "endColumn": 244,
+                        "endOffset": 3790
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 3808,
+                    "endColumn": 127,
+                    "endOffset": 3931
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 3795,
+                        "endColumn": 127,
+                        "endOffset": 3918
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 3936,
+                    "endColumn": 111,
+                    "endOffset": 4043
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 4,
+                        "startOffset": 3923,
+                        "endColumn": 111,
+                        "endOffset": 4030
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 4048,
+                    "endColumn": 195,
+                    "endOffset": 4239
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 4,
+                        "startOffset": 4035,
+                        "endColumn": 195,
+                        "endOffset": 4226
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 4244,
+                    "endColumn": 132,
+                    "endOffset": 4372
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 4,
+                        "startOffset": 4231,
+                        "endColumn": 132,
+                        "endOffset": 4359
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 4377,
+                    "endColumn": 216,
+                    "endOffset": 4589
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 4,
+                        "startOffset": 4364,
+                        "endColumn": 216,
+                        "endOffset": 4576
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 4594,
+                    "endColumn": 138,
+                    "endOffset": 4728
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 4,
+                        "startOffset": 4581,
+                        "endColumn": 138,
+                        "endOffset": 4715
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 4733,
+                    "endColumn": 186,
+                    "endOffset": 4915
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 30,
+                        "startColumn": 4,
+                        "startOffset": 4720,
+                        "endColumn": 186,
+                        "endOffset": 4902
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 4920,
+                    "endColumn": 90,
+                    "endOffset": 5006
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 31,
+                        "startColumn": 4,
+                        "startOffset": 4907,
+                        "endColumn": 90,
+                        "endOffset": 4993
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 31,
+                    "startColumn": 4,
+                    "startOffset": 5011,
+                    "endColumn": 98,
+                    "endOffset": 5105
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 4,
+                        "startOffset": 4998,
+                        "endColumn": 98,
+                        "endOffset": 5092
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 32,
+                    "startColumn": 4,
+                    "startOffset": 5110,
+                    "endColumn": 113,
+                    "endOffset": 5219
+                },
+                "from": {
+                    "file": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/values-zu/values.xml",
+                    "position": {
+                        "startLine": 33,
+                        "startColumn": 4,
+                        "startOffset": 5097,
+                        "endColumn": 113,
+                        "endOffset": 5206
+                    }
+                }
+            }
+        ]
+    }
+]

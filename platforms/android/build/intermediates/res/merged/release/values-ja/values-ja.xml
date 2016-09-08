@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_picker_name">アプリケーション</string>
+    <string name="bookmark_picker_name">ブックマーク</string>
+    <string name="button_add_calendar">予定を追加</string>
+    <string name="button_add_contact">連絡先を追加</string>
+    <string name="button_book_search">書籍を検索</string>
+    <string name="button_cancel">キャンセル</string>
+    <string name="button_custom_product_search">カスタムサーチ</string>
+    <string name="button_dial">電話をかける</string>
+    <string name="button_email">メールの送信</string>
+    <string name="button_get_directions">経路を検索</string>
+    <string name="button_mms">MMSの送信</string>
+    <string name="button_ok">OK</string>
+    <string name="button_open_browser">ブラウザで表示</string>
+    <string name="button_product_search">商品検索</string>
+    <string name="button_search_book_contents">書籍の中身を検索</string>
+    <string name="button_share_app">アプリを共有</string>
+    <string name="button_share_bookmark">ブックマーク</string>
+    <string name="button_share_by_email">メールで共有</string>
+    <string name="button_share_by_sms">SMSで共有</string>
+    <string name="button_share_clipboard">クリップボードを共有</string>
+    <string name="button_share_contact">連絡先を共有</string>
+    <string name="button_show_map">地図を表示</string>
+    <string name="button_sms">SMSの送信</string>
+    <string name="button_web_search">インターネット検索</string>
+    <string name="button_wifi">ネットワークに接続</string>
+    <string msgid="4770915072144378781" name="common_google_play_services_api_unavailable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>には現在利用されていないGoogle Play開発者サービスが必要です。詳しくはデベロッパーにお問い合わせください。"</string>
+    <string msgid="2050101795821476669" name="common_google_play_services_enable_button">"Play開発者サービスの有効化"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>の実行には、Google Play開発者サービスの有効化が必要です。"</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Google Play開発者サービスの有効化"</string>
+    <string msgid="7118643132557593940" name="common_google_play_services_install_button">"Google Play開発者サービスを入手"</string>
+    <string msgid="1666261992894286769" name="common_google_play_services_install_text_phone">"<ns1:g id="APP_NAME">%1$s</ns1:g>の実行にはGoogle Play開発者サービスが必要ですが、お使いのスマートフォンにはインストールされていません。"</string>
+    <string msgid="1701766622451829291" name="common_google_play_services_install_text_tablet">"<ns1:g id="APP_NAME">%1$s</ns1:g>の実行にはGoogle Play開発者サービスが必要ですが、お使いのタブレットにはインストールされていません。"</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Google Play開発者サービスの入手"</string>
+    <string msgid="479501935061677276" name="common_google_play_services_invalid_account_text">"指定したアカウントはこの端末上に存在しません。別のアカウントを選択してください。"</string>
+    <string msgid="5775407690646375078" name="common_google_play_services_invalid_account_title">"無効なアカウント"</string>
+    <string msgid="6857745590248226927" name="common_google_play_services_network_error_text">"Google Play開発者サービスに接続するには、データ接続が必要です。"</string>
+    <string msgid="4183541461338112307" name="common_google_play_services_network_error_title">"ネットワークエラー"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Google Play開発者サービスのエラー"</string>
+    <string msgid="8897126254633757462" name="common_google_play_services_resolution_required_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>に必要な操作を完了してください。"</string>
+    <string msgid="7524004365913123453" name="common_google_play_services_resolution_required_title">"Google Play 開発者サービスで操作が必要"</string>
+    <string msgid="3111284987662714014" name="common_google_play_services_restricted_profile_text">"制限付きプロフィールからのアカウントへのアクセスはサポートされていません。"</string>
+    <string msgid="8137798410446890929" name="common_google_play_services_restricted_profile_title">"制限付きプロフィール"</string>
+    <string msgid="2431909537598981235" name="common_google_play_services_sign_in_failed_text">"指定されたアカウントへのログイン中にエラーが発生しました。別のアカウントを選択してください。"</string>
+    <string msgid="4402642931312190213" name="common_google_play_services_sign_in_failed_title">"ログインできませんでした"</string>
+    <string msgid="9089562800660647919" name="common_google_play_services_unknown_issue">"「<ns1:g id="APP_NAME">%1$s</ns1:g>」でGoogle Play開発者サービスに問題が発生しています。問題が解決しない場合は、デベロッパーにお問い合わせください。"</string>
+    <string msgid="1064791666906610763" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>に必要なGoogle Play開発者サービスは、お使いの端末ではサポートされていません。詳しくは端末メーカーにお問い合わせください。"</string>
+    <string msgid="539866123733096737" name="common_google_play_services_unsupported_title">"Google Play開発者サービス"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"更新"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>の実行にはGoogle Play開発者サービスの更新が必要です。"</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Google Play開発者サービスの更新"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>の実行にはGoogle Play開発者サービスが必要ですが、このサービスは現在更新中です。"</string>
+    <string msgid="2270671469198016014" name="common_google_play_services_updating_title">"Google Play開発者サービスの更新中"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Google Play開発者サービスの新しいバージョンが必要です。まもなく自動更新されます。"</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"スマートフォンで開く"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"ログイン"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Googleにログイン"</string>
+    <string name="contents_contact">連絡先</string>
+    <string name="contents_email">メールアドレス</string>
+    <string name="contents_location">位置情報</string>
+    <string name="contents_phone">電話番号</string>
+    <string name="contents_sms">SMSアドレス</string>
+    <string name="contents_text">テキストデータ</string>
+    <string name="history_clear_one_history_text">削除</string>
+    <string name="history_clear_text">履歴の削除</string>
+    <string name="history_email_title">QRコードスキャナーの履歴</string>
+    <string name="history_empty">履歴なし</string>
+    <string name="history_empty_detail">スキャン履歴がありません</string>
+    <string name="history_send">履歴を送信</string>
+    <string name="history_title">履歴</string>
+    <string name="menu_encode_mecard">MECARDを使用</string>
+    <string name="menu_encode_vcard">vCardを使用</string>
+    <string name="menu_help">ヘルプ</string>
+    <string name="menu_history">履歴</string>
+    <string name="menu_settings">設定</string>
+    <string name="menu_share">共有</string>
+    <string name="msg_bulk_mode_scanned">連続スキャン:スキャン結果を保存しました</string>
+    <string name="msg_camera_framework_bug">Androidのカメラに問題が発生しました。デバイスを再起動する必要があります。</string>
+    <string name="msg_default_format">フォーマット</string>
+    <string name="msg_default_meta">メタデータ</string>
+    <string name="msg_default_mms_subject">こんにちは</string>
+    <string name="msg_default_status">QRコードを画面の読み取り範囲内に写すとスキャンします。</string>
+    <string name="msg_default_time">時間</string>
+    <string name="msg_default_type">タイプ</string>
+    <string name="msg_encode_contents_failed">このデータからQRコードを作成できませんでした</string>
+    <string name="msg_error">エラー</string>
+    <string name="msg_google_books">Google</string>
+    <string name="msg_google_product">Google</string>
+    <string name="msg_intent_failed">指定されたアプリケーションを起動できませんでした。QRコードの内容が無効である可能性があります。</string>
+    <string name="msg_invalid_value">無効値</string>
+    <string name="msg_redirect">リダイレクト</string>
+    <string name="msg_sbc_book_not_searchable">この書籍は検索できません</string>
+    <string name="msg_sbc_failed">検索中に問題が発生しました</string>
+    <string name="msg_sbc_no_page_returned">検索結果はありません</string>
+    <string name="msg_sbc_page">ページ</string>
+    <string name="msg_sbc_results">結果</string>
+    <string name="msg_sbc_searching_book">書籍を検索中</string>
+    <string name="msg_sbc_snippet_unavailable">要約文はありません</string>
+    <string name="msg_share_explanation">画面にQRコードを表示させて別の端末でスキャンすれば、データを共有することができます。</string>
+    <string name="msg_share_text">またはテキストを入力してください</string>
+    <string name="msg_sure">よろしいですか？</string>
+    <string name="msg_unmount_usb">SDカードにアクセスできません</string>
+    <string name="preferences_actions_title">スキャン時の動作</string>
+    <string name="preferences_auto_focus_title">ｵｰﾄﾌｫｰｶｽを使用</string>
+    <string name="preferences_auto_open_web_title">自動的にWebを開く</string>
+    <string name="preferences_bulk_mode_summary">QRコードを連続スキャンして保存します</string>
+    <string name="preferences_bulk_mode_title">連続スキャンモード</string>
+    <string name="preferences_copy_to_clipboard_title">ｸﾘｯﾌﾟﾎﾞｰﾄﾞにｺﾋﾟｰ</string>
+    <string formatted="false" name="preferences_custom_product_search_summary">引数：％s=コンテンツ、％f=フォーマット、％t=タイプ</string>
+    <string name="preferences_custom_product_search_title">カスタムサーチ URL</string>
+    <string name="preferences_decode_1D_industrial_title">1次元バーコード（産業用）</string>
+    <string name="preferences_decode_1D_product_title">1次元バーコード（商品用）</string>
+    <string name="preferences_decode_Aztec_title">Aztec Code</string>
+    <string name="preferences_decode_Data_Matrix_title">データマトリクスコード</string>
+    <string name="preferences_decode_PDF417_title">PDF417 (β)</string>
+    <string name="preferences_decode_QR_title">QRコード</string>
+    <string name="preferences_device_bug_workarounds_title">不具合対策</string>
+    <string name="preferences_disable_barcode_scene_mode_title">ﾊﾞｰｺｰﾄﾞｼｰﾝ自動認識をOFF</string>
+    <string name="preferences_disable_continuous_focus_summary">標準フォーカスモードのみ使用します</string>
+    <string name="preferences_disable_continuous_focus_title">追従フォーカスしない</string>
+    <string name="preferences_disable_exposure_title">露出しない</string>
+    <string name="preferences_disable_metering_title">測光しない</string>
+    <string name="preferences_front_light_auto">自動</string>
+    <string name="preferences_front_light_off">ライトOFF</string>
+    <string name="preferences_front_light_on">ライトON</string>
+    <string name="preferences_front_light_summary">スキャン時のライトを制御します</string>
+    <string name="preferences_front_light_title">ライトの制御</string>
+    <string name="preferences_general_title">一般設定</string>
+    <string name="preferences_history_summary">歴史の中のあなたのスキャンを保管してください</string>
+    <string name="preferences_history_title">歴史に追加</string>
+    <string name="preferences_invert_scan_summary">黒地に白のバーコードをスキャン。一部のデバイスでは使用できません。</string>
+    <string name="preferences_invert_scan_title">スキャンを反転</string>
+    <string name="preferences_name">設定</string>
+    <string name="preferences_orientation_title">自動回転しない</string>
+    <string name="preferences_play_beep_title">通知音</string>
+    <string name="preferences_remember_duplicates_summary">同じ内容でも重複して履歴に記録します</string>
+    <string name="preferences_remember_duplicates_title">重複するスキャン結果の記録</string>
+    <string name="preferences_result_title">検索結果の設定</string>
+    <string name="preferences_scanning_title">QRコードスキャン時</string>
+    <string name="preferences_search_country">検索国コード</string>
+    <string name="preferences_supplemental_summary">QRコード内容の詳細情報を取得します</string>
+    <string name="preferences_supplemental_title">詳細情報を取得</string>
+    <string name="preferences_vibrate_title">バイブレーション</string>
+    <string name="result_address_book">連絡先がヒットしました</string>
+    <string name="result_calendar">カレンダーの予定がヒットしました</string>
+    <string name="result_email_address">メールアドレスがヒットしました</string>
+    <string name="result_geo">地理座標がヒットしました</string>
+    <string name="result_isbn">書籍がヒットしました</string>
+    <string name="result_product">商品がヒットしました</string>
+    <string name="result_sms">SMS 連絡先がヒットしました</string>
+    <string name="result_tel">電話番号がヒットしました</string>
+    <string name="result_text">テキストデータがヒットしました</string>
+    <string name="result_uri">URL がヒットしました</string>
+    <string name="result_wifi">ネットワーク設定がヒットしました</string>
+    <string name="sbc_name">Googleブックス</string>
+    <string name="wifi_changing_network">ネットワークへ接続しています…</string>
+</resources>

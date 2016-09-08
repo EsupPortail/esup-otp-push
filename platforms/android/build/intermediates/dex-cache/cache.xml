@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="d8bd2268fdcbfd52c76ade65d9900cd8def93a44">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/com.android.support-support-fragment-24.2.0_61fc31dafa5f1ea0edc5059f99a80069516b0a1c.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/24.1.1/3af19f153122737b372622fa6c81dd11a1c6b999/support-annotations-24.1.1.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/support-annotations-24.1.1_f8e32e5516e15c0be583bda8dc190025a8a99cc2.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.0/jars/libs/internal_impl-24.2.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="6e02e34594ebe9c0501ffda8dd48497f81b82977">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/internal_impl-24.2.0_b45fd1164791e03ae3ee59e0d1104b2b75252a31.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="f9b41622897665678d31d78e57a361cb0cebcb0d">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/com.android.support-support-compat-24.2.0_3372498ff50ab26e7d551b8497202b8c44601be8.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-iid/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="cf16220db9128d91a215aedc739584181d5ca6a4">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-iid-9.0.2_693cbbb8ef263e3e2239e771979b65ddf212f239.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/24.2.0/support-annotations-24.2.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="6be858a75633b1f0a2d24cad740db57775cb6871">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/support-annotations-24.2.0_2eb810bb01976becdd2ae5ab1e89c70b61216343.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-v13/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="be09545b7e6ff322c7286d2e80bed3b75b76c529">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/internal_impl-23.4.0_502d5e94775d46dbe76159b8656ab9993139cb16.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.0/jars/libs/internal_impl-24.2.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="60d7b23621d31e6f42f4f76f16af467e57a20cda">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/internal_impl-24.2.0_a2fbc8e1ffaf154a80b749495475f19403d9955b.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="fcc945a86ebcbf527429acb8216ec7dae2c06417">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/com.android.support-support-core-utils-24.2.0_a9525156f143f7a0606115fe857869f198ed1da4.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="9919563cffd8e3732e944d3c437d4b9575a08448">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-common-9.0.2_bb4db1652bf09d377313713af7879816debc6b88.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-v4/24.1.1/jars/libs/internal_impl-24.1.1.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/internal_impl-24.1.1_101d4067a521b26716b8b18f24ac00033fc8670e.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="4022261eeea0d92eb2997a68d2c1f084a16abad9">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-9.0.2_055869c48fa2f94f5095016be25cfba59b3e3228.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="6eb9107eb34d2fe2b020662b7fbbec991dcba846">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/com.android.support-support-media-compat-24.2.0_ab516a7e5ce9511c29d0f41e0233c33c7d7b4d66.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-v4/24.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="45f5eda279825ff470e3f51019d374d1ef61e000">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/com.android.support-support-v4-24.2.0_a8c9930f59f4965adbb744c2ca3423d71a9827b4.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="74969bd25b24524b96eb730c448be8c01916e1e1">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/intermediates-exploded-aar-barcodescanner_4a94cd1659d1952b6ee4600b29f27e1179ca57c7.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-v13/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="2bf893856577f5038c0b8007a43fda3b3c5beb23">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.android.support-support-v13-23.4.0_2c4639aaa53e833534a22b16c32579fea988c1ac.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/me.leolin/ShortcutBadger/1.1.4/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="b346a5d3fc5d6d1d36c6262c8cc865b76df9f40c">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/me.leolin-ShortcutBadger-1.1.4_781d6f33d8b760ba630fbc3dd6d674c7b708be81.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="e6970f0554f9508c041f1f6960af15cc888c9f35">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-gcm-9.0.2_a8495271e47fcacc6462e5ffac53c7848ce76be2.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="aec1bc54964a85d851c2c1b1cb7f90f7dbd755ab">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-tasks-9.0.2_72ca10cf70b7f568f4ec7515dba4ae8fa7e9a711.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.0/jars/libs/internal_impl-24.2.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="032a4b53def5e2ceedfc2e793b126c0163cfa1dd">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/internal_impl-24.2.0_9f4a7e1ba87290f6ac1a2e372c237eabf20b3ff7.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="94d9cedd04b124aed044ac71c451a292856d854c">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-base-9.0.2_c00da00e12e8a5950277d1b9bb39daa19c99f218.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/android/CordovaLib/unspecified/release/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="ad1c142e10ac48195cd9f501399e9f495ed71112">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/CordovaLib-unspecified-release_bb9fa76ce011b0d006abd41db4f0a15e76ded459.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="c84e216d9bf618464d6b9564d71d9a656433e7c4">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/com.android.support-support-core-ui-24.2.0_a77e8de2324c6b5573e301c41027dde6e6dd3492.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.0/jars/libs/internal_impl-24.2.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="045be695d968dd707691cc55d23746dbf8cf569a">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/internal_impl-24.2.0_f99e9eb360eed84a3e7921a5563d9f90de9444ad.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.0/jars/libs/internal_impl-24.2.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="771b3cc0e597b54da25f8086ba73180c59c6bc71">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/release/internal_impl-24.2.0_a1c744edbc4656d6a83fa8839a087205802c5a84.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/com.android.support/support-v4/24.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/com.android.support-support-v4-24.1.1_740ed9b5bfeccd735ccec3092f114e0c41565d8b.jar" />
+    </item>
+    <item
+        jar="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/android/CordovaLib/unspecified/debug/jars/classes.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="22091fe36e941dcd6ac62814afce4ade5dc12336">
+        <dex dex="/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/pre-dexed/debug/CordovaLib-unspecified-debug_b108a9c8151b4cc3b925cb81e0f1025f4cd54c1b.jar" />
+    </item>
+
+</items>

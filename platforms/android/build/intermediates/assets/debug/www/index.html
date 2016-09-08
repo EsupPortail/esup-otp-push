@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Esup-OTP-Push</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!-- Path to Framework7 Library CSS-->
+    <!-- <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css"> -->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/esup-otp-push.css">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<!-- Status bar overlay for fullscreen mode-->
+<div class="statusbar-overlay"></div>
+<!-- Panels overlay-->
+<div class="panel-overlay"></div>
+<div class="panel panel-left panel-cover push-panel">
+    <!-- Left panel content goes here -->
+    <div class="push-panel-header">
+        <p>Menu</p>
+    </div>
+    <div class="list-block">
+        <ul>
+            <li>
+                <a href="home.html" onclick="myApp.closePanel();" class="item-link item-content">
+                    <div class="item-media"><i class="icon icon-push-home"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">Accueil</div>
+                        <div class="item-after"></div>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="settings.html" onclick="myApp.closePanel();" class="item-link item-content">
+                    <div class="item-media"><i class="icon icon-push-settings"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title">Paramètres</div>
+                        <div class="item-after"></div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<a onclick="notification()" hidden="true" id="buttonNotification">Push</a>
+<!-- Views-->
+<div class="views">
+    <!-- Your main view, should have "view-main" class-->
+    <div class="view view-main">
+        <!-- Top Navbar-->
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+            <!-- Page, data-page contains page name-->
+            <div data-page="index" class="page">
+                <!-- Scrollable page content-->
+                <div class="page-content">
+                    <a href="home.html" hidden="true" id="open-home">Home</a>
+                </div>
+            </div>
+        </div>
+        <!-- Bottom Toolbar-->
+        <!-- <div class="toolbar">
+        </div> -->
+    </div>
+</div>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="js/framework7.min.js"></script>
+<!-- Path to your app js-->
+<script type="text/javascript" src="js/esup-otp-push.js"></script>
+</body>
+<div hidden="true">Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+        href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a
+        href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+</div>
+
+</html>

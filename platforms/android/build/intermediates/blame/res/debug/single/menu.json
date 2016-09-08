@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/menu/history.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/menu/history.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/menu/encode.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/menu/encode.xml"
+    },
+    {
+        "merged": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/res/merged/debug/menu/capture.xml",
+        "source": "/Users/abousk01/Documents/workspace/esup_otp_push/platforms/android/build/intermediates/exploded-aar/barcodescanner/res/menu/capture.xml"
+    }
+]

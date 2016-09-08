@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_picker_name">Applikationer</string>
+    <string name="bookmark_picker_name">Bogmærker</string>
+    <string name="button_add_calendar">Tilføj til kalendar</string>
+    <string name="button_add_contact">Tilføj kontaktperson</string>
+    <string name="button_book_search">Bogsøgning</string>
+    <string name="button_cancel">Annullér</string>
+    <string name="button_custom_product_search">Brugerdefineret søgning</string>
+    <string name="button_dial">Ring til nummeret</string>
+    <string name="button_email">Send e-mail</string>
+    <string name="button_get_directions">Få kørselsanvisninger</string>
+    <string name="button_mms">Send MMS</string>
+    <string name="button_ok">OK</string>
+    <string name="button_open_browser">Åben browser</string>
+    <string name="button_product_search">Produktsøgning</string>
+    <string name="button_search_book_contents">Søg efter indhold</string>
+    <string name="button_share_app">Applikationer</string>
+    <string name="button_share_bookmark">Bogmærker</string>
+    <string name="button_share_by_email">Del via e-mail</string>
+    <string name="button_share_by_sms">Del via SMS</string>
+    <string name="button_share_clipboard">Udklipsholder</string>
+    <string name="button_share_contact">Kontakter</string>
+    <string name="button_show_map">Vis kort</string>
+    <string name="button_sms">Send SMS</string>
+    <string name="button_web_search">Internetsøgning</string>
+    <string name="button_wifi">Forbind til netværk</string>
+    <string msgid="4770915072144378781" name="common_google_play_services_api_unavailable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> skal bruge én eller flere Google Play-tjenester, der ikke er tilgængelige i øjeblikket. Kontakt udvikleren for at få hjælp."</string>
+    <string msgid="2050101795821476669" name="common_google_play_services_enable_button">"Aktivér Google Play-tjenester"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"Du skal aktivere Google Play-tjenester, for at <ns1:g id="APP_NAME">%1$s</ns1:g> kan fungere."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Aktivér Google Play-tjenester"</string>
+    <string msgid="7118643132557593940" name="common_google_play_services_install_button">"Hent Google Play-tjenester"</string>
+    <string msgid="1666261992894286769" name="common_google_play_services_install_text_phone">"Du skal installere Google-tjenester, hvis <ns1:g id="APP_NAME">%1$s</ns1:g> skal kunne køre på din telefon."</string>
+    <string msgid="1701766622451829291" name="common_google_play_services_install_text_tablet">"Du skal installere Google-tjenester, hvis <ns1:g id="APP_NAME">%1$s</ns1:g> skal kunne køre på din tablet."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Hent Google Play-tjenester"</string>
+    <string msgid="479501935061677276" name="common_google_play_services_invalid_account_text">"Den angivne konto findes ikke på denne enhed. Vælg en anden konto."</string>
+    <string msgid="5775407690646375078" name="common_google_play_services_invalid_account_title">"Ugyldig konto"</string>
+    <string msgid="6857745590248226927" name="common_google_play_services_network_error_text">"Der kræves en dataforbindelse for at oprette forbindelse til Google Play-tjenester."</string>
+    <string msgid="4183541461338112307" name="common_google_play_services_network_error_title">"Netværksfejl"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Fejl i Google Play-tjenester"</string>
+    <string msgid="8897126254633757462" name="common_google_play_services_resolution_required_text">"Gennemfør handlingen, som er påkrævet af <ns1:g id="APP_NAME">%1$s</ns1:g>."</string>
+    <string msgid="7524004365913123453" name="common_google_play_services_resolution_required_title">"Google Play-tjenester kræver en handling"</string>
+    <string msgid="3111284987662714014" name="common_google_play_services_restricted_profile_text">"Du kan ikke få adgang til konti fra en begrænset profil."</string>
+    <string msgid="8137798410446890929" name="common_google_play_services_restricted_profile_title">"Begrænset profil"</string>
+    <string msgid="2431909537598981235" name="common_google_play_services_sign_in_failed_text">"Der opstod en fejl under login på angivne konto. Vælg en anden konto."</string>
+    <string msgid="4402642931312190213" name="common_google_play_services_sign_in_failed_title">"Login mislykkedes"</string>
+    <string msgid="9089562800660647919" name="common_google_play_services_unknown_issue">"<ns1:g id="APP_NAME">%1$s</ns1:g> har problemer med Google Play-tjenester. Hvis problemet fortsætter, kan du kontakte udvikleren for at få hjælp."</string>
+    <string msgid="1064791666906610763" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> er afhængig af Google Play-tjenester, som ikke understøttes af din enhed. Kontakt producenten for at få hjælp."</string>
+    <string msgid="539866123733096737" name="common_google_play_services_unsupported_title">"Google Play-tjenester"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Opdater"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> kan ikke køre, medmindre du opdaterer Google Play-tjenester."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Opdater Google Play-tjenester"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> kan ikke køre uden Google Play-tjenester, som i øjeblikket opdateres."</string>
+    <string msgid="2270671469198016014" name="common_google_play_services_updating_title">"Google Play-tjenester opdateres"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Du skal bruge en ny version af Google Play-tjenester. Opdateringen gennemføres automatisk om et øjeblik."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Åbn på telefonen"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Log ind"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Log ind med Google"</string>
+    <string name="contents_contact">Kontaktinfo</string>
+    <string name="contents_email">E-mailadresse</string>
+    <string name="contents_location">Geografiske koordinater</string>
+    <string name="contents_phone">Telefonnummer</string>
+    <string name="contents_sms">SMS-adresse</string>
+    <string name="contents_text">Almindelig tekst</string>
+    <string name="history_clear_one_history_text">Ryd</string>
+    <string name="history_clear_text">Ryd historik</string>
+    <string name="history_email_title">Barcode Scanner-historik</string>
+    <string name="history_empty">Tom</string>
+    <string name="history_empty_detail">Ingen stregkodescanninger er blevet registreret endnu</string>
+    <string name="history_send">Send historik</string>
+    <string name="history_title">Historik</string>
+    <string name="menu_encode_mecard">Brug MECARD</string>
+    <string name="menu_encode_vcard">Brug vCard</string>
+    <string name="menu_help">Hjælp</string>
+    <string name="menu_history">Historik</string>
+    <string name="menu_settings">Indstillinger</string>
+    <string name="menu_share">Del</string>
+    <string name="msg_bulk_mode_scanned">Massetilstand: stregkode scannet og gemt</string>
+    <string name="msg_camera_framework_bug">Beklager, Android-kameraet er stødt på et problem. Du skal muligvis genstarte enheden.</string>
+    <string name="msg_default_format">Format</string>
+    <string name="msg_default_meta">Metadata</string>
+    <string name="msg_default_mms_subject">Hej</string>
+    <string name="msg_default_status">Placér en stregkode inden i firkanten for at aflæse den.</string>
+    <string name="msg_default_time">Tid</string>
+    <string name="msg_default_type">Type</string>
+    <string name="msg_encode_contents_failed">Kunne ikke indkode en stregkode fra oplysningerne givet.</string>
+    <string name="msg_error">Fejl</string>
+    <string name="msg_google_books">Google</string>
+    <string name="msg_google_product">Google</string>
+    <string name="msg_intent_failed">Beklager, den ønskede applikation kunne ikke blive startet. Stregkodeindholdet er måsket ugyldigt.</string>
+    <string name="msg_invalid_value">Ugyldig værdi</string>
+    <string name="msg_redirect">Omdirigér</string>
+    <string name="msg_sbc_book_not_searchable">Beklager, denne bog er ikke søgbar.</string>
+    <string name="msg_sbc_failed">Beklager, søgningen er stødt på et problem.</string>
+    <string name="msg_sbc_no_page_returned">Ingen side returnerede</string>
+    <string name="msg_sbc_page">Side</string>
+    <string name="msg_sbc_results">Resultater</string>
+    <string name="msg_sbc_searching_book">Søger bog\u2026</string>
+    <string name="msg_sbc_snippet_unavailable">Uddragsvisning ikke tilgængelig</string>
+    <string name="msg_share_explanation">Du kan dele data ved at vise en stregkode på denne skærm, og derefter scanne den med en anden telefon.</string>
+    <string name="msg_share_text">Eller skriv noget tekst</string>
+    <string name="msg_sure">Er du sikker?</string>
+    <string name="msg_unmount_usb">Beklager, SD-kortet er ikke tilgængelig.</string>
+    <string name="preferences_actions_title">Når en stregkode er fundet\u2026</string>
+    <string name="preferences_auto_focus_title">Brug autofokus</string>
+    <string name="preferences_auto_open_web_title">Åbn websider automatisk</string>
+    <string name="preferences_bulk_mode_summary">Scan og gem mange stregkoder uden afbrydelser</string>
+    <string name="preferences_bulk_mode_title">Massescanningstilstand</string>
+    <string name="preferences_copy_to_clipboard_title">Kopiér til udklipsholder</string>
+    <string formatted="false" name="preferences_custom_product_search_summary">Udskiftninger: %s = indhold, %f = format, %t = type</string>
+    <string name="preferences_custom_product_search_title">Brugerdefineret søge-URL</string>
+    <string name="preferences_decode_1D_industrial_title">1D Industriel</string>
+    <string name="preferences_decode_1D_product_title">1D Produkt</string>
+    <string name="preferences_decode_Aztec_title">Aztec</string>
+    <string name="preferences_decode_Data_Matrix_title">Afkod Data Matrix</string>
+    <string name="preferences_decode_PDF417_title">PDF417 (β)</string>
+    <string name="preferences_decode_QR_title">Afkod QR-koder</string>
+    <string name="preferences_device_bug_workarounds_title">Device Bug Løsninger</string>
+    <string name="preferences_disable_barcode_scene_mode_title">Ingen stregkode scenetilstand</string>
+    <string name="preferences_disable_continuous_focus_summary">Brug kun standard fokusindstilling</string>
+    <string name="preferences_disable_continuous_focus_title">Ingen løbende fokus</string>
+    <string name="preferences_disable_exposure_title">Ingen eksponering</string>
+    <string name="preferences_disable_metering_title">Ingen måling</string>
+    <string name="preferences_front_light_auto">Automatisk</string>
+    <string name="preferences_front_light_off">Inaktiv</string>
+    <string name="preferences_front_light_on">Aktiv</string>
+    <string name="preferences_front_light_summary">Forbedrer aflæsning i svagt lys på nogle telefoner, men kan medføre genskær. Virker ikke på alle telefoner.</string>
+    <string name="preferences_front_light_title">Brug frontlys</string>
+    <string name="preferences_general_title">Generelle indstillinger</string>
+    <string name="preferences_history_summary">Gem dine scanninger i Historie</string>
+    <string name="preferences_history_title">Tilføj til Historie</string>
+    <string name="preferences_invert_scan_summary">Scan for hvide stregkoder på sort baggrund. Ikke tilgængelig på nogle enheder.</string>
+    <string name="preferences_invert_scan_title">Inverter scanning</string>
+    <string name="preferences_name">Indstillinger</string>
+    <string name="preferences_orientation_title">Ingen automatisk rotation</string>
+    <string name="preferences_play_beep_title">Bip</string>
+    <string name="preferences_remember_duplicates_summary">Gem flere scanninger af de samme stregkoder i Historik</string>
+    <string name="preferences_remember_duplicates_title">Husk dubletter</string>
+    <string name="preferences_result_title">Resultatindstillinger</string>
+    <string name="preferences_scanning_title">Når der scannes efter stregkoder\u2026</string>
+    <string name="preferences_search_country">Søg efter land</string>
+    <string name="preferences_supplemental_summary">Prøv at få flere oplysninger om stregkodens indhold</string>
+    <string name="preferences_supplemental_title">Hent mere info</string>
+    <string name="preferences_vibrate_title">Vibrér</string>
+    <string name="result_address_book">Kontaktinfo fundet</string>
+    <string name="result_calendar">Kalendarbegivenhed fundet</string>
+    <string name="result_email_address">E-mailadresse fundet</string>
+    <string name="result_geo">Geografiske koordinater fundet</string>
+    <string name="result_isbn">Bog fundet</string>
+    <string name="result_product">Produkt fundet</string>
+    <string name="result_sms">SMS-adresse fundet</string>
+    <string name="result_tel">Telefonnummer fundet</string>
+    <string name="result_text">Almindelig tekst fundet</string>
+    <string name="result_uri">URL fundet</string>
+    <string name="result_wifi">WLAN-forbindelse fundet</string>
+    <string name="sbc_name">Google Bøger-søgning</string>
+    <string name="wifi_changing_network">Anmoder om tilslutning til netværk\u2026</string>
+</resources>
