@@ -27,6 +27,13 @@ module.exports = [
         "clobbers": [
             "navigator.splashscreen"
         ]
+    },
+    {
+        "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
+        "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
+        "clobbers": [
+            "cordova.plugins.barcodeScanner"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -36,7 +43,9 @@ module.exports.metadata =
     "phonegap-plugin-push": "1.7.4",
     "cordova-plugin-device": "1.1.2",
     "cordova-plugin-statusbar": "2.1.3",
-    "cordova-plugin-splashscreen": "3.2.2"
+    "cordova-plugin-splashscreen": "3.2.2",
+    "cordova-plugin-compat": "1.0.0",
+    "phonegap-plugin-barcodescanner": "6.0.1"
 };
 // BOTTOM OF METADATA
 });

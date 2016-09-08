@@ -19,6 +19,9 @@
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="BarcodeScanner">
+        <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
+    </feature>
     <allow-intent href="market:*" />
     <splash density="land-hdpi" src="res/screen/splash-land.png" />
     <splash density="land-ldpi" src="res/screen/splash-land.png" />
