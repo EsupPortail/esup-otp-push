@@ -265,11 +265,11 @@ function scan(){
             }
             else
             {
-                alert("Scan annulé");
+                myApp.alert("Scan annulé","");
             }
         },
         function (error) {
-            alert("Scan raté: " + error);
+            myApp.alert("Scan raté: " + error,"");
         }
     );
 }
@@ -277,13 +277,13 @@ function scan(){
 function activateViaScan(result){
     request({
         method: 'POST',
-        url: result.text.split('/')[0]+'/users/' + result.text.split('/')[2] + '/methods/push/activate/' + result.text.split('/')[5] + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+        url: result.text.split('push/')[0] +'push/activate/'+result.text.split('/')[7]+'/'+ gcm_id + '/' + platform + '/' + manufacturer + '/' + model
     }, function (response) {
         if (response.code == "Ok") {
-            uid = result.text.split('/')[2];
-            url = result.text.split('/')[0];
-            storage.setItem('uid', result.text.split('/')[2]);
-            storage.setItem('url', result.text.split('/')[0]);
+            uid = result.text.split('/')[4];
+            url = result.text.split('/')[0]+'//'+result.text.split('/')[2]+'/';
+            storage.setItem('uid', result.text.split('/')[4]);
+            storage.setItem('url', result.text.split('/')[0]+'//'+result.text.split('/')[2]+'/');
             myApp.alert("Synchronisation effectuée", "");
         } else {
             console.log(response);

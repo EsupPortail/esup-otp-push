@@ -187,7 +187,7 @@ function confirm_activate_push(userId, code, modalUrl) {
     if (userId && code && modalUrl) {
         request({
             method: 'POST',
-            url: 'http://'+modalUrl+'/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+            url: modalUrl+'/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
         }, function (response) {
             if (response.code == "Ok") {
                 uid = userId;
@@ -206,7 +206,7 @@ function confirm_activate_push(userId, code, modalUrl) {
 function accept() {
     request({
         method: 'POST',
-        url: 'http://'+url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
+        url: url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
     }, function (response) {
         //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
         if (response.code == "Ok") {
@@ -226,7 +226,7 @@ function flush() {
 function desync(){
     request({
         method: 'DELETE',
-        url: 'http://'+url+'/users/' + uid + '/methods/push/' + gcm_id
+        url: url+'/users/' + uid + '/methods/push/' + gcm_id
     }, function (response) {
         uid = null;
         storage.removeItem('uid');
@@ -265,11 +265,11 @@ function scan(){
             }
             else
             {
-                alert("Scan annulé");
+                myApp.alert("Scan annulé","");
             }
         },
         function (error) {
-            alert("Scan raté: " + error);
+            myApp.alert("Scan raté: " + error,"");
         }
     );
 }
@@ -277,13 +277,13 @@ function scan(){
 function activateViaScan(result){
     request({
         method: 'POST',
-        url: 'http://'+result.text.split('/')[0]+'/users/' + result.text.split('/')[2] + '/methods/push/activate/' + result.text.split('/')[5] + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+        url: result.text.split('push/')[0] +'push/activate/'+result.text.split('/')[7]+'/'+ gcm_id + '/' + platform + '/' + manufacturer + '/' + model
     }, function (response) {
         if (response.code == "Ok") {
-            uid = result.text.split('/')[2];
-            url = result.text.split('/')[0];
-            storage.setItem('uid', result.text.split('/')[2]);
-            storage.setItem('url', result.text.split('/')[0]);
+            uid = result.text.split('/')[4];
+            url = result.text.split('/')[0]+'//'+result.text.split('/')[2]+'/';
+            storage.setItem('uid', result.text.split('/')[4]);
+            storage.setItem('url', result.text.split('/')[0]+'//'+result.text.split('/')[2]+'/');
             myApp.alert("Synchronisation effectuée", "");
         } else {
             console.log(response);
