@@ -14,6 +14,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     console.log("Device Ready");
+    navigator.splashscreen.hide();
     if (cordova.platformId != 'android') {
         StatusBar.backgroundColorByHexString("#212121");
     }
@@ -31,7 +32,8 @@ function framework7() {
     // Add view
     var mainView = myApp.addView('.view-main', {
         // Because we use fixed-through navbar we can enable dynamic navbar
-        dynamicNavbar: true
+        dynamicNavbar: true,
+        domCache: true
     });
 
     // Callbacks to run specific code for specific pages, for example for About page:
@@ -209,9 +211,7 @@ function accept() {
         url: url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
     }, function (response) {
         //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
-        if (response.code == "Ok") {
-            myApp.alert("Vous êtes connecté", "");
-        } else {
+        if (response.code != "Ok") {
             myApp.alert(JSON.stringify(response), "");
             console.log(response);
         }

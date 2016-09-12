@@ -37,7 +37,7 @@
     <div class="list-block">
         <ul>
             <li>
-                <a href="home.html" onclick="myApp.closePanel();" class="item-link item-content">
+                <a href="#home" onclick="myApp.closePanel();" class="item-link item-content">
                     <div class="item-media"><i class="icon icon-push-home"></i></div>
                     <div class="item-inner">
                         <div class="item-title">Accueil</div>
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li>
-                <a href="settings.html" onclick="myApp.closePanel();" class="item-link item-content">
+                <a href="#settings" onclick="myApp.closePanel();" class="item-link item-content">
                     <div class="item-media"><i class="icon icon-push-settings"></i></div>
                     <div class="item-inner">
                         <div class="item-title">Paramètres</div>
@@ -69,7 +69,41 @@
             <div data-page="index" class="page">
                 <!-- Scrollable page content-->
                 <div class="page-content">
-                    <a href="home.html" hidden="true" id="open-home">Home</a>
+                    <a href="#home" hidden="true" id="open-home">Home</a>
+                </div>
+            </div>
+            <div class="page cached" data-page="home">
+                <div class="push-navbar">
+                    <div class="push-navbar-content">
+                        <div class="push-navbar-btn-left"><a href="#" class="link icon-only open-panel"> <i
+                                class="icon icon-bars"></i></a></div>
+                        <div class="push-navbar-title"><p>Esup-OTP-Push</p></div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="content-block">
+                        <p>Bienvenue dans l'application Esup-OTP-Push</p>
+                        <p>Cette application vous permet de vous connecter de manière sécurisée grâce à votre smartphone</p>
+                        <div id="notice">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page cached" data-page="settings">
+                <div class="push-navbar">
+                    <div class="push-navbar-content">
+                        <div class="push-navbar-btn-left"><a href="#" class="link icon-only open-panel"> <i
+                                class="icon icon-bars"></i></a></div>
+                        <div class="push-navbar-title"><p>Paramètres</p></div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="content-block">
+                        <div id="activation_settings">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
