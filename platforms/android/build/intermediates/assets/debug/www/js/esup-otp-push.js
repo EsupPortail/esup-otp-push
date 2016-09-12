@@ -201,7 +201,6 @@ function accept() {
             myApp.alert(JSON.stringify(response), "");
             console.log(response);
         }
-        setInterval(checkAccount, 500);
         flush();
     })
 }
@@ -209,6 +208,7 @@ function accept() {
 function flush() {
     additionalData = null;
     setInterval(checkAccount, 500);
+    navigator.app.exitApp();
 }
 
 function desync() {
