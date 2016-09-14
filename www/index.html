@@ -32,7 +32,10 @@
 <div class="panel panel-left panel-cover push-panel">
     <!-- Left panel content goes here -->
     <div class="push-panel-header">
-        <p>Menu</p>
+        <div class="row">
+            <img id="avatar" src="img/user.png"/>
+            <p id="username"></p>
+        </div>
     </div>
     <div class="list-block">
         <ul>
@@ -56,8 +59,9 @@
             </li>
         </ul>
     </div>
+    <img src="img/logo.png" id="logo" alt="">
 </div>
-<a onclick="notification()" hidden="true" id="buttonNotification">Push</a>
+<a href="#home" hidden="true" id="buttonNotification">Push</a>
 <!-- Views-->
 <div class="views">
     <!-- Your main view, should have "view-main" class-->

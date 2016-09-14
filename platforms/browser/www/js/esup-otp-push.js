@@ -61,6 +61,7 @@ function push() {
     push.on('notification', function (data) {
         console.log(JSON.stringify(data));
         additionalData = data.additionalData;
+        notification();
         $('#buttonNotification')[0].click();
     });
 
@@ -109,24 +110,30 @@ function checkAccount() {
     }
 }
 
-function register() {
+function register(data) {
+    var uidData='', codeData='', addressData='';
+    if(data){
+        if(data.uid)uidData=data.uid;
+        if(data.code)codeData=data.code;
+        if(data.address)addressData=data.address;
+    }
     clearInterval(timer);
     myApp.modal({
         text: "Entrez votre identifiant et code d'activation",
         title: "",
-        afterText: '<div class="input-field modal-input-double"><input type="text" name="modal-uid" placeholder="' + "Identifiant" + '" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="password" name="modal-activationCode" placeholder="' + "Code d'activation" + '" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="text" name="modal-url" placeholder="' + "Adresse" + '" class="modal-text-input" required></div>',
+        afterText: '<div class="input-field modal-input-double"><input type="text" name="modal-uid" placeholder="' + "Identifiant" + '" value="'+uidData+'" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="password" name="modal-activationCode" placeholder="' + "Code d'activation" + '" value="'+codeData+'" class="modal-text-input" required></div><div class="input-field modal-input-double"><input type="text" name="modal-url" placeholder="' + "Adresse" + '" value="'+addressData+'" class="modal-text-input" required></div>',
         buttons: [{
             text: "Annuler",
-            close : true
+            close: true
         }, {
             text: "Ok",
             bold: true
         }],
-        onClick: function(modal, index) {
+        onClick: function (modal, index) {
             var userId = $(modal).find('.modal-text-input[name="modal-uid"]').val();
             var code = $(modal).find('.modal-text-input[name="modal-activationCode"]').val();
             var modalUrl = $(modal).find('.modal-text-input[name="modal-url"]').val();
-            if (index === 1){
+            if (index === 1) {
                 confirm_activate_push(userId, code, modalUrl);
                 setInterval(checkAccount, 500);
             }
@@ -134,51 +141,25 @@ function register() {
     });
 };
 
-function notification(){
-    if(additionalData.action=='auth'){
+function notification() {
+    clearInterval(timer);
+    $('#homecard-header').html(additionalData.text);
+    if (additionalData.action == 'auth') {
         notification_auth();
-    } else if(additionalData.action ="desync"){
+    } else if (additionalData.action == "desync") {
         notification_desync();
+    }else {
+        setInterval(checkAccount, 500);
     }
 }
+
 function notification_auth() {
-    clearInterval(timer);
-    myApp.modal({
-        text: additionalData.text,
-        title: "",
-        buttons: [{
-            text: "Décliner",
-            close : true,
-            onClick: function() {
-                flush();
-                setInterval(checkAccount, 500);
-            }
-        }, {
-            text: "Accepter",
-            bold: true,
-            onClick: function() {
-                accept();
-                setInterval(checkAccount, 500);
-            }
-        }]
-    });
+    $('#homecard').html(notificationAuth);
+
 };
 
 function notification_desync() {
-    clearInterval(timer);
-    myApp.modal({
-        text: additionalData.text,
-        title: "",
-        buttons: [
-            {
-                text: 'Ok',
-                bold: true,
-                onClick: function(){
-                    setInterval(checkAccount, 500);
-                }
-            }
-        ]
-    })
+    $('#homecard').html(notificationMessage);
     uid = null;
     url = null;
     storage.removeItem('uid');
@@ -189,7 +170,7 @@ function confirm_activate_push(userId, code, modalUrl) {
     if (userId && code && modalUrl) {
         request({
             method: 'POST',
-            url: modalUrl+'/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+            url: modalUrl + '/users/' + userId + '/methods/push/activate/' + code + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
         }, function (response) {
             if (response.code == "Ok") {
                 uid = userId;
@@ -202,15 +183,21 @@ function confirm_activate_push(userId, code, modalUrl) {
                 myApp.alert(JSON.stringify(response), "");
             }
         });
-    } else alert("Veuillez entrer l'identifiant, le code d'activation ainsi que l'adresse du service")
+    } else {
+        var data = {};
+        if(userId)data.uid = userId;
+        if(code)data.code = code;
+        if(modalUrl)data.address = modalUrl;
+        alert("Veuillez entrer l'identifiant, le code d'activation ainsi que l'adresse du service");
+        register(data);
+    }
 }
 
 function accept() {
     request({
         method: 'POST',
-        url: url+'/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
+        url: url + '/users/' + uid + '/methods/push/' + additionalData.lt + '/' + gcm_id
     }, function (response) {
-        //request({ method: 'POST', url: 'http://localhost:3000/users/'+uid+'/methods/push/'+additionalData.lt+'/'+gcm_id}, function(response) {
         if (response.code != "Ok") {
             myApp.alert(JSON.stringify(response), "");
             console.log(response);
@@ -221,15 +208,15 @@ function accept() {
 
 function flush() {
     additionalData = null;
+    setInterval(checkAccount, 500);
+    navigator.app.exitApp();
 }
 
-function desync(){
+function desync() {
     request({
         method: 'DELETE',
-        url: url+'/users/' + uid + '/methods/push/' + gcm_id
+        url: url + '/users/' + uid + '/methods/push/' + gcm_id
     }, function (response) {
-        uid = null;
-        storage.removeItem('uid');
         if (response.code == "Ok") {
             myApp.alert("Votre compte est désynchronisé", "");
         } else {
@@ -237,6 +224,14 @@ function desync(){
             console.log(response);
         }
     })
+    push.unregister(function() {
+        console.log('success');
+        uid = null;
+        storage.removeItem('uid');
+        push();
+    }, function() {
+        console.log('error');
+    });
 }
 function request(opts, callback, next) {
     var req = new XMLHttpRequest();
@@ -249,41 +244,39 @@ function request(opts, callback, next) {
             if (req.status == 200) {
                 var responseObject = JSON.parse(req.responseText);
                 if (typeof(callback) === "function") callback(responseObject);
-            }else myApp.alert("Le serveur est inaccessible. L'adresse enregistrée n'est peut être pas correcte."+opts.url, "");
+            } else myApp.alert("Le serveur est inaccessible. L'adresse enregistrée n'est peut être pas correcte." + opts.url, "");
             if (typeof(next) === "function") next();
         }
     };
     req.send(null);
 }
 
-function scan(){
+function scan() {
     cordova.plugins.barcodeScanner.scan(
         function (result) {
-            if(!result.cancelled)
-            {
+            if (!result.cancelled) {
                 activateViaScan(result);
             }
-            else
-            {
-                myApp.alert("Scan annulé","");
+            else {
+                myApp.alert("Scan annulé", "");
             }
         },
         function (error) {
-            myApp.alert("Scan raté: " + error,"");
+            myApp.alert("Scan raté: " + error, "");
         }
     );
 }
 
-function activateViaScan(result){
+function activateViaScan(result) {
     request({
         method: 'POST',
-        url: result.text.split('push/')[0] +'push/activate/'+result.text.split('/')[7]+'/'+ gcm_id + '/' + platform + '/' + manufacturer + '/' + model
+        url: result.text.split('push/')[0] + 'push/activate/' + result.text.split('/')[7] + '/' + gcm_id + '/' + platform + '/' + manufacturer + '/' + model
     }, function (response) {
         if (response.code == "Ok") {
             uid = result.text.split('/')[4];
-            url = result.text.split('/')[0]+'//'+result.text.split('/')[2]+'/';
+            url = result.text.split('/')[0] + '//' + result.text.split('/')[2] + '/';
             storage.setItem('uid', result.text.split('/')[4]);
-            storage.setItem('url', result.text.split('/')[0]+'//'+result.text.split('/')[2]+'/');
+            storage.setItem('url', result.text.split('/')[0] + '//' + result.text.split('/')[2] + '/');
             myApp.alert("Synchronisation effectuée", "");
         } else {
             console.log(response);
@@ -293,16 +286,26 @@ function activateViaScan(result){
 }
 
 function home_register() {
-    $('#notice').html(unregNotice);
+    $('#username').html('');
+    $('#avatar').hide();
+    $('#homecard-header').html(unregNoticeHeader);
+    $('#homecard').html(unregNotice);
     $('#activation_settings').html(unregActivationSettings);
 }
 
 function home_welcome() {
-    $('#notice').html(regNotice);
+    $('#username').html(uid);
+    $('#avatar').show();
+    $('#homecard-header').html(regNoticeHeader);
+    $('#homecard').html(regNotice);
     $('#activation_settings').html(regActivationSettings);
 }
 
-var regNotice = '<p class="notice">Connectez-vous sur un service nécessitant une authentification sécurisée. <br>Si vous sélectionnez la méthode "Notification Android" vous recevrez une notification ainsi qu\'une demande de connexion. Acceptez cette demande. Vous êtes connecté. </p>';
-var unregNotice = '<p class="notice">Afin de pouvoir utiliser ce service, modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l\'application Esup-OTP-Manager, un code d\'activation vous est alors affiché. <br> Cliquez ensuite sur le bouton "Activation" d\'Esup-OTP-Push et scannez le code affiché. Un message vous confirmera l\'activation de ce service. <br> Vous pouvez activer ce service autrement dans le menu Paramètres.<br> <a onclick="scan();" class="button button-fill button-raised color-green">Activation</a> </p>';
+var regNoticeHeader = 'Se connecter';
+var regNotice = 'Connectez-vous sur un service nécessitant une authentification sécurisée. <br>Si vous sélectionnez la méthode "Notification Android" vous recevrez une notification ainsi qu\'une demande de connexion. Acceptez cette demande. Vous êtes connecté.';
+var unregNoticeHeader = 'Comment ça marche ?';
+var unregNotice = 'Afin de pouvoir utiliser ce service, modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l\'application Esup-OTP-Manager, un code d\'activation vous est alors affiché. <br> Cliquez ensuite sur le bouton "Activation" d\'Esup-OTP-Push et scannez le code affiché. Un message vous confirmera l\'activation de ce service. <br> Vous pouvez activer ce service autrement dans le menu Paramètres. <br><br> <a onclick="scan();" class="button button-fill button-raised color-green">Activation</a>';
 var regActivationSettings = '<p> <a onclick="desync();" class="button button-fill button-raised color-red">Désynchroniser le compte</a> </p>';
 var unregActivationSettings = '<p> <a onclick="scan();" class="button button-fill button-raised color-green">Activation</a> <p>Si vous ne pouvez pas scanner le code :</p> <a onclick="register();" class="button button-fill button-raised color-green">Activation sans scan</a> </p>';
+var notificationAuth = '<div class="row"> <div class="col-50"> <a onclick="flush();" href="#" class="button button-big button-fill button-raised color-red">Refuser</a> </div> <div class="col-50"> <a onclick="accept();" href="#" class="button button-big button-fill button-raised color-green">Accepter</a> </div> </div>';
+var notificationMessage = '<p><a onclick="setInterval(checkAccount, 500);" href="#" class="button button-fill button-raised">Ok</a></p>';

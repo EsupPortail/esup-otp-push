@@ -60,19 +60,43 @@ body{
 }
 
 .push-panel-header {
-    display: flex;
-    background-color: #212121;
+    background-image: url("../img/wallpaper_polygons.jpg");
+    padding-top: 25px;
     min-height: 72px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: 500;
     color: #fff;
 }
 
 .push-panel-header * {
-    margin: auto;
+    display: flex;
+}
+
+#username {
+    -webkit-transform: translateX(-200%);
+    -ms-transform: translateX(-200%);
+    transform: translateX(-200%);
+}
+
+#avatar{
+    margin-left: 10px;
+    min-width: 18%;
+    width: 18%;
+    height: auto;
+}
+
+#logo{
+    position: absolute;
+    min-width: 50%;
+    width: 50%;
+    height: auto;
+    bottom: 0px;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
 }
 
 .notice{

@@ -61,6 +61,7 @@ function push() {
     push.on('notification', function (data) {
         console.log(JSON.stringify(data));
         additionalData = data.additionalData;
+        notification();
         $('#buttonNotification')[0].click();
     });
 
@@ -216,8 +217,6 @@ function desync() {
         method: 'DELETE',
         url: url + '/users/' + uid + '/methods/push/' + gcm_id
     }, function (response) {
-        uid = null;
-        storage.removeItem('uid');
         if (response.code == "Ok") {
             myApp.alert("Votre compte est désynchronisé", "");
         } else {
@@ -225,6 +224,14 @@ function desync() {
             console.log(response);
         }
     })
+    push.unregister(function() {
+        console.log('success');
+        uid = null;
+        storage.removeItem('uid');
+        push();
+    }, function() {
+        console.log('error');
+    });
 }
 function request(opts, callback, next) {
     var req = new XMLHttpRequest();
@@ -279,12 +286,16 @@ function activateViaScan(result) {
 }
 
 function home_register() {
+    $('#username').html('');
+    $('#avatar').hide();
     $('#homecard-header').html(unregNoticeHeader);
     $('#homecard').html(unregNotice);
     $('#activation_settings').html(unregActivationSettings);
 }
 
 function home_welcome() {
+    $('#username').html(uid);
+    $('#avatar').show();
     $('#homecard-header').html(regNoticeHeader);
     $('#homecard').html(regNotice);
     $('#activation_settings').html(regActivationSettings);
