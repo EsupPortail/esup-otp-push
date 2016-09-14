@@ -90,13 +90,14 @@ body{
 
 #logo{
     position: absolute;
-    min-width: 50%;
-    width: 50%;
+    min-width: 33%;
+    width: 33%;
     height: auto;
     bottom: 0px;
-    -webkit-transform: translateX(50%);
-    -ms-transform: translateX(50%);
-    transform: translateX(50%);
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
 }
 
 .notice{
