@@ -228,7 +228,8 @@ function desync() {
         console.log('success');
         uid = null;
         storage.removeItem('uid');
-        push();
+        //navigator.app.exitApp();
+        document.location.href = 'index.html';
     }, function() {
         console.log('error');
     });
