@@ -164,6 +164,15 @@ function notification_desync() {
     url = null;
     storage.removeItem('uid');
     storage.removeItem('url');
+    push.unregister(function() {
+        console.log('success');
+        uid = null;
+        storage.removeItem('uid');
+        //navigator.app.exitApp();
+        document.location.href = 'index.html';
+    }, function() {
+        console.log('error');
+    });
 };
 
 function confirm_activate_push(userId, code, modalUrl) {
