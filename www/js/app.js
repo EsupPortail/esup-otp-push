@@ -184,6 +184,7 @@ var app = new Vue({
                 success: function(data) {
                     this.notified = false;
                     this.additionalData = undefined;
+                    navigator.app.exitApp();
                 }.bind(this),
                 error: function(xhr, status, err) {
                     Materialize.toast(err.toString(),4000);
@@ -194,6 +195,7 @@ var app = new Vue({
         reject: function () {
             this.notified = false;
             this.additionalData = undefined;
+            navigator.app.exitApp();
         },
     }
 });
