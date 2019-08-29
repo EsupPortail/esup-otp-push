@@ -1,0 +1,32 @@
+{
+  "name": "org.esupportail.esup_otp_push",
+  "version": "0.0.1",
+  "displayName": "Esup OTP Push",
+  "cordova": {
+    "platforms": [
+      "browser",
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-sqlite": {},
+      "phonegap-plugin-barcodescanner": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {}
+    }
+  },
+  "dependencies": {
+    "cordova": "^9.0.0",
+    "cordova-android": "^8.0.0",
+    "cordova-browser": "^5.0.4",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-sqlite": "^1.0.3",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-whitelist": "1",
+    "phonegap-plugin-barcodescanner": "8.0.1"
+  }
+}

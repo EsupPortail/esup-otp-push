@@ -1,0 +1,12 @@
+language: objective-c
+env:
+  - PLATFORM=ios
+  - PLATFORM=android
+script:
+  - ./runIntegrationTests.sh
+before_install:
+  - node --version
+  - npm --version
+  - sudo gem install compass
+  - npm install -g grunt-cli bower cordova ios-sim
+  - npm install

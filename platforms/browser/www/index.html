@@ -60,6 +60,10 @@
                 <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex">Activation (sans scan)<i
                         class="material-icons">create</i></a>
             </li>
+            <li class="bold" v-if="!uid">
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex">TOTP<i
+                            class="material-icons">create</i></a>
+            </li>
             <div class="divider"></div>
             <li class="bold" v-if="uid">
                 <a href="#" v-on:click="desync" class="flex">Désactivation<i
@@ -181,6 +185,39 @@
                 <a class="waves-effect waves-light btn btn-large col s12" v-on:click="scanless"><i class="material-icons right">done</i>activer</a>
             </div>
         </div>
+
+        <div class="container" v-show="currentView=='totp'">
+                <div class="row" style="margin-bottom: 0;">
+                        <h4>TOTP</h4>
+                        <hr>
+                        <div class="row" style="margin-bottom: 0;">
+                                <div class="input-field col s12">
+                                        <input id="account" type="text" class="validate">
+                                        <label for="account">Nom du compte:</label>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 0;">
+                                    <div class="input-field col s12">
+                                            <input id="secret" type="text" class="validate">
+                                            <label for="secret">Votre clé:</label>
+                                    </div>
+                        </div>
+                        
+                        <div class="row" style="margin-bottom: 0;">
+                                <a class="waves-effect waves-light btn btn-large col s5" v-on:click="scanless"><i class="material-icons right">done</i>Ajouter</a>
+                                <a class="waves-effect waves-light btn btn-large col s5" style="margin-left:10%" onclick="totp_scan()"><i class="material-icons right">done</i>Scan</a>
+                        </div>
+                        <hr>
+                        <p id="secret">Secret: </p>
+                        <h2 id="code-1">TOTP code</h2>
+                        <p id="ticker">timer</p>
+
+                        <hr>
+                        <h4 id="code-2">scan QR:</h4>
+                        <button onclick="totp_scan()">Get new code</button>
+
+                </div>
+        </div>
     </main>
     <footer></footer>
 </div>
@@ -189,5 +226,84 @@
 <script type="text/javascript" src="js/vue.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/jsOTP.js"></script>
+<script>
+        $ = function(sel) {
+          return document.querySelector(sel);
+        };
+        function add() {
+            //secret = document.getElementById("secret").value;
+            localStorage.setItem("secret", document.getElementById("secret").value);
+            localStorage.setItem("account", document.getElementById("account").value);
+            //account = document.getElementById("account").value;
+            secret = localStorage.getItem('secret');
+            account = localStorage.getItem('account');
+        }
+        var secret = "GNASC3SVFAWGOVBYJMSUCIKDOY"
+        $('#secret').innerText = "Secret: " + secret;
+        
+        var totp = new jsOTP.totp();
+        var code = totp.getOtp(secret);
+        var hotp = new jsOTP.hotp();
+        var doge = hotp.getOtp(secret, 0);*/
+        
+        console.log(code);
+        console.log(doge);
+        
+        var updateTicker = function(tick, el) {
+          el.innerText = tick;
+        }
+        var updateTotp = function(secret, el) {
+          el.innerText = totp.getOtp(secret);
+        }
+        
+        updateTotp(secret, $('#code-1'));
+        
+        var timeLoop = function() {
+          var epoch = Math.round(new Date().getTime() / 1000.0);
+          var countDown = 30 - (epoch % 30);
+          updateTicker(countDown, $('#ticker'));
+          if (epoch % 30 == 0) updateTotp(secret, $('#code-1'));
+        }
+        
+        setInterval(timeLoop, 1000);
+
+        if(localStorage != undefined)
+        {
+        console.log("Local Storage is supported");
+
+        //add
+        localStorage.setItem("Website", "SitePoint");
+
+        //update or overwrite
+        localStorage.setItem("Website", "SitePoint.com");
+
+        // To retrieve a value
+        value = localStorage.getItem('Website');
+        console.log(value);
+        }
+        else
+        {
+        console.log("No support");
+        }
+        
+</script>
+
+<script>
+function totp_scan(){
+    console.log("clicked");
+	cordova.plugins.barcodeScanner.scan(
+		function (result) {
+			var s = "Result: " + result.text + "<br/>" +
+			"Format: " + result.format + "<br/>" +
+			"Cancelled: " + result.cancelled;
+            console.log(result.text);
+		}, 
+		function (error) {
+			alert("Scanning failed: " + error);
+		}
+	);
+}
+</script>
 </body>
 </html>

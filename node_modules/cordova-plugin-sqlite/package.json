@@ -1,0 +1,65 @@
+{
+  "_from": "cordova-plugin-sqlite",
+  "_id": "cordova-plugin-sqlite@1.0.3",
+  "_inBundle": false,
+  "_integrity": "sha1-Cf+sUp6QRaq7C/Hpj0QPWl7x/Cc=",
+  "_location": "/cordova-plugin-sqlite",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-sqlite",
+    "name": "cordova-plugin-sqlite",
+    "escapedName": "cordova-plugin-sqlite",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-sqlite/-/cordova-plugin-sqlite-1.0.3.tgz",
+  "_shasum": "09ffac529e9045aabb0bf1e98f440f5a5ef1fc27",
+  "_spec": "cordova-plugin-sqlite",
+  "_where": "/Users/zelhaj01/phoneGap/esup-otp-push",
+  "author": {
+    "name": "Martin Reinhardt"
+  },
+  "bugs": {
+    "url": "https://github.com/hypery2k/cordova-sqlite-plugin/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-sqlite",
+    "platforms": [
+      "android",
+      "amazon-fireos",
+      "ios",
+      "wp7",
+      "wp8",
+      "windows"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova SQLite Plugin",
+  "homepage": "https://github.com/hypery2k/cordova-sqlite-plugin#readme",
+  "keywords": [
+    "cordova",
+    "sqlite",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-amazon-fireos",
+    "cordova-ios",
+    "cordova-wp7",
+    "cordova-wp8",
+    "cordova-windows"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-sqlite",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hypery2k/cordova-sqlite-plugin.git"
+  },
+  "version": "1.0.3"
+}

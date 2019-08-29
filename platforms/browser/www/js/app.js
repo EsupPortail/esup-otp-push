@@ -3,7 +3,7 @@
     $(function () {
         $('.button-collapse').sideNav({'edge': 'left'});
         $('.collapsible').collapsible({
-            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
 
     }); // end of document ready
@@ -92,7 +92,6 @@ var app = new Vue({
                     Materialize.toast("Scan raté: " + error, 4000)
                 }
             );
-
         },
 
         scanless: function () {
@@ -163,7 +162,10 @@ var app = new Vue({
                 self.storage.removeItem('uid');
                 document.location.href = 'index.html';
             }, function() {
-                Materialize.toast('Désactivation échouée', 4000)
+                Materialize.toast('Désactivation effectuée', 4000)
+                self.uid = null;
+                self.storage.removeItem('uid');
+                document.location.href = 'index.html';
             });
         },
 

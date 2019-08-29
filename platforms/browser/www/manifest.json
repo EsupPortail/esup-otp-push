@@ -1,0 +1,18 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Esup OTP Push",
+  "short_name": "Esup OTP Push",
+  "version": "org.esupportail.esup_otp_push",
+  "description": "Push application for login",
+  "author": "Alex Bouskine",
+  "icons": [
+    {
+      "src": "res/icon.png",
+      "type": "image/png",
+      "sizes": "undefinedxundefined"
+    }
+  ],
+  "orientation": "portrait",
+  "start_url": "index.html"
+}
