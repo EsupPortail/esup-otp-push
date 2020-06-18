@@ -4,17 +4,20 @@
   - [Including the plugin](#including-the-plugin)
   - [Adding Resources](#adding-resources)
 - [IntelXDK Support](#intelxdk-support)
+- [Ionic Cloud Build](#ionic-cloud-build)
 
 ## PhoneGap Build Support
 
+> PhoneGap Build now support version 1.9.0 of the plugin.
+
 ### Including the plugin
 
-Including this plugin in a project that is built by PhoneGap Build is as easy as adding:
+Including this plugin in a project that is built by PhoneGap Build is as easy as adding (replacing `123456789` with your own, that is):
 
 ```xml
 <preference name="android-build-tool" value="gradle" />
 <plugin name="phonegap-plugin-push" source="npm">
-    <param name="SENDER_ID" value="<Your Sender ID>" />
+    <param name="SENDER_ID" value="123456789" />
 </plugin>
 ```
 
@@ -53,7 +56,7 @@ c. iOS Distribution cert: create (if needed), download and install (if needed), 
 d. Make an AdHoc Provisioning Profile using your App ID from (1a) and your cert from (1c).  Make sure your test device is enabled.  Download and save with a name you will recognize. (you'll need to add this to your Intel XDK project later)
 e. make a push cert, download it, install it, export it to .p12, convert it to .pem (this is for the push server that will send the notification - you'll need this later to test your Intel XDK app)
 
-2. In Intel XDK, make a new Cordova CLI 5.4.1 project using the HTML5+Cordova Blank Template, then replace the contents of www with [the contents of www from the PhoneGap Push Template](https://github.com/phonegap/phonegap-template-push/tree/master/www).
+2. In Intel XDK, make a new Cordova CLI 5.4.1 project using the HTML5+Cordova Blank Template, then replace the contents of www with [the contents of www from the PhoneGap Push Template](https://github.com/phonegap/phonegap-template-push/tree/master/template_src/www).
 
 3. Delete www/config.xml (optional? Intel XDK does not use config.xml)
 
@@ -89,3 +92,25 @@ f. you probably need to install the required gem (`gem install pushmeup`)
 g. send the notification (`ruby pushAPNS.rb`)
 
 10. See notification on device!
+
+## Ionic Cloud Build
+
+Users have reported issues with Ionic Cloud Build. Apparently there are some differences in the way variables are handled. If your app has an issue where the `PushNotification` object can't be found try the following.
+
+1. Remove the inclusion of `phonegap-plugin-push` from config.xml. That is delete lines that look like this:
+
+```
+<plugin name="phonegap-plugin-push" spec="~1.9.1">
+  <variable name="SENDER_ID" value="xxx"/>
+</plugin>
+```
+2. Add the following lines into `package.json` in the `cordovaPlugins` array.
+
+```
+{
+  "variables": {
+    "SENDER_ID": "xxx"
+  },
+  "locator": "phonegap-plugin-push"
+}
+```

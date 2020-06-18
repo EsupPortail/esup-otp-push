@@ -1,0 +1,23 @@
+{
+  "name": "org.esupportail.esup_otp_push",
+  "version": "0.0.1",
+  "displayName": "Esup OTP Push",
+  "cordova": {
+    "platforms": [
+      "browser",
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    }
+  },
+  "dependencies": {
+    "cordova-android": "^8.1.0",
+    "cordova-browser": "~4.1.0",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-console": "^1.1.0"
+  },
+  "devDependencies": {
+    "cordova-plugin-whitelist": "1"
+  }
+}

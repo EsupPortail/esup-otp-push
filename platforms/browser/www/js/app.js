@@ -58,7 +58,7 @@ var app = new Vue({
         push_init: function () {
             var self = this;
             this.push = PushNotification.init({
-                "android": {"senderID": "499931336963"},
+                "android": {"senderID": "703115166283"},
                 "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {}
             });
 

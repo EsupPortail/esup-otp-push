@@ -22,6 +22,7 @@ var app = new Vue({
         platform: undefined,
         manufacturer: undefined,
         model: undefined,
+        tokenSecret: undefined,
         additionalData: {
             text : undefined,
             action : undefined,
@@ -32,7 +33,7 @@ var app = new Vue({
 
     },
     created: function () {
-        document.addEventListener("deviceready", this.init, false);
+       document.addEventListener("deviceready", this.init, false);
     },
     methods: {
         init : function () {
@@ -43,6 +44,7 @@ var app = new Vue({
             this.storage= window.localStorage;
             this.uid= this.storage.getItem('uid');
             this.url= this.storage.getItem('url');
+            this.tokenSecret=this.storage.getItem('tokenSecret');
             this.platform = device.platform;
             this.manufacturer = device.manufacturer;
             this.model = device.model
@@ -58,12 +60,15 @@ var app = new Vue({
         push_init: function () {
             var self = this;
             this.push = PushNotification.init({
-                "android": {"senderID": "499931336963"},
+                "android": {"senderID": "703115166283"},
                 "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {}
             });
 
             this.push.on('registration', function (data) {
-                self.gcm_id = data.registrationId;
+                if (self.gcm_id == null)
+                {
+                    self.gcm_id = data.registrationId;
+                }
             });
 
             this.push.on('notification', function (data) {
@@ -130,6 +135,8 @@ var app = new Vue({
                         this.storage.setItem('uid', uid);
                         this.url = host;
                         this.storage.setItem('url', host);
+                        this.tokenSecret = data.tokenSecret;
+                        this.storage.setItem('tokenSecret', data.tokenSecret);
                         Materialize.toast("Synchronisation effectuée", 4000);
                         this.navigate({target:{
                             name: 'home'
@@ -142,12 +149,13 @@ var app = new Vue({
                     Materialize.toast(err.toString(),4000);
                 }.bind(this)
             });
+
         },
 
         desync: function () {
             $.ajax({
                 method : "DELETE",
-                url: this.url + 'users/' + this.uid + '/methods/push/' + this.gcm_id,
+                url: this.url + 'users/' + this.uid + '/methods/push/' + this.tokenSecret,
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
@@ -178,7 +186,7 @@ var app = new Vue({
         accept: function () {
             $.ajax({
                 method : "POST",
-                url: this.url + 'users/' + this.uid + '/methods/push/' + this.additionalData.lt + '/' + this.gcm_id,
+               url: this.url + 'users/' + this.uid + '/methods/push/' + this.additionalData.lt + '/' + this.tokenSecret,
                 dataType: 'json',
                 cache: false,
                 success: function(data) {

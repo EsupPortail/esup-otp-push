@@ -3,5 +3,4 @@
     <string name="app_name">Esup OTP Push</string>
     <string name="launcher_name">@string/app_name</string>
     <string name="activity_name">@string/launcher_name</string>
-    <string name="google_app_id">499931336963</string>
 </resources>
