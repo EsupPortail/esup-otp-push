@@ -44,13 +44,14 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
+  "cordova-android-support-gradle-release": "3.0.1",
+  "cordova-plugin-console": "1.1.0",
   "cordova-plugin-device": "1.1.2",
   "cordova-plugin-splashscreen": "3.2.2",
   "cordova-plugin-statusbar": "2.1.3",
   "cordova-plugin-whitelist": "1.2.2",
   "phonegap-plugin-barcodescanner": "6.0.1",
-  "phonegap-plugin-push": "2.1.2",
-  "cordova-plugin-console": "1.1.0"
+  "phonegap-plugin-push": "2.1.2"
 };
 // BOTTOM OF METADATA
 });

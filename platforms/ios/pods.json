@@ -1,0 +1,12 @@
+{
+    "declarations": {},
+    "sources": {},
+    "libraries": {
+        "FirebaseMessaging": {
+            "name": "FirebaseMessaging",
+            "type": "podspec",
+            "spec": "~> 2.0.0",
+            "count": 1
+        }
+    }
+}

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.esupportail.esup_otp_push" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Esup OTP Push</name>
+<widget id="org.esupportail.esupAuth" version="1.1.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Esup Auth</name>
     <description>
         Push application for login
     </description>
@@ -22,6 +22,7 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="true" />
     <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="android-manifest/uses-permission/[@android:name='android.permission.CAMERA']/@android:name" delete="true" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
@@ -30,8 +31,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <platform name="android">
-          <resource-file src="google-services.json" target="google-services.json" />
+        <resource-file src="google-services.json" target="google-services.json" />
     </platform>
-    <engine name="browser" spec="~4.1.0" />
     <icon src="res/icon.png" />
 </widget>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +17,9 @@
     <link rel="stylesheet" href="css/material-icons.css">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="cordova.js"></script>
+
 </head>
 
 <body>
@@ -45,26 +49,29 @@
         <ul id="slide-out" class="side-nav fixed">
             <div class="no-padding sidenav-header">
                 <div class="flex1">
-                    <img src="img/logo.png" style="max-width:140px;" alt="" v-if="!uid">
+                    <img src="img/logo.png" style="max-width:100px;text-align:center" alt="" v-if="!uid" >
                     <i class="material-icons medium" v-if="uid">account_circle</i>
                     <p v-if="uid">{{uid}}</p>
                 </div>
             </div>
             <li class="bold">
-                <a href="#" v-on:click="navigate" id="home" name="home" class="flex">Accueil<i class="material-icons">home</i></a>
+                <a href="#" v-on:click="navigate" id="home" name="home" class="flex"><img src="img/home.png" style="float:right" alt="">&emsp;Accueil</a>
             </li>
             <li class="bold" v-if="!uid">
-                <a href="#" v-on:click="scan" class="flex">Activation <i class="material-icons">fingerprint</i></a>
+                <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.png" style="float:right" alt="">&emsp;Activation Qrcode </a>
             </li>
             <li class="bold" v-if="!uid">
-                <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex">Activation (sans scan)<i
-                        class="material-icons">create</i></a>
+                <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.png" style="float:right" alt="">&emsp;Activation</a>
+            </li>
+            <li class="bold">
+                <a href="#" v-on:click="navigate"  id="totp" name="totp" class="flex"><img src="img/totp2.png" style="float:right" alt="">&emsp;TOTP </a>
             </li>
             <div class="divider"></div>
             <li class="bold" v-if="uid">
                 <a href="#" v-on:click="desync" class="flex">Désactivation<i
                         class="material-icons">remove_circle</i></a>
             </li>
+
         </ul>
     </header>
     <main>
@@ -87,17 +94,17 @@
                     <div class="row" style="margin-bottom: 0;">
                         <ul class="collection">
                             <li class="collection-item avatar">
-                                <img src="http://image.flaticon.com/icons/svg/188/188234.svg" alt="" class="circle">
+                                <img src="img/one.png" alt="" class="circle">
                                 <p>Modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l'application Esup-OTP-Manager, un code d'activation vous est alors affiché.</p>
                             </li>
                             <li class="collection-item avatar">
-                                <img src="http://image.flaticon.com/icons/svg/188/188235.svg" alt="" class="circle">
+                                <img src="img/two.png" alt="" class="circle">
                                 <p>Sélectionnez l'option 'Activer' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
                             </li>
                         </ul>
                         <ul class="collection">
                             <li class="collection-item avatar">
-                                <img src="http://image.flaticon.com/icons/svg/179/179350.svg" alt="" class="circle">
+                                <img src="img/two_blue.png" alt="" class="circle">
                                 <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activer (sans scan)' du menu latéral</p>
                             </li>
                         </ul>
@@ -115,23 +122,23 @@
                         <div class="row" style="margin-bottom: 0;">
                             <ul class="collection">
                                 <li class="collection-item avatar">
-                                    <img src="http://image.flaticon.com/icons/svg/188/188234.svg" alt="" class="circle">
+                                    <img src="img/one.png" alt="" class="circle">
                                     <p>Connectez-vous sur un service nécessitant une authentification sécurisée.</p>
                                 </li>
                                 <li class="collection-item avatar">
-                                    <img src="http://image.flaticon.com/icons/svg/188/188235.svg" alt="" class="circle">
+                                    <img src="img/two.png" alt="" class="circle">
                                     <p>Sélectionnez la méthode "Notification Android".</p>
                                 </li>
                                 <li class="collection-item avatar">
-                                    <img src="http://image.flaticon.com/icons/svg/188/188236.svg" alt="" class="circle">
+                                    <img src="img/three.png" alt="" class="circle">
                                     <p>Vous recevrez une notification ainsi qu'une demande de connexion.</p>
                                 </li>
                                 <li class="collection-item avatar">
-                                    <img src="http://image.flaticon.com/icons/svg/188/188237.svg" alt="" class="circle">
+                                    <img src="img/four.png" alt="" class="circle">
                                     <p>Acceptez cette demande.</p>
                                 </li>
                                 <li class="collection-item avatar">
-                                    <img src="http://image.flaticon.com/icons/svg/148/148767.svg" alt="" class="circle">
+                                    <img src="img/valid.png" alt="" class="circle">
                                     <p>Vous êtes connecté.</p>
                                 </li>
                             </ul>
@@ -181,6 +188,75 @@
                 <a class="waves-effect waves-light btn btn-large col s12" v-on:click="scanless"><i class="material-icons right">done</i>activer</a>
             </div>
         </div>
+        <div class="container" v-show="currentView=='totp'">
+            <br/>
+            <div class="list-group">
+                <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+            </div>
+            <br/>
+            <div style="margin-bottom: 0;" id="circleTimer">
+                <div class="col-md-8" >
+                    <table>
+                        <tr>
+                            <td>
+                                <table class="table table-bordered">
+                                    <thead class="alert-info">
+                                    </thead>
+                                    <tbody id= "result"></tbody>
+                                </table></td>
+                            <td>
+                                <div style="display: flex; justify-content: flex-end;float:right">
+                                    <svg class="countdownTimer"  width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                                        <g >
+                                            <circle class="circle" cx="41" cy="41" r="37" stroke-width="1" fill="none" stroke="grey" />
+                                            <circle ng-init="startTimer();" id="circle" class="circle_animation" r="34.44" cy="41" cx="41" stroke-width="5" stroke="#0288d1" fill="none" />
+                                            <circle class="circle" cx="41" cy="41" r="32" stroke-width="1" fill="none" stroke="grey" /><span ng-init="timer();RequestSend();" id="countdowntimer" hidden="hidden" class="timeNumber">30</span>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="container" v-show="currentView=='totpAddAccount'">
+            <div class="row" style="margin-bottom: 0;">
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="input-field col s12">
+                        <input id="account2" type="text" class="validate">
+                        <label for="account2">Nom du compte:</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="input-field col s12">
+                        <input id="secret2" type="text" class="validate">
+                        <label for="secret2">Votre clé:</label>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 0;">
+                    <a class="waves-effect waves-light btn btn-large col s5" onclick="addAccount()" v-on:click="navigate" name="totp"><i class="material-icons right">done</i>Ajouter</a>
+                </div>
+            </div>
+        </div>
+        <div class="container" v-show="currentView=='screenChoiceAddAccount'">
+
+            <ul class="collection">
+                <br/>
+                <li class="collection-item avatar">
+                    <a href="#" class="fa fa-plus-circle fa-lg" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount"> Ajouter un compte</a>
+                </li>
+                <br/>
+                <li class="collection-item avatar">
+                    <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))"  > Scan</a>
+                </li>
+
+            </ul>
+        </div>
+
     </main>
     <footer></footer>
 </div>
@@ -189,5 +265,160 @@
 <script type="text/javascript" src="js/vue.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/jsOTP.js"></script>
+<script type="text/javascript" src="js/tot2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script>
+function addT(){
+startTimer();
+var totpObjects = localStorage.getItem('totpObjects');
+  if (totpObjects  == "{}")
+ {
+ document.getElementById("circleTimer").style.display = 'none';
+}
+ else
+{
+ document.getElementById("circleTimer").style.display = 'inline';
+}
+//alert("afterdeletedADDT"+ JSON.stringify(localStorage.getItem('totpObjects')));
+
+  var $ = jQuery.noConflict();
+    $ = function(sel) {
+          return document.querySelector(sel);
+        };
+
+       var updateTicker = function(tick, el) {
+          el.innerText = tick;
+        }
+
+        var updateTotp = function(secret, el) {
+          el.innerText = totp.getOtp(secret);
+        }
+
+var populateTable = function()
+ {
+ var totpObjects = getTotpObjects();
+    startTimer();
+    var table = "" ;
+    var secret = "FYUHUVD5HBHSIPDNIREUUNZ2M4";
+      for(var key in totpObjects)
+      {
+        // alert("key"+key);
+        var totp = new jsOTP.totp();
+        var valTotp = totp.getOtp(key);
+          var idAccount = totpObjects[key];
+          var demo= "sdsg";
+         table += "<tr>"
+               + " <a href='#' class='fa fa-trash-o' aria-hidden='true' onclick=\"deleteTotp('" + key + "')\"> </a>&emsp;" +totpObjects[key] + "</tr>"
+               + "<tr><h5 id="+idAccount+">"+valTotp+"</h5>" ;
+         table += "</tr><br/>";
+        }
+document.getElementById("result").innerHTML = table;
+  }
+
+populateTable();
+          var timeLoop = function() {
+          var epoch = Math.round(new Date().getTime() / 1000.0);
+          var countDown = 30 - (epoch % 30);
+          updateTicker(countDown, $('#countdowntimer'));
+          if (epoch % 30 == 0)
+           {
+           populateTable();
+           startTimer();
+           }
+        }
+        setInterval(timeLoop, 1000);
+}
+
+function startTimer(){
+ jQuery.noConflict();
+jQuery.noConflict();
+  jQuery('.circle_animation').css({'stroke-dashoffset': 220 });
+   jQuery('.circle_animation').stop();
+    var time = 30;
+    var initialOffset = '0';
+    var i = 1;
+    jQuery('.circle_animation').animate({'stroke-dashoffset': initialOffset },30000);
+
+};
+function deleteTotp(key){
+var result = confirm("voulez-vous vraiment supprimer?");
+if (result) {
+var totpObjects = getTotpObjects();
+delete totpObjects[key];
+localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
+//alert("afterdeleted"+ JSON.stringify(localStorage.getItem('totpObjects')));
+ addT();
+}
+
+};
+function navigate(event){
+        this.currentView = event.target.name;
+            $('a').parent().removeClass('active');
+            $('#' + event.target.name).parent().addClass('active');
+            if (document.getElementById("sidenav-overlay"))$('#navButton').click();
+}
+function getTotpObjects(){
+var totpObjects = localStorage.getItem('totpObjects');
+if (totpObjects == null)
+totpObjects = new Object();
+else totpObjects=JSON.parse(totpObjects);
+return totpObjects;
+}
+
+function addAccount(){
+   // localStorage.removeItem('totpObjects');
+  document.getElementById("circleTimer").style.display = 'inline';
+var totpObjects = getTotpObjects();
+var name = document.getElementById("account2").value;
+var key = document.getElementById("secret2").value;
+
+if (key.length >=16 && (key.length % 2 === 0))
+  {
+   totpObjects[key]=name;
+   localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
+
+
+  //  alert("tab"+ JSON.stringify(localStorage.getItem('totpObjects')));
+  }
+else
+  {
+   alert("le nombre de caractère doit être supérieur ou égal à 16 et multiple de deux ");
+}
+addT();
+}
+addT();
+
+</script>
+<script>
+function totp_scan(event){
+   cordova.plugins.barcodeScanner.scan(
+      function (result) {
+         var s = "Result: " + result.text + "<br/>" +
+          "Format: " + result.format + "<br/>" +
+          "Cancelled: " + result.cancelled;
+              var url = new URL(result.text);
+              var params = new URLSearchParams(url.search);
+              var key = params.getAll('secret');
+              var name1 = url.pathname.split("//totp/")[1];
+              var name = name1.replace(/%20/g, " ");
+              var totpObjects = getTotpObjects();
+              totpObjects[key]=name;
+              localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
+              addT();
+              var variable = "totp";
+              console.log("paristotop"+$('#' +variable).parent());
+              $('a').parent().removeClass('active');
+              $('#' +variable).addClass('active');
+      },
+      function (error) {
+         alert("Scanning failed: " + error);
+      }
+   );
+   addT();
+}
+</script>
 </body>
 </html>

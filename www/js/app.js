@@ -12,7 +12,7 @@
 var app = new Vue({
     el: '#app',
     data: {
-        pageTitle: 'ESUP OTP Push',
+        pageTitle: 'Esup Auth',
         mode : 'test',
         currentView: 'home',
         storage: undefined,
@@ -56,7 +56,6 @@ var app = new Vue({
             $('#' + event.target.name).parent().addClass('active');
             if (document.getElementById("sidenav-overlay"))$('#navButton').click();
         },
-
         push_init: function () {
             var self = this;
             this.push = PushNotification.init({

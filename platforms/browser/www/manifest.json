@@ -1,0 +1,18 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Esup Auth",
+  "short_name": "Esup Auth",
+  "version": "org.esupportail.esupAuth",
+  "description": "Push application for login",
+  "author": "Alex Bouskine",
+  "icons": [
+    {
+      "src": "res/icon.png",
+      "type": "image/png",
+      "sizes": "undefinedxundefined"
+    }
+  ],
+  "orientation": "portrait",
+  "start_url": "index.html"
+}

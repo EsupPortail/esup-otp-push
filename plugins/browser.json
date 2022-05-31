@@ -1,31 +1,39 @@
 {
-    "prepare_queue": {
-        "installed": [],
-        "uninstalled": []
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
     },
-    "config_munge": {
-        "files": {}
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
     },
-    "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
-        },
-        "phonegap-plugin-push": {
-            "SENDER_ID": "703115166283",
-            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
-        },
-        "cordova-plugin-device": {
-            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
-        },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
-        },
-        "phonegap-plugin-barcodescanner": {
-            "PACKAGE_NAME": "org.esupportail.esup_otp_push"
-        }
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
     },
-    "dependent_plugins": {}
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
+    },
+    "phonegap-plugin-push": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
+    },
+    "cordova-android-support-gradle-release": {
+      "PACKAGE_NAME": "org.esupportail.esupAuth"
+    }
+  },
+  "dependent_plugins": {}
 }
