@@ -1,23 +1,28 @@
 {
-  "name": "org.esupportail.esup_otp_push",
-  "version": "0.0.1",
-  "displayName": "Esup OTP Push",
+  "name": "org.esupportail.esupAuth",
+  "version": "1.1.1",
+  "displayName": "Esup Auth",
   "cordova": {
     "platforms": [
       "browser",
       "android"
     ],
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-compat": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     }
   },
   "dependencies": {
-    "cordova-android": "^8.1.0",
-    "cordova-browser": "~4.1.0",
+    "cordova-android-support-gradle-release": "3.0.1",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-console": "^1.1.0"
   },
   "devDependencies": {
+    "cordova-android": "^6.4.0",
+    "cordova-browser": "^6.0.0",
     "cordova-plugin-whitelist": "1"
   }
 }

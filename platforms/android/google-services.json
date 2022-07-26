@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:703115166283:android:3db0dd78fee947a2b083ce",
         "android_client_info": {
-          "package_name": "org.esupportail.esup_otp_push"
+          "package_name": "org.esupportail.esupAuth"
         }
       },
       "oauth_client": [

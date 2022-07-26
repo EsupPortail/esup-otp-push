@@ -12,7 +12,7 @@
 var app = new Vue({
     el: '#app',
     data: {
-        pageTitle: 'ESUP OTP Push',
+        pageTitle: 'Esup Auth',
         mode : 'test',
         currentView: 'home',
         storage: undefined,

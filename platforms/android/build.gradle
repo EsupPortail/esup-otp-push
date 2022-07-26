@@ -94,8 +94,9 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "phonegap-plugin-barcodescanner/esup_otp_push-barcodescanner.gradle"
-apply from: "phonegap-plugin-push/esup_otp_push-push.gradle"
+apply from: "cordova-android-support-gradle-release/esupAuth-cordova-android-support-gradle-release.gradle"
+apply from: "phonegap-plugin-barcodescanner/esupAuth-barcodescanner.gradle"
+apply from: "phonegap-plugin-push/esupAuth-push.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
