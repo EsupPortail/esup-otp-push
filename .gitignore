@@ -3,3 +3,6 @@
 *.iml
 build/
 node_modules/
+platforms/
+plugins/
+www/img/
