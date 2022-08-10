@@ -186,3 +186,46 @@ body.IE7 .Switch.Round {
 .TransportSwitch.Round.Off {
     background-color: #818181;
 }
+/*
+  When creating your CSS selector,
+  change "brown" to something of your choosing
+  */
+.addbtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    background-color: #5E35B1 !important;
+}
+.scanbtn{
+  display: flex;
+  align-items: center;
+    background-color: #5E35B1 !important;
+}
+svg {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.circle_animation {
+  stroke-dasharray: 220;
+  /* this value is the pixel circumference of the circle */
+  stroke-dashoffset: 220;
+}
+ .waves-effect.waves-brown .waves-ripple {
+   /* The alpha value allows the text and background color
+   of the button to still show through. */
+    background-color: rgba(121, 85, 72, 0.65);
+  }
+
+
+/* css for the timer */
+.timer{
+  position: static;
+}
+
+#circle2{
+  stroke:#0288d1;
+  transition: 1s linear;
+  stroke-linecap: butt;
+  fill: transparent;
+}
