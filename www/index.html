@@ -188,30 +188,30 @@
         </div>
         <div class="container" v-show="currentView=='totp'">
             <br/>
+            <table >
+                <tr>
+                    <td>
             <div class="list-group">
                 <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
             </div>
+                    </td>
+                    <td style="text-align: right">
+            <svg style="width: 57px;height: 57px">
+                <circle id="circle2" cx="28" cy="28" r="14" stroke-width="28" ></circle>
+            </svg>
+                    </td>
+                </tr>
+            </table>
             <br/>
-            <div style="margin-bottom: 0;" id="circleTimer">
-                <div class="col-md-8" >
-                    <table>
+            <div id="circleTimer">
+                <div class="col-md-8">
                         <tr>
-                            <td>
                                 <table class="table table-bordered">
                                     <thead class="alert-info">
                                     </thead>
                                     <tbody id= "result"></tbody>
                                 </table></td>
-                            <td>
-                                <div class="timer">
-                                    <svg >
-                                        <circle id="circle2" cx="50" cy="50" r="14" stroke-width="28"></circle>
-                                    </svg>
-                                </div>
-
-                            </td>
                         </tr>
-                    </table>
                 </div>
             </div>
         </div>
@@ -260,6 +260,7 @@
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/totp.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 
 <script>
@@ -294,7 +295,6 @@ async function populateTable()
  var totpObjects = getTotpObjects();
     var table = "" ;
     var secret = "FYUHUVD5HBHSIPDNIREUUNZ2M4";
-
       for(var key in totpObjects)
       {
         var totp = new TOTP(key);
@@ -318,7 +318,6 @@ document.getElementById("result").innerHTML = table;
 
 
 populateTable();
-//function startTimer(){
 jQuery.noConflict();
 
 const circle2 = document.getElementById('circle2');
@@ -331,7 +330,7 @@ let time = 30000;
 function startTimer(){
   timer = setInterval(function(){
     var epoch = new Date().getTime();
-    var new_count = (epoch /*+ 1000*/ ) % time ;
+    var new_count = (epoch) % time ;
     circle2.style.strokeDashoffset = length - (new_count / time) * length;
     if (new_count < count) {
       populateTable();
@@ -348,7 +347,6 @@ if (result) {
 var totpObjects = getTotpObjects();
 delete totpObjects[key];
 localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-//alert("afterdeleted"+ JSON.stringify(localStorage.getItem('totpObjects')));
  addT();
 }
 
@@ -372,7 +370,6 @@ function addAccount(){
 var totpObjects = getTotpObjects();
 var name = document.getElementById("account2").value;
 var key = document.getElementById("secret2").value;
-
 if (key.length >=16 && (key.length % 2 === 0))
   {
    totpObjects[key]=name;
