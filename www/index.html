@@ -4,20 +4,17 @@
 <head>
     <meta charset="utf-8">
     <title>Esup-OTP-Push</title>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport"
-          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" href="css/material-icons.css">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script type="text/javascript" src="cordova.js"></script>
-
+    <script type="text/javascript" src="Cordova.js"></script>
 </head>
 
 <body>
@@ -27,7 +24,6 @@
         <div v-if="">
             <h4>Params</h4>
             <p>
-
             </p>
         </div>
     </div>
@@ -37,8 +33,9 @@
     <header>
         <nav class="top-nav">
             <div class="container">
-                <a href="#" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only"
-                   id="navButton"><i class="material-icons">menu</i></a>
+                <a href="#" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                    <i class="material-icons">menu</i>
+                </a>
                 <div class="nav-wrapper">
                     <a class="page-title">{{pageTitle}}</a>
                 </div>
@@ -67,7 +64,8 @@
             <div class="divider"></div>
             <li class="bold" v-if="uid">
                 <a href="#" v-on:click="desync" class="flex">Désactivation<i
-                        class="material-icons">remove_circle</i></a>
+                        class="material-icons">remove_circle</i>
+                </a>
             </li>
 
         </ul>
@@ -236,7 +234,6 @@
             </div>
         </div>
         <div class="container" v-show="currentView=='screenChoiceAddAccount'">
-
             <ul class="collection">
                 <br/>
                 <li class="collection-item avatar">
@@ -244,12 +241,10 @@
                 </li>
                 <br/>
                 <li class="collection-item avatar">
-                    <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))"  > Scan</a>
+                    <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))"> Scan</a>
                 </li>
-
             </ul>
         </div>
-
     </main>
     <footer></footer>
 </div>
@@ -261,156 +256,7 @@
 <script type="text/javascript" src="js/totp.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
 
-
-<script>
-function addT(){
-var totpObjects = localStorage.getItem('totpObjects');
-  if (totpObjects  == "{}")
- {
- document.getElementById("circleTimer").style.display = 'none';
-}
- else
-{
- document.getElementById("circleTimer").style.display = 'inline';
-}
-
-  var $ = jQuery.noConflict();
-    $ = function(sel) {
-          return document.querySelector(sel);
-        };
-
-       var updateTicker = function(tick, el) {
-          el.innerText = tick;
-        }
-
-        var updateTotp = function(secret, el) {
-          el.innerText = totp.getOtp(secret);
-        }
-
-}
-
-async function populateTable()
- {
- var totpObjects = getTotpObjects();
-    var table = "" ;
-    var secret = "FYUHUVD5HBHSIPDNIREUUNZ2M4";
-      for(var key in totpObjects)
-      {
-        var totp = new TOTP(key);
-
-         try {
-        var code = await totp.gen();
-            }
-        catch (error) {
-              }
-          var valTotp = code;
-          var idAccount = totpObjects[key];
-          var demo= "sdsg";
-          table += "<tr>"
-               + " <a href='#' class='fa fa-trash-o' aria-hidden='true' onclick=\"deleteTotp('" + key + "')\"> </a>&emsp;" +totpObjects[key] + "</tr>"
-               + "<tr><h5 id="+idAccount+">"+valTotp+"</h5>" ;
-         table += "</tr><br/>";
-
-        }
-document.getElementById("result").innerHTML = table;
-  }
-
-
-populateTable();
-jQuery.noConflict();
-
-const circle2 = document.getElementById('circle2');
-const length = 87.39775848388672;
-circle2.style.strokeDasharray = length;
-circle2.style.strokeDashoffset = length;
-let count = 0;
-let time = 30000;
-
-function startTimer(){
-  timer = setInterval(function(){
-    var epoch = new Date().getTime();
-    var new_count = (epoch) % time ;
-    circle2.style.strokeDashoffset = length - (new_count / time) * length;
-    if (new_count < count) {
-      populateTable();
-    }
-    count = new_count
-  },100);
-}
-startTimer();
-
-
-function deleteTotp(key){
-var result = confirm("voulez-vous vraiment supprimer?");
-if (result) {
-var totpObjects = getTotpObjects();
-delete totpObjects[key];
-localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
- addT();
-}
-
-};
-function navigate(event){
-        this.currentView = event.target.name;
-            $('a').parent().removeClass('active');
-            $('#' + event.target.name).parent().addClass('active');
-            if (document.getElementById("sidenav-overlay"))$('#navButton').click();
-}
-function getTotpObjects(){
-var totpObjects = localStorage.getItem('totpObjects');
-if (totpObjects == null)
-totpObjects = new Object();
-else totpObjects=JSON.parse(totpObjects);
-return totpObjects;
-}
-
-function addAccount(){
-  document.getElementById("circleTimer").style.display = 'inline';
-var totpObjects = getTotpObjects();
-var name = document.getElementById("account2").value;
-var key = document.getElementById("secret2").value;
-if (key.length >=16 && (key.length % 2 === 0))
-  {
-   totpObjects[key]=name;
-   localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-  }
-else
-  {
-   alert("le nombre de caractère doit être supérieur ou égal à 16 et multiple de deux ");
-}
-addT();
-}
-addT();
-
-</script>
-<script>
-function totp_scan(event){
-   cordova.plugins.barcodeScanner.scan(
-      function (result) {
-         var s = "Result: " + result.text + "<br/>" +
-          "Format: " + result.format + "<br/>" +
-          "Cancelled: " + result.cancelled;
-              var url = new URL(result.text);
-              var params = new URLSearchParams(url.search);
-              var key = params.getAll('secret');
-              var name1 = url.pathname.split("//totp/")[1];
-              var name = name1.replace(/%20/g, " ");
-              var totpObjects = getTotpObjects();
-              totpObjects[key]=name;
-              localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-              addT();
-              var variable = "totp";
-              console.log("paristotop"+$('#' +variable).parent());
-              $('a').parent().removeClass('active');
-              $('#' +variable).addClass('active');
-      },
-      function (error) {
-         alert("Scanning failed: " + error);
-      }
-   );
-   addT();
-}
-</script>
 </body>
 </html>
