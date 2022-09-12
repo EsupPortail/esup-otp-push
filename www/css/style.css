@@ -146,6 +146,7 @@ body.IE7 .Switch {
 }
 
 /* Round Switch */
+/* Round Switch */
 .Switch.Round {
     padding: 0px 20px;
     border-radius: 40px;
@@ -201,7 +202,7 @@ body.IE7 .Switch.Round {
   align-items: center;
     background-color: #5E35B1 !important;
 }
-svg {
+svg{
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
@@ -214,5 +215,21 @@ svg {
  .waves-effect.waves-brown .waves-ripple {
    /* The alpha value allows the text and background color
    of the button to still show through. */
-    background-color: rgba(121, 85, 72, 0.65);
+   background-color: rgba(121, 85, 72, 0.65);
   }
+
+
+/* css for the timer */
+.timer{
+
+    /*style="vertical-align:top;";*/
+    /*style="horizontal-align:top;";
+*/
+  /*position: static;*/
+}
+
+#circle2{
+  stroke:#0288d1;
+  stroke-linecap: butt;
+  fill: transparent;
+}
