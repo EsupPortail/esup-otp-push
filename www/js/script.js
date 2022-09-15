@@ -1,11 +1,13 @@
 function addT(){
 var totpObjects = localStorage.getItem('totpObjects');
-  if (totpObjects  == "{}")
+  if (totpObjects == undefined)
  {
  document.getElementById("circle2").style.display = 'none';
+ alert("pas de totp");
    }
  else
 {
+ alert("totp");
  document.getElementById("circle2").style.display = 'inline';
 }
   var $ = jQuery.noConflict();
@@ -53,7 +55,7 @@ var totpLine = localStorage.getItem('totpObjects');
         }
     }
 }
-
+addT();
 populateTable();
 jQuery.noConflict();
 
