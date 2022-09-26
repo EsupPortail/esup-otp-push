@@ -227,6 +227,11 @@ svg{
 */
   /*position: static;*/
 }
+#circle1{
+  stroke:#0288d1;
+  stroke-linecap: butt;
+  fill: transparent;
+}
 
 #circle2{
   stroke:#0288d1;
