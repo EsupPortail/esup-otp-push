@@ -14,7 +14,11 @@
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<<<<<<< HEAD
     <script type="text/javascript" src="cordova.js"></script>
+=======
+    <script type="text/javascript" src="Cordova.js"></script>
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
 </head>
 <body>
 
@@ -32,7 +36,11 @@
     <header>
         <nav class="top-nav">
             <div class="container">
+<<<<<<< HEAD
                 <a href="#" v-on:click="checkTotp" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+=======
+                <a href="#" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                     <i class="material-icons">menu</i>
                 </a>
                 <div class="nav-wrapper">
@@ -62,7 +70,12 @@
             </li>
             <div class="divider"></div>
             <li class="bold" v-if="uid">
+<<<<<<< HEAD
                 <a href="#" v-on:click="desync" class="flex">Désactivation Push<i class="material-icons">remove_circle</i>
+=======
+                <a href="#" v-on:click="desync" class="flex">Désactivation<i
+                        class="material-icons">remove_circle</i>
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                 </a>
             </li>
         </ul>
@@ -77,6 +90,7 @@
                 manufacturer : {{manufacturer}}
                 push : {{push}}
             </p>
+<<<<<<< HEAD
             <div class="container" v-if="totpnb != 0 && !notified">
                 <br/>
                 <table >
@@ -103,6 +117,32 @@
                                 <tbody id= "result"></tbody>
                             </table></td>
                         </tr>
+=======
+            <div class="card" v-if="!uid">
+                <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
+                    <div class="row" style="margin-bottom: 0;">
+                        <h5>Comment ça marche ?</h5>
+                    </div>
+                </div>
+                <div class="card-action" style="padding-bottom: 0;padding-top: 0;">
+                    <div class="row" style="margin-bottom: 0;">
+                        <ul class="collection">
+                            <li class="collection-item avatar">
+                                <img src="img/one.png" alt="" class="circle">
+                                <p>Modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l'application Esup-OTP-Manager, un code d'activation vous est alors affiché.</p>
+                            </li>
+                            <li class="collection-item avatar">
+                                <img src="img/two.png" alt="" class="circle">
+                                <p>Sélectionnez l'option 'Activer' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
+                            </li>
+                        </ul>
+                        <ul class="collection">
+                            <li class="collection-item avatar">
+                                <img src="img/two_blue.png" alt="" class="circle">
+                                <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activer' du menu latéral</p>
+                            </li>
+                        </ul>
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                     </div>
                 </div>
             </div>
@@ -221,7 +261,11 @@
                     </td>
                     <td style="text-align: right">
                         <svg style="width: 57px;height: 57px">
+<<<<<<< HEAD
                             <circle id="circle1" cx="28" cy="28" r="14" stroke-width="28" ></circle>
+=======
+                            <circle id="circle2" cx="28" cy="28" r="14" stroke-width="28" ></circle>
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                         </svg>
                     </td>
                 </tr>
@@ -233,7 +277,11 @@
                         <table class="table table-bordered">
                             <thead class="alert-info">
                             </thead>
+<<<<<<< HEAD
                             <tbody id= "result2"></tbody>
+=======
+                            <tbody id= "result"></tbody>
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                         </table></td>
                     </tr>
                 </div>
@@ -267,7 +315,11 @@
                 </li>
                 <br/>
                 <li class="collection-item avatar">
+<<<<<<< HEAD
                     <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))">Scan</a>
+=======
+                    <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))"> Scan</a>
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                 </li>
             </ul>
         </div>

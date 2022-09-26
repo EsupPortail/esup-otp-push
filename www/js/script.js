@@ -1,5 +1,6 @@
 function addT(){
 var totpObjects = localStorage.getItem('totpObjects');
+<<<<<<< HEAD
   if (totpObjects  == "{}" || totpObjects == undefined)
  {
  document.getElementById("circle2").style.display = 'none';
@@ -10,13 +11,32 @@ var totpObjects = localStorage.getItem('totpObjects');
  document.getElementById("circle2").style.display = 'inline';
  document.getElementById("circle1").style.display = 'inline';
 }
+=======
+  if (totpObjects  == "{}")
+ {
+ document.getElementById("circleTimer").style.display = 'none';
+}
+ else
+{
+ document.getElementById("circleTimer").style.display = 'inline';
+}
+
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
   var $ = jQuery.noConflict();
     $ = function(sel) {
           return document.querySelector(sel);
         };
+<<<<<<< HEAD
        var updateTicker = function(tick, el) {
           el.innerText = tick;
         }
+=======
+
+       var updateTicker = function(tick, el) {
+          el.innerText = tick;
+        }
+
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
         var updateTotp = function(secret, el) {
           el.innerText = totp.getOtp(secret);
         }
@@ -25,6 +45,10 @@ var totpObjects = localStorage.getItem('totpObjects');
 async function populateTable()  {
  var totpObjects = getTotpObjects();
     var table = "";
+<<<<<<< HEAD
+=======
+<!--      var secret = "FYUHUVD5HBHSIPDNIREUUNZ2M4";-->
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
       for(var key in totpObjects)
       {
         var totp = new TOTP(key);
@@ -34,13 +58,20 @@ async function populateTable()  {
         catch (error) {
             }
          var valTotp = code;
+<<<<<<< HEAD
          var idAccount = totpObjects[key];
+=======
+//<!--         alert("code ==" + code);-->
+         var idAccount = totpObjects[key];
+//<!--         alert("id account ==" + idAccount);-->
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
          var demo = "sdsg";
          table += "<tr>"
                + " <a href='#' class='fa fa-trash-o' aria-hidden='true' onclick=\"deleteTotp('" + key + "')\"> </a>&emsp;" +totpObjects[key] + "</tr>"
                + "<tr><h5 id="+idAccount+">"+valTotp+"</h5>" ;
          table += "</tr><br/>";
         }
+<<<<<<< HEAD
         addT();
 document.getElementById("result").innerHTML = table;
 document.getElementById("result2").innerHTML = table;
@@ -57,6 +88,22 @@ document.getElementById("result2").innerHTML = table;
 //    }
 //}
 addT();
+=======
+document.getElementById("result").innerHTML = table;
+}
+
+//<!--function checkDouble() {-->
+//<!--var totpLine = localStorage.getItem('totpObjects');-->
+//<!--    for (var keys in totpLine)-->
+//<!--    {-->
+//<!--        if (totLine != "{}") {-->
+//<!--            console.log(arr.indexOf() > -1);-->
+//
+//<!--        }-->
+//<!--    }-->
+//<!--}-->
+
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
 populateTable();
 jQuery.noConflict();
 
@@ -64,10 +111,13 @@ const circle2 = document.getElementById('circle2');
 const length = 87.39775848388672;
 circle2.style.strokeDasharray = length;
 circle2.style.strokeDashoffset = length;
+<<<<<<< HEAD
 
 const circle1 = document.getElementById('circle1');
 circle1.style.strokeDasharray = length;
 circle1.style.strokeDashoffset = length;
+=======
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
 let count = 0;
 let time = 30000;
 
@@ -76,7 +126,10 @@ function startTimer(){
     var epoch = new Date().getTime();
     var new_count = (epoch) % time ;
     circle2.style.strokeDashoffset = length - (new_count / time) * length;
+<<<<<<< HEAD
     circle1.style.strokeDashoffset = length - (new_count / time) * length;
+=======
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
     if (new_count < count) {
       populateTable();
       startTimer();
@@ -93,7 +146,10 @@ var totpObjects = getTotpObjects();
 delete totpObjects[key];
 localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
  addT();
+<<<<<<< HEAD
  populateTable();
+=======
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
 }
 };
 
@@ -117,6 +173,10 @@ return totpObjects;
 }
 
 function addAccount(){
+<<<<<<< HEAD
+=======
+  document.getElementById("circleTimer").style.display = 'inline';
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
 var totpObjects = getTotpObjects();
 var name = document.getElementById("account2").value;
 var key = document.getElementById("secret2").value;
@@ -130,7 +190,10 @@ else
    alert("le nombre de caractère doit être supérieur ou égal à 16 et multiple de deux ");
 }
 addT();
+<<<<<<< HEAD
 populateTable();
+=======
+>>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
 }
 addT();
 
