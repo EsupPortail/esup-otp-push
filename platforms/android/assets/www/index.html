@@ -1,27 +1,21 @@
-
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <title>Esup-OTP-Push</title>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport"
-          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" href="css/material-icons.css">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="cordova.js"></script>
-
 </head>
-
 <body>
 
 <script type="text/x-template" id="parametres-template">
@@ -29,7 +23,6 @@
         <div v-if="">
             <h4>Params</h4>
             <p>
-
             </p>
         </div>
     </div>
@@ -39,15 +32,16 @@
     <header>
         <nav class="top-nav">
             <div class="container">
-                <a href="#" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only"
-                   id="navButton"><i class="material-icons">menu</i></a>
+                <a href="#" v-on:click="checkTotp" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                    <i class="material-icons">menu</i>
+                </a>
                 <div class="nav-wrapper">
                     <a class="page-title">{{pageTitle}}</a>
                 </div>
             </div>
         </nav>
-        <ul id="slide-out" class="side-nav fixed">
-            <div class="no-padding sidenav-header">
+        <ul id="slide-out" class="side-nav fixed" >
+            <div class="no-padding sidenav-header" >
                 <div class="flex1">
                     <img src="img/logo.png" style="max-width:100px;text-align:center" alt="" v-if="!uid" >
                     <i class="material-icons medium" v-if="uid">account_circle</i>
@@ -63,15 +57,14 @@
             <li class="bold" v-if="!uid">
                 <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.png" style="float:right" alt="">&emsp;Activation</a>
             </li>
-            <li class="bold">
-                <a href="#" v-on:click="navigate"  id="totp" name="totp" class="flex"><img src="img/totp2.png" style="float:right" alt="">&emsp;TOTP </a>
+            <li class="bold" v-if="totpnb == 0">
+                <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp2.png" style="float:right" alt="">&emsp;TOTP </a>
             </li>
             <div class="divider"></div>
             <li class="bold" v-if="uid">
-                <a href="#" v-on:click="desync" class="flex">Désactivation<i
-                        class="material-icons">remove_circle</i></a>
+                <a href="#" v-on:click="desync" class="flex">Désactivation Push<i class="material-icons">remove_circle</i>
+                </a>
             </li>
-
         </ul>
     </header>
     <main>
@@ -84,38 +77,67 @@
                 manufacturer : {{manufacturer}}
                 push : {{push}}
             </p>
-            <div class="card" v-if="!uid">
-                <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
-                    <div class="row" style="margin-bottom: 0;">
-                        <h5>Comment ça marche ?</h5>
-                    </div>
-                </div>
-                <div class="card-action" style="padding-bottom: 0;padding-top: 0;">
-                    <div class="row" style="margin-bottom: 0;">
-                        <ul class="collection">
-                            <li class="collection-item avatar">
-                                <img src="img/one.png" alt="" class="circle">
-                                <p>Modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l'application Esup-OTP-Manager, un code d'activation vous est alors affiché.</p>
-                            </li>
-                            <li class="collection-item avatar">
-                                <img src="img/two.png" alt="" class="circle">
-                                <p>Sélectionnez l'option 'Activer' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
-                            </li>
-                        </ul>
-                        <ul class="collection">
-                            <li class="collection-item avatar">
-                                <img src="img/two_blue.png" alt="" class="circle">
-                                <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activer (sans scan)' du menu latéral</p>
-                            </li>
-                        </ul>
+            <div class="container" v-if="totpnb != 0 && !notified">
+                <br/>
+                <table >
+                    <tr>
+                        <td>
+                            <div class="list-group">
+                                <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+                            </div>
+                        </td>
+                        <td style="text-align: right">
+                            <svg style="width: 57px;height: 57px">
+                                <circle id="circle2" cx="28" cy="28" r="14" stroke-width="28" ></circle>
+                            </svg>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <div id="circleTimer2">
+                    <div class="col-md-8">
+                        <tr>
+                            <table class="table table-bordered">
+                                <thead class="alert-info">
+                                </thead>
+                                <tbody id= "result"></tbody>
+                            </table></td>
+                        </tr>
                     </div>
                 </div>
             </div>
             <div v-else>
-                <div class="card" v-if="!notified">
-                    <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
-                        <div class="row" style="margin-bottom: 0;">
-                            <h5>Se connecter</h5>
+            <div class="card" v-if="!uid && totpnb == 0 && !notified" >
+            <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
+                <div class="row" style="margin-bottom: 0;">
+                    <h5>Comment ça marche ?</h5>
+                </div>
+            </div>
+            <div class="card-action" style="padding-bottom: 0;padding-top: 0;">
+                <div class="row" style="margin-bottom: 0;">
+                    <ul class="collection">
+                        <li class="collection-item avatar">
+                            <img src="img/one.png" alt="" class="circle">
+                            <p>Modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l'application Esup-OTP-Manager, un code d'activation vous est alors affiché.</p>
+                        </li>
+                        <li class="collection-item avatar">
+                            <img src="img/two.png" alt="" class="circle">
+                            <p>Sélectionnez l'option 'Activer' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
+                        </li>
+                    </ul>
+                    <ul class="collection">
+                        <li class="collection-item avatar">
+                            <img src="img/two_blue.png" alt="" class="circle">
+                            <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activer' du menu latéral</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+            <div class="card" v-if="!notified && totpnb == 0 && uid != {} && uid != undefined">
+                <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
+                    <div class="row" style="margin-bottom: 0;">
+                         <h5>Se connecter</h5>
                         </div>
                     </div>
                     <div class="card-action" style="padding-bottom: 0;padding-top: 0;">
@@ -145,8 +167,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" v-else>
-                    <div class="card-content">
+            <div class="card" v-if="notified">
+                    <div class="card-content" >
                         <div class="row" style="margin-bottom: 0;">
                             <h5>{{additionalData.text}}</h5>
                         </div>
@@ -190,36 +212,31 @@
         </div>
         <div class="container" v-show="currentView=='totp'">
             <br/>
-            <div class="list-group">
-                <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
-            </div>
+            <table >
+                <tr>
+                    <td>
+                        <div class="list-group">
+                            <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+                        </div>
+                    </td>
+                    <td style="text-align: right">
+                        <svg style="width: 57px;height: 57px">
+                            <circle id="circle1" cx="28" cy="28" r="14" stroke-width="28" ></circle>
+                        </svg>
+                    </td>
+                </tr>
+            </table>
             <br/>
-            <div style="margin-bottom: 0;" id="circleTimer">
-                <div class="col-md-8" >
-                    <table>
-                        <tr>
-                            <td>
-                                <table class="table table-bordered">
-                                    <thead class="alert-info">
-                                    </thead>
-                                    <tbody id= "result"></tbody>
-                                </table></td>
-                            <td>
-                                <div style="display: flex; justify-content: flex-end;float:right">
-                                    <svg class="countdownTimer"  width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-                                        <g >
-                                            <circle class="circle" cx="41" cy="41" r="37" stroke-width="1" fill="none" stroke="grey" />
-                                            <circle ng-init="startTimer();" id="circle" class="circle_animation" r="34.44" cy="41" cx="41" stroke-width="5" stroke="#0288d1" fill="none" />
-                                            <circle class="circle" cx="41" cy="41" r="32" stroke-width="1" fill="none" stroke="grey" /><span ng-init="timer();RequestSend();" id="countdowntimer" hidden="hidden" class="timeNumber">30</span>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+            <div id="circleTimer">
+                <div class="col-md-8">
+                    <tr>
+                        <table class="table table-bordered">
+                            <thead class="alert-info">
+                            </thead>
+                            <tbody id= "result2"></tbody>
+                        </table></td>
+                    </tr>
                 </div>
-
-
             </div>
         </div>
         <div class="container" v-show="currentView=='totpAddAccount'">
@@ -238,12 +255,11 @@
                 </div>
 
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s5" onclick="addAccount()" v-on:click="navigate" name="totp"><i class="material-icons right">done</i>Ajouter</a>
+                    <a class="waves-effect waves-light btn btn-large col s5" onclick="addAccount() ;startTimer();" v-on:click="navigate" name="totp"><i class="material-icons right">done</i>Ajouter</a>
                 </div>
             </div>
         </div>
         <div class="container" v-show="currentView=='screenChoiceAddAccount'">
-
             <ul class="collection">
                 <br/>
                 <li class="collection-item avatar">
@@ -251,174 +267,22 @@
                 </li>
                 <br/>
                 <li class="collection-item avatar">
-                    <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))"  > Scan</a>
+                    <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))">Scan</a>
                 </li>
-
             </ul>
         </div>
-
     </main>
     <footer></footer>
 </div>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="js/vue.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
-<script type="text/javascript" src="js/jsOTP.js"></script>
-<script type="text/javascript" src="js/tot2.js"></script>
+<script type="text/javascript" src="js/totp.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
 
-
-<script>
-function addT(){
-startTimer();
-var totpObjects = localStorage.getItem('totpObjects');
-  if (totpObjects  == "{}")
- {
- document.getElementById("circleTimer").style.display = 'none';
-}
- else
-{
- document.getElementById("circleTimer").style.display = 'inline';
-}
-//alert("afterdeletedADDT"+ JSON.stringify(localStorage.getItem('totpObjects')));
-
-  var $ = jQuery.noConflict();
-    $ = function(sel) {
-          return document.querySelector(sel);
-        };
-
-       var updateTicker = function(tick, el) {
-          el.innerText = tick;
-        }
-
-        var updateTotp = function(secret, el) {
-          el.innerText = totp.getOtp(secret);
-        }
-
-var populateTable = function()
- {
- var totpObjects = getTotpObjects();
-    startTimer();
-    var table = "" ;
-    var secret = "FYUHUVD5HBHSIPDNIREUUNZ2M4";
-      for(var key in totpObjects)
-      {
-        // alert("key"+key);
-        var totp = new jsOTP.totp();
-        var valTotp = totp.getOtp(key);
-          var idAccount = totpObjects[key];
-          var demo= "sdsg";
-         table += "<tr>"
-               + " <a href='#' class='fa fa-trash-o' aria-hidden='true' onclick=\"deleteTotp('" + key + "')\"> </a>&emsp;" +totpObjects[key] + "</tr>"
-               + "<tr><h5 id="+idAccount+">"+valTotp+"</h5>" ;
-         table += "</tr><br/>";
-        }
-document.getElementById("result").innerHTML = table;
-  }
-
-populateTable();
-          var timeLoop = function() {
-          var epoch = Math.round(new Date().getTime() / 1000.0);
-          var countDown = 30 - (epoch % 30);
-          updateTicker(countDown, $('#countdowntimer'));
-          if (epoch % 30 == 0)
-           {
-           populateTable();
-           startTimer();
-           }
-        }
-        setInterval(timeLoop, 1000);
-}
-
-function startTimer(){
- jQuery.noConflict();
-jQuery.noConflict();
-  jQuery('.circle_animation').css({'stroke-dashoffset': 220 });
-   jQuery('.circle_animation').stop();
-    var time = 30;
-    var initialOffset = '0';
-    var i = 1;
-    jQuery('.circle_animation').animate({'stroke-dashoffset': initialOffset },30000);
-
-};
-function deleteTotp(key){
-var result = confirm("voulez-vous vraiment supprimer?");
-if (result) {
-var totpObjects = getTotpObjects();
-delete totpObjects[key];
-localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-//alert("afterdeleted"+ JSON.stringify(localStorage.getItem('totpObjects')));
- addT();
-}
-
-};
-function navigate(event){
-        this.currentView = event.target.name;
-            $('a').parent().removeClass('active');
-            $('#' + event.target.name).parent().addClass('active');
-            if (document.getElementById("sidenav-overlay"))$('#navButton').click();
-}
-function getTotpObjects(){
-var totpObjects = localStorage.getItem('totpObjects');
-if (totpObjects == null)
-totpObjects = new Object();
-else totpObjects=JSON.parse(totpObjects);
-return totpObjects;
-}
-
-function addAccount(){
-   // localStorage.removeItem('totpObjects');
-  document.getElementById("circleTimer").style.display = 'inline';
-var totpObjects = getTotpObjects();
-var name = document.getElementById("account2").value;
-var key = document.getElementById("secret2").value;
-
-if (key.length >=16 && (key.length % 2 === 0))
-  {
-   totpObjects[key]=name;
-   localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-
-
-  //  alert("tab"+ JSON.stringify(localStorage.getItem('totpObjects')));
-  }
-else
-  {
-   alert("le nombre de caractère doit être supérieur ou égal à 16 et multiple de deux ");
-}
-addT();
-}
-addT();
-
-</script>
-<script>
-function totp_scan(event){
-   cordova.plugins.barcodeScanner.scan(
-      function (result) {
-         var s = "Result: " + result.text + "<br/>" +
-          "Format: " + result.format + "<br/>" +
-          "Cancelled: " + result.cancelled;
-              var url = new URL(result.text);
-              var params = new URLSearchParams(url.search);
-              var key = params.getAll('secret');
-              var name1 = url.pathname.split("//totp/")[1];
-              var name = name1.replace(/%20/g, " ");
-              var totpObjects = getTotpObjects();
-              totpObjects[key]=name;
-              localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-              addT();
-              var variable = "totp";
-              console.log("paristotop"+$('#' +variable).parent());
-              $('a').parent().removeClass('active');
-              $('#' +variable).addClass('active');
-      },
-      function (error) {
-         alert("Scanning failed: " + error);
-      }
-   );
-   addT();
-}
-</script>
 </body>
 </html>

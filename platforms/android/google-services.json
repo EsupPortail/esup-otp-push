@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "703115166283",
+    "firebase_url": "https://esup-otp-276500.firebaseio.com",
+    "project_id": "esup-otp-276500",
+    "storage_bucket": "esup-otp-276500.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703115166283:android:3db0dd78fee947a2b083ce",
+        "android_client_info": {
+          "package_name": "org.esupportail.esupAuth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703115166283-n8348ks74v1dukjo5rqitld3364rigs6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLx9shOc0Q5_O0tg0gB1vq3_IlIfIqD_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703115166283-n8348ks74v1dukjo5rqitld3364rigs6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

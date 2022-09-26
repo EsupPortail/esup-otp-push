@@ -73,28 +73,28 @@
   },
   "installed_plugins": {
     "cordova-android-support-gradle-release": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-compat": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-statusbar": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "phonegap-plugin-barcodescanner": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "phonegap-plugin-push": {
-      "PACKAGE_NAME": "org.esupportail.esupAuth"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     }
   },
   "dependent_plugins": {},

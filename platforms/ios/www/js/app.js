@@ -22,6 +22,8 @@ var app = new Vue({
         platform: undefined,
         manufacturer: undefined,
         model: undefined,
+        totp: undefined,
+        totpnb: undefined,
         tokenSecret: undefined,
         additionalData: {
             text : undefined,
@@ -35,8 +37,22 @@ var app = new Vue({
     created: function () {
         document.addEventListener("deviceready", this.init, false);
     },
+
     methods: {
-        init : function () {
+    checkTotp: function () {
+      this.totp = localStorage.getItem('totpObjects');
+
+      if (this.totp == "{}" || this.totp == undefined)
+        {
+          this.totpnb = 0;
+        }
+        else
+        {
+           this.totpnb = 1;
+        }
+    },
+            init : function () {
+            this.checkTotp();
             navigator.splashscreen.hide();
             if (cordova.platformId != 'android') {
                 StatusBar.backgroundColorByHexString("#212121");
@@ -49,14 +65,17 @@ var app = new Vue({
             this.manufacturer = device.manufacturer;
             this.model = device.model
             this.push_init();
+            this.totp = localStorage.getItem('totpObjects');
         },
+
         navigate: function (event) {
             this.currentView = event.target.name;
             $('a').parent().removeClass('active');
             $('#' + event.target.name).parent().addClass('active');
             if (document.getElementById("sidenav-overlay"))$('#navButton').click();
+            this.totp = localStorage.getItem('totpObjects');
+            this.checkTotp();
         },
-
         push_init: function () {
             var self = this;
             this.push = PushNotification.init({
@@ -126,12 +145,14 @@ var app = new Vue({
         sync: function (host, uid, code) {
             $.ajax({
                 method : "POST",
-                url: host+'users/'+uid + '/methods/push/activate/' + code + '/' + this.gcm_id + '/' + this.platform + '/' + this.manufacturer + '/' + this.model,
+                url: host+'users/'+ uid + '/methods/push/activate/' + code + '/' + this.gcm_id + '/' + this.platform + '/' + this.manufacturer + '/' + this.model,
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
                     if (data.code == "Ok") {
                         this.uid = uid;
+                                    alert("uid = " + this.uid);
+
                         this.storage.setItem('uid', uid);
                         this.url = host;
                         this.storage.setItem('url', host);
@@ -148,6 +169,7 @@ var app = new Vue({
                 error: function(xhr, status, err) {
                     Materialize.toast(err.toString(),4000);
                 }.bind(this)
+
             });
 
         },
@@ -170,6 +192,15 @@ var app = new Vue({
                 self.uid = null;
                 self.storage.removeItem('uid');
                 document.location.href = 'index.html';
+                this.totp = localStorage.getItem('totpObjects');
+                if (this.totp == "{}" || this.totp == undefined)
+                  {
+                    this.totpnb = 0;
+                  }
+                  else
+                  {
+                   this.totpnb = 1;
+                  }
             }, function() {
                 Materialize.toast('Désactivation échouée', 4000)
             });
@@ -178,6 +209,7 @@ var app = new Vue({
         notification: function () {
             if (this.additionalData.action == 'auth') {
                 this.notified = true;
+                alert
             } else if (this.additionalData.action == "desync") {
                 this.desync();
             }
