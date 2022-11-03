@@ -219,7 +219,6 @@ var app = new Vue({
                 self.uid = null;
                 self.storage.removeItem('uid');
                 document.location.href = 'index.html';
-                this.checkTotp();
             }, function() {
                 Materialize.toast('Désactivation échouée', 4000)
             });
