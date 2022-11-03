@@ -77,28 +77,33 @@ var app = new Vue({
             this.checkTotp();
         },
         push_init: function () {
-            var self = this;
-            this.push = PushNotification.init({
-                "android": {"senderID": "703115166283"},
-                "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {}
-            });
+                    var self = this;
+                    this.push = PushNotification.init({
+                        "android": {"senderID": "703115166283"},
+                        "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {}
+                    });
 
-            this.push.on('registration', function (data) {
-                if (self.gcm_id == null)
-                {
-                    self.gcm_id = data.registrationId;
-                }
-            });
+                    this.push.on('registration', function (data) {
+                        if (self.gcm_id == null)
+                        {
+                            self.gcm_id = data.registrationId;
+                        }
+                        else if (self.gcm_id != data.registrationId) {
+                                                        self.refresh(self.url, self.uid, self.tokenSecret, self.gcm_id, data.registrationId);
+                                                             }
+                                                             else {
+                                                             }
+                    });
 
-            this.push.on('notification', function (data) {
-                self.additionalData = data.additionalData;
-                self.notification();
-            });
+                    this.push.on('notification', function (data) {
+                        self.additionalData = data.additionalData;
+                        self.notification();
+                    });
 
-            this.push.on('error', function (e) {
-                Materialize.toast(e.message, 4000);
-            });
-        },
+                    this.push.on('error', function (e) {
+                        Materialize.toast(e.message, 4000);
+                    });
+                },
 
         scan: function () {
             var self = this;
@@ -151,8 +156,6 @@ var app = new Vue({
                 success: function(data) {
                     if (data.code == "Ok") {
                         this.uid = uid;
-                                    alert("uid = " + this.uid);
-
                         this.storage.setItem('uid', uid);
                         this.url = host;
                         this.storage.setItem('url', host);
@@ -174,6 +177,30 @@ var app = new Vue({
 
         },
 
+   refresh: function (url, uid, tokenSecret, gcm_id, registrationId) {
+                       $.ajax({
+                            method : "POST",
+                            url: url + 'users/' + uid + '/methods/push/refresh/' + tokenSecret+ '/' + gcm_id + '/' + registrationId,
+                            dataType: 'json',
+                            cache: false,
+                            success: function(data) {
+                                                    if (data.code == "Ok") {
+                                                    self.gcm_id=registrationId;
+                                                    Materialize.toast("Refresh gcm_id", 4000);
+                                                    this.navigate({target:{
+                                                        name: 'home'
+                                                    }});
+                                                } else {
+                                                    Materialize.toast(data, 4000);
+                                                }
+                                                    }.bind(this),
+                                                    error: function(xhr, status, err) {
+                                                    Materialize.toast(err.toString(),4000);
+                                                    }.bind(this)
+                                                    });
+
+                        },
+
         desync: function () {
             $.ajax({
                 method : "DELETE",
@@ -192,15 +219,7 @@ var app = new Vue({
                 self.uid = null;
                 self.storage.removeItem('uid');
                 document.location.href = 'index.html';
-                this.totp = localStorage.getItem('totpObjects');
-                if (this.totp == "{}" || this.totp == undefined)
-                  {
-                    this.totpnb = 0;
-                  }
-                  else
-                  {
-                   this.totpnb = 1;
-                  }
+                this.checkTotp();
             }, function() {
                 Materialize.toast('Désactivation échouée', 4000)
             });

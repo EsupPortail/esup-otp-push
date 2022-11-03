@@ -40,11 +40,7 @@ TOTP.prototype = {
 
         // decode base32 encoded master key to byte array
         const _hex        = this._base32tohex(this.key);
-<<<<<<< HEAD
-        const _hexi       = BigInt( '0x'+_hex);        
-=======
         const _hexi       = BigInt( '0x'+_hex);
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
         const _keybytes   = this._bigIntToByteArray(_hexi);
 
         // compute time shift to byte array
@@ -53,53 +49,29 @@ TOTP.prototype = {
 
         // compute HMACSHA1(key, shift)
         if ( typeof window !== 'undefined' ) {
-<<<<<<< HEAD
-            
             // browser. use crypto.subtle
             const key = await window.crypto.subtle.importKey(
                 "raw",       // key format 
-=======
-
-            // browser. use crypto.subtle
-            const key = await window.crypto.subtle.importKey(
-                "raw",       // key format
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                 _keybytes, { // algorithm details
                     name: "HMAC",
                     hash: {
                         name: "SHA-1"
                     }
                 },
-<<<<<<< HEAD
-                false,   // no export 
-                ["sign"] // what this key can do
-            );
-            
-=======
                 false,   // no export
                 ["sign"] // what this key can do
             );
-
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
             const signature = await window.crypto.subtle.sign(
                 "HMAC",
                 key,
                 _timeFactor
             );
-<<<<<<< HEAD
-            
-=======
 
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
             return this._truncate( new Uint8Array( signature ) );
         } else {
 
             // node.js. use crypto module
-<<<<<<< HEAD
-            const signature = 
-=======
             const signature =
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
                 require('crypto')
                     .createHmac('sha1', _keybytes)
                     .update( new Uint8Array( _timeFactor ) )
@@ -113,11 +85,7 @@ TOTP.prototype = {
     _int32ToByteArray: function (time) {
         const _buf  = new ArrayBuffer(8);
         const _view = new DataView(_buf);
-<<<<<<< HEAD
-        _view.setUint32(4, time, false); 
-=======
         _view.setUint32(4, time, false);
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
         return _buf;
     },
 
@@ -135,11 +103,7 @@ TOTP.prototype = {
     /** This is supposed to shorten the hash to k (6) digits */
     _truncate: function (hmac) {
         const offset = hmac[hmac.length - 1] & 0xf;
-<<<<<<< HEAD
-        const bin_code = 
-=======
         const bin_code =
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
             (hmac[offset + 0] & 0x7f) << 24 |
             (hmac[offset + 1] & 0xff) << 16 |
             (hmac[offset + 2] & 0xff) << 8 |

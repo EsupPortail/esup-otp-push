@@ -211,15 +211,15 @@
 
         if (clearBadgeArg == nil || ([clearBadgeArg isKindOfClass:[NSString class]] && [clearBadgeArg isEqualToString:@"false"]) || ![clearBadgeArg boolValue]) {
             NSLog(@"PushPlugin.register: setting badge to false");
-            self->clearBadge = NO;
+            clearBadge = NO;
         } else {
             NSLog(@"PushPlugin.register: setting badge to true");
-            self->clearBadge = YES;
+            clearBadge = YES;
             [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
         }
-        NSLog(@"PushPlugin.register: clear badge is set to %d", self->clearBadge);
+        NSLog(@"PushPlugin.register: clear badge is set to %d", clearBadge);
 
-        self->isInline = NO;
+        isInline = NO;
 
         NSLog(@"PushPlugin.register: better button setup");
         // setup action buttons
@@ -291,13 +291,13 @@
 
         // Load the file content and read the data into arrays
         NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
-        self->fcmSenderId = [dict objectForKey:@"GCM_SENDER_ID"];
+        fcmSenderId = [dict objectForKey:@"GCM_SENDER_ID"];
         BOOL isGcmEnabled = [[dict valueForKey:@"IS_GCM_ENABLED"] boolValue];
 
-        NSLog(@"FCM Sender ID %@", self->fcmSenderId);
+        NSLog(@"FCM Sender ID %@", fcmSenderId);
 
         //  GCM options
-        [self setFcmSenderId: self->fcmSenderId];
+        [self setFcmSenderId: fcmSenderId];
         if(isGcmEnabled && [[self fcmSenderId] length] > 0) {
             NSLog(@"Using FCM Notification");
             [self setUsesFCM: YES];
@@ -321,7 +321,7 @@
             [self setFcmSandbox:@YES];
         }
 
-        if (self->notificationMessage) {			// if there is a pending startup notification
+        if (notificationMessage) {			// if there is a pending startup notification
             dispatch_async(dispatch_get_main_queue(), ^{
                 // delay to allow JS event handlers to be setup
                 [self performSelector:@selector(notificationReceived) withObject:nil afterDelay: 0.5];

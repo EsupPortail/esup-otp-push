@@ -1,0 +1,3 @@
+[2020-10-01 10:26:04.541] [sharedprocess] [info] main {"machineId":"08b38dd1ee67427bf587c9d620943350efa9a5e0bb3b40ba4087d282bc39996e","windowId":2}
+[2020-10-01 10:26:04.584] [sharedprocess] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/usr/local/esup-otp/push/esup-otp-push00h00/~/.vscode-root/User/snippets'
+[2020-10-01 10:26:44.563] [sharedprocess] [info] Starting to clean up unused language packs.
