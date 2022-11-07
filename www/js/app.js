@@ -227,7 +227,6 @@ var app = new Vue({
         notification: function () {
             if (this.additionalData.action == 'auth') {
                 this.notified = true;
-                alert
             } else if (this.additionalData.action == "desync") {
                 this.desync();
             }
