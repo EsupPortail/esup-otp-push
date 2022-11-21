@@ -200,29 +200,7 @@ var app = new Vue({
                                                     });
 
                         },
-desactivateUser: function (url, uid, tokenSecret, gcm_id) {
-                       $.ajax({
-                            method : "POST",
-                            url: url + 'users/' + uid + '/methods/push/desactivate/' + tokenSecret+ '/' + gcm_id,
-                            dataType: 'json',
-                            cache: false,
-                            success: function(data) {
-                                                    if (data.code == "Ok") {
-                                                    self.gcm_id=registrationId;
-                                                    Materialize.toast("Refresh gcm_id", 4000);
-                                                    this.navigate({target:{
-                                                        name: 'home'
-                                                    }});
-                                                } else {
-                                                    Materialize.toast(data, 4000);
-                                                }
-                                                    }.bind(this),
-                                                    error: function(xhr, status, err) {
-                                                    Materialize.toast(err.toString(),4000);
-                                                    }.bind(this)
-                                                    });
 
-                        },
         desync: function () {
             $.ajax({
                 method : "DELETE",
@@ -241,7 +219,6 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                 self.uid = null;
                 self.storage.removeItem('uid');
                 document.location.href = 'index.html';
-                this.checkTotp();
             }, function() {
                 Materialize.toast('Désactivation échouée', 4000)
             });
@@ -251,10 +228,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
             if (this.additionalData.action == 'auth') {
                 this.notified = true;
             } else if (this.additionalData.action == "desync") {
-                 this.push.unregister(function() {
-                                                self.uid = null;
-                                                self.storage.removeItem('uid');
-                                                })
+                this.desync();
             }
         },
 

@@ -1,31 +1,38 @@
 {
-  "name": "org.esupportail.esupAuth",
-  "version": "1.1.1",
-  "displayName": "Esup Auth",
+  "name": "org.esupportail.esupauth",
+  "displayName": "esupAuth",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
   "cordova": {
     "platforms": [
-      "browser",
       "ios",
+      "browser",
       "android"
     ],
     "plugins": {
-      "cordova-plugin-whitelist": {},
-      "cordova-plugin-compat": {},
-      "cordova-android-support-gradle-release": {
-        "ANDROID_SUPPORT_VERSION": "27.+"
-      }
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "phonegap-plugin-barcodescanner": {}
     }
   },
-  "dependencies": {
-    "cordova-android": "6.4",
-    "cordova-android-support-gradle-release": "3.0.1",
-    "cordova-plugin-compat": "^1.2.0",
-    "cordova-plugin-console": "^1.1.0",
-    "jsotp": "^1.0.4"
-  },
   "devDependencies": {
+    "@havesource/cordova-plugin-push": "^3.0.1",
+    "cordova-android": "^10.1.2",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.2.0",
-    "cordova-plugin-whitelist": "1"
+    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-splashscreen": "^6.0.2",
+    "cordova-plugin-statusbar": "^3.0.0",
+    "phonegap-plugin-barcodescanner": "^8.1.0"
   }
 }
