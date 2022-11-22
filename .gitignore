@@ -5,3 +5,5 @@ build/
 node_modules/
 plugins/
 platforms/
+hooks/
+package-lock.json
