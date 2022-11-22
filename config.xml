@@ -1,12 +1,34 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="org.esupportail.esupAuth" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>esupAuth</name>
-    <description>Sample Apache Cordova App</description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <description>Push application for login</description>
+    <author email="abouskine@gmail.com" href="https://cordova.apache.org">
+        Alex Bouskine
     </author>
     <content src="index.html" />
+    <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="loadUrlTimeoutValue" value="120000" />
+    <preference name="orientation" value="portrait" />
+    <preference name="SplashScreenDelay" value="0" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="SplashShowOnlyFirstTime" value="true" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="android-manifest/uses-permission/[@android:name='android.permission.CAMERA']/@android:name" delete="true" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <platform name="android">
+        <resource-file src="google-services.json" target="app/google-services.json" />
+    </platform>
     <icon src="www/img/logo.png" />
 </widget>
