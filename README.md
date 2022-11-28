@@ -11,7 +11,6 @@ For the moment, only the Android apk is released. You can find it here : https:/
 - sudo apt install nodejs
 - sudo apt install npm
 - npm install -g cordova
-- npm start
 
 
 ### Platform generation
