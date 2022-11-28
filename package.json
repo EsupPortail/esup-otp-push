@@ -22,7 +22,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
-      "phonegap-plugin-barcodescanner": {}
+      "phonegap-plugin-barcodescanner": {},
+      "@havesource/cordova-plugin-push": {}
     }
   },
   "devDependencies": {
