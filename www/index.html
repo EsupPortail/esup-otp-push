@@ -28,10 +28,13 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-       <meta name="format-detection" content="telephone=no">
+        <title>Esup Auth</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" href="css/material-icons.css">
         <link rel="stylesheet" href="css/materialize.min.css">
         <link rel="stylesheet" href="css/style.css">
@@ -51,6 +54,8 @@
     </script>
 
     <div id="app" class="container">
+        <br/>
+        <br/>
         <header>
             <nav class="top-nav">
                 <div class="container">
@@ -63,6 +68,7 @@
                 </div>
             </nav>
             <ul id="slide-out" class="side-nav fixed" >
+                <br/><br/>
                 <div class="no-padding sidenav-header" >
                     <div class="flex1">
                         <img src="img/logo.png" style="max-width:100px;text-align:center" alt="" v-if="!uid" >
