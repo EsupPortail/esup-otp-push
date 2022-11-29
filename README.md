@@ -1,4 +1,10 @@
-# esup_auth
+
+<p align="left">
+  <a href="https://github.com/EsupPortail/esup-otp-push">
+    <img src="https://github.com/EsupPortail/esup-otp-push/blob/master/www/img/logo.png" width="100">
+  </a>
+</p>
+  <h3 align="left">esup_auth</h3>
 
 ##Cordova project
 Esup Auth is a mobile application used as an additional authentication factor using push notifications
