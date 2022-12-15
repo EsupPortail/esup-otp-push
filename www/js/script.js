@@ -78,7 +78,6 @@ function startTimer(){
     circle1.style.strokeDashoffset = length - (new_count / time) * length;
     if (new_count < count) {
       populateTable();
-      startTimer();
     }
     count = new_count;
   },100);
