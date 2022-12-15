@@ -76,8 +76,11 @@
                         <p v-if="uid">{{uid}}</p>
                     </div>
                 </div>
-                <li class="bold">
+                <li class="bold"  v-if="totpnb == 0">
                     <a href="#" v-on:click="navigate" id="home" name="home" class="flex"><img src="img/home.png" style="float:right" alt="">&emsp;Accueil</a>
+                </li>
+  		<li class="bold" v-if="totpnb != 0">
+                    <a href="#" v-on:click="navigate" id="home" name="totp" class="flex"><img src="img/home.png" style="float:right" alt="">&emsp;Accueil</a>
                 </li>
                 <li class="bold" v-if="!uid">
                     <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.png" style="float:right" alt="">&emsp;Activation Qrcode </a>

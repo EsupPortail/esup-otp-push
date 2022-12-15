@@ -46,9 +46,10 @@ var app = new Vue({
         {
           this.totpnb = 0;
         }
-        else
+        else if(this.totpnb != 1)
         {
            this.totpnb = 1;
+	   this.currentView = 'totp';
         }
     },
             init : function () {
