@@ -27,7 +27,6 @@ async function populateTable()  {
                + " <a href='#' class='fa fa-trash-o fa-2x' aria-hidden='true' onclick=\"deleteTotp('" + key + "')\"> </a>&emsp;"  + "<span style='font-size:1.5em' id="+idAccount+">" + totpObjects[key] + "</span>"
                + "<br/><span style='font-size:2em' id="+idAccount+">"+valTotp+"</span></td></tr>" ;
         }
-        addT();
         document.getElementById("result").innerHTML = table;
 }
 
@@ -62,6 +61,7 @@ var totpObjects = getTotpObjects();
 delete totpObjects[key];
 localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
  populateTable();
+ addT();
 }
 };
 
@@ -93,6 +93,7 @@ if (key.length >=16 && (key.length % 2 === 0))
    totpObjects[key]=name;
    localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
    populateTable();
+   addT();
   }
 else
   {
@@ -114,7 +115,7 @@ function totp_scan(event){
               var totpObjects = getTotpObjects();
               totpObjects[key]=name;
               localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
-              populateTable();
+              populateTable(); addT();
               var variable = "totp";
               console.log("paristotop"+$('#' +variable).parent());
               $('a').parent().removeClass('active');
@@ -126,4 +127,5 @@ function totp_scan(event){
       }
    );
       populateTable();
+       addT();
 }
