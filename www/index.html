@@ -107,38 +107,8 @@
                     model : {{model}}
                     manufacturer : {{manufacturer}}
                     push : {{push}}
-                </p>
-                <div class="container" v-if="totpnb != 0 && !notified">
-                    <br/>
-                    <table >
-                        <tr>
-                            <td>
-                                <div class="list-group">
-                                    <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
-                                </div>
-                            </td>
-                            <td style="text-align: right">
-                                <svg style="width: 57px;height: 57px">
-                                    <circle id="circle2" cx="28" cy="28" r="14" stroke-width="28" ></circle>
-                                </svg>
-                            </td>
-                        </tr>
-                    </table>
-                    <br/>
-                    <div id="circleTimer2">
-                        <div class="col-md-8">
-                            <tr>
-                                <table class="table table-bordered">
-                                    <thead class="alert-info">
-                                    </thead>
-                                    <tbody id= "result"></tbody>
-                                </table></td>
-                            </tr>
-                        </div>
-                    </div>
-                </div>
-                <div v-else>
-                    <div class="card" v-if="!uid && totpnb == 0 && !notified" >
+                </p>         
+                    <div class="card" v-if="!uid && !notified" >
                         <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
                             <div class="row" style="margin-bottom: 0;">
                                 <h5>Comment ça marche ?</h5>
@@ -165,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card" v-if="!notified && totpnb == 0 && uid != {} && uid != undefined">
+                    <div class="card" v-if="!notified && uid != {} && uid != undefined">
                         <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
                             <div class="row" style="margin-bottom: 0;">
                                 <h5>Se connecter</h5>
@@ -216,7 +186,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
             <div class="container" v-show="currentView=='scanless'">
                 <div class="row" style="margin-bottom: 0;">
@@ -265,7 +234,7 @@
                             <table class="table table-bordered">
                                 <thead class="alert-info">
                                 </thead>
-                                <tbody id= "result2"></tbody>
+                                <tbody id= "result"></tbody>
                             </table></td>
                         </tr>
                     </div>

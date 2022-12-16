@@ -2,26 +2,13 @@ function addT(){
 var totpObjects = localStorage.getItem('totpObjects');
   if (totpObjects  == "{}" || totpObjects == undefined)
  {
- document.getElementById("circle2").style.visibility = 'hidden';
  document.getElementById("circle1").style.visibility = 'hidden';
   }
  else
-{
- document.getElementById("circle2").style.visibility = 'visible';
- document.getElementById("circle1").style.visibility = 'visible';
+ {
+  document.getElementById("circle1").style.visibility = 'visible';
+ }
 }
-//  var $ = jQuery.noConflict();
-//    $ = function(sel) {
-//          return document.querySelector(sel);
-//        };
-//       var updateTicker = function(tick, el) {
-//          el.innerText = tick;
-//        }
-//        var updateTotp = function(secret, el) {
-//          el.innerText = totp.getOtp(secret);
-//        }
-}
-
 async function populateTable()  {
  var totpObjects = getTotpObjects();
     var table = "";
@@ -42,28 +29,13 @@ async function populateTable()  {
         }
         addT();
         document.getElementById("result").innerHTML = table;
-        document.getElementById("result2").innerHTML = table;
 }
 
-//function checkDouble() {
-//var totpLine = localStorage.getItem('totpObjects');
-//    for (var keys in totpLine)
-//    {
-//        if (totLine == "{}") {
-//            console.log(arr.indexOf() > -1);
-//
-//        }
-//    }
-//}
 addT();
 populateTable();
 jQuery.noConflict();
 
-const circle2 = document.getElementById('circle2');
 const length = 87.39775848388672;
-circle2.style.strokeDasharray = length;
-circle2.style.strokeDashoffset = length;
-
 const circle1 = document.getElementById('circle1');
 circle1.style.strokeDasharray = length;
 circle1.style.strokeDashoffset = length;
@@ -74,7 +46,6 @@ function startTimer(){
   timer = setInterval(function(){
     var epoch = new Date().getTime();
     var new_count = (epoch) % time ;
-    circle2.style.strokeDashoffset = length - (new_count / time) * length;
     circle1.style.strokeDashoffset = length - (new_count / time) * length;
     if (new_count < count) {
       populateTable();
