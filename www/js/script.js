@@ -23,7 +23,7 @@ async function populateTable()  {
          var valTotp = code;
          var idAccount = totpObjects[key];
          var demo = "sdsg";
-         table += "<tr><td>"
+         table += "<tr><td style='border-bottom:1px dotted grey'>"
                + " <a href='#' class='fa fa-trash-o fa-2x' aria-hidden='true' onclick=\"deleteTotp('" + key + "')\"> </a>&emsp;"  + "<span style='font-size:1.5em' id="+idAccount+">" + totpObjects[key] + "</span>"
                + "<br/><span style='font-size:2em' id="+idAccount+">"+valTotp+"</span></td></tr>" ;
         }
