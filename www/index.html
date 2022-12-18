@@ -83,10 +83,10 @@
                     <a href="#" v-on:click="navigate" id="home" name="totp" class="flex"><img src="img/home.png" style="float:right" alt="">&emsp;Accueil</a>
                 </li>
                 <li class="bold" v-if="!uid">
-                    <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.png" style="float:right" alt="">&emsp;Activation Qrcode </a>
+                    <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.png" style="float:right" alt="">&emsp;Activation QRCode </a>
                 </li>
                 <li class="bold" v-if="!uid">
-                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.png" style="float:right" alt="">&emsp;Activation</a>
+                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.png" style="float:right" alt="">&emsp;Activation manuelle</a>
                 </li>
                 <li class="bold" v-if="totpnb == 0">
                     <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp2.png" style="float:right" alt="">&emsp;TOTP </a>
@@ -119,17 +119,17 @@
                                 <ul class="collection">
                                     <li class="collection-item avatar">
                                         <img src="img/one.png" alt="" class="circle">
-                                        <p>Modifiez vos préférences et activez la méthode "Notification sur smartphone" dans l'application Esup-OTP-Manager, un code d'activation vous est alors affiché.</p>
+                                        <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
                                     </li>
                                     <li class="collection-item avatar">
                                         <img src="img/two.png" alt="" class="circle">
-                                        <p>Sélectionnez l'option 'Activer' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
+                                        <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
                                     </li>
                                 </ul>
                                 <ul class="collection">
                                     <li class="collection-item avatar">
                                         <img src="img/two_blue.png" alt="" class="circle">
-                                        <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activer' du menu latéral</p>
+                                        <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation manuelle' du menu latéral</p>
                                     </li>
                                 </ul>
                             </div>
