@@ -54,15 +54,15 @@ function startTimer(){
 startTimer();
 
 function deleteTotp(key) {
-var result = confirm("Voulez-vous vraiment supprimer ?");
-if (result) {
 var totpObjects = getTotpObjects();
-delete totpObjects[key];
-localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
- populateTable();
- addT();
+var result = confirm("Voulez-vous supprimer ["+totpObjects[key]+"] ?");
+if (result) {
+	delete totpObjects[key];
+	localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
+	populateTable();
+	addT();
+	}
 }
-};
 
 function navigate(event){
         this.currentView = event.target.name;
