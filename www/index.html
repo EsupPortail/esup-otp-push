@@ -261,15 +261,13 @@
                 </div>
             </div>
             <div class="container" v-show="currentView=='screenChoiceAddAccount'">
-                <ul class="collection">
-                    <br/>
-                    <li class="collection-item avatar">
-                        <a href="#" class="fa fa-plus-circle fa-lg" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount"> Ajouter un compte</a>
-                    </li>
-                    <br/>
-                    <li class="collection-item avatar">
-                        <a href="#" class="fa fa-camera fa-lg" onclick="totp_scan(document.getElementById('slide-out'))">Scan</a>
-
+                <ul class="collection">                 
+                    <li>
+                        <a href="#" class="collection-item fa fa-plus-circle fa-lg" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount"> Ajouter un compte</a>
+                    </li> 
+                    <li >
+                        <a href="#" class="collection-item fa fa-camera fa-lg" v-on:click="navigate" onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan" name="totp"> Scan</a>
+ 
                     </li>
                 </ul>
             </div>

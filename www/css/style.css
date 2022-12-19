@@ -218,6 +218,14 @@ svg{
    background-color: rgba(121, 85, 72, 0.65);
   }
 
+#totpAddAccount, #totpAddAccountScan{
+   padding:30px;
+   color:#039be5 ;
+   border-bottom : 1px solid gray
+}
+ul.collection {
+  border:none
+}
 
 /* css for the timer */
 .timer{
