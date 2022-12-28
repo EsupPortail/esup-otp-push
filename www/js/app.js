@@ -31,7 +31,10 @@ var app = new Vue({
             lt : undefined
         },
         push: undefined,
-        notified : false
+        notified : false,
+        uid_input : undefined,
+	code_input : undefined,
+	host_input : undefined
 
     },
     created: function () {
