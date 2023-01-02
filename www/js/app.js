@@ -170,7 +170,7 @@ var app = new Vue({
                             name: 'home'
                         }});
                     } else {
-                        Materialize.toast(data, 4000);
+                        Materialize.toast(data.message, 4000);
                     }
                 }.bind(this),
                 error: function(xhr, status, err) {
