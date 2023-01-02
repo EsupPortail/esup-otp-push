@@ -49,7 +49,7 @@ function startTimer(){
       populateTable();
     }
     count = new_count;
-  },100);
+  },500);
 }
 startTimer();
 
