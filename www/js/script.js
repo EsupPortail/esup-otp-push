@@ -35,15 +35,18 @@ jQuery.noConflict();
 
 const length = 87.39775848388672;
 const circle1 = document.getElementById('circle1');
+var count = 0;
+var time = 30000;
+var epoch = new Date().getTime();
+var new_count = (epoch) % time ;
 circle1.style.strokeDasharray = length;
-circle1.style.strokeDashoffset = length;
-let count = 0;
-let time = 30000;
+circle1.style.strokeDashoffset =  length - (new_count / time) * length;
+
 
 function startTimer(){
   timer = setInterval(function(){
-    var epoch = new Date().getTime();
-    var new_count = (epoch) % time ;
+    epoch = new Date().getTime();
+    new_count = (epoch) % time ;
     circle1.style.strokeDashoffset = length - (new_count / time) * length;
     if (new_count < count) {
       populateTable();
