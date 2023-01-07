@@ -254,6 +254,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
         notification: function () {
             if (this.additionalData.action == 'auth') {
                 this.notified = true;
+		this.currentView = 'notify';
             } else if (this.additionalData.action == "desync") {
                  this.push.unregister(function() {
                                                 self.uid = null;
