@@ -228,6 +228,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
 
                         },
         desync: function () {
+         if (window.confirm("Voulez-vous vraiment désactiver la connexion avec votre mobile ?")){
             $.ajax({
                 method : "DELETE",
                 url: this.url + 'users/' + this.uid + '/methods/push/' + this.tokenSecret,
@@ -249,6 +250,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
             }, function() {
                 Materialize.toast('Désactivation échouée', 4000)
             });
+	}
         },
 
         notification: function () {
