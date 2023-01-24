@@ -254,9 +254,14 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
         },
 
         notification: function () {
-            if (this.additionalData.action == 'auth') {
-                this.notified = true;
-		this.currentView = 'notify';
+            if (this.additionalData.action == 'auth'){
+		if(this.url!=null && this.uid!=null && this.tokenSecret!=null) {
+                	this.notified = true;
+			this.currentView = 'notify';
+		}
+   		else {
+			this.currentView = 'info';
+		}
             } else if (this.additionalData.action == "desync") {
                  this.push.unregister(function() {
                                                 self.uid = null;

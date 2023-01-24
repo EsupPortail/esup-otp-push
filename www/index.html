@@ -189,6 +189,23 @@
                         </div>
 		</div>
             </div>
+	   <div class="container" v-show="currentView=='info'">
+		<div class="card">
+                        <div class="card-content" >
+                            <div class="row" style="margin-bottom: 0;">
+                                <h5>Oups!! Vos données d'application semblent avoir été supprimées. Ce peut arriver suite à une mise à jour ou si vous avez supprimé les données via les paramètres de votre smartphone.</h5>
+ 				<h5>Vous devez synchroniser à nouveau votre application avec ESUP-OTP-Manager.</h5>
+
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <div class="row">
+                                <a class="waves-effect waves-light btn btn-large col s12 green darken-1" v-on:click="reject"><i
+                                        class="material-icons right">done</i>OK</a>
+                            </div>                            
+                        </div>
+		</div>
+            </div>
             <div class="container" v-show="currentView=='scanless'">
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
