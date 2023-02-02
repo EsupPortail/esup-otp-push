@@ -14,20 +14,19 @@
   "license": "Apache-2.0",
   "cordova": {
     "platforms": [
-      "ios",
       "browser",
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
-      "phonegap-plugin-barcodescanner": {},
-      "@havesource/cordova-plugin-push": {}
+      "phonegap-plugin-barcodescanner": {}
     }
   },
   "devDependencies": {
-    "@havesource/cordova-plugin-push": "^3.0.1",
+    "@havesource/cordova-plugin-push": "^4.0.0-dev.0",
     "cordova-android": "^10.1.2",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.2.0",
