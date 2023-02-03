@@ -240,3 +240,11 @@ ul.collection {
   stroke-linecap: butt;
   fill: transparent;
 }
+@media only screen and (max-width: 480px) {
+    nav {
+    margin-top: 30px;
+    }
+    .sidenav-header {
+        padding-top: 30px !important;
+      }
+    }
