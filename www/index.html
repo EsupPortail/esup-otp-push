@@ -74,19 +74,19 @@
                     </div>
                 </div>
                 <li class="bold"  v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="home" name="home" class="flex"><img src="img/home.png" style="float:right" alt="">&emsp;Accueil</a>
+                    <a href="#" v-on:click="navigate" id="home" name="home" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
                 </li>
-  		<li class="bold" v-if="totpnb != 0">
-                    <a href="#" v-on:click="navigate" id="home" name="totp" class="flex"><img src="img/home.png" style="float:right" alt="">&emsp;Accueil</a>
-                </li>
-                <li class="bold" v-if="!uid">
-                    <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.png" style="float:right" alt="">&emsp;Activation QRCode </a>
+                <li class="bold" v-if="totpnb != 0">
+                    <a href="#" v-on:click="navigate" id="home" name="totp" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
                 </li>
                 <li class="bold" v-if="!uid">
-                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.png" style="float:right" alt="">&emsp;Activation manuelle</a>
+                    <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.svg" style="width:30px;float:right" alt="">&emsp;Activation QRCode </a>
+                </li>
+                <li class="bold" v-if="!uid">
+                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.svg" style="width:30px;float:right" alt="">&emsp;Activation manuelle</a>
                 </li>
                 <li class="bold" v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp2.png" style="float:right" alt="">&emsp;TOTP </a>
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP </a>
                 </li>
                 <div class="divider"></div>
                 <li class="bold" v-if="uid">
