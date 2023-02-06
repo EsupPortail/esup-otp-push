@@ -30,6 +30,7 @@
     "cordova-android": "^10.1.2",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.2.0",
+    "cordova-plugin-app-exit": "^0.0.2",
     "cordova-plugin-device": "^2.1.0",
     "cordova-plugin-splashscreen": "^6.0.2",
     "cordova-plugin-statusbar": "^3.0.0",
