@@ -44,7 +44,6 @@ var app = new Vue({
     methods: {
     checkTotp: function () {
       this.totp = localStorage.getItem('totpObjects');
-
       if (this.totp == "{}" || this.totp == undefined)
         {
           this.totpnb = 0;
@@ -56,7 +55,6 @@ var app = new Vue({
         }
     },
             init : function () {
-            this.checkTotp();
             navigator.splashscreen.hide();
             if (cordova.platformId != 'android') {
                 StatusBar.backgroundColorByHexString("#212121");
@@ -69,7 +67,7 @@ var app = new Vue({
             this.manufacturer = device.manufacturer;
             this.model = device.model
             this.push_init();
-            this.totp = localStorage.getItem('totpObjects');
+            this.checkTotp();
         },
 
         navigate: function (event) {
@@ -77,7 +75,6 @@ var app = new Vue({
             $('a').parent().removeClass('active');
             $('#' + event.target.name).parent().addClass('active');
             if (document.getElementById("sidenav-overlay"))$('#navButton').click();
-            this.totp = localStorage.getItem('totpObjects');
             this.checkTotp();
         },
         push_init: function () {
@@ -229,27 +226,24 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                         },
         desync: function () {
          if (window.confirm("Voulez-vous vraiment désactiver la connexion avec votre mobile ?")){
+            var self = this;
             $.ajax({
                 method : "DELETE",
                 url: this.url + 'users/' + this.uid + '/methods/push/' + this.tokenSecret,
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
+                    document.location.href = 'index.html';
+                    Materialize.toast('Désactivation effectuée', 4000)
+                    self.uid = null;
+                    self.storage.removeItem('uid');
+                    self.checkTotp();
                 }.bind(this),
                 error: function(xhr, status, err) {
                     Materialize.toast(err.toString(),4000);
                 }.bind(this)
             });
-            var self = this;
-            this.push.unregister(function() {
-                Materialize.toast('Désactivation effectuée', 4000)
-                self.uid = null;
-                self.storage.removeItem('uid');
-                document.location.href = 'index.html';
-                this.checkTotp();
-            }, function() {
-                Materialize.toast('Désactivation échouée', 4000)
-            });
+
 	}
         },
 
@@ -263,10 +257,11 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
 			this.currentView = 'info';
 		}
             } else if (this.additionalData.action == "desync") {
-                 this.push.unregister(function() {
-                                                self.uid = null;
-                                                self.storage.removeItem('uid');
-                                                })
+                 var self = this;
+                 self.uid = null;
+                 self.storage.removeItem('uid');
+                 document.location.href = 'index.html';
+                 self.checkTotp();
             }
         },
 
