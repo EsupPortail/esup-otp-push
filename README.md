@@ -4,12 +4,12 @@
     <img src="https://github.com/EsupPortail/esup-otp-push/blob/master/www/img/logo.png" width="100">
   </a>
 </p>
-  <h3 align="left">esup_auth</h3>
 
-##Cordova project
+## Esup Auth
 Esup Auth is a mobile application used as an additional authentication factor using push notifications
 
-For the moment, only the Android apk is released. You can find it here : https://play.google.com/store/apps/details?id=org.esupportail.esupAuth
+- <a href="https://play.google.com/store/apps/details?id=org.esupportail.esupAuth">Esup Auth for Android</a>
+- <a href="https://apps.apple.com/fr/app/esup-auth/id1563904941">Esup Auth for iOS</a>
 
 ### Installation
 
