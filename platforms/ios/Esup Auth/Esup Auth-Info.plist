@@ -6,6 +6,8 @@
 	<string>fr</string>
 	<key>CFBundleDisplayName</key>
 	<string>Esup Auth</string>
+        <key>NSCameraUsageDescription</key>
+        <string>Need camera to scan qrcode</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
