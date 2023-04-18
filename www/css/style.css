@@ -253,9 +253,7 @@ ul.collection {
         height: 44px;
         line-height: 44px;
  }
-ul#slide-out li {
-    width: 300px
-    }
+
 .side-nav.fixed a {
             display: block;
             padding: 0 12px 0 10px;
