@@ -213,19 +213,19 @@
             <div class="container" v-show="currentView=='scanless'">
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
-                        <input id="uid-input" v-model="uid_input" type="text" class="validate">
+                        <input id="uid-input" v-model="uid_input" type="text" class="validate" autocapitalize="off">
                         <label for="uid-input">Nom de compte</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
-                        <input id="code-input" v-model="code_input" type="text" class="validate">
+                        <input id="code-input" v-model="code_input" type="number" class="validate">
                         <label for="code-input">Code</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
-                        <input id="host-input" type="text" v-model="host_input" class="validate">
+                        <input id="host-input" type="text" v-model="host_input" class="validate" autocapitalize="off">
                         <label for="host-input">Adresse</label>
                     </div>
                 </div>
