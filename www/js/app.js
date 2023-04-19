@@ -170,6 +170,10 @@ var app = new Vue({
                         Materialize.toast(data.message, 4000);
                     }
                 }.bind(this),
+                complete: function(xhr, code) {
+                    if (code == "error")
+                        Materialize.toast("Une erreur s'est produite", 4000);
+                },
                 error: function(xhr, status, err) {
                     Materialize.toast(err.toString(),4000);
                 }.bind(this)
