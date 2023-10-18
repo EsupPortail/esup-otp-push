@@ -253,7 +253,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
 
         notification: function () {
             if (this.additionalData.action == 'auth'){
-		if(this.url!=null && this.uid!=null && this.tokenSecret!=null) {
+		if((this.url!=null && this.uid!=null && this.tokenSecret!=null)||this.additionalData.trustGcm_id==true) {
                 	this.notified = true;
 			this.currentView = 'notify';
 		}
@@ -270,12 +270,23 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
         },
 
         accept: function () {
+            if(this.tokenSecret==null || this.tokenSecret==''||this.tokenSecret==undefined){
+                this.tokenSecret=self.gcm_id;
+                this.url=this.additionalData.url;
+                this.uid=this.additionalData.uid;
+            }
             $.ajax({
                 method : "POST",
                url: this.url + 'users/' + this.uid + '/methods/push/' + this.additionalData.lt + '/' + this.tokenSecret,
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
+                    if (data.code == "Ok" && data.tokenSecret!=null) {
+                        this.storage.setItem('uid', this.uid);
+                        this.storage.setItem('url', this.url);
+                        this.tokenSecret = data.tokenSecret;
+                        this.storage.setItem('tokenSecret', data.tokenSecret);
+                        };
                     this.notified = false;
                     this.additionalData = undefined;
                     navigator.app.exitApp();
