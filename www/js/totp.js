@@ -2,27 +2,16 @@
  * Timed One-Time Passwords, RFC6328
  * This Javascript class can generate and validate codes
  * No additional external dependencies
-<<<<<<< HEAD
- * 
- * Works in node.js and in a modern browser
- * No QR code generation
- * 
-=======
  *
  * Works in node.js and in a modern browser
  * No QR code generation
  *
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
  * Inspired by https://github.com/wuyanxin/totp.js
  */
 
 /**
  * Constructor
-<<<<<<< HEAD
- * 
-=======
  *
->>>>>>> 1e791d6afc91732985e32ae33677d855460ae70d
  * key is a base32 encoded string
  * digits is the number of output digits
  */
