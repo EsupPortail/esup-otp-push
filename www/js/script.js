@@ -112,7 +112,7 @@ function totp_scan(event){
               var url = new URL(result.text);
               var params = new URLSearchParams(url.search);
               var key = params.getAll('secret');
-              var name = url.pathname.replace(/%20/g, " ").replace(/\/\/totp\//g,"").replace(/\//g,"");
+              var name = decodeURIComponent(url.pathname.replace(/\/\/totp\//g,"").replace(/\//g,""));
               var totpObjects = getTotpObjects();
               totpObjects[key]=name;
               localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
