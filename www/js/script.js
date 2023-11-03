@@ -14,9 +14,14 @@ async function populateTable()  {
     var table = "";
       for (var key in totpObjects)
       {
-        var totp = new TOTP(key);
+          var secret = key; // Utilisez le code secret (en base32) comme clé
+          var period = 30; // Par défaut, la période est de 30 secondes
+          var digits = 6; // Vous pouvez spécifier le nombre de chiffres souhaité (par exemple, 6)
+          var debug = false; // Vous pouvez activer ou désactiver le mode de débogage en fonction de vos besoins
+          var counter = 0;
          try {
-        var code = await totp.gen();
+            var secrethex = Convert.base32toHex(secret); // Convertissez le code secret en hexadécimal
+            var code = await TOTP.otp(secrethex, digits, counter, period, debug); // Générez le code TOTP
             }
         catch (error) {
             }
