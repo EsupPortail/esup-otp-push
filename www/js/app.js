@@ -67,6 +67,7 @@ var app = new Vue({
             this.manufacturer = device.manufacturer;
             this.model = device.model
             this.push_init();
+            this.initAuth();
             this.checkTotp();
         },
 
@@ -105,7 +106,23 @@ var app = new Vue({
                         Materialize.toast(e.message, 4000);
                     });
                 },
-
+        initAuth: function(){
+            var self = this;
+            if(this.url!=null && this.uid!=null && this.tokenSecret!=null){
+                $.ajax({
+                    method : "GET",
+                    url: this.url + 'users/' + this.uid + '/methods/push/' + this.tokenSecret,
+                    dataType: 'json',
+                    cache: false,
+                    success: function(data) {
+                        if (data.code == "Ok") {
+                            this.additionalData=data;
+                            self.notification();
+                            };
+                    }.bind(this)
+                });
+            }
+        },
         scan: function () {
             var self = this;
             cordova.plugins.barcodeScanner.scan(
