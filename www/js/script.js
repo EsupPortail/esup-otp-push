@@ -91,11 +91,9 @@ else
 return totpObjects;
 }
 
-function addAccount(){
-var totpObjects = getTotpObjects();
-var name = document.getElementById("account2").value;
-var key = document.getElementById("secret2").value;
-if (key.length >=16 && (key.length % 2 === 0))
+function setAccount(key,name){
+  let totpObjects = getTotpObjects();
+  if (key.length >=16 && (key.length % 2 === 0))
   {
    totpObjects[key]=name;
    localStorage.setItem('totpObjects',JSON.stringify(totpObjects));
@@ -106,6 +104,14 @@ else
   {
    alert("le nombre de caractère doit être supérieur ou égal à 16 et multiple de deux ");
     }
+}
+
+function addAccount(){
+
+let name = document.getElementById("account2").value;
+let key = document.getElementById("secret2").value;
+setAccount(key,name);
+
 }
 
 function totp_scan(event){

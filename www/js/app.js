@@ -28,7 +28,9 @@ var app = new Vue({
         additionalData: {
             text : undefined,
             action : undefined,
-            lt : undefined
+            lt : undefined,
+            totpKey : undefined,
+            totpName : undefined
         },
         push: undefined,
         notified : false,
@@ -180,11 +182,44 @@ var app = new Vue({
                         this.tokenSecret = data.tokenSecret;
                         this.storage.setItem('tokenSecret', data.tokenSecret);
                         Materialize.toast("Synchronisation effectuée", 4000);
+                        if(data.autoActivateTotp){
+                            this.additionalData.totpKey=data.totpKey;
+                            this.additionalData.totpName=data.totpName;
+                            this.autoActivateTotp(host,uid);                            
+                        }
+                        else
+                            this.navigate({target:{
+                                name: 'home'
+                            }});
+                    } else {
+                        Materialize.toast(data.message, 4000);
+                    }
+                }.bind(this),
+                complete: function(xhr, code) {
+                    if (code == "error")
+                        Materialize.toast("Une erreur s'est produite", 4000);
+                },
+                error: function(xhr, status, err) {
+                    Materialize.toast(err.toString(),4000);
+                }.bind(this)
+
+            });
+
+        },
+
+        autoActivateTotp: function(host,uid){
+            $.ajax({
+                method : "POST",
+                url: host+'users/'+ uid + '/methods/totp/autoActivateTotp/' + this.tokenSecret,
+                dataType: 'json',
+                cache: false,
+                success: function(data) {
+                    if (data.code == "Ok") {
+                        setAccount(this.additionalData.totpKey,this.additionalData.totpName);
+                        Materialize.toast("Activation TOTP effectuée", 4000);
                         this.navigate({target:{
                             name: 'home'
                         }});
-                    } else {
-                        Materialize.toast(data.message, 4000);
                     }
                 }.bind(this),
                 complete: function(xhr, code) {
