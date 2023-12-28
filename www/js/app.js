@@ -270,7 +270,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
 
         notification: function () {
             if (this.additionalData.action == 'auth'){
-		if((this.url!=null && this.uid!=null && this.tokenSecret!=null)||this.additionalData.trustGcm_id==true) {
+		if((this.url!=null && this.uid!=null && this.tokenSecret!=null)||this.additionalData.trustGcm_id) {
                 	this.notified = true;
 			this.currentView = 'notify';
 		}
