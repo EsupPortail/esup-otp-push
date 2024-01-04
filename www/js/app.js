@@ -322,11 +322,10 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
         },
 
         accept: function () {
-            if(this.tokenSecret==null || this.tokenSecret==''||this.tokenSecret==undefined){
-                this.tokenSecret=self.gcm_id;
-                this.url=this.additionalData.url;
-                this.uid=this.additionalData.uid;
-            }
+            if(this.tokenSecret==null) this.tokenSecret=self.gcm_id;
+            if(this.url==null) {this.url=this.additionalData.url;this.storage.setItem('url', this.url);}
+            if(this.uid==null) {this.uid=this.additionalData.uid;  this.storage.setItem('uid', this.uid);}
+
             $.ajax({
                 method : "POST",
                url: this.url + 'users/' + this.uid + '/methods/push/' + this.additionalData.lt + '/' + this.tokenSecret,
@@ -334,8 +333,6 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                 cache: false,
                 success: function(data) {
                     if (data.code == "Ok" && data.tokenSecret!=null) {
-                        this.storage.setItem('uid', this.uid);
-                        this.storage.setItem('url', this.url);
                         this.tokenSecret = data.tokenSecret;
                         this.storage.setItem('tokenSecret', data.tokenSecret);
                         };
