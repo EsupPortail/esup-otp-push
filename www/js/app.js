@@ -338,6 +338,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                         };
                     this.notified = false;
                     this.additionalData = undefined;
+                    if(this.push!=null) this.push.clearAllNotifications();
                     navigator.app.exitApp();
                 }.bind(this),
                 error: function(xhr, status, err) {
