@@ -281,8 +281,11 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
 
                         },
         desync: function () {
-         if (window.confirm("Voulez-vous vraiment désactiver la connexion avec votre mobile ?")){
-            var self = this;
+         if (window.confirm("Voulez-vous vraiment désactiver la connexion avec votre mobile ?"))
+            this.user_desync();
+        },
+    user_desync: function(){
+        var self = this;
             $.ajax({
                 method : "DELETE",
                 url: this.url + 'users/' + this.uid + '/methods/push/' + this.tokenSecret,
@@ -293,31 +296,23 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                     Materialize.toast('Désactivation effectuée', 4000)
                     self.uid = null;
                     self.storage.removeItem('uid');
+                    if(this.push!=null) this.push.clearAllNotifications();
                     self.checkTotp();
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    Materialize.toast(err.toString(),4000);
                 }.bind(this)
             });
-
-	}
-        },
+    },
 
         notification: function () {
             if (this.additionalData.action == 'auth'){
-		if((this.url!=null && this.uid!=null && this.tokenSecret!=null)||this.additionalData.trustGcm_id) {
+		        if((this.url!=null && this.uid!=null && this.tokenSecret!=null)||this.additionalData.trustGcm_id) {
                 	this.notified = true;
-			this.currentView = 'notify';
-		}
-   		else {
-			this.currentView = 'info';
-		}
+			        this.currentView = 'notify';
+		        }
+   		        else {
+			        this.currentView = 'info';
+		        }
             } else if (this.additionalData.action == "desync") {
-                 var self = this;
-                 self.uid = null;
-                 self.storage.removeItem('uid');
-                 document.location.href = 'index.html';
-                 self.checkTotp();
+                this.user_desync();
             }
         },
 
