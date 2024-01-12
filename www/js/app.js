@@ -41,6 +41,7 @@ var app = new Vue({
     },
     created: function () {
         document.addEventListener("deviceready", this.init, false);
+        document.addEventListener("resume", this.initAuth, false);
     },
 
     methods: {
