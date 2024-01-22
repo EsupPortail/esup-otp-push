@@ -69,21 +69,19 @@
             <ul id="slide-out" class="side-nav fixed" >
                 <div class="no-padding sidenav-header" >
                     <div class="flex1">
-                        <img src="img/logo.png" style="max-width:100px;text-align:center" alt="" v-if="!uid" >
-                        <i class="material-icons medium" v-if="uid">account_circle</i>
-                        <p v-if="uid">{{uid}}</p>
+                        <img src="img/logo.png" style="max-width:100px;text-align:center" alt="">               
                     </div>
                 </div>
                 <li class="bold"  v-if="totpnb == 0">
                     <a href="#" v-on:click="navigate" id="home" name="home" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
                 </li>
                 <li class="bold" v-if="totpnb != 0">
-                    <a href="#" v-on:click="navigate" id="home" name="totp" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP</a>
                 </li>
-                <li class="bold" v-if="!uid">
+                <li class="bold">
                     <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.svg" style="width:30px;float:right" alt="">&emsp;Activation QRCode </a>
                 </li>
-                <li class="bold" v-if="!uid">
+                <li class="bold">
                     <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.svg" style="width:30px;float:right" alt="">&emsp;Activation manuelle</a>
                 </li>
                 <li class="bold" v-if="totpnb == 0">
@@ -96,23 +94,20 @@
                     <a href="#" v-on:click="navigate" id="param" name="param" class="flex"><img src="img/doc.svg" style="width: 30px;float:right" alt="">&emsp;Documentation</a>
                 </li>
                 <div class="divider"></div>
-                <li class="bold" v-if="uid">
-                    <a href="#" v-on:click="desync" class="flex">Désactivation Push<i class="material-icons">remove_circle</i>
-                    </a>
-                </li>
+                    <li class="bold" v-for="(values,otpServer) in otpServersObjects" :key="otpServer">
+                      <a href="#" v-on:click="{{desync(otpServer)}}" class="flex">{{getName(otpServer)}}<i class="material-icons">remove_circle</i></a>
+                    </li>
             </ul>
         </header>
         <main>
             <div class="container" v-show="currentView=='home'">
                 <p v-if="mode=='dev'">
-                    uid : {{uid}}
                     gcm_id : {{gcm_id}}
-                    additionalData : {{additionalData}}
                     model : {{model}}
                     manufacturer : {{manufacturer}}
                     push : {{push}}
                 </p>         
-                    <div class="card" v-if="!uid && !notified" >
+                    <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified" >
                         <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
                             <div class="row" style="margin-bottom: 0;">
                                 <h5>Comment ça marche ?</h5>
@@ -139,7 +134,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card" v-if="!notified && uid != {} && uid != undefined">
+                    <div class="card" v-if="!notified && Object.keys(otpServersObjects).length!=0">
                         <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
                             <div class="row" style="margin-bottom: 0;">
                                 <h5>Se connecter</h5>
@@ -154,7 +149,7 @@
                                     </li>
                                     <li class="collection-item avatar">
                                         <img src="img/two.png" alt="" class="circle">
-                                        <p>Sélectionnez la méthode "Notification Android".</p>
+                                        <p>Sélectionnez la méthode "Notification (Esup Auth)".</p>
                                     </li>
                                     <li class="collection-item avatar">
                                         <img src="img/three.png" alt="" class="circle">
