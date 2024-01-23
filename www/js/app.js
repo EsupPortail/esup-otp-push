@@ -66,6 +66,7 @@ var app = new Vue({
             this.platform = device.platform;
             this.manufacturer = device.manufacturer;
             this.model = device.model
+            this.gcm_id=this.storage.getItem('gcm_id');
             this.push_init();
             this.initAuth();
             this.checkTotp();
@@ -89,13 +90,14 @@ var app = new Vue({
                         if (self.gcm_id == null)
                         {
                             self.gcm_id = data.registrationId;
+                            this.storage.setItem("gcm_id",self.gcm_id);
                         }
                         else if (self.gcm_id != data.registrationId) {
-                                for(otpServer in this.otpServersObjects){
-
-                                   self.refresh(otpServer.host, otpServer.uid, otpServer.tokenSecret, self.gcm_id, data.registrationId);
-                                }
-                            }
+                            for(otpServer in this.otpServersObjects)
+                                self.refresh(otpServer.host, otpServer.uid, otpServer.tokenSecret, self.gcm_id, data.registrationId);
+                            self.gcm_id = data.registrationId;
+                            this.storage.setItem("gcm_id",self.gcm_id);
+                        }
                     });
 
                     this.push.on('notification', function (data) {
