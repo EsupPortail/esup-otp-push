@@ -236,10 +236,10 @@ var app = new Vue({
                     if (data.code == "Ok") {
                         setAccount(this.additionalData.totpKey,this.getName(otpServer));
                         Materialize.toast("Activation TOTP effectuée", 4000);
-                        this.navigate({target:{
-                            name: 'home'
-                        }});
                     }
+                    this.navigate({target:{
+                        name: 'home'
+                    }});
                 }.bind(this),
                 complete: function(xhr, code) {
                     if (code == "error")
