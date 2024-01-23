@@ -325,12 +325,15 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
     },
         notification: function () {
             //recupération du token associé au host. on pourra supprimer ce code qd tout le monde aura migré
+            //il faudra remplacer ce code par
+            //if(this.otpServersObjects[this.additionalData.otpServer].hostToken!=this.additionalData.hostToken) return;
+   
             if(this.otpServersObjects[this.additionalData.otpServer].hostToken==null && this.additionalData.hostToken!=null){                
                 this.otpServersObjects[this.additionalData.otpServer].hostToken=this.additionalData.hostToken;
                 this.storage.setItem('otpServers',JSON.stringify(this.otpServersObjects));
             }  
             //MAJ libellé du serveur
-            if(this.otpServersObjects[this.additionalData.otpServer].hostName!=this.additionalData.hostName){                
+            if(this.otpServersObjects[this.additionalData.otpServer].hostName!=this.additionalData.hostName && this.otpServersObjects[this.additionalData.otpServer].hostToken==this.additionalData.hostToken){
                 this.otpServersObjects[this.additionalData.otpServer].hostName=this.additionalData.hostName;
                 this.storage.setItem('otpServers',JSON.stringify(this.otpServersObjects));
             } 
