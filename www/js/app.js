@@ -326,6 +326,15 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
             });
     },
         notification: function () {
+            //trusth trustGcm_id
+            if(this.otpServersObjects[this.additionalData.otpServer]==null && this.additionalData.trustGcm_id==true){
+                this.otpServersObjects[this.additionalData.otpServer]={
+                    host:this.additionalData.url,
+                    hostToken:this.additionalData.hostToken,
+                    uid:this.additionalData.uid,
+                    tokenSecret:this.gcm_id
+                }
+            }
             //recupération du token associé au host. on pourra supprimer ce code qd tout le monde aura migré
             //il faudra remplacer ce code par
             //if(this.otpServersObjects[this.additionalData.otpServer].hostToken!=this.additionalData.hostToken) return;
@@ -362,6 +371,10 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
+                    if (data.code == "Ok" && data.tokenSecret!=null) {
+                        this.otpServersObjects[this.additionalData.otpServer].tokenSecret=data.tokenSecret;
+                        this.storage.setItem('otpServers',JSON.stringify(this.otpServersObjects));
+                    }
                     this.notified = false;
                     this.additionalData = undefined;
                     Materialize.toast("Authentification réussie!!!",4000);
