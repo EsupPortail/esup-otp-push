@@ -212,6 +212,7 @@ var app = new Vue({
                             this.navigate({target:{
                                 name: 'home'
                             }});
+                             this.$forceUpdate();
                     } else {
                         Materialize.toast(data.message, 4000);
                     }
@@ -313,12 +314,12 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
-                    document.location.href = 'index.html';
                     Materialize.toast('Désactivation effectuée', 4000)
                     delete this.otpServersObjects[otpServer];             
                     self.storage.setItem('otpServers',JSON.stringify(this.otpServersObjects));
                     if(this.push!=null) this.push.clearAllNotifications();
                     self.checkTotp();
+                    this.$forceUpdate();
                 }.bind(this),
                 error: function(xhr, status, err) {
                     Materialize.toast(err.toString()+"Oups!! Probablement que le serveur n'est pas joignable",4000);
