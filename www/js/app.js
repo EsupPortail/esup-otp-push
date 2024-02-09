@@ -380,7 +380,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                     this.additionalData = undefined;
                     Materialize.toast("Authentification réussie!!!",4000);
                     if(this.push!=null) this.push.clearAllNotifications();
-                    this.navigator.app.exitApp();
+                    navigator.app.exitApp();
                 }.bind(this),
                 error: function(xhr, status, err) {
                     Materialize.toast(err.toString(),4000);
@@ -391,7 +391,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
         reject: function () {
             this.notified = false;
             this.additionalData = undefined;
-            this.navigator.app.exitApp();
+            navigator.app.exitApp();
         },
         //on pourra supprimer ce code qd tout le monde aura migré
         transfer2OtpServers: function(){
