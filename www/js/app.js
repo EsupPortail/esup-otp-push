@@ -102,6 +102,7 @@ var app = new Vue({
 
                     this.push.on('notification', function (data) {
                         self.additionalData = data.additionalData;
+                        if(!data.additionalData.url.endsWith('/')) data.additionalData.url+='/';
                         self.additionalData.otpServer=data.additionalData.url+data.additionalData.uid
                         self.notification();
                     });
