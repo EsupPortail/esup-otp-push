@@ -67,9 +67,36 @@ var app = new Vue({
             this.manufacturer = device.manufacturer;
             this.model = device.model
             this.gcm_id=this.storage.getItem('gcm_id');
+            this.requestNotificationPermission();
             this.push_init();
             this.initAuth();
             this.checkTotp();
+        },
+        requestNotificationPermission: function () {
+        if (this.platform === 'Android' && parseInt(device.version) >= 13) {
+            var permissions = cordova.plugins.permissions;
+            var permission = permissions.POST_NOTIFICATIONS;
+
+            permissions.checkPermission(permission, function (status) {
+                if (status.hasPermission) {
+                    console.log('Permission already granted');
+                } else {
+                    console.log('Permission not yet granted');
+                    permissions.requestPermission(permission, function (status) {
+                        if (status.hasPermission) {
+                            console.log('Permission granted');
+                        } else {
+                            console.warn('Permission denied');
+                        }
+                    }, function () {
+                        console.error('Error requesting permission');
+                    });
+                }
+            }, function () {
+                console.error('Error checking permission');
+                // Gérer les erreurs lors de la vérification de la permission
+            });
+            }
         },
 
         navigate: function (event) {
