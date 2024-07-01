@@ -258,3 +258,78 @@ ul.collection {
             padding: 0 12px 0 10px;
             color: #444;
          }
+.input-field label {
+    color: #797676 !important;
+}
+.waves-effect.waves-light.btn.btn-large.btn-custom-accept {
+  background-color: #004d40 !important; /* Darker green */
+  color: #ffffff !important; /* White text */
+}
+
+.waves-effect.waves-light.btn.btn-large.btn-custom-reject {
+  background-color: #b71c1c !important; /* Darker red */
+  color: #ffffff !important; /* White text */
+}
+.side-nav {
+    display: none;
+}
+
+.side-nav.open {
+    display: block;
+}
+/* Couleur d'icône plus accessible */
+.accessible-icon {
+    color: #0055cc;
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.accessible-icon-text {
+    display: flex;
+    align-items: center;
+    color: #0055cc;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.button-delete {
+   color: #0055cc;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+.collection {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.collection-item.avatar {
+    position: relative;
+    padding-left: 72px;
+}
+
+.collection-item img.circle {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 20px;
+}
+
+.collection-item p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.page-title {
+    font-size: 2rem;
+    color: #000;
+    margin: 0;
+    padding: 10px 0;
+    font-weight: bold;
+}

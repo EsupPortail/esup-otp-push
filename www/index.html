@@ -58,45 +58,50 @@
         <header>
             <nav class="top-nav">
                 <div class="container">
-                    <a href="#" v-on:click="checkTotp" data-activates="slide-out" class="button-collapse top-nav full hide-on-large-only" id="navButton">
-                        <i class="material-icons">menu</i>
+                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button"  tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                        <i class="material-icons" aria-label="Menu" >menu</i>
                     </a>
                     <div class="nav-wrapper">
-                        <a class="page-title">{{pageTitle}}</a>
+                        <div class="page-title" role="heading" aria-level="1">{{ pageTitle }}</div>
                     </div>
                 </div>
             </nav>
-            <ul id="slide-out" class="side-nav fixed" >
+            <ul id="slide-out" role="navigation" aria-label="Menu principal" class="side-nav fixed" :class="{ open: isMenuOpen }">
                 <div class="no-padding sidenav-header" >
                     <div class="flex1">
-                        <img src="img/logo.png" style="max-width:100px;text-align:center" alt="">               
+                        <img src="img/logo.png" style="max-width:100px;text-align:center" alt="">
                     </div>
                 </div>
-                <li class="bold"  v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="home" name="home" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
+                <li class="bold" role="menuitem"  v-if="totpnb == 0">
+                    <a href="#" v-on:click="navigate" id="home" name="home" role="button" tabindex="0" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
                 </li>
-                <li class="bold" v-if="totpnb != 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP</a>
+                <li class="bold" role="menuitem" v-if="totpnb != 0">
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" role="button" tabindex="0" class="flex"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP</a>
                 </li>
-                <li class="bold">
-                    <a href="#" v-on:click="scan" class="flex"><img src="img/qrcode.svg" style="width:30px;float:right" alt="">&emsp;Activation QRCode </a>
+                <li class="bold" role="menuitem" >
+                    <a href="#" v-on:click="scan" class="flex" role="button" tabindex="0"><img src="img/qrcode.svg" style="width:30px;float:right" alt="">&emsp;Activation QRCode </a>
                 </li>
-                <li class="bold">
-                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex"><img src="img/edit.svg" style="width:30px;float:right" alt="">&emsp;Activation manuelle</a>
+                <li class="bold" role="menuitem">
+                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex" role="button" tabindex="0"><img src="img/edit.svg" style="width:30px;float:right" alt="">&emsp;Activation manuelle</a>
                 </li>
-                <li class="bold" v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP </a>
+                <li class="bold" role="menuitem" v-if="totpnb == 0">
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex" role="button" tabindex="0"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP </a>
                 </li>
-                <li class="bold">
-                    <a href="#" v-on:click="navigate" id="help" name="help" class="flex"><img src="img/help.svg" style="width: 30px;float:right" alt="">&emsp;Aide</a>
+                <li class="bold" role="menuitem">
+                    <a href="#" v-on:click="navigate" id="help" name="help" class="flex" role="button" tabindex="0"><img src="img/help.svg" style="width: 30px;float:right" alt="">&emsp;Aide</a>
                 </li>
-                <li class="bold">
-                    <a href="#" v-on:click="navigate" id="param" name="param" class="flex"><img src="img/doc.svg" style="width: 30px;float:right" alt="">&emsp;Documentation</a>
+                <li class="bold" role="menuitem">
+                    <a href="#" v-on:click="navigate" id="param" name="param" class="flex" role="button" tabindex="0"><img src="img/doc.svg" style="width: 30px;float:right" alt="">&emsp;Documentation</a>
                 </li>
                 <div class="divider"></div>
                     <li class="bold" v-for="(values,otpServer) in otpServersObjects" :key="otpServer">
-                      <a href="#" v-on:click="{{desync(otpServer)}}" class="flex">{{getName(otpServer)}}<i class="material-icons">remove_circle</i></a>
+                      <a href="#" v-on:click="{{desync(otpServer)}}" class="flex" role="button" tabindex="0">{{getName(otpServer)}}<i class="material-icons" aria-hidden="true">remove_circle</i></a>
                     </li>
+                <li>
+                    <a class="sidenav-close" href="#" v-on:click="closeMenu">
+                        <i class="material-icons">close</i>&emsp;Fermer menu
+                    </a>
+                </li>
             </ul>
         </header>
         <main>
@@ -106,33 +111,31 @@
                     model : {{model}}
                     manufacturer : {{manufacturer}}
                     push : {{push}}
-                </p>         
-                    <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified" >
-                        <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
-                            <div class="row" style="margin-bottom: 0;">
-                                <h5>Comment ça marche ?</h5>
-                            </div>
+                </p>
+                    <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified">
+                    <div class="card-content" style="padding-bottom: 0; padding-top: 7px;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <h5 id="instructions-heading">Comment ça marche ?</h5>
                         </div>
-                        <div class="card-action" style="padding-bottom: 0;padding-top: 0;">
-                            <div class="row" style="margin-bottom: 0;">
-                                <ul class="collection">
-                                    <li class="collection-item avatar">
-                                        <img src="img/one.png" alt="" class="circle">
-                                        <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/two.png" alt="" class="circle">
-                                        <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
-                                    </li>
-                                </ul>
-                                <ul class="collection">
-                                    <li class="collection-item avatar">
-                                        <img src="img/two_blue.png" alt="" class="circle">
-                                        <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation manuelle' du menu latéral</p>
-                                    </li>
-                                </ul>
-                            </div>
+                    </div>
+                    <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <ol class="collection" aria-labelledby="instructions-heading">
+                                <li class="collection-item avatar">
+                                    <img src="img/one.png" alt="Étape 1" class="circle">
+                                    <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/two.png" alt="Étape 2" class="circle">
+                                    <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/two_blue.png" alt="Étape 3" class="circle">
+                                    <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation manuelle' du menu latéral.</p>
+                                </li>
+                            </ol>
                         </div>
+                    </div>
                     </div>
                     <div class="card" v-if="!notified && Object.keys(otpServersObjects).length!=0">
                         <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
@@ -140,32 +143,33 @@
                                 <h5>Se connecter</h5>
                             </div>
                         </div>
-                        <div class="card-action" style="padding-bottom: 0;padding-top: 0;">
+                        <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
                             <div class="row" style="margin-bottom: 0;">
-                                <ul class="collection">
+                                <ol class="collection">
                                     <li class="collection-item avatar">
-                                        <img src="img/one.png" alt="" class="circle">
+                                        <img src="img/one.png" alt="Étape 1" class="circle">
                                         <p>Connectez-vous sur un service nécessitant une authentification sécurisée.</p>
                                     </li>
                                     <li class="collection-item avatar">
-                                        <img src="img/two.png" alt="" class="circle">
+                                        <img src="img/two.png" alt="Étape 2" class="circle">
                                         <p>Sélectionnez la méthode "Notification (Esup Auth)".</p>
                                     </li>
                                     <li class="collection-item avatar">
-                                        <img src="img/three.png" alt="" class="circle">
+                                        <img src="img/three.png" alt="Étape 3" class="circle">
                                         <p>Vous recevrez une notification ainsi qu'une demande de connexion.</p>
                                     </li>
                                     <li class="collection-item avatar">
-                                        <img src="img/four.png" alt="" class="circle">
+                                        <img src="img/four.png" alt="Étape 4" class="circle">
                                         <p>Acceptez cette demande.</p>
                                     </li>
                                     <li class="collection-item avatar">
-                                        <img src="img/valid.png" alt="" class="circle">
+                                        <img src="img/valid.png" alt="Étape 5" class="circle">
                                         <p>Vous êtes connecté.</p>
                                     </li>
-                                </ul>
+                                </ol>
                             </div>
                         </div>
+
                     </div>                    
             </div>
 	   <div class="container" v-show="currentView=='notify'">
@@ -177,13 +181,13 @@
                         </div>
                         <div class="card-action">
                             <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 green darken-1" v-on:click="accept"><i
-                                        class="material-icons right">done</i>accepter</a>
+                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-accept" v-on:click="accept"><i
+                                        class="material-icons right" aria-hidden="true">done</i>accepter</a>
                             </div>
                             <div class="divider"></div>
                             <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 red darken-1" v-on:click="reject"><i
-                                        class="material-icons right">clear</i>refuser</a>
+                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-reject" v-on:click="reject"><i
+                                        class="material-icons right" aria-hidden="true">clear</i>refuser</a>
                             </div>
                         </div>
 		</div>
@@ -200,7 +204,7 @@
                         <div class="card-action">
                             <div class="row">
                                 <a class="waves-effect waves-light btn btn-large col s12 green darken-1" v-on:click="reject"><i
-                                        class="material-icons right">done</i>OK</a>
+                                        class="material-icons right" aria-hidden="true">done</i>OK</a>
                             </div>                            
                         </div>
 		</div>
@@ -209,23 +213,23 @@
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="uid-input" v-model="uid_input" type="text" class="validate" autocapitalize="off">
-                        <label for="uid-input">Nom de compte</label>
+                        <label for="uid-input" aria-label="Ajoutez le nom du compte">Nom de compte</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="code-input" v-model="code_input" type="number" class="validate">
-                        <label for="code-input">Code</label>
+                        <label for="code-input" aria-label="Ajoutez le code">Code</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="host-input" type="text" v-model="host_input" class="validate" autocapitalize="off">
-                        <label for="host-input">Adresse</label>
+                        <label for="host-input" aria-label="Ajoutez l'adresse'">Adresse</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s12" v-on:click="scanless"><i class="material-icons right">done</i>activer</a>
+                    <a class="waves-effect waves-light btn btn-large col s12" role="button" v-on:click="scanless"><i class="material-icons right" aria-hidden="true">done</i>activer</a>
                 </div>
             </div>
             <div class="container" v-show="currentView=='totp'">
@@ -234,13 +238,13 @@
                     <tr>
                         <td>
                             <div class="list-group">
-                                <a href="#" class="fa fa-plus-circle fa-4x" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button"  aria-label="Ajouter ou scanner un compte" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
                             </div>
                         </td>
                         <td style="text-align: right">
                             <svg style="width: 57px;height: 57px">
                                 <circle id="circle1" cx="28" cy="28" r="14" stroke-width="28" ></circle>
-
+                                <title>Les codes sont mis à jour toutes les 30 secondes</title>
                             </svg>
                         </td>
                     </tr>
@@ -261,7 +265,16 @@
            <div class="container" v-show="currentView=='help'">
             <!-- Slideshow container -->
 <div class="slideshow-container">
+    <a class="prev" onclick="plusSlides(-1)" role="button" aria-label="Slide précédente">
+        <i class="material-icons">chevron_left</i>
+:q:q:q
+:::::@@
 
+
+
+    <a class="next" onclick="plusSlides(1)" role="button" aria-label="Slide suivante">
+        <i class="material-icons">chevron_right</i>
+    </a>
 <!-- Full-width images with number and caption text -->
 <div class="mySlides fade">
  <div class="numbertext">1 / 6</div>
@@ -338,7 +351,7 @@
        <div class="container" v-show="currentView=='param'">
            <ul class="collapsible">
                <li>
-                 <div class="collapsible-header"><i class="material-icons">description</i>Notification (Esup Auth)</div>
+                 <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Notification (Esup Auth)</div>
                  <div class="collapsible-body">
                     <div class="row">
 <div class="col s12">
@@ -354,7 +367,7 @@
 </div></div>
                </li>
                <li>
-                 <div class="collapsible-header"><i class="material-icons">description</i>Code Temporel(TOTP)</div>
+                 <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code Temporel(TOTP)</div>
                  <div class="collapsible-body">
                    <div class="row">
                        <div class="col s12">
@@ -371,7 +384,7 @@
                    </div>
                </li>
                <li>
-                 <div class="collapsible-header"><i class="material-icons">description</i>Code par SMS</div>
+                 <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code par SMS</div>
                  <div class="collapsible-body">
                    <div class="row">
                        <div class="col s12">
@@ -388,7 +401,7 @@
                </div>
                </li>
                <li>
-                   <div class="collapsible-header"><i class="material-icons">description</i>Code par Courriel</div>
+                   <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code par Courriel</div>
                    <div class="collapsible-body">
                            <div class="row">
                                <div class="col s12">
@@ -404,7 +417,7 @@
                              </div>
                        </div>
                <li>
-                   <div class="collapsible-header"><i class="material-icons">description</i>Codes de secours</div>
+                   <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Codes de secours</div>
                    <div class="collapsible-body">
                        <div class="row">
                            <div class="col s12">
@@ -421,7 +434,7 @@
                    </p></div>
                </li>
                <li>
-                   <div class="collapsible-header"><i class="material-icons">description</i>EsupNFC</div>
+                   <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>EsupNFC</div>
                    <div class="collapsible-body">
                        <div class="row">
                            <div class="col s12">
@@ -443,29 +456,32 @@
                     <div class="row" style="margin-bottom: 0;">
                         <div class="input-field col s12">
                             <input id="account2" type="text" class="validate">
-                            <label for="account2">Nom du compte:</label>
+                            <label for="account2" aria-label="Ajoutez le nom du compte">Nom du compte:</label>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 0;">
                         <div class="input-field col s12">
                             <input id="secret2" type="text" class="validate">
-                            <label for="secret2">Votre clé:</label>
+                            <label for="secret2" aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre clé:</label>
                         </div>
                     </div>
 
                     <div class="row" style="margin-bottom: 0;">
-                        <a class="waves-effect waves-light btn btn-large col s5" onclick="addAccount()" v-on:click="navigate" name="totp"><i class="material-icons right">done</i>Ajouter</a>
+                        <a class="waves-effect waves-light btn btn-large col s5" onclick="addAccount()" v-on:click="navigate" name="totp"><i class="material-icons right" aria-hidden="true">done</i>Ajouter</a>
                     </div>
                 </div>
             </div>
             <div class="container" v-show="currentView=='screenChoiceAddAccount'">
-                <ul class="collection">                 
+                <ul class="collection">
                     <li>
-                        <a href="#" class="collection-item fa fa-plus-circle fa-lg" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount"> Ajouter un compte</a>
-                    </li> 
-                    <li >
-                        <a href="#" class="collection-item fa fa-camera fa-lg" v-on:click="navigate" onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan" name="totp"> Scan</a>
- 
+                        <a href="#" class="collection-item accessible-icon-text" role="button" aria-label="Ajouter un compte" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount">
+                            <i class="fa fa-plus-circle fa-lg accessible-icon"></i> Ajouter un compte
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="collection-item accessible-icon-text" role="button" aria-label="Scanner un compte" v-on:click="navigate" onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan" name="totp">
+                            <i class="fa fa-camera fa-lg accessible-icon"></i> Scan
+                        </a>
                     </li>
                 </ul>
             </div>

@@ -12,6 +12,7 @@
 var app = new Vue({
     el: '#app',
     data: {
+        isMenuOpen: false,
         pageTitle: 'Esup Auth',
         mode : 'test',
         currentView: 'home',
@@ -43,6 +44,18 @@ var app = new Vue({
     },
 
     methods: {
+    openMenu: function () {
+                              this.isMenuOpen = true;
+                              this.$nextTick(() => {
+                                                    document.getElementById('navButton').setAttribute('aria-expanded', 'true');
+                                                   });
+                          },
+                closeMenu: function () {
+                            this.isMenuOpen = false;
+                            this.$nextTick(() => {
+                                                  document.getElementById('navButton').setAttribute('aria-expanded', 'false');
+                                                 });
+                        },
     checkTotp: function () {
       this.totp = localStorage.getItem('totpObjects');
       if (this.totp == "{}" || this.totp == undefined)
@@ -105,6 +118,7 @@ var app = new Vue({
             $('#' + event.target.name).parent().addClass('active');
             if (document.getElementById("sidenav-overlay"))$('#navButton').click();
             this.checkTotp();
+            this.closeMenu(); // Ferme le menu après la navigation
         },
         push_init: function () {
                     var self = this;
@@ -135,7 +149,7 @@ var app = new Vue({
                     });
 
                     this.push.on('error', function (e) {
-                        Materialize.toast(e.message, 4000);
+                        Materialize.toast('<div role="alert">' + e.message + '</div>', 4000);
                     });
                 },
         initAuth: function(){
@@ -182,11 +196,11 @@ var app = new Vue({
                         self.sync(result.text.split('users')[0], result.text.split('/')[4], result.text.split('/')[7]);
                     }
                     else {
-                        Materialize.toast("Scan annulé", 4000)
+                        Materialize.toast('<div role="alert">Scan annulé</div>', 4000);
                     }
                 },
                 function (error) {
-                    Materialize.toast("Scan raté: " + error, 4000)
+                    Materialize.toast('<div role="alert">Scan raté: ' + error + '</div>', 4000);
                 }
             );
 
@@ -194,19 +208,19 @@ var app = new Vue({
 
         scanless: function () {
             if(!this.uid_input || this.uid_input=='' ){
-                Materialize.toast('Nom de compte nécessaire.', 4000);
+                Materialize.toast('<div role="alert">Nom de compte nécessaire.</div>', 4000);
                 return;
             }
             if(!this.code_input || this.code_input==''){
-                Materialize.toast('Code nécessaire.', 4000);
+                Materialize.toast('<div role="alert">Code nécessaire.</div>', 4000);
                 return;
             }
             if(this.code_input.length<6){
-                Materialize.toast('Code invalide.', 4000);
+                Materialize.toast('<div role="alert">Code invalide.</div>', 4000);
                 return;
             }
             if(!this.host_input || this.host_input=='' ){
-                Materialize.toast('Adresse nécessaire.', 4000);
+                Materialize.toast('<div role="alert">Adresse nécessaire.</div>', 4000);
                 return;
             }
             if(this.host_input[this.host_input.length-1] !='/' ){
@@ -231,7 +245,7 @@ var app = new Vue({
                             'uid':uid
                         }
                         this.storage.setItem('otpServers', JSON.stringify(this.otpServersObjects));
-                        Materialize.toast("Synchronisation effectuée", 4000);
+                        Materialize.toast('<div role="alert">Synchronisation effectuée</div>', 4000);
                         if(data.autoActivateTotp){
                             this.additionalData.totpKey=data.totpKey;
                             this.autoActivateTotp(host+uid);
@@ -242,15 +256,15 @@ var app = new Vue({
                             }});
                              this.$forceUpdate();
                     } else {
-                        Materialize.toast(data.message, 4000);
+                        Materialize.toast('<div role="alert">' + data.message + '</div>', 4000);
                     }
                 }.bind(this),
                 complete: function(xhr, code) {
                     if (code == "error")
-                        Materialize.toast("Une erreur s'est produite", 4000);
+                        Materialize.toast('<div role="alert">Une erreur s\'est produite</div>', 4000);
                 },
                 error: function(xhr, status, err) {
-                    Materialize.toast(err.toString(),4000);
+                    Materialize.toast('<div role="alert">' + err.toString() + '</div>', 4000);
                 }.bind(this)
 
             });
@@ -266,7 +280,7 @@ var app = new Vue({
                 success: function(data) {
                     if (data.code == "Ok") {
                         setAccount(this.additionalData.totpKey,this.getName(otpServer));
-                        Materialize.toast("Activation TOTP effectuée", 4000);
+                        Materialize.toast('<div role="alert">Activation TOTP effectuée</div>', 4000);
                     }
                     this.navigate({target:{
                         name: 'home'
@@ -274,10 +288,10 @@ var app = new Vue({
                 }.bind(this),
                 complete: function(xhr, code) {
                     if (code == "error")
-                        Materialize.toast("Une erreur s'est produite", 4000);
+                        Materialize.toast('<div role="alert">Activation TOTP effectuée</div>', 4000);
                 },
                 error: function(xhr, status, err) {
-                    Materialize.toast(err.toString(),4000);
+                    Materialize.toast('<div role="alert">' + err.toString() + '</div>', 4000);
                 }.bind(this)
 
             });
@@ -293,7 +307,7 @@ var app = new Vue({
                             success: function(data) {
                                                     if (data.code == "Ok") {
                                                     self.gcm_id=registrationId;
-                                                    Materialize.toast("Refresh gcm_id", 4000);
+                                                    Materialize.toast('<div role="alert">Refresh gcm_id</div>', 4000);
                                                     this.navigate({target:{
                                                         name: 'home'
                                                     }});
@@ -302,7 +316,7 @@ var app = new Vue({
                                                 }
                                                     }.bind(this),
                                                     error: function(xhr, status, err) {
-                                                    Materialize.toast(err.toString(),4000);
+                                                   Materialize.toast('<div role="alert">' + err.toString() + '</div>', 4000);
                                                     }.bind(this)
                                                     });
 
@@ -316,16 +330,16 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                             success: function(data) {
                                                     if (data.code == "Ok") {
                                                     self.gcm_id=registrationId;
-                                                    Materialize.toast("Refresh gcm_id", 4000);
+                                                    Materialize.toast('<div role="alert">Refresh gcm_id</div>', 4000);
                                                     this.navigate({target:{
                                                         name: 'home'
                                                     }});
                                                 } else {
-                                                    Materialize.toast(data, 4000);
+                                                    Materialize.toast('<div role="alert">' + data + '</div>', 4000);
                                                 }
                                                     }.bind(this),
                                                     error: function(xhr, status, err) {
-                                                    Materialize.toast(err.toString(),4000);
+                                                    Materialize.toast('<div role="alert">' + err.toString() + '</div>', 4000);
                                                     }.bind(this)
                                                     });
 
@@ -342,7 +356,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                 dataType: 'json',
                 cache: false,
                 success: function(data) {
-                    Materialize.toast('Désactivation effectuée', 4000)
+                    Materialize.toast('<div role="alert">Désactivation effectuée</div>', 4000);
                     delete this.otpServersObjects[otpServer];             
                     self.storage.setItem('otpServers',JSON.stringify(this.otpServersObjects));
                     if(this.push!=null) this.push.clearAllNotifications();
@@ -350,7 +364,7 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                     this.$forceUpdate();
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    Materialize.toast(err.toString()+"Oups!! Probablement que le serveur n'est pas joignable",4000);
+                    Materialize.toast('<div role="alert">' + err.toString() + ' Oups!! Probablement que le serveur n\'est pas joignable</div>', 4000);
                     }.bind(this)        
             });
     },
@@ -406,12 +420,12 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
                     }
                     this.notified = false;
                     this.additionalData = undefined;
-                    Materialize.toast("Authentification réussie!!!",4000);
+                    Materialize.toast('<div role="alert">Authentification réussie!!!</div>', 4000);
                     if(this.push!=null) this.push.clearAllNotifications();
                     navigator.app.exitApp();
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    Materialize.toast(err.toString(),4000);
+                    Materialize.toast('<div role="alert">' + err.toString() + '</div>', 4000);
                 }.bind(this)
             });
         },
@@ -448,3 +462,4 @@ desactivateUser: function (url, uid, tokenSecret, gcm_id) {
         }
     }
 });
+
