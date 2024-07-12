@@ -49,12 +49,26 @@ var app = new Vue({
                               this.$nextTick(() => {
                                                     document.getElementById('navButton').setAttribute('aria-expanded', 'true');
                                                    });
+                                                   if (!document.getElementById("sidenav-overlay")) {
+                                                           const overlay = document.createElement('div');
+                                                           overlay.id = 'sidenav-overlay';
+                                                           document.body.appendChild(overlay);
+
+                                                           // Ajout d'un gestionnaire d'événements pour fermer le menu lors du clic sur l'overlay
+                                                           overlay.addEventListener('click', () => {
+                                                               this.closeMenu();
+                                                           });
+                                                       }
                           },
                 closeMenu: function () {
                             this.isMenuOpen = false;
                             this.$nextTick(() => {
                                                   document.getElementById('navButton').setAttribute('aria-expanded', 'false');
                                                  });
+                                                 const overlay = document.getElementById("sidenav-overlay");
+                                                     if (overlay) {
+                                                         overlay.remove();
+                                                     }
                         },
     checkTotp: function () {
       this.totp = localStorage.getItem('totpObjects');

@@ -58,8 +58,8 @@
         <header>
             <nav class="top-nav">
                 <div class="container">
-                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button"  tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full hide-on-large-only" id="navButton">
-                        <i class="material-icons" aria-label="Menu" >menu</i>
+                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button" tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                        <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
                         <div class="page-title" role="heading" aria-level="1">{{ pageTitle }}</div>
@@ -67,39 +67,56 @@
                 </div>
             </nav>
             <ul id="slide-out" role="navigation" aria-label="Menu principal" class="side-nav fixed" :class="{ open: isMenuOpen }">
-                <div class="no-padding sidenav-header" >
+                <div class="no-padding sidenav-header">
                     <div class="flex1">
-                        <img src="img/logo.png" style="max-width:100px;text-align:center" alt="">
+                        <img src="img/logo.png" class="sidenav-logo" alt="">
                     </div>
                 </div>
-                <li class="bold" role="menuitem"  v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="home" name="home" role="button" tabindex="0" class="flex"><img src="img/home.svg" style="width:30px;float:right" alt="">&emsp;Accueil</a>
+                <li class="bold" role="menuitem" v-if="totpnb == 0">
+                    <a href="#" v-on:click="navigate" id="home" name="home" role="button" tabindex="0" class="nav-link">
+                        <img src="img/home.svg" class="icon" alt="">&emsp;Accueil
+                    </a>
                 </li>
                 <li class="bold" role="menuitem" v-if="totpnb != 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" role="button" tabindex="0" class="flex"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP</a>
-                </li>
-                <li class="bold" role="menuitem" >
-                    <a href="#" v-on:click="scan" class="flex" role="button" tabindex="0"><img src="img/qrcode.svg" style="width:30px;float:right" alt="">&emsp;Activation QRCode </a>
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" role="button" tabindex="0" class="nav-link">
+                        <img src="img/totp.svg" class="icon" alt="">&emsp;TOTP
+                    </a>
                 </li>
                 <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="flex" role="button" tabindex="0"><img src="img/edit.svg" style="width:30px;float:right" alt="">&emsp;Activation manuelle</a>
+                    <a href="#" v-on:click="scan" class="nav-link" role="button" tabindex="0">
+                        <img src="img/qrcode.svg" class="icon" alt="">&emsp;Activation QRCode
+                    </a>
+                </li>
+                <li class="bold" role="menuitem">
+                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="nav-link" role="button" tabindex="0">
+                        <img src="img/edit.svg" class="icon" alt="">&emsp;Activation manuelle
+                    </a>
                 </li>
                 <li class="bold" role="menuitem" v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="flex" role="button" tabindex="0"><img src="img/totp.svg" style="width:30px;float:right" alt="">&emsp;TOTP </a>
+                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="nav-link" role="button" tabindex="0">
+                        <img src="img/totp.svg" class="icon" alt="">&emsp;TOTP
+                    </a>
                 </li>
                 <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="help" name="help" class="flex" role="button" tabindex="0"><img src="img/help.svg" style="width: 30px;float:right" alt="">&emsp;Aide</a>
+                    <a href="#" v-on:click="navigate" id="help" name="help" class="nav-link" role="button" tabindex="0">
+                        <img src="img/help.svg" class="icon" alt="">&emsp;Aide
+                    </a>
                 </li>
                 <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="param" name="param" class="flex" role="button" tabindex="0"><img src="img/doc.svg" style="width: 30px;float:right" alt="">&emsp;Documentation</a>
+                    <a href="#" v-on:click="navigate" id="param" name="param" class="nav-link" role="button" tabindex="0">
+                        <img src="img/doc.svg" class="icon" alt="">&emsp;Documentation
+                    </a>
                 </li>
                 <div class="divider"></div>
-                    <li class="bold" v-for="(values,otpServer) in otpServersObjects" :key="otpServer">
-                      <a href="#" v-on:click="{{desync(otpServer)}}" class="flex" role="button" tabindex="0">{{getName(otpServer)}}<i class="material-icons" aria-hidden="true">remove_circle</i></a>
-                    </li>
+                <li class="bold" v-for="(values, otpServer) in otpServersObjects" :key="otpServer">
+                    <a href="#" v-on:click="desync(otpServer)" class="nav-link" role="button" tabindex="0">
+                        {{ getName(otpServer) }}
+                        <i class="material-icons" aria-hidden="true">remove_circle</i>
+                    </a>
+                </li>
                 <li>
-                    <a class="sidenav-close" href="#" v-on:click="closeMenu">
-                        <i class="material-icons">close</i>&emsp;Fermer menu
+                    <a class="sidenav-close nav-link" href="#" v-on:click="closeMenu" role="button">
+                        <img src="img/close.svg" class="icon" alt="">&emsp;Fermer menu
                     </a>
                 </li>
             </ul>
@@ -229,36 +246,35 @@
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s12" role="button" v-on:click="scanless"><i class="material-icons right" aria-hidden="true">done</i>activer</a>
+                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button" v-on:click="scanless">
+                        <i class="material-icons right" aria-hidden="true">done</i>Activer
+                    </a>
                 </div>
             </div>
             <div class="container" v-show="currentView=='totp'">
-                <br/>
-                <table >
+                <br />
+                <table>
                     <tr>
                         <td>
                             <div class="list-group">
-                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button"  aria-label="Ajouter ou scanner un compte" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button" aria-label="Ajouter ou scanner un compte" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
                             </div>
                         </td>
                         <td style="text-align: right">
-                            <svg style="width: 57px;height: 57px">
-                                <circle id="circle1" cx="28" cy="28" r="14" stroke-width="28" ></circle>
+                            <svg style="width: 57px; height: 57px;">
+                                <circle id="circle1" cx="28" cy="28" r="14" stroke-width="28"></circle>
                                 <title>Les codes sont mis à jour toutes les 30 secondes</title>
                             </svg>
                         </td>
                     </tr>
                 </table>
-                <br/>
+                <br />
                 <div id="circleTimer">
-                    <div class="col-md-8">
-                        <tr>
-                            <table class="table table-bordered">
-                                <thead class="alert-info">
-                                </thead>
-                                <tbody id= "result"></tbody>
-                            </table></td>
-                        </tr>
+                    <div class="table-container">
+                        <table class="table table-bordered">
+                            <thead class="alert-info"></thead>
+                            <tbody id="result"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -267,11 +283,6 @@
 <div class="slideshow-container">
     <a class="prev" onclick="plusSlides(-1)" role="button" aria-label="Slide précédente">
         <i class="material-icons">chevron_left</i>
-:q:q:q
-:::::@@
-
-
-
     <a class="next" onclick="plusSlides(1)" role="button" aria-label="Slide suivante">
         <i class="material-icons">chevron_right</i>
     </a>
@@ -450,25 +461,24 @@
                          </div>
                        </div>
                  </li>
-             </ul></div>    
+             </ul></div>
             <div class="container" v-show="currentView=='totpAddAccount'">
                 <div class="row" style="margin-bottom: 0;">
-                    <div class="row" style="margin-bottom: 0;">
-                        <div class="input-field col s12">
-                            <input id="account2" type="text" class="validate">
-                            <label for="account2" aria-label="Ajoutez le nom du compte">Nom du compte:</label>
-                        </div>
+                    <div class="input-field col s12">
+                        <input id="account2" type="text" class="validate">
+                        <label for="account2" aria-label="Ajoutez le nom du compte">Nom du compte:</label>
                     </div>
-                    <div class="row" style="margin-bottom: 0;">
-                        <div class="input-field col s12">
-                            <input id="secret2" type="text" class="validate">
-                            <label for="secret2" aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre clé:</label>
-                        </div>
+                </div>
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="input-field col s12">
+                        <input id="secret2" type="text" class="validate">
+                        <label for="secret2" aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre clé:</label>
                     </div>
-
-                    <div class="row" style="margin-bottom: 0;">
-                        <a class="waves-effect waves-light btn btn-large col s5" onclick="addAccount()" v-on:click="navigate" name="totp"><i class="material-icons right" aria-hidden="true">done</i>Ajouter</a>
-                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 0;">
+                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button" onclick="addAccount()" v-on:click="navigate" name="totp">
+                        <i class="material-icons right" aria-hidden="true">done</i>Ajouter
+                    </a>
                 </div>
             </div>
             <div class="container" v-show="currentView=='screenChoiceAddAccount'">
