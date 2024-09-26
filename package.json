@@ -23,7 +23,13 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-android-permissions": {},
-      "phonegap-plugin-barcodescanner": {}
+      "phonegap-plugin-barcodescanner": {},
+      "phonegap-nfc": {
+        "NFC_USAGE_DESCRIPTION": "Read NFC Tags"
+      },
+      "cordova-plugin-advanced-http": {
+        "ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1"
+      }
     }
   },
   "devDependencies": {
@@ -31,11 +37,14 @@
     "cordova-android": "^12.0.0",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.2.0",
+    "cordova-plugin-advanced-http": "^3.3.1",
     "cordova-plugin-android-permissions": "^1.1.5",
     "cordova-plugin-app-exit": "^0.0.2",
     "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-file": "^8.1.0",
     "cordova-plugin-splashscreen": "^6.0.2",
     "cordova-plugin-statusbar": "^3.0.0",
+    "phonegap-nfc": "^1.2.0",
     "phonegap-plugin-barcodescanner": "^8.1.0"
   }
 }

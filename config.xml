@@ -34,5 +34,19 @@
     <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
     </platform>
+    <!-- Permission NFC pour iOS -->
+    <platform name="ios">
+        <!-- Autorisation d'utiliser le NFC -->
+        <config-file platform="ios" target="*-Info.plist" parent="NFCReaderUsageDescription">
+            <string>Cette application utilise le NFC pour scanner des cartes étudiantes ou professionnelles.</string>
+        </config-file>
+        <!-- Configurer le background mode pour NFC -->
+        <feature name="BackgroundNFC">
+            <param name="ios-package" value="BackgroundNFC" />
+        </feature>
+    </platform>
+
+    <!-- Inclure le plugin NFC -->
+    <plugin name="phonegap-nfc" spec="~1.2.0" />
     <icon src="www/img/logo.png" />
 </widget>
