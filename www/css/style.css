@@ -5,19 +5,19 @@ html, body {
     padding: 0;
 }
 #app {
-    position: relative;
-    height: 100%;
-    min-height: 100%;
-    width: 100%;
-    min-width: 100%;
-    padding: 0;
-    margin: 0;
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 header,
 main,
 footer {
-    padding-left: 240px;
+  padding-left: 240px;
 }
 
 .nav-wrapper {
@@ -32,9 +32,9 @@ footer {
 }
 
 .top-nav {
-    box-shadow: none;
-    font-size: 32px;
-    -webkit-font-smoothing: antialiased;
+  box-shadow: none;
+  font-size: 32px;
+  -webkit-font-smoothing: antialiased;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -81,52 +81,52 @@ footer {
 }
 
 nav {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 nav a {
-    color: #424242 !important;
+  color: #424242 !important;
 }
 
 .side-nav .collapsible-body li.active {
-    background-color: #424242 !important;
+  background-color: #424242 !important;
 }
 
 .side-nav .collapsible-body li.active,
 .side-nav.fixed .collapsible-body li.active {
-    background-color: #26a69a !important;
+  background-color: #26a69a !important;
 }
 
 .btn,
 .btn-large {
-    background-color: #757575 !important;
+  background-color: #757575 !important;
 }
 
 .sidenav-header {
-    background-image: url("../img/wallpaper_polygons.jpg") !important;
-    background-size: 150% 500%;
-    background-repeat: no-repeat;
-    color: white !important;
+  background-image: url("../img/wallpaper_polygons.jpg") !important;
+  background-size: 150% 500%;
+  background-repeat: no-repeat;
+  color: white !important;
 }
 
 .sidenav-header a {
-    background-color: #424242 !important;
-    color: white !important;
-    height: initial !important;
-    line-height: initial !important;
+  background-color: #424242 !important;
+  color: white !important;
+  height: initial !important;
+  line-height: initial !important;
 }
 
 .flex,
 .flex1 {
-    position: relative;
-    display: flex !important;
-    align-items: center !important;
-    padding: 12px;
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  padding: 12px;
 }
 
 .flex i {
-    position: absolute;
-    right: 5px;
+  position: absolute;
+  right: 5px;
 }
 
 .side-nav button {
@@ -174,176 +174,177 @@ nav a {
 Switch
 *****************************************/
 .Switch {
-    position: relative;
-    margin-left: 15px;
-    display: inline-block;
-    font-size: 1.6em;
-    font-weight: bold;
-    color: #ccc;
-    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8);
-    height: 14px;
-    padding: 6px 6px 5px 6px;
-    border-radius: 4px;
-    cursor: pointer;
+  position: relative;
+  margin-left: 15px;
+  display: inline-block;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #ccc;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8);
+  height: 14px;
+  padding: 6px 6px 5px 6px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 body.IE7 .Switch {
-    width: 78px;
+  width: 78px;
 }
 
 .Switch span {
-    display: inline-block;
-    width: 35px;
+  display: inline-block;
+  width: 35px;
 }
 
 .Switch span.On {
-    color: #33d2da;
+  color: #33d2da;
 }
 
 .Switch .Toggle {
-    position: absolute;
-    top: -4px;
-    width: 37px;
-    height: 25px;
-    -webkit-transition: all 0.15s ease-in-out;
-    -moz-transition: all 0.15s ease-in-out;
-    -o-transition: all 0.15s ease-in-out;
-    -ms-transition: all 0.15s ease-in-out;
+  position: absolute;
+  top: -4px;
+  width: 37px;
+  height: 25px;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -o-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
 }
 
 .Switch.On .Toggle {
-    left: 54%;
+  left: 54%;
 }
 
 .Switch.Off .Toggle {
-    left: 2%;
+  left: 2%;
 }
 
 /* Round Switch */
 /* Round Switch */
 .Switch.Round {
-    padding: 0px 20px;
-    border-radius: 40px;
+  padding: 0px 20px;
+  border-radius: 40px;
 }
 
 body.IE7 .Switch.Round {
-    width: 1px;
+  width: 1px;
 }
 
 .Switch.Round .Toggle {
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
 }
 
 .Switch.Round.On .Toggle {
-    left: 64%;
-    background-color: #26a69a;
+  left: 64%;
+  background-color: #26a69a;
 }
 
 .Switch.Round.Off .Toggle {
-    left: -14%;
-    background-color: #BDBDBD;
+  left: -14%;
+  background-color: #bdbdbd;
 }
 
 .Switch.Round.On {
-    background-color: #84c7c1;
+  background-color: #84c7c1;
 }
 
 .Switch.Round.Off {
-    background-color: #818181;
+  background-color: #818181;
 }
 
 .TransportSwitch.Round.On {
-    background-color: #84c7c1;
+  background-color: #84c7c1;
 }
 
 .TransportSwitch.Round.Off {
-    background-color: #818181;
+  background-color: #818181;
 }
 
 
 .addbtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #5E35B1 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5e35b1 !important;
 }
 
 .scanbtn {
-    display: flex;
-    align-items: center;
-    background-color: #5E35B1 !important;
+  display: flex;
+  align-items: center;
+  background-color: #5e35b1 !important;
 }
 
 svg {
-    -webkit-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .circle_animation {
-    stroke-dasharray: 220;
-    /* this value is the pixel circumference of the circle */
-    stroke-dashoffset: 220;
+  stroke-dasharray: 220;
+  /* this value is the pixel circumference of the circle */
+  stroke-dashoffset: 220;
 }
 
 .waves-effect.waves-brown .waves-ripple {
-    /* The alpha value allows the text and background color
+  /* The alpha value allows the text and background color
    of the button to still show through. */
-    background-color: rgba(121, 85, 72, 0.65);
+  background-color: rgba(121, 85, 72, 0.65);
 }
 
 #totpAddAccount,
 #totpAddAccountScan {
-    padding: 30px;
-    color: #039be5;
-    border-bottom: 1px solid gray;
+  padding: 30px;
+  color: #039be5;
+  border-bottom: 1px solid gray;
 }
 
 ul.collection {
-    border: none;
+  border: none;
 }
 
 /* css for the timer */
 .timer {
-    /*style="vertical-align:top;";*/
-    /*style="horizontal-align:top;";
+  /*style="vertical-align:top;";*/
+  /*style="horizontal-align:top;";
 */
-    /*position: static;*/
+  /*position: static;*/
 }
 
 #circle1 {
-    stroke: #0288d1;
-    stroke-linecap: butt;
-    fill: transparent;
+  stroke: #0288d1;
+  stroke-linecap: butt;
+  fill: transparent;
 }
 
 @media only screen and (max-width: 480px) {
-    nav {
-        margin-top: 30px;
-    }
+  nav {
+    margin-top: 30px;
+  }
 
-    .sidenav-header {
-        padding-top: 30px !important;
-    }
+  .sidenav-header {
+    padding-top: 30px !important;
+  }
 
-    .nav-wrapper {
-        margin-top: 30px;
-    }
+  .nav-wrapper {
+    margin-top: 30px;
+  }
 }
 
 .side-nav a {
-    line-height: 44px;
+  line-height: 44px;
+  height: auto !important; /* En faisant ceci l'espace entre les menuitems devient petit*/
 }
 
 .side-nav.fixed a {
-    display: block;
-    padding: 0 12px 0 10px;
-    color: #444;
+  display: block;
+  padding: 0 12px 0 10px;
+  color: #444;
 }
 
 .input-field label {
-    color: #797676 !important;
+  color: #797676 !important;
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-accept {
@@ -357,61 +358,61 @@ ul.collection {
 }
 
 .side-nav {
-    display: none;
+  display: none;
 }
 
 .side-nav.open {
-    display: block;
+  display: block;
 }
 
 /* Couleur d'icône plus accessible */
 .accessible-icon {
-    color: #0055cc;
-    background-color: #ffffff;
-    border-radius: 50%;
-    padding: 10px;
+  color: #0055cc;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
 }
 
 .accessible-icon-text {
-    display: flex;
-    align-items: center;
-    color: #0055cc;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  color: #0055cc;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .button-delete {
-    color: #0055cc;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+  color: #0055cc;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .collection {
-    list-style-type: none;
-    padding-left: 0;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 .collection-item.avatar {
-    position: relative;
-    padding-left: 72px;
+  position: relative;
+  padding-left: 72px;
 }
 
 .collection-item img.circle {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-right: 20px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 20px;
 }
 
 .collection-item p {
-    font-size: 1rem;
-    color: #333;
+  font-size: 1rem;
+  color: #333;
 }
 
 .nav-link {
@@ -426,11 +427,11 @@ ul.collection {
     text-align: left;
 }
 .icon {
-    width: 2rem;
-    height: 2rem;
-    margin-right: 0.5rem;
-    display: inline-block;
-    vertical-align: middle;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 .icon-right {
    width: 2rem;
@@ -440,48 +441,112 @@ ul.collection {
      margin-left: 0.5rem;
   }
 .sidenav-logo {
-    max-width: 6rem;
-    text-align: center;
+  max-width: 6rem;
+  text-align: center;
 }
 
 .page-title {
-    font-size: 2rem;
-    color: #333333;
-    margin: 0;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    max-height: 4rem;
-    overflow: hidden;
-    margin-top: 0;
+  font-size: 2rem;
+  color: #333333;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  max-height: 4rem;
+  overflow: hidden;
+  margin-top: 0;
 }
 
 @media only screen and (max-width: 480px) {
-    .nav-link {
-        font-size: 0.9rem;
-    }
+  .nav-link {
+    font-size: 0.9rem;
+  }
 }
 
 .btn-large.btn-custom {
-    background-color: #757575 !important;
-    color: #ffffff !important;
-    border-radius: 4px;
-    padding: 18px 24px;
-    text-transform: uppercase;
-    font-weight: bold;
-    box-shadow: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #757575 !important;
+  color: #ffffff !important;
+  border-radius: 4px;
+  padding: 18px 24px;
+  text-transform: uppercase;
+  font-weight: bold;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #sidenav-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.card-title {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+#nfcAuthButton {
+  color: white;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.circle-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 57px; 
+  height: 57px;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* Ombre pour un effet de profondeur */
+}
+.circle-btn img.icon-custom {
+  width: 50px;
+  height: 50px;
+}
+.circle-btn:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+.circle-btn:active {
+  transform: scale(0.93);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.establishment-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.establishment-buttons button {
+  margin-bottom: 3px;
+  border-radius: 5px;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.text-center {
+  text-align: center !important;
 }

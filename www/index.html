@@ -18,9 +18,10 @@
     under the License.
 -->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <!--
+
+<head>
+    <meta charset="utf-8">
+    <!--
         Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
             https://cordova.apache.org/docs/en/latest/
         Some notes:
@@ -28,22 +29,25 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <title>Esup Auth</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" href="css/material-icons.css">
-        <link rel="stylesheet" href="css/materialize.min.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/slide.css">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
-        <script type="text/javascript" src="cordova.js"></script>
-        <title>Esup Auth</title>
-    </head>
-    <body>
+    <title>Esup Auth</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" href="css/material-icons.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/slide.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="cordova.js"></script>
+    <title>Esup Auth</title>
+</head>
+
+<body>
     <script type="text/x-template" id="parametres-template">
         <div>
             <div v-if="">
@@ -58,7 +62,9 @@
         <header>
             <nav class="top-nav">
                 <div class="container">
-                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button" tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button"
+                        tabindex="0" aria-controls="slide-out" aria-expanded="false"
+                        class="button-collapse top-nav full hide-on-large-only" id="navButton">
                         <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
@@ -129,7 +135,7 @@
                     manufacturer : {{manufacturer}}
                     push : {{push}}
                 </p>
-                    <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified">
+                <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified">
                     <div class="card-content" style="padding-bottom: 0; padding-top: 7px;">
                         <div class="row" style="margin-bottom: 0;">
                             <h5 id="instructions-heading">Comment ça marche ?</h5>
@@ -140,54 +146,57 @@
                             <ol class="collection" aria-labelledby="instructions-heading">
                                 <li class="collection-item avatar">
                                     <img src="img/one.png" alt="Étape 1" class="circle">
-                                    <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
+                                    <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans
+                                        l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
                                 </li>
                                 <li class="collection-item avatar">
                                     <img src="img/two.png" alt="Étape 2" class="circle">
-                                    <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
+                                    <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code
+                                        affiché. Un message vous confirmera l'activation de ce service.</p>
                                 </li>
                                 <li class="collection-item avatar">
                                     <img src="img/two_blue.png" alt="Étape 3" class="circle">
-                                    <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation manuelle' du menu latéral.</p>
+                                    <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation
+                                        manuelle' du menu latéral.</p>
                                 </li>
                             </ol>
                         </div>
                     </div>
+                </div>
+                <div class="card" v-if="!notified && Object.keys(otpServersObjects).length!=0">
+                    <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <h5>Se connecter</h5>
+                        </div>
                     </div>
-                    <div class="card" v-if="!notified && Object.keys(otpServersObjects).length!=0">
-                        <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
-                            <div class="row" style="margin-bottom: 0;">
-                                <h5>Se connecter</h5>
-                            </div>
+                    <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <ol class="collection">
+                                <li class="collection-item avatar">
+                                    <img src="img/one.png" alt="Étape 1" class="circle">
+                                    <p>Connectez-vous sur un service nécessitant une authentification sécurisée.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/two.png" alt="Étape 2" class="circle">
+                                    <p>Sélectionnez la méthode "Notification (Esup Auth)".</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/three.png" alt="Étape 3" class="circle">
+                                    <p>Vous recevrez une notification ainsi qu'une demande de connexion.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/four.png" alt="Étape 4" class="circle">
+                                    <p>Acceptez cette demande.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/valid.png" alt="Étape 5" class="circle">
+                                    <p>Vous êtes connecté.</p>
+                                </li>
+                            </ol>
                         </div>
-                        <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
-                            <div class="row" style="margin-bottom: 0;">
-                                <ol class="collection">
-                                    <li class="collection-item avatar">
-                                        <img src="img/one.png" alt="Étape 1" class="circle">
-                                        <p>Connectez-vous sur un service nécessitant une authentification sécurisée.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/two.png" alt="Étape 2" class="circle">
-                                        <p>Sélectionnez la méthode "Notification (Esup Auth)".</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/three.png" alt="Étape 3" class="circle">
-                                        <p>Vous recevrez une notification ainsi qu'une demande de connexion.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/four.png" alt="Étape 4" class="circle">
-                                        <p>Acceptez cette demande.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/valid.png" alt="Étape 5" class="circle">
-                                        <p>Vous êtes connecté.</p>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
+                    </div>
 
-                    </div>                    
+                </div>
             </div>
 	   <div class="container" v-show="currentView=='notify'">
 		<div class="card">
@@ -209,12 +218,14 @@
                         </div>
 		</div>
             </div>
-	   <div class="container" v-show="currentView=='info'">
-		<div class="card">
-                        <div class="card-content" >
-                            <div class="row" style="margin-bottom: 0;">
-                                <h5>Oups!! Vos données d'application semblent avoir été supprimées. Ce peut arriver suite à une mise à jour ou si vous avez supprimé les données via les paramètres de votre smartphone.</h5>
- 				<h5>Vous devez synchroniser à nouveau votre application avec ESUP-OTP-Manager.</h5>
+            <div class="container" v-show="currentView=='info'">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row" style="margin-bottom: 0;">
+                            <h5>Oups!! Vos données d'application semblent avoir été supprimées. Ce peut arriver suite à
+                                une mise à jour ou si vous avez supprimé les données via les paramètres de votre
+                                smartphone.</h5>
+                            <h5>Vous devez synchroniser à nouveau votre application avec ESUP-OTP-Manager.</h5>
 
                             </div>
                         </div>
@@ -256,7 +267,9 @@
                     <tr>
                         <td>
                             <div class="list-group">
-                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button" aria-label="Ajouter ou scanner un compte" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button"
+                                    aria-label="Ajouter ou scanner un compte" v-on:click="navigate"
+                                    id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
                             </div>
                         </td>
                         <td style="text-align: right">
@@ -471,11 +484,14 @@
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="secret2" type="text" class="validate">
-                        <label for="secret2" aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre clé:</label>
+                        <label for="secret2"
+                            aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre
+                            clé:</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button" onclick="addAccount()" v-on:click="navigate" name="totp">
+                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button"
+                        onclick="addAccount()" v-on:click="navigate" name="totp">
                         <i class="material-icons right" aria-hidden="true">done</i>Ajouter
                     </a>
                 </div>
@@ -494,20 +510,51 @@
                     </li>
                 </ul>
             </div>
+            <div class="container" v-show="currentView=='nfc'">
+                <!-- Sur cette ligne le bouton du scan du QrCode. Il s'affiche à droite -->
+                <div class="row" style="margin-bottom: 8px; margin-top: 8px;">
+                    <a class="circle-btn right" role="button" v-on:click="scanQrCode">
+                        <img src="img/scan-qr.svg" class="icon-custom" alt="">
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">Authentification via NFC</span>
+                                <div class="establishment-buttons" v-show="establishments.length!=0">
+                                    <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
+                                    <button v-for="establishment in establishments" 
+                                            :key="establishment.url" 
+                                            class="btn-large full-width"
+                                            v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
+                                        {{ establishment.etablissement }}
+                                    </button>
+                                </div>
+                                <p v-show="establishments.length==0" class="flex-center text-center">
+                                    Authentifiez-vous en toute sécurité via votre carte NFC. Scannez le qrcode de votre
+                                    établissements et suivez les instructions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
         </main>
         <footer></footer>
     </div>
 
-        <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
-        <script type="text/javascript" src="js/vue.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script src="js/app.js"></script>
-        <script type="text/javascript" src="js/totp.js"></script>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script type="text/javascript" src="js/script.js"></script>
-        <script type="text/javascript" src="js/slide.js"></script>
+    <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="js/app.js"></script>
+    <script type="text/javascript" src="js/totp.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/slide.js"></script>
 
 
-    </body>
+</body>
+
 </html>
