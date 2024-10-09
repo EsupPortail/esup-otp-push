@@ -37,6 +37,7 @@ var app = new Vue({
     uid_input: undefined,
     code_input: undefined,
     host_input: undefined,
+    establishments: [],
   },
   created: function () {
     document.addEventListener("deviceready", this.init, false);
@@ -44,42 +45,6 @@ var app = new Vue({
   },
 
   methods: {
-    scanTag: function () {
-      nfc
-        .scanTag()
-        .then(async (tag) => {
-          let cardId = nfc.bytesToHexString(tag.id);
-          let cardIdArr = cardId.split(" ");
-          // Le tag NFC a été scanné avec succès
-          //alert(`Tag NFC détecté : ${JSON.stringify(tag)}`);
-          console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
-          //await nfc.connect("android.nfc.tech.IsoDep", 500);
-
-          this.sendCsnToServer(cardIdArr)
-            .then((response) => {
-              console.log("Réponse du serveur:", response);
-              
-            })
-            .catch((error) => {
-              console.error("Erreur lors de l'envoi des données:", error);
-            });
-
-          // Ci dessous la méthode pour le desfire
-          //await this.desfireRead(cardId, tag);
-        })
-        .catch((err) => {
-          // En cas d'échec lors du scan NFC
-          alert(`Erreur lors du scan NFC: ${err}`);
-        });
-    },
-    initializeApp: async function initializeApp() {
-      let esupNfcTagUrl = localStorage.getItem("esupNfcTagUrl");
-      if (!esupNfcTagUrl) {
-        esupNfcTagUrl = prompt("Veuillez entrer l'URL du serveur NFC:");
-        //localStorage.setItem("esupNfcTagUrl", esupNfcTagUrl);
-      }
-      console.log("Connecting to", esupNfcTagUrl);
-    },
     openMenu: function () {
       this.isMenuOpen = true;
       this.$nextTick(() => {
@@ -851,34 +816,147 @@ var app = new Vue({
         }
       });
     },
-    sendCsnToServer: async function (cardIdArr) {
-        const url = `https://esupnfctag-ppd.univ-paris1.fr/csn-ws?csn=${cardIdArr}&arduinoId=iphone-de-test`;
-        console.log("Requesting URL: " + url);
-      
-        try {
-          // Utilisation du plugin avancé pour effectuer la requête HTTP POST
-          const response = await new Promise((resolve, reject) => {
-            cordova.plugin.http.post(
-              url,    // URL avec le cardId
-              {},     // Pas de paramètres supplémentaires dans le corps de la requête
-              {},     // Pas d'en-têtes supplémentaires
-              (response) => {
-                // Succès
-                console.log("Réponse du serveur: ", response);
-                resolve(response);
-              },
-              (error) => {
-                // Erreur
-                console.error("Erreur lors de l'envoi des données:", error);
-                reject(error);
-              }
-            );
-          });
-      
-          return response.data;  // Renvoyer les données reçues du serveur
-        } catch (error) {
-          console.error("Erreur lors de l'envoi des données:", error);
+    sendCsnToServer: async function (cardIdArr, etablissementUrl, numeroId) {
+      const url = `${etablissementUrl}/csn-ws?csn=${cardIdArr}&arduinoId=${numeroId}`;
+      console.log("Requesting URL: " + url);
+      //const url = `https://esupnfctag-ppd.univ-paris1.fr/csn-ws?csn=${cardIdArr}&arduinoId=iphone-de-test`;
+      //console.log("Requesting URL: " + url);
+
+      try {
+        const response = await new Promise((resolve, reject) => {
+          cordova.plugin.http.post(
+            url, // URL avec le cardId
+            {}, // paramètres supplémentaires
+            {}, // en-têtes supplémentaires
+            (response) => {
+              // Succès
+              console.log("Réponse du serveur: ", response);
+              resolve(response);
+            },
+            (error) => {
+              // Erreur
+              console.error("Erreur lors de l'envoi des données:", error);
+              reject(error);
+            }
+          );
+        });
+
+        return response.data; // Renvoyer les données reçues du serveur
+      } catch (error) {
+        console.error("Erreur lors de l'envoi des données:", error);
+      }
+    },
+    extractData: function (serverResponse) {
+      let matches = serverResponse.match(/<(\w+)\s+(.+)>/);
+      if (matches && matches.length === 3) {
+        let status = matches[1];
+        let userName = matches[2];
+
+        if (status === "OK") {
+          Materialize.toast(
+            `<div class="alert">${userName} vous êtes authentifié(e)</div>`,
+            5000
+          );
+
+          console.log("Statut : " + status);
+          console.log("Utilisateur : " + userName);
         }
+      } else {
+        console.error("Réponse du serveur invalide.");
+      }
+    },
+    loadStoredEstablishments: function () {
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith("establishment_")) {
+          const establishment = JSON.parse(localStorage.getItem(key));
+          this.establishments.push(establishment);
+        }
+      });
+    },
+    scanTagForEstablishment: function (etablishmentUrl, numeroId) {
+      nfc
+        .scanTag()
+        .then(async (tag) => {
+          let cardId = nfc.bytesToHexString(tag.id);
+          let cardIdArr = cardId.split(" ");
+          // Le tag NFC a été scanné avec succès
+          console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
+
+          this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
+            .then((response) => {
+              console.log("Réponse du serveur:", response);
+              this.extractData(response);
+              // on verifie que dans establishments on a pas déjà cette établissement
+              if (
+                !this.establishments.find(
+                  (establishment) => establishment.url === etablishmentUrl
+                )
+              ) {
+                this.loadStoredEstablishments();
+              }
+            })
+            .catch((error) => {
+              console.error("Erreur lors de l'envoi des données:", error);
+            });
+        })
+        .catch((err) => {
+          // En cas d'échec lors du scan NFC
+          alert(`Erreur lors du scan NFC: ${err}`);
+        });
+    },
+    scanQrCode: function () {
+      var self = this;
+      cordova.plugins.barcodeScanner.scan(
+        function (result) {
+          if (!result.cancelled) {
+            try {
+              const scannedData = JSON.parse(result.text);
+
+              // Vérification des champs
+              if (
+                scannedData.numeroId &&
+                scannedData.url &&
+                scannedData.etablissement
+              ) {
+                // Stocker les informations dans le localStorage
+                const establishmentData = {
+                  numeroId: scannedData.numeroId,
+                  url: scannedData.url,
+                  etablissement: scannedData.etablissement,
+                };
+                // Avant de stocker les informations, on vérifie qu'on n'a pas déjà cette établissement
+                if (
+                  !self.establishments.find(
+                    (establishment) => establishment.url === scannedData.url
+                  )
+                ) {
+                  localStorage.setItem(
+                    "establishment_" + scannedData.etablissement,
+                    JSON.stringify(establishmentData)
+                  );
+                }
+
+                // Lancer le scanTag si tout est bon
+                self.scanTagForEstablishment(
+                  scannedData.url,
+                  scannedData.numeroId
+                );
+              } else {
+                console.error("QR Code invalide : informations manquantes");
+              }
+            } catch (error) {
+              console.error("Erreur de parsing JSON", error);
+              Materialize.toast(
+                '<div role="alert">QR Code invalide : informations manquantes</div>',
+                4000
+              );
+            }
+          }
+        },
+        function (error) {
+          console.error("Erreur de scan QR code : " + error);
+        }
+      );
     },
   },
 });

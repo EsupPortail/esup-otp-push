@@ -18,9 +18,10 @@
     under the License.
 -->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <!--
+
+<head>
+    <meta charset="utf-8">
+    <!--
         Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
             https://cordova.apache.org/docs/en/latest/
         Some notes:
@@ -28,22 +29,25 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <title>Esup Auth</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" href="css/material-icons.css">
-        <link rel="stylesheet" href="css/materialize.min.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/slide.css">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
-        <script type="text/javascript" src="cordova.js"></script>
-        <title>Esup Auth</title>
-    </head>
-    <body>
+    <title>Esup Auth</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" href="css/material-icons.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/slide.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <script type="text/javascript" src="cordova.js"></script>
+    <title>Esup Auth</title>
+</head>
+
+<body>
     <script type="text/x-template" id="parametres-template">
         <div>
             <div v-if="">
@@ -58,7 +62,9 @@
         <header>
             <nav class="top-nav">
                 <div class="container">
-                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button" tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button"
+                        tabindex="0" aria-controls="slide-out" aria-expanded="false"
+                        class="button-collapse top-nav full hide-on-large-only" id="navButton">
                         <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
@@ -66,7 +72,8 @@
                     </div>
                 </div>
             </nav>
-            <ul id="slide-out" role="navigation" aria-label="Menu principal" class="side-nav fixed" :class="{ open: isMenuOpen }">
+            <ul id="slide-out" role="navigation" aria-label="Menu principal" class="side-nav fixed"
+                :class="{ open: isMenuOpen }">
                 <div class="no-padding sidenav-header">
                     <div class="flex1">
                         <img src="img/logo.png" class="sidenav-logo" alt="">
@@ -88,8 +95,14 @@
                     </a>
                 </li>
                 <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="nav-link" role="button" tabindex="0">
+                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="nav-link" role="button"
+                        tabindex="0">
                         <img src="img/edit.svg" class="icon" alt="">&emsp;Activation manuelle
+                    </a>
+                </li>
+                <li class="bold" role="menuitem">
+                    <a href="#" v-on:click="navigate" id="nfc" name="nfc" class="nav-link" role="button" tabindex="0">
+                        <img src="img/nfc.svg" class="icon" alt="">&emsp;Authentification NFC
                     </a>
                 </li>
                 <li class="bold" role="menuitem" v-if="totpnb == 0">
@@ -103,7 +116,8 @@
                     </a>
                 </li>
                 <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="param" name="param" class="nav-link" role="button" tabindex="0">
+                    <a href="#" v-on:click="navigate" id="param" name="param" class="nav-link" role="button"
+                        tabindex="0">
                         <img src="img/doc.svg" class="icon" alt="">&emsp;Documentation
                     </a>
                 </li>
@@ -129,7 +143,7 @@
                     manufacturer : {{manufacturer}}
                     push : {{push}}
                 </p>
-                    <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified">
+                <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified">
                     <div class="card-content" style="padding-bottom: 0; padding-top: 7px;">
                         <div class="row" style="margin-bottom: 0;">
                             <h5 id="instructions-heading">Comment ça marche ?</h5>
@@ -140,91 +154,98 @@
                             <ol class="collection" aria-labelledby="instructions-heading">
                                 <li class="collection-item avatar">
                                     <img src="img/one.png" alt="Étape 1" class="circle">
-                                    <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
+                                    <p>Modifiez vos préférences et activez la méthode "Notification mobile" dans
+                                        l'application Esup-otp-manager, un code d'activation vous est alors affiché.</p>
                                 </li>
                                 <li class="collection-item avatar">
                                     <img src="img/two.png" alt="Étape 2" class="circle">
-                                    <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code affiché. Un message vous confirmera l'activation de ce service.</p>
+                                    <p>Sélectionnez l'option 'Activation QRCode' du menu latéral et scannez le code
+                                        affiché. Un message vous confirmera l'activation de ce service.</p>
                                 </li>
                                 <li class="collection-item avatar">
                                     <img src="img/two_blue.png" alt="Étape 3" class="circle">
-                                    <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation manuelle' du menu latéral.</p>
+                                    <p>Vous pouvez également activer ce service sans scan grâce à l'option 'Activation
+                                        manuelle' du menu latéral.</p>
                                 </li>
                             </ol>
                         </div>
                     </div>
+                </div>
+                <div class="card" v-if="!notified && Object.keys(otpServersObjects).length!=0">
+                    <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <h5>Se connecter</h5>
+                        </div>
                     </div>
-                    <div class="card" v-if="!notified && Object.keys(otpServersObjects).length!=0">
-                        <div class="card-content" style="padding-bottom: 0;padding-top: 7px;">
-                            <div class="row" style="margin-bottom: 0;">
-                                <h5>Se connecter</h5>
-                            </div>
+                    <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
+                        <div class="row" style="margin-bottom: 0;">
+                            <ol class="collection">
+                                <li class="collection-item avatar">
+                                    <img src="img/one.png" alt="Étape 1" class="circle">
+                                    <p>Connectez-vous sur un service nécessitant une authentification sécurisée.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/two.png" alt="Étape 2" class="circle">
+                                    <p>Sélectionnez la méthode "Notification (Esup Auth)".</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/three.png" alt="Étape 3" class="circle">
+                                    <p>Vous recevrez une notification ainsi qu'une demande de connexion.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/four.png" alt="Étape 4" class="circle">
+                                    <p>Acceptez cette demande.</p>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <img src="img/valid.png" alt="Étape 5" class="circle">
+                                    <p>Vous êtes connecté.</p>
+                                </li>
+                            </ol>
                         </div>
-                        <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
-                            <div class="row" style="margin-bottom: 0;">
-                                <ol class="collection">
-                                    <li class="collection-item avatar">
-                                        <img src="img/one.png" alt="Étape 1" class="circle">
-                                        <p>Connectez-vous sur un service nécessitant une authentification sécurisée.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/two.png" alt="Étape 2" class="circle">
-                                        <p>Sélectionnez la méthode "Notification (Esup Auth)".</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/three.png" alt="Étape 3" class="circle">
-                                        <p>Vous recevrez une notification ainsi qu'une demande de connexion.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/four.png" alt="Étape 4" class="circle">
-                                        <p>Acceptez cette demande.</p>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                        <img src="img/valid.png" alt="Étape 5" class="circle">
-                                        <p>Vous êtes connecté.</p>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
+                    </div>
 
-                    </div>                    
+                </div>
             </div>
-	   <div class="container" v-show="currentView=='notify'">
-		<div class="card">
-                        <div class="card-content" >
-                            <div class="row" style="margin-bottom: 0;">
-                                <h5>{{additionalData.text}}</h5>
-                            </div>
+            <div class="container" v-show="currentView=='notify'">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row" style="margin-bottom: 0;">
+                            <h5>{{additionalData.text}}</h5>
                         </div>
-                        <div class="card-action">
-                            <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-accept" v-on:click="accept"><i
-                                        class="material-icons right" aria-hidden="true">done</i>accepter</a>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-reject" v-on:click="reject"><i
-                                        class="material-icons right" aria-hidden="true">clear</i>refuser</a>
-                            </div>
+                    </div>
+                    <div class="card-action">
+                        <div class="row">
+                            <a class="waves-effect waves-light btn btn-large col s12 btn-custom-accept"
+                                v-on:click="accept"><i class="material-icons right"
+                                    aria-hidden="true">done</i>accepter</a>
                         </div>
-		</div>
+                        <div class="divider"></div>
+                        <div class="row">
+                            <a class="waves-effect waves-light btn btn-large col s12 btn-custom-reject"
+                                v-on:click="reject"><i class="material-icons right"
+                                    aria-hidden="true">clear</i>refuser</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-	   <div class="container" v-show="currentView=='info'">
-		<div class="card">
-                        <div class="card-content" >
-                            <div class="row" style="margin-bottom: 0;">
-                                <h5>Oups!! Vos données d'application semblent avoir été supprimées. Ce peut arriver suite à une mise à jour ou si vous avez supprimé les données via les paramètres de votre smartphone.</h5>
- 				<h5>Vous devez synchroniser à nouveau votre application avec ESUP-OTP-Manager.</h5>
+            <div class="container" v-show="currentView=='info'">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row" style="margin-bottom: 0;">
+                            <h5>Oups!! Vos données d'application semblent avoir été supprimées. Ce peut arriver suite à
+                                une mise à jour ou si vous avez supprimé les données via les paramètres de votre
+                                smartphone.</h5>
+                            <h5>Vous devez synchroniser à nouveau votre application avec ESUP-OTP-Manager.</h5>
 
-                            </div>
                         </div>
-                        <div class="card-action">
-                            <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 green darken-1" v-on:click="reject"><i
-                                        class="material-icons right" aria-hidden="true">done</i>OK</a>
-                            </div>                            
+                    </div>
+                    <div class="card-action">
+                        <div class="row">
+                            <a class="waves-effect waves-light btn btn-large col s12 green darken-1"
+                                v-on:click="reject"><i class="material-icons right" aria-hidden="true">done</i>OK</a>
                         </div>
-		</div>
+                    </div>
+                </div>
             </div>
             <div class="container" v-show="currentView=='scanless'">
                 <div class="row" style="margin-bottom: 0;">
@@ -246,14 +267,10 @@
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button" v-on:click="scanless">
+                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button"
+                        v-on:click="scanless">
                         <i class="material-icons right" aria-hidden="true">done</i>Activer
                     </a>
-                    <span class="col s12" style="margin-bottom: 5px;"></span>
-                    <button class="btn btn-large col s12 btn-custom" role="button" v-on:click="scanTag">
-                        <i class="material-icons right" aria-hidden="true">tap_and_play</i>
-                        My button
-                    </button>
                 </div>
             </div>
             <div class="container" v-show="currentView=='totp'">
@@ -262,7 +279,9 @@
                     <tr>
                         <td>
                             <div class="list-group">
-                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button" aria-label="Ajouter ou scanner un compte" v-on:click="navigate" id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
+                                <a href="#" class="fa fa-plus-circle fa-4x accessible-icon" role="button"
+                                    aria-label="Ajouter ou scanner un compte" v-on:click="navigate"
+                                    id="screenChoiceAddAccount" name="screenChoiceAddAccount"></a>
                             </div>
                         </td>
                         <td style="text-align: right">
@@ -283,190 +302,363 @@
                     </div>
                 </div>
             </div>
-           <div class="container" v-show="currentView=='help'">
-            <!-- Slideshow container -->
-<div class="slideshow-container">
-    <a class="prev" onclick="plusSlides(-1)" role="button" aria-label="Slide précédente">
-        <i class="material-icons">chevron_left</i>
-    <a class="next" onclick="plusSlides(1)" role="button" aria-label="Slide suivante">
-        <i class="material-icons">chevron_right</i>
-    </a>
-<!-- Full-width images with number and caption text -->
-<div class="mySlides fade">
- <div class="numbertext">1 / 6</div>
- <img src="img/push.svg" >
- <div class="text">
-   <h2>Configuration de la notification Push</h2>
-   <p>Pour utiliser la notification push vous devez aller dans l'application Esup-otp-manager pour activer la méthode "Notification mobile", vous pouvez saisir les informations d'activation ou utiliser
-       l'option 'Activation QRCode' du menu latéral et scannez le code affiché pour pouvoir recevoir la notification.
-   </p>
- </div>
-</div>
-<div class="mySlides fade">
- <div class="numbertext">2 / 6</div>
- <img src="img/totp2.svg" >
- <div class="text">
-   <h2>Configuration TOTP</h2>
-   <p>
-       Pour utiliser la méthode TOTP, vous devez aller dans l'application Esup-otp-manager pour activer la méthode "TOTP", ensuite appuyez sur le bouton 'Générer un QrCode', puis scannez le code à l'aide de votre application Esup Auth ou entrez le code directement dans votre application TOTP.
-   </p>
- </div>
-</div>
-<div class="mySlides fade">
- <div class="numbertext">3 / 6</div>
- <img src="img/codes_secours.svg" >
- <div class="text">
-   <h2>Configuration codes secours</h2>
-   <p>Pour utiliser la méthode codes secours vous devez aller dans l'application Esup-otp-manager pour l'activer puis un ensemble de code vous est alors affiché.
-   </p>
- </div>
-</div>
-<div class="mySlides fade">
-   <div class="numbertext">4 / 6</div>
-   <img src="img/random_code.svg" >
-   <div class="text">
-       <h2>Configuration code par sms</h2>
-       <p>Pour utiliser la méthode code par sms vous devez aller dans l'application Esup-otp-manager, enregistrer votre numéro de téléphone portable pour recevoir un code à usage unique par sms.
-       </p>
-     </div>
- </div>
- <div class="mySlides fade">
-   <div class="numbertext">5 / 6</div>
-   <img src="img/mail.svg" >
-   <div class="text">
-       <h2>Configuration code courriel</h2>
-       <p>
-           Pour utiliser la méthode codes par Courriel vous devez aller dans l'application Esup-otp-manager, enregistrer votre mail pour recevoir un mail avec les codes.
-       </p>
-     </div>
- </div>
- <div class="mySlides fade">
-   <div class="numbertext">6 / 6</div>
-   <img src="img/esupnfc.svg" >
-   <div class="text">
-       <h2>Configuration carte esupnfc</h2>
-       <p>Pour utiliser la méthode esupnfc vous devez aller dans l'application Esup-otp-manager pour l'activer et vous pouvez récupérer un code en badgeant la carte.
-       </p>
-     </div>
- </div>
-<!-- Next and previous buttons -->
-<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-<a class="next" onclick="plusSlides(1)">&#10095;</a>
-</div>
-<br>
-<!-- The dots/circles -->
-<div style="text-align:center">
-<span class="dot" onclick="currentSlide(1)"></span>
-<span class="dot" onclick="currentSlide(2)"></span>
-<span class="dot" onclick="currentSlide(3)"></span>
-<span class="dot" onclick="currentSlide(4)"></span>
-<span class="dot" onclick="currentSlide(5)"></span>
-<span class="dot" onclick="currentSlide(6)"></span>
-</div>
-       </div>
-       <div class="container" v-show="currentView=='param'">
-           <ul class="collapsible">
-               <li>
-                 <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Notification (Esup Auth)</div>
-                 <div class="collapsible-body">
-                    <div class="row">
-<div class="col s12">
- <ul class="tabs">
-   <li class="tab col s3"><a  href="#notif1">qu'est-ce que c'est</a></li>
-   <li class="tab col s3"><a  href="#notif2">fonctionnement</a></li>
-   <li class="tab col s3"><a  href="#notif3">pourquoi l'utiliser</a></li>
- </ul>
-</div>
-<div id="notif1" class="col s12">La Notification Push est une méthode d'authentification à double facteur (2FA) où un utilisateur reçoit une notification push sur son appareil mobile avant de vous permettre de vous connecter à un compte, ce type d'authentification nécessite que vous ayez l'application sur votre appareil mobile pour recevoir la notification push. Cela permet de s'assurer que seul l'utilisateur ayant accès à son propre téléphone peut accéder à son compte.</div>
-<div id="notif2" class="col s12">Elle fonctionne en envoyant une notification à un appareil enregistré, comme un smartphone, pour vérifier l'identité de l'utilisateur avant de lui permettre de se connecter à un compte. L'utilisateur doit d'abord entrer ses informations d'identification, puis une notification est envoyée à l'appareil enregistré. Cela signifie que lorsque l'utilisateur souhaite se connecter à un compte, il reçoit une notification sur son smartphone ou sa tablette, L'utilisateur peut alors approuver ou refuser la demande de connexion.</div>
-<div id="notif3" class="col s12">Elle est utilisée pour renforcer la sécurité des comptes en exigeant une vérification supplémentaire de l'identité de l'utilisateur avant de lui permettre de se connecter. Il ajoute une couche de sécurité supplémentaire en empêchant les personnes malveillantes d'accéder à un compte, même si elles ont obtenu les informations d'identification de l'utilisateur. Elle empêche les attaques par phishing ou les accès à distance. En utilisant la notification 2FA, les utilisateurs peuvent être certains que seul l'utilisateur en possession de l'appareil enregistré peut accéder au compte, ce qui améliore la sécurité globale des comptes et des données protégées.</div>
-</div></div>
-               </li>
-               <li>
-                 <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code Temporel(TOTP)</div>
-                 <div class="collapsible-body">
-                   <div class="row">
-                       <div class="col s12">
-                         <ul class="tabs">
-                           <li class="tab col s3"><a  href="#totp1" title="qu'est-ce que c'est">qu'est-ce que c'est</a></li>
-                           <li class="tab col s3"><a  href="#totp2">fonctionnement</a></li>
-                           <li class="tab col s3"><a  href="#totp3">pourquoi l'utiliser</a></li>
-                         </ul>
-                       </div>
-                       <div id="totp1" class="col s12">La méthode TOTP (Time-based One-time Password) est un type d'authentification à deux facteurs (2FA) qui génère un mot de passe à usage unique (OTP) qui change à intervalles réguliers, généralement toutes les 30 secondes de sorte qu'ils ne peuvent pas être utilisés à nouveau une fois qu'ils ont été utilisés pour vous permettre de vous connecter à un compte. Ce type d'authentification nécessite que vous ayez l'application de sécurité sur votre appareil mobile pour générer les codes TOTP. Avant de vous connecter ou de valider une transaction, vous devrez entrer le code TOTP généré par l'application de sécurité. Les codes TOTP sont générés en utilisant un secret partagé entre l'application de sécurité et le service en ligne pour lequel vous utilisez l'authentification à deux facteurs.</div>
-                       <div id="totp2" class="col s12">TOTP est un type d'authentification à deux facteurs (2FA) qui utilise un code temporaire pour vérifier l'identité de l'utilisateur. Il fonctionne en combinaison avec une clé secrète partagée entre l'utilisateur et le service qui doit être authentifié. Lors de l'activation de TOTP, un utilisateur reçoit une clé secrète qui est ensuite utilisée pour générer des codes temporaires. Ces codes sont générés en utilisant un algorithme de hachage qui prend en compte l'heure actuelle et la clé secrète. Ces codes sont valides pendant une courte période de temps, généralement 30 secondes. Lorsque l'utilisateur souhaite se connecter, il est invité à saisir le code temporaire généré par son application ou son dispositif. Le service vérifie ensuite si le code saisi est valide en utilisant la même clé secrète et l'algorithme de hachage. Si le code est valide, l'utilisateur est connecté. Sinon, l'accès est refusé.</div>
-                       <div id="totp3" class="col s12">En utilisant TOTP, les utilisateurs peuvent être certains que seul l'utilisateur en possession de l'appareil enregistré peut accéder au compte, ce qui améliore la sécurité globale des comptes et des données protégées. La méthode TOTP ajoute une couche de sécurité supplémentaire en empêchant les personnes malveillantes d'accéder à un compte, même si elles ont obtenu les informations d'identification de l'utilisateur. Elle empêche les attaques par phishing ou les accès à distance.</div>
-                     </div>
-                   </div>
-               </li>
-               <li>
-                 <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code par SMS</div>
-                 <div class="collapsible-body">
-                   <div class="row">
-                       <div class="col s12">
-                         <ul class="tabs">
-                           <li class="tab col s3"><a  href="#sms1">qu'est-ce que c'est</a></li>
-                           <li class="tab col s3"><a  href="#sms2">fonctionnement</a></li>
-                           <li class="tab col s3"><a  href="#sms3">pourquoi l'utiliser</a></li>
-                         </ul>
-                       </div>
-                       <div id="sms1" class="col s12">La méthode d'authentification à double facteur par SMS (2FA) est une méthode d'authentification qui permet de renforcer la sécurité des comptes en ligne en exigeant de l'utilisateur de saisir un code reçu par SMS lors de la connexion à un compte. Ce type d'authentification nécessite que vous ayez accès à un numéro de téléphone mobile pour recevoir les codes SMS. vant de vous connecter ou de valider une transaction, vous devrez entrer un code reçu par SMS. Les codes SMS sont générés par le service en ligne pour lequel vous utilisez l'authentification à deux facteurs et sont envoyés au numéro de téléphone associé à votre compte. Les codes SMS ne changent pas et peuvent être utilisés une seule fois. Cela permet de s'assurer que seul l'utilisateur ayant accès à son propre téléphone peut accéder à son compte.</div>
-                       <div id="sms2" class="col s12">L'authentification à deux facteurs (2FA) par code SMS fonctionne en envoyant un code temporaire à un numéro de téléphone mobile enregistré pour vérifier l'identité de l'utilisateur avant de lui permettre de se connecter à un compte. L'utilisateur doit d'abord entrer ses informations d'identification, puis un code temporaire est généré et envoyé par SMS au numéro de téléphone mobile enregistré. L'utilisateur doit ensuite saisir le code temporaire reçu pour pouvoir accéder au compte.</div>
-                       <div id="sms3" class="col s12">Il y a plusieurs raisons pour lesquelles l'authentification à deux facteurs (2FA) par code SMS est utilisée pour renforcer la sécurité des comptes : Accessibilité: L'authentification par code SMS est facilement accessible, car la plupart des utilisateurs ont un téléphone mobile avec la capacité de recevoir des SMS. Facilité d'utilisation: Il est facile à utiliser, car les utilisateurs n'ont pas besoin de se rappeler de codes statiques ou de répondre à des questions de sécurité. Disponibilité: Il est facilement disponible et est supporté par de nombreux services en ligne et applications. Ajout de sécurité: Il ajoute une couche supplémentaire de sécurité en empêchant les personnes malveillantes d'accéder à un compte, même si elles ont obtenu les informations d'identification de l'utilisateur.</div>
-                     </div>
-               </div>
-               </li>
-               <li>
-                   <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code par Courriel</div>
-                   <div class="collapsible-body">
-                           <div class="row">
-                               <div class="col s12">
-                                 <ul class="tabs">
-                                   <li class="tab col s3"><a  href="#courriel1">qu'est-ce que c'est</a></li>
-                                   <li class="tab col s3"><a  href="#courriel2">fonctionnement</a></li>
-                                   <li class="tab col s3"><a  href="#courriel3">pourquoi l'utiliser</a></li>
-                                 </ul>
-                               </div>
-                               <div id="courriel1" class="col s12">La méthode d'authentification à double facteur par courriel (2FA) est une méthode d'authentification qui permet de renforcer la sécurité des comptes en ligne en exigeant de l'utilisateur de saisir un code envoyé par courriel lors de la connexion à un compte. Ce type d'authentification nécessite que vous ayez accès à une adresse courriel pour recevoir les codes de confirmation. Avant de vous connecter ou de valider une transaction, vous devrez entrer un code reçu par courriel. Les codes courriel sont générés par le service en ligne pour lequel vous utilisez l'authentification à deux facteurs et sont envoyés à l'adresse courriel associée à votre compte. Les codes courriels ne changent pas et peuvent être utilisés une seule fois. Cela permet de s'assurer que seul l'utilisateur ayant accès à sa propre adresse courriel peut accéder à son compte. </div>
-                               <div id="courriel2" class="col s12">L'authentification à deux facteurs (2FA) par courrier électronique fonctionne en envoyant un code temporaire à une adresse courriel enregistrée pour vérifier l'identité de l'utilisateur avant de lui permettre de se connecter à un compte. L'utilisateur doit d'abord entrer ses informations d'identification, puis un code temporaire est généré et envoyé par courrier électronique à l'adresse courriel enregistrée. L'utilisateur doit ensuite saisir le code temporaire reçu pour pouvoir accéder au compte.</div>
-                               <div id="courriel3" class="col s12">l'utilisation d'un code par courriel pour la 2FA permet de renforcer la sécurité des comptes et des applications en ajoutant une couche de sécurité supplémentaire qui est facile à utiliser, accessible, pratique et adaptable aux préférences des utilisateurs.</div>
-                             </div>
-                       </div>
-               <li>
-                   <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Codes de secours</div>
-                   <div class="collapsible-body">
-                       <div class="row">
-                           <div class="col s12">
-                             <ul class="tabs">
-                               <li class="tab col s3"><a  href="#secours1">qu'est-ce que c'est</a></li>
-                               <li class="tab col s3"><a  href="#secours2">fonctionnement</a></li>
-                               <li class="tab col s3"><a  href="#secours3">pourquoi l'utiliser</a></li>
-                             </ul>
-                           </div>
-                           <div id="secours1" class="col s12">La méthode d'authentification à double facteur par codes de secours (2FA) est une méthode d'authentification qui permet de renforcer la sécurité des comptes en ligne en stockant des codes de secours. vant de vous connecter ou de valider une transaction, vous devrez entrer un code de secours précédemment enregistré. Ces codes de secours sont générés par l'application de sécurité ou le service en ligne pour lequel vous utilisez l'authentification à deux facteurs, et sont généralement conservés en lieu sûr, comme un fichier crypté ou un papier dans un endroit sûr. Les codes de secours ne changent pas et peuvent être utilisés une seule fois. Cela permet de s'assurer que l'utilisateur peut toujours accéder à son compte même si il perd ou que son appareil mobile est volé.</div>
-                           <div id="secours2" class="col s12">La double authentification (2FA) utilise un code de secours comme méthode de vérification supplémentaire pour l'accès à un compte ou à une application. Lorsque l'utilisateur entre ses informations d'identification, un code de secours est généré et envoyé à un appareil désigné (généralement un téléphone mobile) par SMS ou par une application de vérification à deux facteurs. L'utilisateur doit entrer ce code pour compléter l'authentification et accéder au compte ou à l'application. Cela permet de s'assurer que la personne qui essaie d'accéder au compte est bien la personne à qui appartient les informations d'identification.</div>
-                           <div id="secours3" class="col s12">L'utilisation d'un code de secours pour la double authentification (2FA) augmente considérablement la sécurité des comptes et des applications. Il empêche les pirates informatiques d'accéder à un compte en utilisant uniquement un nom d'utilisateur et un mot de passe volés, car ils ne peuvent pas obtenir le code de secours envoyé à l'appareil de confiance de l'utilisateur. Il permet de s'assurer que la personne qui essaie d'accéder au compte est bien celle à qui appartient les informations d'identification, ce qui réduit les risques de fraude ou de vol d'identité. Il protège les comptes contre les attaques automatisées, qui peuvent être utilisées pour deviner ou tenter de craquer des mots de passe. En résumé, l'utilisation d'un code de secours 2FA renforce la sécurité des comptes et des applications en ajoutant une couche de sécurité supplémentaire qui n'est pas facilement bypassable. Dans cette méthode, lorsque l'utilisateur active l'authentification à double facteur, il reçoit un certain nombre de codes de secours qu'il peut stocker dans un endroit sûr. Si l'utilisateur perd son appareil mobile ou n'a pas accès à l'application de génération de codes, il peut utiliser l'un de ces codes de secours pour s'authentifier. Cette méthode est considérée comme une bonne pratique pour s'assurer que l'utilisateur a toujours un moyen de se connecter à son compte en cas de problème avec son appareil ou son application. </div>
-                         </div>
-                   </p></div>
-               </li>
-               <li>
-                   <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>NFC</div>
-                   <div class="collapsible-body">
-                       <div class="row">
-                           <div class="col s12">
-                             <ul class="tabs">
-                               <li class="tab col s3"><a  href="#esupnfc1">qu'est-ce que c'est</a></li>
-                               <li class="tab col s3"><a  href="#esupnfc2">fonctionnement</a></li>
-                               <li class="tab col s3"><a  href="#esupnfc3">pourquoi l'utiliser</a></li>
-                             </ul>
-                           </div>
-                           <div id="esupnfc1" class="col s12">La méthode NFC 2FA (Authentification à deux facteurs par NFC) est un type d'authentification à deux facteurs qui utilise la technologie NFC (Near Field Communication) pour vous permettre de vous connecter à un compte ou de valider une transaction en utilisant un dispositif physique, comme une clé NFC ou un téléphone mobile compatible NFC. Avant de vous connecter ou de valider une transaction, vous devrez utiliser votre dispositif NFC pour établir une connexion avec le dispositif de lecture NFC associé au service en ligne pour lequel vous utilisez l'authentification à deux facteurs. Cela permet de s'assurer que seul l'utilisateur ayant physiquement accès à son dispositif NFC peut accéder à son compte. Il est important de noter que cette méthode n'est pas très courante et nécessite l'utilisation d'un dispositif physique spécifique pour fonctionner, ce qui peut être limitant pour certains utilisateurs.</div>
-                           <div id="esupnfc2" class="col s12"> Pour utiliser cette méthode, vous devez d'abord configurer votre dispositif NFC avec le service en ligne pour lequel vous utilisez l'authentification à deux facteurs. Cela peut impliquer de lier votre dispositif NFC à votre compte en utilisant un code d'activation ou un QR code. Une fois configuré, lorsque vous vous connectez ou validez une transaction, vous devrez utiliser votre dispositif NFC pour établir une connexion avec le dispositif de lecture NFC associé au service en ligne. Le dispositif de lecture NFC vérifie alors que le dispositif NFC utilisé est celui qui a été lié à votre compte, et vous permet de vous connecter ou de valider la transaction. Il est important de noter que pour utiliser cette méthode, vous devez avoir physiquement accès à votre dispositif NFC, ce qui en fait une méthode de sécurité supplémentaire pour s'assurer que seul l'utilisateur légitime peut accéder à son compte ou valider une transaction.</div>
-                           <div id="esupnfc3" class="col s12">La méthode NFC 2FA (Authentification à deux facteurs par NFC) est utilisée pour renforcer la sécurité en ajoutant une couche supplémentaire d'authentification pour l'accès à un compte ou la validation d'une transaction. Cette méthode peut également être utile pour les applications sensibles, car elle permet de s'assurer que seul l'utilisateur légitime peut être autoriser à accéder à son compte.</div>
-                         </div>
-                       </div>
-                 </li>
-             </ul></div>
+            <div class="container" v-show="currentView=='help'">
+                <!-- Slideshow container -->
+                <div class="slideshow-container">
+                    <a class="prev" onclick="plusSlides(-1)" role="button" aria-label="Slide précédente">
+                        <i class="material-icons">chevron_left</i>
+                        <a class="next" onclick="plusSlides(1)" role="button" aria-label="Slide suivante">
+                            <i class="material-icons">chevron_right</i>
+                        </a>
+                        <!-- Full-width images with number and caption text -->
+                        <div class="mySlides fade">
+                            <div class="numbertext">1 / 6</div>
+                            <img src="img/push.svg">
+                            <div class="text">
+                                <h2>Configuration de la notification Push</h2>
+                                <p>Pour utiliser la notification push vous devez aller dans l'application
+                                    Esup-otp-manager pour activer la méthode "Notification mobile", vous pouvez saisir
+                                    les informations d'activation ou utiliser
+                                    l'option 'Activation QRCode' du menu latéral et scannez le code affiché pour pouvoir
+                                    recevoir la notification.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext">2 / 6</div>
+                            <img src="img/totp2.svg">
+                            <div class="text">
+                                <h2>Configuration TOTP</h2>
+                                <p>
+                                    Pour utiliser la méthode TOTP, vous devez aller dans l'application Esup-otp-manager
+                                    pour activer la méthode "TOTP", ensuite appuyez sur le bouton 'Générer un QrCode',
+                                    puis scannez le code à l'aide de votre application Esup Auth ou entrez le code
+                                    directement dans votre application TOTP.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext">3 / 6</div>
+                            <img src="img/codes_secours.svg">
+                            <div class="text">
+                                <h2>Configuration codes secours</h2>
+                                <p>Pour utiliser la méthode codes secours vous devez aller dans l'application
+                                    Esup-otp-manager pour l'activer puis un ensemble de code vous est alors affiché.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext">4 / 6</div>
+                            <img src="img/random_code.svg">
+                            <div class="text">
+                                <h2>Configuration code par sms</h2>
+                                <p>Pour utiliser la méthode code par sms vous devez aller dans l'application
+                                    Esup-otp-manager, enregistrer votre numéro de téléphone portable pour recevoir un
+                                    code à usage unique par sms.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext">5 / 6</div>
+                            <img src="img/mail.svg">
+                            <div class="text">
+                                <h2>Configuration code courriel</h2>
+                                <p>
+                                    Pour utiliser la méthode codes par Courriel vous devez aller dans l'application
+                                    Esup-otp-manager, enregistrer votre mail pour recevoir un mail avec les codes.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mySlides fade">
+                            <div class="numbertext">6 / 6</div>
+                            <img src="img/esupnfc.svg">
+                            <div class="text">
+                                <h2>Configuration carte esupnfc</h2>
+                                <p>Pour utiliser la méthode esupnfc vous devez aller dans l'application Esup-otp-manager
+                                    pour l'activer et vous pouvez récupérer un code en badgeant la carte.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Next and previous buttons -->
+                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <br>
+                <!-- The dots/circles -->
+                <div style="text-align:center">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                    <span class="dot" onclick="currentSlide(5)"></span>
+                    <span class="dot" onclick="currentSlide(6)"></span>
+                </div>
+            </div>
+            <div class="container" v-show="currentView=='param'">
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons"
+                                aria-hidden="true">description</i>Notification (Esup Auth)</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs">
+                                        <li class="tab col s3"><a href="#notif1">qu'est-ce que c'est</a></li>
+                                        <li class="tab col s3"><a href="#notif2">fonctionnement</a></li>
+                                        <li class="tab col s3"><a href="#notif3">pourquoi l'utiliser</a></li>
+                                    </ul>
+                                </div>
+                                <div id="notif1" class="col s12">La Notification Push est une méthode d'authentification
+                                    à double facteur (2FA) où un utilisateur reçoit une notification push sur son
+                                    appareil mobile avant de vous permettre de vous connecter à un compte, ce type
+                                    d'authentification nécessite que vous ayez l'application sur votre appareil mobile
+                                    pour recevoir la notification push. Cela permet de s'assurer que seul l'utilisateur
+                                    ayant accès à son propre téléphone peut accéder à son compte.</div>
+                                <div id="notif2" class="col s12">Elle fonctionne en envoyant une notification à un
+                                    appareil enregistré, comme un smartphone, pour vérifier l'identité de l'utilisateur
+                                    avant de lui permettre de se connecter à un compte. L'utilisateur doit d'abord
+                                    entrer ses informations d'identification, puis une notification est envoyée à
+                                    l'appareil enregistré. Cela signifie que lorsque l'utilisateur souhaite se connecter
+                                    à un compte, il reçoit une notification sur son smartphone ou sa tablette,
+                                    L'utilisateur peut alors approuver ou refuser la demande de connexion.</div>
+                                <div id="notif3" class="col s12">Elle est utilisée pour renforcer la sécurité des
+                                    comptes en exigeant une vérification supplémentaire de l'identité de l'utilisateur
+                                    avant de lui permettre de se connecter. Il ajoute une couche de sécurité
+                                    supplémentaire en empêchant les personnes malveillantes d'accéder à un compte, même
+                                    si elles ont obtenu les informations d'identification de l'utilisateur. Elle empêche
+                                    les attaques par phishing ou les accès à distance. En utilisant la notification 2FA,
+                                    les utilisateurs peuvent être certains que seul l'utilisateur en possession de
+                                    l'appareil enregistré peut accéder au compte, ce qui améliore la sécurité globale
+                                    des comptes et des données protégées.</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code
+                            Temporel(TOTP)</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs">
+                                        <li class="tab col s3"><a href="#totp1" title="qu'est-ce que c'est">qu'est-ce
+                                                que c'est</a></li>
+                                        <li class="tab col s3"><a href="#totp2">fonctionnement</a></li>
+                                        <li class="tab col s3"><a href="#totp3">pourquoi l'utiliser</a></li>
+                                    </ul>
+                                </div>
+                                <div id="totp1" class="col s12">La méthode TOTP (Time-based One-time Password) est un
+                                    type d'authentification à deux facteurs (2FA) qui génère un mot de passe à usage
+                                    unique (OTP) qui change à intervalles réguliers, généralement toutes les 30 secondes
+                                    de sorte qu'ils ne peuvent pas être utilisés à nouveau une fois qu'ils ont été
+                                    utilisés pour vous permettre de vous connecter à un compte. Ce type
+                                    d'authentification nécessite que vous ayez l'application de sécurité sur votre
+                                    appareil mobile pour générer les codes TOTP. Avant de vous connecter ou de valider
+                                    une transaction, vous devrez entrer le code TOTP généré par l'application de
+                                    sécurité. Les codes TOTP sont générés en utilisant un secret partagé entre
+                                    l'application de sécurité et le service en ligne pour lequel vous utilisez
+                                    l'authentification à deux facteurs.</div>
+                                <div id="totp2" class="col s12">TOTP est un type d'authentification à deux facteurs
+                                    (2FA) qui utilise un code temporaire pour vérifier l'identité de l'utilisateur. Il
+                                    fonctionne en combinaison avec une clé secrète partagée entre l'utilisateur et le
+                                    service qui doit être authentifié. Lors de l'activation de TOTP, un utilisateur
+                                    reçoit une clé secrète qui est ensuite utilisée pour générer des codes temporaires.
+                                    Ces codes sont générés en utilisant un algorithme de hachage qui prend en compte
+                                    l'heure actuelle et la clé secrète. Ces codes sont valides pendant une courte
+                                    période de temps, généralement 30 secondes. Lorsque l'utilisateur souhaite se
+                                    connecter, il est invité à saisir le code temporaire généré par son application ou
+                                    son dispositif. Le service vérifie ensuite si le code saisi est valide en utilisant
+                                    la même clé secrète et l'algorithme de hachage. Si le code est valide, l'utilisateur
+                                    est connecté. Sinon, l'accès est refusé.</div>
+                                <div id="totp3" class="col s12">En utilisant TOTP, les utilisateurs peuvent être
+                                    certains que seul l'utilisateur en possession de l'appareil enregistré peut accéder
+                                    au compte, ce qui améliore la sécurité globale des comptes et des données protégées.
+                                    La méthode TOTP ajoute une couche de sécurité supplémentaire en empêchant les
+                                    personnes malveillantes d'accéder à un compte, même si elles ont obtenu les
+                                    informations d'identification de l'utilisateur. Elle empêche les attaques par
+                                    phishing ou les accès à distance.</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code
+                            par SMS</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs">
+                                        <li class="tab col s3"><a href="#sms1">qu'est-ce que c'est</a></li>
+                                        <li class="tab col s3"><a href="#sms2">fonctionnement</a></li>
+                                        <li class="tab col s3"><a href="#sms3">pourquoi l'utiliser</a></li>
+                                    </ul>
+                                </div>
+                                <div id="sms1" class="col s12">La méthode d'authentification à double facteur par SMS
+                                    (2FA) est une méthode d'authentification qui permet de renforcer la sécurité des
+                                    comptes en ligne en exigeant de l'utilisateur de saisir un code reçu par SMS lors de
+                                    la connexion à un compte. Ce type d'authentification nécessite que vous ayez accès à
+                                    un numéro de téléphone mobile pour recevoir les codes SMS. vant de vous connecter ou
+                                    de valider une transaction, vous devrez entrer un code reçu par SMS. Les codes SMS
+                                    sont générés par le service en ligne pour lequel vous utilisez l'authentification à
+                                    deux facteurs et sont envoyés au numéro de téléphone associé à votre compte. Les
+                                    codes SMS ne changent pas et peuvent être utilisés une seule fois. Cela permet de
+                                    s'assurer que seul l'utilisateur ayant accès à son propre téléphone peut accéder à
+                                    son compte.</div>
+                                <div id="sms2" class="col s12">L'authentification à deux facteurs (2FA) par code SMS
+                                    fonctionne en envoyant un code temporaire à un numéro de téléphone mobile enregistré
+                                    pour vérifier l'identité de l'utilisateur avant de lui permettre de se connecter à
+                                    un compte. L'utilisateur doit d'abord entrer ses informations d'identification, puis
+                                    un code temporaire est généré et envoyé par SMS au numéro de téléphone mobile
+                                    enregistré. L'utilisateur doit ensuite saisir le code temporaire reçu pour pouvoir
+                                    accéder au compte.</div>
+                                <div id="sms3" class="col s12">Il y a plusieurs raisons pour lesquelles
+                                    l'authentification à deux facteurs (2FA) par code SMS est utilisée pour renforcer la
+                                    sécurité des comptes : Accessibilité: L'authentification par code SMS est facilement
+                                    accessible, car la plupart des utilisateurs ont un téléphone mobile avec la capacité
+                                    de recevoir des SMS. Facilité d'utilisation: Il est facile à utiliser, car les
+                                    utilisateurs n'ont pas besoin de se rappeler de codes statiques ou de répondre à des
+                                    questions de sécurité. Disponibilité: Il est facilement disponible et est supporté
+                                    par de nombreux services en ligne et applications. Ajout de sécurité: Il ajoute une
+                                    couche supplémentaire de sécurité en empêchant les personnes malveillantes d'accéder
+                                    à un compte, même si elles ont obtenu les informations d'identification de
+                                    l'utilisateur.</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Code
+                            par Courriel</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs">
+                                        <li class="tab col s3"><a href="#courriel1">qu'est-ce que c'est</a></li>
+                                        <li class="tab col s3"><a href="#courriel2">fonctionnement</a></li>
+                                        <li class="tab col s3"><a href="#courriel3">pourquoi l'utiliser</a></li>
+                                    </ul>
+                                </div>
+                                <div id="courriel1" class="col s12">La méthode d'authentification à double facteur par
+                                    courriel (2FA) est une méthode d'authentification qui permet de renforcer la
+                                    sécurité des comptes en ligne en exigeant de l'utilisateur de saisir un code envoyé
+                                    par courriel lors de la connexion à un compte. Ce type d'authentification nécessite
+                                    que vous ayez accès à une adresse courriel pour recevoir les codes de confirmation.
+                                    Avant de vous connecter ou de valider une transaction, vous devrez entrer un code
+                                    reçu par courriel. Les codes courriel sont générés par le service en ligne pour
+                                    lequel vous utilisez l'authentification à deux facteurs et sont envoyés à l'adresse
+                                    courriel associée à votre compte. Les codes courriels ne changent pas et peuvent
+                                    être utilisés une seule fois. Cela permet de s'assurer que seul l'utilisateur ayant
+                                    accès à sa propre adresse courriel peut accéder à son compte. </div>
+                                <div id="courriel2" class="col s12">L'authentification à deux facteurs (2FA) par
+                                    courrier électronique fonctionne en envoyant un code temporaire à une adresse
+                                    courriel enregistrée pour vérifier l'identité de l'utilisateur avant de lui
+                                    permettre de se connecter à un compte. L'utilisateur doit d'abord entrer ses
+                                    informations d'identification, puis un code temporaire est généré et envoyé par
+                                    courrier électronique à l'adresse courriel enregistrée. L'utilisateur doit ensuite
+                                    saisir le code temporaire reçu pour pouvoir accéder au compte.</div>
+                                <div id="courriel3" class="col s12">l'utilisation d'un code par courriel pour la 2FA
+                                    permet de renforcer la sécurité des comptes et des applications en ajoutant une
+                                    couche de sécurité supplémentaire qui est facile à utiliser, accessible, pratique et
+                                    adaptable aux préférences des utilisateurs.</div>
+                            </div>
+                        </div>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons"
+                                aria-hidden="true">description</i>Codes de secours</div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs">
+                                        <li class="tab col s3"><a href="#secours1">qu'est-ce que c'est</a></li>
+                                        <li class="tab col s3"><a href="#secours2">fonctionnement</a></li>
+                                        <li class="tab col s3"><a href="#secours3">pourquoi l'utiliser</a></li>
+                                    </ul>
+                                </div>
+                                <div id="secours1" class="col s12">La méthode d'authentification à double facteur par
+                                    codes de secours (2FA) est une méthode d'authentification qui permet de renforcer la
+                                    sécurité des comptes en ligne en stockant des codes de secours. vant de vous
+                                    connecter ou de valider une transaction, vous devrez entrer un code de secours
+                                    précédemment enregistré. Ces codes de secours sont générés par l'application de
+                                    sécurité ou le service en ligne pour lequel vous utilisez l'authentification à deux
+                                    facteurs, et sont généralement conservés en lieu sûr, comme un fichier crypté ou un
+                                    papier dans un endroit sûr. Les codes de secours ne changent pas et peuvent être
+                                    utilisés une seule fois. Cela permet de s'assurer que l'utilisateur peut toujours
+                                    accéder à son compte même si il perd ou que son appareil mobile est volé.</div>
+                                <div id="secours2" class="col s12">La double authentification (2FA) utilise un code de
+                                    secours comme méthode de vérification supplémentaire pour l'accès à un compte ou à
+                                    une application. Lorsque l'utilisateur entre ses informations d'identification, un
+                                    code de secours est généré et envoyé à un appareil désigné (généralement un
+                                    téléphone mobile) par SMS ou par une application de vérification à deux facteurs.
+                                    L'utilisateur doit entrer ce code pour compléter l'authentification et accéder au
+                                    compte ou à l'application. Cela permet de s'assurer que la personne qui essaie
+                                    d'accéder au compte est bien la personne à qui appartient les informations
+                                    d'identification.</div>
+                                <div id="secours3" class="col s12">L'utilisation d'un code de secours pour la double
+                                    authentification (2FA) augmente considérablement la sécurité des comptes et des
+                                    applications. Il empêche les pirates informatiques d'accéder à un compte en
+                                    utilisant uniquement un nom d'utilisateur et un mot de passe volés, car ils ne
+                                    peuvent pas obtenir le code de secours envoyé à l'appareil de confiance de
+                                    l'utilisateur. Il permet de s'assurer que la personne qui essaie d'accéder au compte
+                                    est bien celle à qui appartient les informations d'identification, ce qui réduit les
+                                    risques de fraude ou de vol d'identité. Il protège les comptes contre les attaques
+                                    automatisées, qui peuvent être utilisées pour deviner ou tenter de craquer des mots
+                                    de passe. En résumé, l'utilisation d'un code de secours 2FA renforce la sécurité des
+                                    comptes et des applications en ajoutant une couche de sécurité supplémentaire qui
+                                    n'est pas facilement bypassable. Dans cette méthode, lorsque l'utilisateur active
+                                    l'authentification à double facteur, il reçoit un certain nombre de codes de secours
+                                    qu'il peut stocker dans un endroit sûr. Si l'utilisateur perd son appareil mobile ou
+                                    n'a pas accès à l'application de génération de codes, il peut utiliser l'un de ces
+                                    codes de secours pour s'authentifier. Cette méthode est considérée comme une bonne
+                                    pratique pour s'assurer que l'utilisateur a toujours un moyen de se connecter à son
+                                    compte en cas de problème avec son appareil ou son application. </div>
+                            </div>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>NFC
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs">
+                                        <li class="tab col s3"><a href="#esupnfc1">qu'est-ce que c'est</a></li>
+                                        <li class="tab col s3"><a href="#esupnfc2">fonctionnement</a></li>
+                                        <li class="tab col s3"><a href="#esupnfc3">pourquoi l'utiliser</a></li>
+                                    </ul>
+                                </div>
+                                <div id="esupnfc1" class="col s12">La méthode NFC 2FA (Authentification à deux facteurs
+                                    par NFC) est un type d'authentification à deux facteurs qui utilise la technologie
+                                    NFC (Near Field Communication) pour vous permettre de vous connecter à un compte ou
+                                    de valider une transaction en utilisant un dispositif physique, comme une clé NFC ou
+                                    un téléphone mobile compatible NFC. Avant de vous connecter ou de valider une
+                                    transaction, vous devrez utiliser votre dispositif NFC pour établir une connexion
+                                    avec le dispositif de lecture NFC associé au service en ligne pour lequel vous
+                                    utilisez l'authentification à deux facteurs. Cela permet de s'assurer que seul
+                                    l'utilisateur ayant physiquement accès à son dispositif NFC peut accéder à son
+                                    compte. Il est important de noter que cette méthode n'est pas très courante et
+                                    nécessite l'utilisation d'un dispositif physique spécifique pour fonctionner, ce qui
+                                    peut être limitant pour certains utilisateurs.</div>
+                                <div id="esupnfc2" class="col s12"> Pour utiliser cette méthode, vous devez d'abord
+                                    configurer votre dispositif NFC avec le service en ligne pour lequel vous utilisez
+                                    l'authentification à deux facteurs. Cela peut impliquer de lier votre dispositif NFC
+                                    à votre compte en utilisant un code d'activation ou un QR code. Une fois configuré,
+                                    lorsque vous vous connectez ou validez une transaction, vous devrez utiliser votre
+                                    dispositif NFC pour établir une connexion avec le dispositif de lecture NFC associé
+                                    au service en ligne. Le dispositif de lecture NFC vérifie alors que le dispositif
+                                    NFC utilisé est celui qui a été lié à votre compte, et vous permet de vous connecter
+                                    ou de valider la transaction. Il est important de noter que pour utiliser cette
+                                    méthode, vous devez avoir physiquement accès à votre dispositif NFC, ce qui en fait
+                                    une méthode de sécurité supplémentaire pour s'assurer que seul l'utilisateur
+                                    légitime peut accéder à son compte ou valider une transaction.</div>
+                                <div id="esupnfc3" class="col s12">La méthode NFC 2FA (Authentification à deux facteurs
+                                    par NFC) est utilisée pour renforcer la sécurité en ajoutant une couche
+                                    supplémentaire d'authentification pour l'accès à un compte ou la validation d'une
+                                    transaction. Cette méthode peut également être utile pour les applications
+                                    sensibles, car elle permet de s'assurer que seul l'utilisateur légitime peut être
+                                    autoriser à accéder à son compte.</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
             <div class="container" v-show="currentView=='totpAddAccount'">
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
@@ -477,11 +669,14 @@
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="secret2" type="text" class="validate">
-                        <label for="secret2" aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre clé:</label>
+                        <label for="secret2"
+                            aria-label="Le nombre de caractères doit être supérieur ou égal à 16 et multiple de deux">Votre
+                            clé:</label>
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button" onclick="addAccount()" v-on:click="navigate" name="totp">
+                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button"
+                        onclick="addAccount()" v-on:click="navigate" name="totp">
                         <i class="material-icons right" aria-hidden="true">done</i>Ajouter
                     </a>
                 </div>
@@ -489,31 +684,67 @@
             <div class="container" v-show="currentView=='screenChoiceAddAccount'">
                 <ul class="collection">
                     <li>
-                        <a href="#" class="collection-item accessible-icon-text" role="button" aria-label="Ajouter un compte" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount">
+                        <a href="#" class="collection-item accessible-icon-text" role="button"
+                            aria-label="Ajouter un compte" v-on:click="navigate" id="totpAddAccount"
+                            name="totpAddAccount">
                             <i class="fa fa-plus-circle fa-lg accessible-icon"></i> Ajouter un compte
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="collection-item accessible-icon-text" role="button" aria-label="Scanner un compte" v-on:click="navigate" onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan" name="totp">
+                        <a href="#" class="collection-item accessible-icon-text" role="button"
+                            aria-label="Scanner un compte" v-on:click="navigate"
+                            onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan"
+                            name="totp">
                             <i class="fa fa-camera fa-lg accessible-icon"></i> Scan
                         </a>
                     </li>
                 </ul>
             </div>
+            <div class="container" v-show="currentView=='nfc'">
+                <!-- Sur cette ligne le bouton du scan du QrCode. Il s'affiche à droite -->
+                <div class="row" style="margin-bottom: 8px; margin-top: 8px;">
+                    <a class="circle-btn right" role="button" v-on:click="scanQrCode">
+                        <img src="img/scan-qr.svg" class="icon-custom" alt="">
+                    </a>
+                </div>
+                <div class="row">
+                    <div class="col s12 m8 offset-m2">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">Authentification via NFC</span>
+                                <div class="establishment-buttons" v-show="establishments.length!=0">
+                                    <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
+                                    <button v-for="establishment in establishments" 
+                                            :key="establishment.url" 
+                                            class="btn-large full-width"
+                                            v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
+                                        {{ establishment.etablissement }}
+                                    </button>
+                                </div>
+                                <p v-show="establishments.length==0" class="flex-center text-center">
+                                    Authentifiez-vous en toute sécurité via votre carte NFC. Scannez le qrcode de votre
+                                    établissements et suivez les instructions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
         </main>
         <footer></footer>
     </div>
 
-        <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
-        <script type="text/javascript" src="js/vue.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script src="js/app.js"></script>
-        <script type="text/javascript" src="js/totp.js"></script>
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-        <script type="text/javascript" src="js/script.js"></script>
-        <script type="text/javascript" src="js/slide.js"></script>
+    <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="js/app.js"></script>
+    <script type="text/javascript" src="js/totp.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/slide.js"></script>
 
 
-    </body>
+</body>
+
 </html>
