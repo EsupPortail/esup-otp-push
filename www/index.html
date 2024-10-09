@@ -62,67 +62,67 @@
                         <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
-                        <div class="page-title" role="heading" aria-level="1">{{ pageTitle }}</div>
+                        <div class="page-title" aria-hidden="true">{{ pageTitle }}</div>
                     </div>
                 </div>
             </nav>
-            <ul id="slide-out" role="navigation" aria-label="Menu principal" class="side-nav fixed" :class="{ open: isMenuOpen }">
+            <ul id="slide-out"  class="side-nav fixed" :class="{ open: isMenuOpen }">
                 <div class="no-padding sidenav-header">
                     <div class="flex1">
-                        <img src="img/logo.png" class="sidenav-logo" alt="">
+                        <img src="img/logo.png" class="sidenav-logo" alt="" aria-hidden="true">
                     </div>
                 </div>
-                <li class="bold" role="menuitem" v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="home" name="home" role="button" tabindex="0" class="nav-link">
-                        <img src="img/home.svg" class="icon" alt="">&emsp;Accueil
-                    </a>
+                <li v-if="totpnb == 0">
+                    <button class="nav-link" v-on:click="navigate" id="home" name="home"  style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/home.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Accueil
+                    </button>
                 </li>
-                <li class="bold" role="menuitem" v-if="totpnb != 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" role="button" tabindex="0" class="nav-link">
-                        <img src="img/totp.svg" class="icon" alt="">&emsp;TOTP
-                    </a>
-                </li>
-                <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="scan" class="nav-link" role="button" tabindex="0">
-                        <img src="img/qrcode.svg" class="icon" alt="">&emsp;Activation QRCode
-                    </a>
-                </li>
-                <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="scanless" name="scanless" class="nav-link" role="button" tabindex="0">
-                        <img src="img/edit.svg" class="icon" alt="">&emsp;Activation manuelle
-                    </a>
-                </li>
-                <li class="bold" role="menuitem" v-if="totpnb == 0">
-                    <a href="#" v-on:click="navigate" id="totp" name="totp" class="nav-link" role="button" tabindex="0">
-                        <img src="img/totp.svg" class="icon" alt="">&emsp;TOTP
-                    </a>
-                </li>
-                <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="help" name="help" class="nav-link" role="button" tabindex="0">
-                        <img src="img/help.svg" class="icon" alt="">&emsp;Aide
-                    </a>
-                </li>
-                <li class="bold" role="menuitem">
-                    <a href="#" v-on:click="navigate" id="param" name="param" class="nav-link" role="button" tabindex="0">
-                        <img src="img/doc.svg" class="icon" alt="">&emsp;Documentation
-                    </a>
-                </li>
-                <div class="divider"></div>
-                <li class="bold" v-for="(values, otpServer) in otpServersObjects" :key="otpServer">
-                    <a href="#" v-on:click="desync(otpServer)" class="nav-link" role="button" tabindex="0">
-                        {{ getName(otpServer) }}
-                        <i class="material-icons" aria-hidden="true">remove_circle</i>
-                    </a>
+                <li  v-if="totpnb != 0">
+                    <button class="nav-link" v-on:click="navigate" id="totp" name="totp" class="nav-link" style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/totp.svg" class="icon" alt="" style="pointer-events: none;">&emsp;TOTP
+                    </button>
                 </li>
                 <li>
-                    <a class="sidenav-close nav-link" href="#" v-on:click="closeMenu" role="button">
+                    <button class="nav-link" v-on:click="scan" style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/qrcode.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Activation QRCode
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" v-on:click="navigate" id="scanless" name="scanless" style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/edit.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Activation manuelle
+                    </button>
+                </li>
+                <li  v-if="totpnb == 0">
+                    <button class="nav-link" v-on:click="navigate" id="totp" name="totp"  style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/totp.svg" class="icon" alt="" style="pointer-events: none;">&emsp;TOTP
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" v-on:click="navigate" id="help" name="help" style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/help.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Aide
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" v-on:click="navigate" id="param" name="param"  style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/doc.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Documentation
+                    </button>
+                </li>
+                <div class="divider"></div>
+                <li v-for="(values, otpServer) in otpServersObjects" :key="otpServer">
+                    <button class="nav-link" v-on:click="desync(otpServer)" class="nav-link" style="background-color: transparent; border: none; color: inherit; outline: none;" :aria-label="'Supprimer le compte ' + getName(otpServer)">
+                        {{ getName(otpServer) }}
+                        <img src="img/round-remove_circle.svg" class="icon-right" alt="">
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-link" class="sidenav-close nav-link" v-on:click="closeMenu" style="background-color: transparent; border: none; color: inherit; outline: none;">
                         <img src="img/close.svg" class="icon" alt="">&emsp;Fermer menu
-                    </a>
+                    </button>
                 </li>
             </ul>
         </header>
         <main>
-            <div class="container" v-show="currentView=='home'">
+            <div class="container scrollable-container" v-show="currentView=='home'">
                 <p v-if="mode=='dev'">
                     gcm_id : {{gcm_id}}
                     model : {{model}}
@@ -198,12 +198,12 @@
                         </div>
                         <div class="card-action">
                             <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-accept" v-on:click="accept"><i
+                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-accept" v-on:click="accept"  role="button" aria-label="Accepter la demande" tabindex="0"><i
                                         class="material-icons right" aria-hidden="true">done</i>accepter</a>
                             </div>
                             <div class="divider"></div>
                             <div class="row">
-                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-reject" v-on:click="reject"><i
+                                <a class="waves-effect waves-light btn btn-large col s12 btn-custom-reject" v-on:click="reject" role="button" aria-label="Refuser la demande" tabindex="0"><i
                                         class="material-icons right" aria-hidden="true">clear</i>refuser</a>
                             </div>
                         </div>
@@ -222,11 +222,11 @@
                             <div class="row">
                                 <a class="waves-effect waves-light btn btn-large col s12 green darken-1" v-on:click="reject"><i
                                         class="material-icons right" aria-hidden="true">done</i>OK</a>
-                            </div>                            
+                            </div>
                         </div>
 		</div>
             </div>
-            <div class="container" v-show="currentView=='scanless'">
+            <div class="container paddingTotp" v-show="currentView=='scanless'">
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="uid-input" v-model="uid_input" type="text" class="validate" autocapitalize="off">
@@ -246,13 +246,12 @@
                     </div>
                 </div>
                 <div class="row" style="margin-bottom: 0;">
-                    <a class="waves-effect waves-light btn btn-large col s12 btn-custom" role="button" v-on:click="scanless">
+                    <button class="waves-effect waves-light btn btn-large col s12 btn-custom" v-on:click="scanless">
                         <i class="material-icons right" aria-hidden="true">done</i>Activer
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="container" v-show="currentView=='totp'">
-                <br />
                 <table>
                     <tr>
                         <td>
@@ -268,17 +267,17 @@
                         </td>
                     </tr>
                 </table>
-                <br />
-                <div id="circleTimer">
+                <div id="circleTimer" style="overflow-y:scroll; overflow-x:hidden; height:calc(100vh - 100px);">
                     <div class="table-container">
-                        <table class="table table-bordered">
-                            <thead class="alert-info"></thead>
-                            <tbody id="result"></tbody>
+                        <table class="table table-bordered" role="presentation">
+                            <thead class="alert-info"  aria-hidden="true"></thead>
+                            <tbody id="result" ></tbody>
+                            <tr role="presentation"><td style="height: 150px;"  aria-hidden="true"></td></tr>
                         </table>
                     </div>
                 </div>
             </div>
-           <div class="container" v-show="currentView=='help'">
+           <div class="container scrollable-container" v-show="currentView=='help'">
             <!-- Slideshow container -->
 <div class="slideshow-container">
     <a class="prev" onclick="plusSlides(-1)" role="button" aria-label="Slide précédente">
@@ -359,7 +358,7 @@
 <span class="dot" onclick="currentSlide(6)"></span>
 </div>
        </div>
-       <div class="container" v-show="currentView=='param'">
+       <div class="container scrollable-container" v-show="currentView=='param'">
            <ul class="collapsible">
                <li>
                  <div class="collapsible-header"><i class="material-icons" aria-hidden="true">description</i>Notification (Esup Auth)</div>
@@ -462,7 +461,7 @@
                        </div>
                  </li>
              </ul></div>
-            <div class="container" v-show="currentView=='totpAddAccount'">
+            <div class="container paddingTotp" v-show="currentView=='totpAddAccount'">
                 <div class="row" style="margin-bottom: 0;">
                     <div class="input-field col s12">
                         <input id="account2" type="text" class="validate">
@@ -485,12 +484,12 @@
                 <ul class="collection">
                     <li>
                         <a href="#" class="collection-item accessible-icon-text" role="button" aria-label="Ajouter un compte" v-on:click="navigate" id="totpAddAccount" name="totpAddAccount">
-                            <i class="fa fa-plus-circle fa-lg accessible-icon"></i> Ajouter un compte
+                            <i class="fa fa-plus-circle fa-lg accessible-icon" style="pointer-events: none;"></i> Ajouter un compte
                         </a>
                     </li>
                     <li>
                         <a href="#" class="collection-item accessible-icon-text" role="button" aria-label="Scanner un compte" v-on:click="navigate" onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan" name="totp">
-                            <i class="fa fa-camera fa-lg accessible-icon"></i> Scan
+                            <i class="fa fa-camera fa-lg accessible-icon" style="pointer-events: none;"></i> Scan
                         </a>
                     </li>
                 </ul>

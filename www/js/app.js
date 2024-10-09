@@ -44,32 +44,32 @@ var app = new Vue({
     },
 
     methods: {
+    handleAddAccountAndNavigate: function () {
+                this.addAccount();
+                this.navigate();
+            },
     openMenu: function () {
-                              this.isMenuOpen = true;
-                              this.$nextTick(() => {
-                                                    document.getElementById('navButton').setAttribute('aria-expanded', 'true');
-                                                   });
-                                                   if (!document.getElementById("sidenav-overlay")) {
-                                                           const overlay = document.createElement('div');
-                                                           overlay.id = 'sidenav-overlay';
-                                                           document.body.appendChild(overlay);
+            if (this.isMenuOpen) return;
+            this.isMenuOpen = true;
+            this.$nextTick(() => {
+                document.getElementById('navButton').setAttribute('aria-expanded', 'true');
+                const sidenav = document.getElementById("slide-out");
+                sidenav.setAttribute('aria-hidden', 'false'); // Le menu devient accessible
+                sidenav.classList.add("open");
+            });
+        },
 
-                                                           // Ajout d'un gestionnaire d'événements pour fermer le menu lors du clic sur l'overlay
-                                                           overlay.addEventListener('click', () => {
-                                                               this.closeMenu();
-                                                           });
-                                                       }
-                          },
-                closeMenu: function () {
-                            this.isMenuOpen = false;
-                            this.$nextTick(() => {
-                                                  document.getElementById('navButton').setAttribute('aria-expanded', 'false');
-                                                 });
-                                                 const overlay = document.getElementById("sidenav-overlay");
-                                                     if (overlay) {
-                                                         overlay.remove();
-                                                     }
-                        },
+        closeMenu: function () {
+            if (!this.isMenuOpen) return;
+            this.isMenuOpen = false;
+            this.$nextTick(() => {
+                document.getElementById('navButton').setAttribute('aria-expanded', 'false');
+                const sidenav = document.getElementById("slide-out");
+                sidenav.setAttribute('aria-hidden', 'true'); // Le menu est caché des lecteurs d'écran
+                sidenav.classList.remove("open");
+                if (document.getElementById("sidenav-overlay")) $('#navButton').click();
+            });
+        },
     checkTotp: function () {
       this.totp = localStorage.getItem('totpObjects');
       if (this.totp == "{}" || this.totp == undefined)
@@ -128,11 +128,13 @@ var app = new Vue({
 
         navigate: function (event) {
             this.currentView = event.target.name;
-            $('a').parent().removeClass('active');
+            $('button').parent().removeClass('active');
             $('#' + event.target.name).parent().addClass('active');
             if (document.getElementById("sidenav-overlay"))$('#navButton').click();
             this.checkTotp();
-            this.closeMenu(); // Ferme le menu après la navigation
+                        setTimeout(() => {
+                                            this.closeMenu();
+                                        }, 300);
         },
         push_init: function () {
                     var self = this;

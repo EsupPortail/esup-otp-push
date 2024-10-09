@@ -27,13 +27,13 @@ async function populateTable()  {
             }
          var valTotp = code;
          var idAccount = totpObjects[key];
-         table += "<tr><td style='border-bottom:1px dotted grey'>" +
-                      "<button class='button-delete' aria-label='Supprimer' onclick=\"deleteTotp('" + key + "')\">" +
-                      "<i class='fa fa-trash-o fa-2x' aria-hidden='true'></i>" +
-                      "</button>&emsp;" +
-                      "<span style='font-size:1.5em' id=" + idAccount + " aria-label='Nom du compte: " + totpObjects[key] + "'>" + totpObjects[key] + "</span>" +
-                      "<br/><span style='font-size:2em' id=" + idAccount + " aria-label='Code généré: " + valTotp + "'>" + valTotp + "</span></td></tr>";
-                 }
+        table += "<tr role='presentation'><td role='presentation' style='border-bottom:1px dotted grey'>" +
+                                       "<button class='button-delete' aria-label='Supprimer' onclick=\"deleteTotp('" + key + "')\">" +
+                                       "<i class='fa fa-trash-o' style='font-size: 1.5em;' aria-hidden='true'></i>" +  <!-- Réduit la taille des icônes -->
+                                       "</button>&emsp;" +
+                                       "<span style='font-size:1.2em;' id=" + idAccount + " aria-label='Nom du compte: " + totpObjects[key] + "'>" + totpObjects[key] + "</span>" +  <!-- Réduit la taille du texte -->
+                                       "<br/><span style='font-size:1.5em;' id=" + idAccount + " aria-label='Code généré: " + valTotp + "'>" + valTotp + "</span></td></tr>";
+        }
         document.getElementById("result").innerHTML = table;
 }
 

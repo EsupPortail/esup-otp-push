@@ -1,5 +1,9 @@
-html,
-body,
+html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 #app {
     position: relative;
     height: 100%;
@@ -20,11 +24,11 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 5rem;
+    height: 4rem;
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
-    padding: 0 2rem;
-    margin-top: 50px;
+    padding: 0 1rem;
+    margin-top: 10px;
 }
 
 .top-nav {
@@ -33,19 +37,46 @@ footer {
     -webkit-font-smoothing: antialiased;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1024px) {
     header,
     main,
     footer {
         padding-left: 0;
     }
+
+    .side-nav {
+        display: block;
+    }
+
+    .nav-wrapper {
+        justify-content: space-between;
+    }
 }
 
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    /* Spécifique aux tablettes comme l'iPad */
     .nav-wrapper {
-        display: initial;
-        align-items: initial;
-        justify-content: initial;
+        margin-top: 0;
+        padding: 0 1rem;
+    }
+
+}
+@media only screen and (orientation: landscape) and (max-width: 1024px) {
+    .sidenav-trigger {
+        display: block;
+    }
+    .side-nav {
+        display: none;
+    }
+
+    .side-nav.open {
+        display: block;
+    }
+
+    header,
+    main,
+    footer {
+        padding-left: 0;
     }
 }
 
@@ -98,25 +129,46 @@ nav a {
     right: 5px;
 }
 
-.side-nav li {
-    padding: 10px 7px;
+.side-nav button {
+    padding: 2px 0px;
+}
+.scrollable-container {
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+.totpAddAccountMar {
+    margin-bottom: 20px;
+}
+.paddingTotp {
+    padding-top: 40px;
 }
 
-/* Table container for scroll */
-.table-container {
-    max-height: 400px; /* Define a maximum height */
-    overflow-y: auto; /* Enable vertical scrolling */
+#circleTimer {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 400px;
+    position: relative;
 }
 
-.table {
-    width: 100%;
-    table-layout: fixed;
+
+#circleTimer::-webkit-scrollbar {
+    width: 12px;
 }
 
-.table td,
-.table th {
-    word-wrap: break-word;
+#circleTimer::-webkit-scrollbar-track {
+    background: transparent;
 }
+
+#circleTimer::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 128, 128, 0.5);
+    border-radius: 4px;
+    border: 3px solid transparent;
+}
+
+#circleTimer::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(128, 128, 128, 0.8);
+}
+
 
 /*****************************************
 Switch
@@ -210,10 +262,7 @@ body.IE7 .Switch.Round {
     background-color: #818181;
 }
 
-/*
-  When creating your CSS selector,
-  change "brown" to something of your choosing
-  */
+
 .addbtn {
     display: flex;
     align-items: center;
@@ -298,13 +347,13 @@ ul.collection {
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-accept {
-    background-color: #004d40 !important; /* Darker green */
-    color: #ffffff !important; /* White text */
+    background-color: #004d40 !important;
+    color: #ffffff !important;
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-reject {
-    background-color: #b71c1c !important; /* Darker red */
-    color: #ffffff !important; /* White text */
+    background-color: #b71c1c !important;
+    color: #ffffff !important;
 }
 
 .side-nav {
@@ -366,15 +415,16 @@ ul.collection {
 }
 
 .nav-link {
-    display: flex;
+    display: block;
     align-items: center;
     padding: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 1rem;
+    width: 100%;
+    text-align: left;
 }
-
 .icon {
     width: 2rem;
     height: 2rem;
@@ -382,7 +432,13 @@ ul.collection {
     display: inline-block;
     vertical-align: middle;
 }
-
+.icon-right {
+   width: 2rem;
+     height: 2rem;
+     display: inline-block;
+     vertical-align: middle;
+     margin-left: 0.5rem;
+  }
 .sidenav-logo {
     max-width: 6rem;
     text-align: center;
