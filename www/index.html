@@ -98,6 +98,11 @@
                         <img src="img/edit.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Activation manuelle
                     </button>
                 </li>
+                <li>
+                    <button v-on:click="navigate" id="nfc" name="nfc" class="nav-link" role="button" style="background-color: transparent; border: none; color: inherit; outline: none;">
+                        <img src="img/nfc.svg" class="icon" alt="">&emsp;Authentification NFC
+                    </button>
+                </li>
                 <li  v-if="totpnb == 0">
                     <button class="nav-link" v-on:click="navigate" id="totp" name="totp"  style="background-color: transparent; border: none; color: inherit; outline: none;">
                         <img src="img/totp.svg" class="icon" alt="" style="pointer-events: none;">&emsp;TOTP
