@@ -144,3 +144,12 @@ function totp_scan(event){
       populateTable();
        addT();
 }
+/* NFC */
+function initNfc(){
+  if (typeof nfc !== 'undefined') {
+    Materialize.toast('<div role="alert">NFC plugin is available</div>', 4000);
+    alert('NFC plugin is available');
+  } else {
+    Materialize.toast('<div role="alert">NFC plugin is not available</div>', 4000);
+  }
+}
