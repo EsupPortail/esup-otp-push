@@ -25,7 +25,7 @@ footer {
     align-items: center;
     justify-content: center;
     height: 4rem;
-    background-color: #ffffff;
+    background-color: inherit;
     border-bottom: 1px solid #e0e0e0;
     padding: 0 1rem;
     margin-top: 10px;
@@ -549,4 +549,52 @@ ul.collection {
 }
 .text-center {
   text-align: center !important;
+}
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode #slide-out li {
+  color: #e0e0e0;
+  background-color: #333;
+}
+body.dark-mode #slide-out li.active {
+  color: #e0e0e0;
+  background-color: #121212;
+}
+body.dark-mode li.collection-item{
+  color: #e0e0e0;
+  background-color: #1e1e1e !important;
+}
+body.dark-mode li.collection-item p {
+  color: #e0e0e0 !important;
+}
+
+.card.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.navbar.dark-mode {
+  background-color: #333;
+  color: #e0e0e0;
+}
+.side-nav.dark-mode {
+  background-color: #333 !important;
+  color: #e0e0e0 !important;
+}
+.page-title.dark-mode {
+  color: #e0e0e0;
+}
+
+/* Ajuste les boutons */
+.btn.dark-mode {
+  background-color: #424242;
+  color: #fff;
+}
+
+.btn.dark-mode:hover {
+  background-color: #616161;
 }

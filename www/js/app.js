@@ -905,6 +905,7 @@ var app = new Vue({
       });
     },
     scanTagForEstablishment: function (etablishmentUrl, numeroId) {
+      console.log('----ETAPE SCAN TAG----');
       nfc
         .scanTag()
         .then(async (tag) => {

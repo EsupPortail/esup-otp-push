@@ -29,9 +29,9 @@ async function populateTable()  {
          var idAccount = totpObjects[key];
         table += "<tr role='presentation'><td role='presentation' style='border-bottom:1px dotted grey'>" +
                                        "<button class='button-delete' aria-label='Supprimer' onclick=\"deleteTotp('" + key + "')\">" +
-                                       "<i class='fa fa-trash-o' style='font-size: 1.5em;' aria-hidden='true'></i>" +
+                                       "<i class='fa fa-trash-o' style='font-size: 1.5em;' aria-hidden='true'></i>" +  /*Réduit la taille des icônes*/
                                        "</button>&emsp;" +
-                                       "<span style='font-size:1.2em;' id=" + idAccount + " aria-label='Nom du compte: " + totpObjects[key] + "'>" + totpObjects[key] + "</span>" +
+                                       "<span style='font-size:1.2em;' id=" + idAccount + " aria-label='Nom du compte: " + totpObjects[key] + "'>" + totpObjects[key] + "</span>" +  /*Réduit la taille du texte*/
                                        "<br/><span style='font-size:1.5em;' id=" + idAccount + " aria-label='Code généré: " + valTotp + "'>" + valTotp + "</span></td></tr>";
         }
         document.getElementById("result").innerHTML = table;
@@ -148,8 +148,43 @@ function totp_scan(event){
 function initNfc(){
   if (typeof nfc !== 'undefined') {
     Materialize.toast('<div role="alert">NFC plugin is available</div>', 4000);
-    alert('NFC plugin is available');
   } else {
     Materialize.toast('<div role="alert">NFC plugin is not available</div>', 4000);
   }
 }
+/* DarkMode */
+document.addEventListener('DOMContentLoaded', function () {
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  
+  // Charger l'état du dark mode depuis le localStorage si défini
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+    switchDarkModeOnElements(true); // Active le dark mode sur les autres éléments
+  }
+
+  // Basculer entre le mode sombre et le mode clair
+  darkModeToggle.addEventListener('change', function () {
+    if (this.checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'enabled'); // Sauvegarder le choix
+      switchDarkModeOnElements(true); // Activer le mode sombre sur les autres éléments
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'disabled'); // Sauvegarder le choix
+      switchDarkModeOnElements(false); // Désactiver le mode sombre
+    }
+  });
+
+  function switchDarkModeOnElements(isDarkMode) {
+    initNfc();
+    const elements = document.querySelectorAll('.card, .navbar, .btn, .page-title, .side-nav');
+    elements.forEach(el => {
+      if (isDarkMode) {
+        el.classList.add('dark-mode');
+      } else {
+        el.classList.remove('dark-mode');
+      }
+    });
+  }
+});
