@@ -156,6 +156,7 @@ function initNfc(){
 document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('darkModeToggle');
   
+  
   // Charger l'état du dark mode depuis le localStorage si défini
   if (localStorage.getItem('darkMode') === 'enabled') {
     document.body.classList.add('dark-mode');

@@ -42,6 +42,7 @@ var app = new Vue({
   created: function () {
     document.addEventListener("deviceready", this.init, false);
     document.addEventListener("resume", this.initAuth, false);
+    this.loadStoredEstablishments(); // Charger les établissements stockés
   },
 
   methods: {
@@ -173,6 +174,10 @@ var app = new Vue({
             $('button').parent().removeClass('active');
             $('#' + event.target.name).parent().addClass('active');
             if (document.getElementById("sidenav-overlay"))$('#navButton').click();
+            // si l'utilisateur veut se déplacer vers Authentification NFC et qu'il n'y a qu'un seul établissement
+            if (event.target.name == "nfc" && this.establishments.length == 1) {
+              this.scanTagForEstablishment(this.establishments[0].url, this.establishments[0].numeroId);
+            }
             this.checkTotp();
                         setTimeout(() => {
                                             this.closeMenu();
