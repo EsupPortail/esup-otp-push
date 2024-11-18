@@ -911,35 +911,70 @@ var app = new Vue({
     },
     scanTagForEstablishment: function (etablishmentUrl, numeroId) {
       console.log('----ETAPE SCAN TAG----');
-      nfc
-        .scanTag()
-        .then(async (tag) => {
-          let cardId = nfc.bytesToHexString(tag.id);
-          let cardIdArr = cardId.split(" ");
-          // Le tag NFC a été scanné avec succès
-          console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
-
-          this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
-            .then((response) => {
-              console.log("Réponse du serveur:", response);
-              this.extractData(response);
-              // on verifie que dans establishments on a pas déjà cette établissement
-              if (
-                !this.establishments.find(
-                  (establishment) => establishment.url === etablishmentUrl
-                )
-              ) {
-                this.loadStoredEstablishments();
-              }
-            })
-            .catch((error) => {
-              console.error("Erreur lors de l'envoi des données:", error);
-            });
-        })
-        .catch((err) => {
-          // En cas d'échec lors du scan NFC
-          alert(`Erreur lors du scan NFC: ${err}`);
-        });
+      if(device.platform === 'Android') {
+        nfc
+        .addTagDiscoveredListener(
+          (tag) => {
+            let cardId = nfc.bytesToHexString(tag.tag.id);
+            let cardIdArr = cardId.split(" ");
+            // Le tag NFC a été scanné avec succès
+            console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
+  
+            this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
+              .then((response) => {
+                console.log("Réponse du serveur:", response);
+                this.extractData(response);
+                // on verifie que dans establishments on a pas déjà cette établissement
+                if (
+                  !this.establishments.find(
+                    (establishment) => establishment.url === etablishmentUrl
+                  )
+                ) {
+                  this.loadStoredEstablishments();
+                }
+              })
+              .catch((error) => {
+                console.error("Erreur lors de l'envoi des données:", error);
+              });
+          },
+          (error) => {}
+        )
+      }
+      if(device.platform === 'iOS') {
+        nfc
+        .scanTag().then(
+          (tag) => {
+            let cardId = nfc.bytesToHexString(tag.id);
+            let cardIdArr = cardId.split(" ");
+            // Le tag NFC a été scanné avec succès
+            console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
+  
+            this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
+              .then((response) => {
+                console.log("Réponse du serveur:", response);
+                this.extractData(response);
+                // on verifie que dans establishments on a pas déjà cette établissement
+                if (
+                  !this.establishments.find(
+                    (establishment) => establishment.url === etablishmentUrl
+                  )
+                ) {
+                  this.loadStoredEstablishments();
+                }
+              })
+              .catch((error) => {
+                console.error("Erreur lors de l'envoi des données:", error);
+              });
+          },
+          (error) => {
+            Materialize.toast(
+              "Erreur lors de la connexion au tag NFC "+error,
+              4000,
+              "error"
+            );
+          }
+        )
+      }
     },
     scanQrCode: function () {
       var self = this;

@@ -23,6 +23,7 @@
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="android-manifest/uses-permission/[@android:name='android.permission.CAMERA']/@android:name" delete="true" />
     <preference name="orientation" value="default" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
