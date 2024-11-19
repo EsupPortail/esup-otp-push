@@ -721,7 +721,7 @@
             </div>
             <div class="container" v-show="currentView=='nfc'">
                 <!-- Sur cette ligne le bouton du scan du QrCode. Il s'affiche à droite -->
-                <div class="row" style="margin-bottom: 8px; margin-top: 8px;">
+                <div class="row" style="margin-bottom: 8px; margin-top: 15px;">
                     <a class="circle-btn right" role="button" v-on:click="scanQrCode">
                         <img src="img/scan-qr.svg" class="icon-custom" alt="">
                     </a>
@@ -752,14 +752,15 @@
                 <div class="overlay" :class="{ active: showBottomSheet }" v-on:click="hideBottomSheet()"></div> <!-- overlay -->
                 <div id="bottom-sheet" class="bottom-sheet" :class="{ active: showBottomSheet }">
                     <div class="sheet-header">
-                        <h3>Scannez votre carte NFC</h3>
-                    </div>
-                    <div class="sheet-body">
-                        <p>Placez votre carte sous l'appareil.</p>
+                        <h5>Scannez votre carte NFC</h5>
                         <div v-show="showSuccess" class="success-animation">
                             <i class="material-icons">check_circle</i>
                             <p>Scan réussi!</p>
                         </div>
+                    </div>
+                    <div class="sheet-body">
+                        <img src="img/Animation.gif" alt="Scan Animation" class="scan-animation">
+                        <p>Placez votre carte sous l'appareil.</p>
                     </div>
                 </div>
             </div>
