@@ -51,6 +51,7 @@ var app = new Vue({
                 this.navigate();
             },
     scanTag: function () {
+      //scanTag() ne fonctionne que sur iOS
       nfc
         .scanTag()
         .then(async (tag) => {
@@ -77,14 +78,6 @@ var app = new Vue({
           // En cas d'échec lors du scan NFC
           alert(`Erreur lors du scan NFC: ${err}`);
         });
-    },
-    initializeApp: async function initializeApp() {
-      let esupNfcTagUrl = localStorage.getItem("esupNfcTagUrl");
-      if (!esupNfcTagUrl) {
-        esupNfcTagUrl = prompt("Veuillez entrer l'URL du serveur NFC:");
-        //localStorage.setItem("esupNfcTagUrl", esupNfcTagUrl);
-      }
-      console.log("Connecting to", esupNfcTagUrl);
     },
     openMenu: function () {
             if (this.isMenuOpen) return;
@@ -758,10 +751,10 @@ var app = new Vue({
     desfireHttpRequestAsync: async function (param1, param2) {
       try {
         // Récupérer l'ID stocké localement
-        const numeroId = "iphone-de-test";
+        const numeroId = "[PHONE_ID]"; // Renseigner ici l'ID du smartphone
 
         // Récupérer l'URL du serveur NFC
-        const esupNfcTagServerUrl = "esupnfctag-ppd.univ-paris1.fr";
+        const esupNfcTagServerUrl = "[URL_SERVEUR_NFC]"; // Renseigner ici l'URL du serveur
 
         // Construire l'URL de la requête avec les paramètres
         const url = `https://${esupNfcTagServerUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
@@ -855,8 +848,6 @@ var app = new Vue({
     sendCsnToServer: async function (cardIdArr, etablissementUrl, numeroId) {
       const url = `${etablissementUrl}/csn-ws?csn=${cardIdArr}&arduinoId=${numeroId}`;
       console.log("Requesting URL: " + url);
-      //const url = `https://esupnfctag-ppd.univ-paris1.fr/csn-ws?csn=${cardIdArr}&arduinoId=iphone-de-test`;
-      //console.log("Requesting URL: " + url);
 
       try {
         const response = await new Promise((resolve, reject) => {

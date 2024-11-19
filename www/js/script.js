@@ -178,7 +178,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function switchDarkModeOnElements(isDarkMode) {
-    initNfc();
     const elements = document.querySelectorAll('.card, .navbar, .btn, .page-title, .side-nav');
     elements.forEach(el => {
       if (isDarkMode) {
