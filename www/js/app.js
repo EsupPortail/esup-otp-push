@@ -38,6 +38,8 @@ var app = new Vue({
     code_input: undefined,
     host_input: undefined,
     establishments: [],
+    showBottomSheet: false,
+    showSuccess: false,
   },
   created: function () {
     document.addEventListener("deviceready", this.init, false);
@@ -47,9 +49,9 @@ var app = new Vue({
 
   methods: {
     handleAddAccountAndNavigate: function () {
-                this.addAccount();
-                this.navigate();
-            },
+      this.addAccount();
+      this.navigate();
+    },
     scanTag: function () {
       //scanTag() ne fonctionne que sur iOS
       nfc
@@ -65,7 +67,6 @@ var app = new Vue({
           this.sendCsnToServer(cardIdArr)
             .then((response) => {
               console.log("Réponse du serveur:", response);
-              
             })
             .catch((error) => {
               console.error("Erreur lors de l'envoi des données:", error);
@@ -80,27 +81,31 @@ var app = new Vue({
         });
     },
     openMenu: function () {
-            if (this.isMenuOpen) return;
-            this.isMenuOpen = true;
-            this.$nextTick(() => {
-                document.getElementById('navButton').setAttribute('aria-expanded', 'true');
-                const sidenav = document.getElementById("slide-out");
-                sidenav.setAttribute('aria-hidden', 'false'); // Le menu devient accessible
-                sidenav.classList.add("open");
-            });
-        },
+      if (this.isMenuOpen) return;
+      this.isMenuOpen = true;
+      this.$nextTick(() => {
+        document
+          .getElementById("navButton")
+          .setAttribute("aria-expanded", "true");
+        const sidenav = document.getElementById("slide-out");
+        sidenav.setAttribute("aria-hidden", "false"); // Le menu devient accessible
+        sidenav.classList.add("open");
+      });
+    },
 
-        closeMenu: function () {
-            if (!this.isMenuOpen) return;
-            this.isMenuOpen = false;
-            this.$nextTick(() => {
-                document.getElementById('navButton').setAttribute('aria-expanded', 'false');
-                const sidenav = document.getElementById("slide-out");
-                sidenav.setAttribute('aria-hidden', 'true'); // Le menu est caché des lecteurs d'écran
-                sidenav.classList.remove("open");
-                if (document.getElementById("sidenav-overlay")) $('#navButton').click();
-            });
-        },
+    closeMenu: function () {
+      if (!this.isMenuOpen) return;
+      this.isMenuOpen = false;
+      this.$nextTick(() => {
+        document
+          .getElementById("navButton")
+          .setAttribute("aria-expanded", "false");
+        const sidenav = document.getElementById("slide-out");
+        sidenav.setAttribute("aria-hidden", "true"); // Le menu est caché des lecteurs d'écran
+        sidenav.classList.remove("open");
+        if (document.getElementById("sidenav-overlay")) $("#navButton").click();
+      });
+    },
     checkTotp: function () {
       this.totp = localStorage.getItem("totpObjects");
       if (this.totp == "{}" || this.totp == undefined) {
@@ -162,26 +167,32 @@ var app = new Vue({
       }
     },
 
-        navigate: function (event) {
-            this.currentView = event.target.name;
-            $('button').parent().removeClass('active');
-            $('#' + event.target.name).parent().addClass('active');
-            if (document.getElementById("sidenav-overlay"))$('#navButton').click();
-            // si l'utilisateur veut se déplacer vers Authentification NFC et qu'il n'y a qu'un seul établissement
-            if (event.target.name == "nfc" && this.establishments.length == 1) {
-              this.scanTagForEstablishment(this.establishments[0].url, this.establishments[0].numeroId);
-            }
-            this.checkTotp();
-                        setTimeout(() => {
-                                            this.closeMenu();
-                                        }, 300);
-        },
-        push_init: function () {
-                    var self = this;
-                    this.push = PushNotification.init({
-                        "android": {"senderID": "703115166283"},
-                        "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {}
-                    });
+    navigate: function (event) {
+      this.currentView = event.target.name;
+      $("button").parent().removeClass("active");
+      $("#" + event.target.name)
+        .parent()
+        .addClass("active");
+      if (document.getElementById("sidenav-overlay")) $("#navButton").click();
+      // si l'utilisateur veut se déplacer vers Authentification NFC et qu'il n'y a qu'un seul établissement
+      if (event.target.name == "nfc" && this.establishments.length == 1) {
+        this.scanTagForEstablishment(
+          this.establishments[0].url,
+          this.establishments[0].numeroId
+        );
+      }
+      this.checkTotp();
+      setTimeout(() => {
+        this.closeMenu();
+      }, 300);
+    },
+    push_init: function () {
+      var self = this;
+      this.push = PushNotification.init({
+        android: { senderID: "703115166283" },
+        ios: { alert: "true", badge: "true", sound: "true" },
+        windows: {},
+      });
 
       this.push.on("registration", function (data) {
         if (self.gcm_id == null) {
@@ -900,17 +911,23 @@ var app = new Vue({
         }
       });
     },
+    hideBottomSheet: function() {
+      this.showBottomSheet = false;
+      this.showSuccess = false;
+    },
     scanTagForEstablishment: function (etablishmentUrl, numeroId) {
-      console.log('----ETAPE SCAN TAG----');
-      if(device.platform === 'Android') {
-        nfc
-        .addTagDiscoveredListener(
+      console.log("----ETAPE SCAN TAG----");
+      if (device.platform === "Android") {
+        // Affiche le bottom sheet
+        this.showBottomSheet = true;
+        nfc.addTagDiscoveredListener(
           (tag) => {
             let cardId = nfc.bytesToHexString(tag.tag.id);
             let cardIdArr = cardId.split(" ");
+            this.showSuccess = true;
             // Le tag NFC a été scanné avec succès
             console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
-  
+
             this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
               .then((response) => {
                 console.log("Réponse du serveur:", response);
@@ -926,20 +943,28 @@ var app = new Vue({
               })
               .catch((error) => {
                 console.error("Erreur lors de l'envoi des données:", error);
+                this.showBottomSheet = false;
+                this.showSuccess = false;
+              })
+              .finally(() => {
+                // Fermer le bottom sheet après une animation de 1,5s
+                setTimeout(() => {
+                  this.showBottomSheet = false;
+                  this.showSuccess = false;
+                }, 2500);
               });
           },
           (error) => {}
-        )
+        );
       }
-      if(device.platform === 'iOS') {
-        nfc
-        .scanTag().then(
+      if (device.platform === "iOS") {
+        nfc.scanTag().then(
           (tag) => {
             let cardId = nfc.bytesToHexString(tag.id);
             let cardIdArr = cardId.split(" ");
             // Le tag NFC a été scanné avec succès
             console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
-  
+
             this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
               .then((response) => {
                 console.log("Réponse du serveur:", response);
@@ -959,12 +984,12 @@ var app = new Vue({
           },
           (error) => {
             Materialize.toast(
-              "Erreur lors de la connexion au tag NFC "+error,
+              "Erreur lors de la connexion au tag NFC " + error,
               4000,
               "error"
             );
           }
-        )
+        );
       }
     },
     scanQrCode: function () {
