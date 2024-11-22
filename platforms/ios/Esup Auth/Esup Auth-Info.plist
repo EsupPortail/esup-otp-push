@@ -24,8 +24,6 @@
 	<string>1.1.7</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NFCReaderUsageDescription</key>
-	<string>Read NFC Tags</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -52,5 +50,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NFCReaderUsageDescription</key>
+	<string>Read NFC Tags</string>
 </dict>
 </plist>
