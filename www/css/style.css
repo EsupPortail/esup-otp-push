@@ -313,7 +313,7 @@ ul.collection {
 }
 
 #circle1 {
-  stroke: #0288d1;
+  stroke: #0055cc;
   stroke-linecap: butt;
   fill: transparent;
 }
@@ -368,7 +368,6 @@ ul.collection {
 /* Couleur d'icône plus accessible */
 .accessible-icon {
   color: #0055cc;
-  background-color: #ffffff;
   border-radius: 50%;
   padding: 10px;
 }
@@ -571,6 +570,34 @@ body.dark-mode li.collection-item{
 body.dark-mode li.collection-item p {
   color: #e0e0e0 !important;
 }
+body.dark-mode .switch label input[type=checkbox]:checked+.lever:after {
+  background-color: #0055cc !important;
+}
+body.dark-mode .switch label .lever {
+  background-color: #4096e7 !important;
+}
+body.dark-mode .collection .collection-item{
+  background-color: transparent !important;
+}
+body.dark-mode #totpAddAccount, #totpAddAccountScan {
+  color: #ffffff !important;
+}
+body.dark-mode .collapsible-header {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+body.dark-mode .collapsible-body .tabs {
+  background-color: transparent !important;
+}
+body.dark-mode .circle-btn {
+  background-color: transparent !important;
+}
+body.dark-mode .circle-btn img.icon-custom {
+  filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg) brightness(114%) contrast(112%) !important;
+}
+body.dark-mode .text, .next, .prev {
+  color: #e0e0e0 !important;
+}
 
 .card.dark-mode {
   background-color: #1e1e1e;
@@ -581,7 +608,8 @@ body.dark-mode li.collection-item p {
   background-color: #333;
   color: #e0e0e0;
 }
-.side-nav.dark-mode {
+
+body.dark-mode ul#slide-out {
   background-color: #333 !important;
   color: #e0e0e0 !important;
 }

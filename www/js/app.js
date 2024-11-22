@@ -42,6 +42,7 @@ var app = new Vue({
     showSuccess: false,
   },
   created: function () {
+    this.checkTotp();
     document.addEventListener("deviceready", this.init, false);
     document.addEventListener("resume", this.initAuth, false);
     this.loadStoredEstablishments(); // Charger les établissements stockés
@@ -130,7 +131,6 @@ var app = new Vue({
       this.requestNotificationPermission();
       this.push_init();
       this.initAuth();
-      this.checkTotp();
     },
     requestNotificationPermission: function () {
       if (this.platform === "Android" && parseInt(device.version) >= 13) {

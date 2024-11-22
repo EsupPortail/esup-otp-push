@@ -156,7 +156,6 @@ function initNfc(){
 document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('darkModeToggle');
   
-  
   // Charger l'état du dark mode depuis le localStorage si défini
   if (localStorage.getItem('darkMode') === 'enabled') {
     document.body.classList.add('dark-mode');
@@ -178,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function switchDarkModeOnElements(isDarkMode) {
-    const elements = document.querySelectorAll('.card, .navbar, .btn, .page-title, .side-nav');
+    const elements = document.querySelectorAll('.card, .navbar, .btn, .page-title');
     elements.forEach(el => {
       if (isDarkMode) {
         el.classList.add('dark-mode');
