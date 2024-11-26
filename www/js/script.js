@@ -191,9 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
       switchDarkModeOnElements(false); // Désactiver le mode sombre
     }
   });
-  console.log(prefersDarkScheme);
-  console.log(savedPreference);
-  console.log(darkModeToggle.checked);
 
   if (darkModeToggle.checked) {
     darkModeToggle.dispatchEvent(new Event('change'));
@@ -215,6 +212,42 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       darkModeToggle.checked = false;
       darkModeToggle.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+document.querySelectorAll(".swipe-container").forEach((container, index) => {
+  let startX;
+  const swipeContent = container.querySelector(".swipe-content");
+  const swipeDelete = container.querySelector(".swipe-delete");
+
+  container.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  container.addEventListener("touchmove", (e) => {
+    const currentX = e.touches[0].clientX;
+    const deltaX = startX - currentX;
+
+    if (deltaX > 0) {
+      swipeContent.style.transform = `translateX(-${Math.min(deltaX, 100)}px)`;
+    }
+  });
+
+  container.addEventListener("touchend", (e) => {
+    const deltaX = startX - e.changedTouches[0].clientX;
+
+    if (deltaX > 80) {
+      // Atteint le seuil pour supprimer
+      swipeContent.style.transform = "translateX(-100%)";
+      swipeDelete.classList.add("success");
+      // Appeler la méthode Vue pour supprimer l'élément
+      setTimeout(() => {
+        app.removeEstablishment(index); // Appelle une méthode Vue
+      }, 1000); // Supprime après 1 seconde
+    } else {
+      // Annule le swipe si le seuil n'est pas atteint
+      swipeContent.style.transform = "translateX(0)";
     }
   });
 });

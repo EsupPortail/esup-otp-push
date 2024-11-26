@@ -197,7 +197,7 @@ var app = new Vue({
       this.push.on("registration", function (data) {
         if (self.gcm_id == null) {
           self.gcm_id = data.registrationId;
-          this.storage.setItem("gcm_id", self.gcm_id);
+          self.storage.setItem("gcm_id", self.gcm_id);
         } else if (self.gcm_id != data.registrationId) {
           for (otpServer in this.otpServersObjects)
             self.refresh(
@@ -208,7 +208,7 @@ var app = new Vue({
               data.registrationId
             );
           self.gcm_id = data.registrationId;
-          this.storage.setItem("gcm_id", self.gcm_id);
+          self.storage.setItem("gcm_id", self.gcm_id);
         }
       });
 
@@ -858,7 +858,7 @@ var app = new Vue({
     },
     sendCsnToServer: async function (cardIdArr, etablissementUrl, numeroId) {
       const url = `${etablissementUrl}/csn-ws?csn=${cardIdArr}&arduinoId=${numeroId}`;
-      console.log("Requesting URL: " + url);
+      //console.log("Requesting URL: " + url);
 
       try {
         const response = await new Promise((resolve, reject) => {
@@ -868,7 +868,6 @@ var app = new Vue({
             {}, // en-têtes supplémentaires
             (response) => {
               // Succès
-              console.log("Réponse du serveur: ", response);
               resolve(response);
             },
             (error) => {
@@ -899,6 +898,11 @@ var app = new Vue({
 
           console.log("Statut : " + status);
           console.log("Utilisateur : " + userName);
+        } else{
+          Materialize.toast(
+            '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>', 
+            5000
+          );
         }
       } else {
         console.error("Réponse du serveur invalide.");
@@ -931,7 +935,6 @@ var app = new Vue({
 
             this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
               .then((response) => {
-                console.log("Réponse du serveur:", response);
                 this.extractData(response);
                 // on verifie que dans establishments on a pas déjà cette établissement
                 if (
@@ -955,7 +958,9 @@ var app = new Vue({
                 }, 2500);
               });
           },
-          (error) => {}
+          (error) => {
+            console.error("Erreur lors du scan NFC :", error);
+          }
         );
       }
       if (device.platform === "iOS") {
@@ -984,11 +989,7 @@ var app = new Vue({
               });
           },
           (error) => {
-            Materialize.toast(
-              "Erreur lors de la connexion au tag NFC " + error,
-              4000,
-              "error"
-            );
+            console.error("Erreur lors du scan NFC :", error);
           }
         );
       }
@@ -1046,6 +1047,10 @@ var app = new Vue({
           console.error("Erreur de scan QR code : " + error);
         }
       );
+    },
+    removeEstablishment(index) {
+      localStorage.removeItem("establishment_" + this.establishments[index].etablissement);
+      this.establishments.splice(index, 1); // Supprime l'élément du tableau
     },
   },
 });

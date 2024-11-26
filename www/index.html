@@ -227,7 +227,7 @@
             <div class="container" v-show="currentView=='notify'">
                 <div class="card">
                     <div class="card-content">
-                        <div class="row" style="margin-bottom: 0;">
+                        <div class="row" style="margin-bottom: 0; text-align: center;">
                             <h5>{{additionalData.text}}</h5>
                         </div>
                     </div>
@@ -732,12 +732,19 @@
                             <div class="card-content">
                                 <span class="card-title">Authentification via NFC</span>
                                 <div class="establishment-buttons" v-show="establishments.length!=0">
-                                    <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
-                                    <button v-for="establishment in establishments" :key="establishment.url"
-                                        class="btn-large full-width"
-                                        v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
-                                        {{ establishment.etablissement }}
-                                    </button>
+                                    <div class="swipe-container">
+                                        <div class="swipe-content">
+                                            <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
+                                            <button v-for="establishment in establishments" :key="establishment.url"
+                                                class="btn-large full-width"
+                                                v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
+                                                {{ establishment.etablissement }}
+                                            </button>
+                                        </div>
+                                        <div class="swipe-delete">
+                                            <i class="material-icons">delete</i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <p v-show="establishments.length==0" class="flex-center text-center">
                                     Authentifiez-vous en toute sécurité via votre carte NFC. Scannez le qrcode de votre
@@ -749,7 +756,8 @@
                 </div>
             </div>
             <div class="container" v-show="showBottomSheet">
-                <div class="overlay" :class="{ active: showBottomSheet }" v-on:click="hideBottomSheet()"></div> <!-- overlay -->
+                <div class="overlay" :class="{ active: showBottomSheet }" v-on:click="hideBottomSheet()"></div>
+                <!-- overlay -->
                 <div id="bottom-sheet" class="bottom-sheet" :class="{ active: showBottomSheet }">
                     <div class="sheet-header">
                         <h5>Scannez votre carte NFC</h5>

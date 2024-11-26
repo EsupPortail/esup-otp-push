@@ -701,3 +701,66 @@ body.dark-mode ul#slide-out {
     opacity: 1;
     pointer-events: auto; /* Interactif lorsqu'il est actif */
 }
+/* slide suppression */
+/* Conteneur principal */
+.swipe-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 51px; /* Ajustez selon vos besoins */
+  line-height: 56px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+/* Bouton principal */
+.swipe-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+/* Zone de suppression */
+.swipe-delete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 15px;
+  border-radius: 10px;
+  z-index: 1;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+/* Icône de suppression */
+.material-icons {
+  font-size: 24px;
+}
+
+/* Animation de suppression réussie */
+.swipe-delete.success {
+  background-color: green !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 0px;
+}
+ /* Toast */
+.toast-error {
+  background-color: #ff0000 !important;
+  color: #ffffff !important;
+}

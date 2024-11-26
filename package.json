@@ -29,6 +29,11 @@
       },
       "community-cordova-plugin-nfc": {
         "NFC_USAGE_DESCRIPTION": "Read NFC Tags"
+      },
+      "@havesource/cordova-plugin-push": {
+        "ANDROIDX_CORE_VERSION": "1.6.+",
+        "FCM_VERSION": "23.+",
+        "IOS_FIREBASE_MESSAGING_VERSION": "~> 8.1.1"
       }
     }
   },
