@@ -155,12 +155,28 @@ function initNfc(){
 /* DarkMode */
 document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('darkModeToggle');
-  
-  // Charger l'état du dark mode depuis le localStorage si défini
-  if (localStorage.getItem('darkMode') === 'enabled') {
+  const savedPreference = localStorage.getItem("darkMode");
+  const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  function enableDarkMode() {
     document.body.classList.add('dark-mode');
     darkModeToggle.checked = true;
-    switchDarkModeOnElements(true); // Active le dark mode sur les autres éléments
+    switchDarkModeOnElements(true);
+  };
+  function disableDarkMode() {
+    document.body.classList.remove('dark-mode');
+    darkModeToggle.checked = false;
+    switchDarkModeOnElements(false);
+  };
+  
+  // Charger l'état du dark mode depuis le localStorage si défini
+  if (savedPreference === 'enabled') {
+    enableDarkMode();
+  } else if (savedPreference === 'disabled') {
+    disableDarkMode();
+  } else if (savedPreference === null && prefersDarkScheme.matches && device.platform === 'iOS') {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
   }
 
   // Basculer entre le mode sombre et le mode clair
@@ -175,7 +191,13 @@ document.addEventListener('DOMContentLoaded', function () {
       switchDarkModeOnElements(false); // Désactiver le mode sombre
     }
   });
+  console.log(prefersDarkScheme);
+  console.log(savedPreference);
+  console.log(darkModeToggle.checked);
 
+  if (darkModeToggle.checked) {
+    darkModeToggle.dispatchEvent(new Event('change'));
+  }
   function switchDarkModeOnElements(isDarkMode) {
     const elements = document.querySelectorAll('.card, .navbar, .btn, .page-title');
     elements.forEach(el => {
@@ -186,4 +208,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+  prefersDarkScheme.addEventListener('change', (e) => {
+    if (e.matches) {
+      darkModeToggle.checked = true;
+      darkModeToggle.dispatchEvent(new Event('change'));
+    } else {
+      darkModeToggle.checked = false;
+      darkModeToggle.dispatchEvent(new Event('change'));
+    }
+  });
 });

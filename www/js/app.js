@@ -886,13 +886,14 @@ var app = new Vue({
     },
     extractData: function (serverResponse) {
       let matches = serverResponse.match(/<(\w+)\s+(.+)>/);
+      let heure = new Date().getHours();
       if (matches && matches.length === 3) {
         let status = matches[1];
         let userName = matches[2];
 
         if (status === "OK") {
           Materialize.toast(
-            `<div class="alert">${userName} vous êtes authentifié(e)</div>`,
+            `<div class="alert">${(heure >= 6 && heure < 18) ? "Bonjour" : "Bonsoir"} ${userName}</div>`,
             5000
           );
 
