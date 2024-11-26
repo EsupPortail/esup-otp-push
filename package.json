@@ -15,8 +15,8 @@
   "cordova": {
     "platforms": [
       "browser",
-      "ios",
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-splashscreen": {},
@@ -42,7 +42,7 @@
     "community-cordova-plugin-nfc": "^1.4.0",
     "cordova-android": "^13.0.0",
     "cordova-browser": "^6.0.0",
-    "cordova-ios": "^6.2.0",
+    "cordova-ios": "^7.1.1",
     "cordova-plugin-advanced-http": "^3.3.1",
     "cordova-plugin-android-permissions": "^1.1.5",
     "cordova-plugin-app-exit": "^0.0.2",
