@@ -25,15 +25,15 @@
     <preference name="orientation" value="default" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
+
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-    </platform>
-    <platform name="android">
-        <resource-file src="google-services.json" target="app/google-services.json" />
-    </platform>
-    <platform name="ios">
+        <edit-config file="*-Info.plist" mode="merge" target="CFBundleDevelopmentRegion">
+            <string>fr</string>
+        </edit-config>
         <resource-file src="GoogleService-Info.plist" />
     </platform>
     <icon src="www/img/logo.png" />
