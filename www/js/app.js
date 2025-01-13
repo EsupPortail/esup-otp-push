@@ -316,7 +316,7 @@ var app = new Vue({
       if (this.host_input[this.host_input.length - 1] != "/") {
         this.host_input += "/";
       }
-      this.sync(this.host_input, this.uid_input, this.code_input);
+      this.sync(this.host_input, this.uid_input.trim(), this.code_input);
     },
 
     sync: function (host, uid, code) {
