@@ -294,7 +294,7 @@ svg {
 }
 
 #totpAddAccount,
-#totpAddAccountScan {
+#totpAddAccountScan, #qrcodeActivation, #manualActivation, #help-submenu, #param-submenu {
   padding: 30px;
   color: #039be5;
   border-bottom: 1px solid gray;
@@ -579,7 +579,12 @@ body.dark-mode .switch label .lever {
 body.dark-mode .collection .collection-item{
   background-color: transparent !important;
 }
-body.dark-mode #totpAddAccount, #totpAddAccountScan {
+body.dark-mode #totpAddAccount, 
+body.dark-mode #totpAddAccountScan, 
+body.dark-mode #qrcodeActivation,
+body.dark-mode #manualActivation,
+body.dark-mode #help-submenu,
+body.dark-mode #param-submenu {
   color: #ffffff !important;
 }
 body.dark-mode .collapsible-header {
@@ -594,6 +599,9 @@ body.dark-mode .circle-btn {
 }
 body.dark-mode .circle-btn img.icon-custom {
   filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg) brightness(114%) contrast(112%) !important;
+}
+body.dark-mode .when-dark-svg-blue {
+  filter: invert(20%) sepia(43%) saturate(5667%) hue-rotate(209deg) brightness(97%) contrast(101%);
 }
 body.dark-mode .text, .next, .prev {
   color: #e0e0e0 !important;

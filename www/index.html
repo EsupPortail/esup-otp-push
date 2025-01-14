@@ -99,23 +99,15 @@
                     </button>
                 </li>
                 <li>
-                    <button class="nav-link" v-on:click="scan"
+                    <button class="nav-link" name="chooseMethods" v-on:click="navigate"
                         style="background-color: transparent; border: none; color: inherit; outline: none;">
-                        <img src="img/qrcode.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Activation
-                        QRCode
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-link" v-on:click="navigate" id="scanless" name="scanless"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
-                        <img src="img/edit.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Activation
-                        manuelle
+                        <img src="img/push-menu.svg" class="icon" alt="" style="pointer-events: none;">&emsp;PUSH
                     </button>
                 </li>
                 <li>
                     <button v-on:click="navigate" id="nfc" name="nfc" class="nav-link" role="button"
                         style="background-color: transparent; border: none; color: inherit; outline: none;">
-                        <img src="img/nfc.svg" class="icon" alt="">&emsp;Authentification NFC
+                        <img src="img/nfc.svg" class="icon" alt="">&emsp;NFC
                     </button>
                 </li>
                 <li v-if="totpnb == 0">
@@ -125,15 +117,9 @@
                     </button>
                 </li>
                 <li>
-                    <button class="nav-link" v-on:click="navigate" id="help" name="help"
+                    <button class="nav-link" v-on:click="navigate" id="help" name="helpAndDoc"
                         style="background-color: transparent; border: none; color: inherit; outline: none;">
-                        <img src="img/help.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Aide
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-link" v-on:click="navigate" id="param" name="param"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
-                        <img src="img/doc.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Documentation
+                        <img src="img/help.svg" class="icon" alt="" style="pointer-events: none;">&emsp;AIDE
                     </button>
                 </li>
                 <div class="divider"></div>
@@ -715,6 +701,42 @@
                             onclick="totp_scan(document.getElementById('slide-out'))" id="totpAddAccountScan"
                             name="totp">
                             <i class="fa fa-camera fa-lg accessible-icon" style="pointer-events: none;"></i> Scan
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="container" v-show="currentView=='chooseMethods'">
+                <ul class="collection">
+                    <li>
+                        <a href="#" v-on:click="scan" class="collection-item accessible-icon-text" role="button"
+                            aria-label="QRCode" v-on:click="navigate" id="qrcodeActivation">
+                            <img src="img/qrcode.svg" class="icon when-dark-svg-blue" alt="" style="pointer-events: none;">&emsp;Activation
+                        QRCode
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="collection-item accessible-icon-text" role="button"
+                            aria-label="Activation manuelle" v-on:click="navigate" id="manualActivation"
+                            name="scanless">
+                            <img src="img/edit.svg" class="icon when-dark-svg-blue" alt="" style="pointer-events: none;">&emsp;Activation
+                        manuelle
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="container" v-show="currentView=='helpAndDoc'">
+                <ul class="collection">
+                    <li>
+                        <a href="#" class="collection-item accessible-icon-text" role="button"
+                            aria-label="QRCode" v-on:click="navigate" id="help-submenu" name="help">
+                            <img src="img/help.svg" class="icon when-dark-svg-blue" alt="" style="pointer-events: none;">&emsp;Aide
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="collection-item accessible-icon-text" role="button"
+                            aria-label="Activation manuelle" v-on:click="navigate" id="param-submenu"
+                            name="param">
+                            <img src="img/doc.svg" class="icon when-dark-svg-blue" alt="" style="pointer-events: none;">&emsp;Documentation
                         </a>
                     </li>
                 </ul>
