@@ -19,6 +19,9 @@ main,
 footer {
   padding-left: 240px;
 }
+main {
+  margin-top: 2rem;
+}
 
 .nav-wrapper {
     display: flex;
@@ -453,6 +456,8 @@ ul.collection {
   align-items: center;
   max-height: 4rem;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   margin-top: 0;
 }
 
