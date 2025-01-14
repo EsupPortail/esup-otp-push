@@ -244,6 +244,9 @@ document.querySelectorAll(".swipe-container").forEach((container, index) => {
       // Appeler la méthode Vue pour supprimer l'élément
       setTimeout(() => {
         app.removeEstablishment(index); // Appelle une méthode Vue
+        // Réinitialise le style après suppression
+        swipeContent.style.transform = "translateX(0)";
+        swipeDelete.classList.remove("success");
       }, 1000); // Supprime après 1 seconde
     } else {
       // Annule le swipe si le seuil n'est pas atteint
