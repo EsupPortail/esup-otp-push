@@ -22,22 +22,17 @@ footer {
 main {
   margin-top: 2rem;
 }
+.top-nav {
+  height: auto;
+}
 
 .nav-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 4rem;
     background-color: inherit;
     border-bottom: 1px solid #e0e0e0;
-    padding: 0 1rem;
-    margin-top: 10px;
-}
-
-.top-nav {
-  box-shadow: none;
-  font-size: 32px;
-  -webkit-font-smoothing: antialiased;
+    padding: 0 0.5rem;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -85,6 +80,7 @@ main {
 
 nav {
   background-color: transparent !important;
+  margin-top: 0;
 }
 
 nav a {
@@ -323,7 +319,7 @@ ul.collection {
 
 @media only screen and (max-width: 480px) {
   nav {
-    margin-top: 30px;
+    margin-top: 0;
   }
 
   .sidenav-header {
@@ -495,6 +491,7 @@ ul.collection {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  text-align: center !important;
 }
 
 .card p {
@@ -543,7 +540,6 @@ ul.collection {
   flex-wrap: wrap;
 }
 .establishment-buttons button {
-  margin-bottom: 3px;
   border-radius: 5px;
 }
 .flex-center {
@@ -776,4 +772,14 @@ body.dark-mode ul#slide-out {
 .toast-error {
   background-color: #ff0000 !important;
   color: #ffffff !important;
+}
+/* button nfc */
+.btn-nfc {
+  word-wrap: break-word; /* Pour éviter les débordements */
+  white-space: normal; /* Permet le retour à la ligne */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 !important;
 }

@@ -323,7 +323,7 @@
                                 <p>Pour utiliser la notification push vous devez aller dans l'application
                                     Esup-otp-manager pour activer la méthode "Notification mobile", vous pouvez saisir
                                     les informations d'activation ou utiliser
-                                    l'option 'Activation QRCode' du menu latéral et scannez le code affiché pour pouvoir
+                                    l'option 'Activation QRCode' (Menu latéral > PUSH > Activation QRCode) et scannez le code affiché pour pouvoir
                                     recevoir la notification.
                                 </p>
                             </div>
@@ -758,7 +758,7 @@
                                         <div class="swipe-content">
                                             <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
                                             <button v-for="establishment in establishments" :key="establishment.url"
-                                                class="btn-large full-width"
+                                                class="btn-large full-width btn-nfc"
                                                 v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
                                                 {{ establishment.etablissement }}
                                             </button>
