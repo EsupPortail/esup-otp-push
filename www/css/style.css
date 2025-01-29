@@ -4,6 +4,7 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
 #app {
     position: relative;
     height: 100%;
@@ -20,12 +21,18 @@ footer {
     padding-left: 240px;
 }
 
+h1, .h1{font-size: 3.56rem;}
+h2, .h2{font-size: 2.92rem;}
+h3, .h3{font-size: 2.28rem;}
+h4, .h4{font-size: 1.64rem;}
+h5, .h5{font-size: 1rem;}
+
 .nav-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 4rem;
-    background-color: #ffffff;
+    background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
     padding: 0 1rem;
     margin-top: 10px;
@@ -61,10 +68,12 @@ footer {
     }
 
 }
+
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .sidenav-trigger {
         display: block;
     }
+
     .side-nav {
         display: none;
     }
@@ -307,8 +316,7 @@ ul.collection {
 /* css for the timer */
 .timer {
     /*style="vertical-align:top;";*/
-    /*style="horizontal-align:top;";
-*/
+    /*style="horizontal-align:top;";*/
     /*position: static;*/
 }
 
@@ -348,12 +356,12 @@ ul.collection {
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-accept {
     background-color: #004d40 !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-reject {
     background-color: #b71c1c !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 .side-nav {
@@ -366,8 +374,8 @@ ul.collection {
 
 /* Couleur d'icône plus accessible */
 .accessible-icon {
-    color: #0055cc;
-    background-color: #ffffff;
+    color: #05c;
+    background-color: #fff;
     border-radius: 50%;
     padding: 10px;
 }
@@ -375,8 +383,8 @@ ul.collection {
 .accessible-icon-text {
     display: flex;
     align-items: center;
-    color: #0055cc;
-    background-color: #ffffff;
+    color: #05c;
+    background-color: #fff;
     padding: 10px;
     border-radius: 5px;
     text-decoration: none;
@@ -384,7 +392,7 @@ ul.collection {
 }
 
 .button-delete {
-    color: #0055cc;
+    color: #05c;
     background: none;
     border: none;
     padding: 0;
@@ -425,6 +433,7 @@ ul.collection {
     width: 100%;
     text-align: left;
 }
+
 .icon {
     width: 2rem;
     height: 2rem;
@@ -432,13 +441,15 @@ ul.collection {
     display: inline-block;
     vertical-align: middle;
 }
+
 .icon-right {
    width: 2rem;
      height: 2rem;
      display: inline-block;
      vertical-align: middle;
      margin-left: 0.5rem;
-  }
+}
+
 .sidenav-logo {
     max-width: 6rem;
     text-align: center;
@@ -446,7 +457,7 @@ ul.collection {
 
 .page-title {
     font-size: 2rem;
-    color: #333333;
+    color: #333;
     margin: 0;
     flex: 1;
     display: flex;
@@ -454,6 +465,7 @@ ul.collection {
     max-height: 4rem;
     overflow: hidden;
     margin-top: 0;
+    line-height: 64px;
 }
 
 @media only screen and (max-width: 480px) {
@@ -464,7 +476,7 @@ ul.collection {
 
 .btn-large.btn-custom {
     background-color: #757575 !important;
-    color: #ffffff !important;
+    color: #fff !important;
     border-radius: 4px;
     padding: 18px 24px;
     text-transform: uppercase;

@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html>
+<html lang="fr">
     <head>
         <meta charset="utf-8">
         <!--
@@ -58,11 +58,11 @@
         <header>
             <nav class="top-nav">
                 <div class="container">
-                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button" tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                    <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button" tabindex="0" aria-controls="slide-out" aria-expanded="false" class="button-collapse top-nav full" id="navButton">
                         <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
-                        <div class="page-title" aria-hidden="true">{{ pageTitle }}</div>
+                        <h1 class="page-title" aria-hidden="true">{{ pageTitle }}</h1>
                     </div>
                 </div>
             </nav>
@@ -132,7 +132,7 @@
                     <div class="card" v-if="Object.keys(otpServersObjects).length==0 && !notified">
                     <div class="card-content" style="padding-bottom: 0; padding-top: 7px;">
                         <div class="row" style="margin-bottom: 0;">
-                            <h5 id="instructions-heading">Comment ça marche ?</h5>
+                            <h2 class="h3" id="instructions-heading">Comment ça marche ?</h2>
                         </div>
                     </div>
                     <div class="card-action" style="padding-bottom: 0; padding-top: 0;">
@@ -187,13 +187,13 @@
                             </div>
                         </div>
 
-                    </div>                    
+                    </div>
             </div>
-	   <div class="container" v-show="currentView=='notify'">
-		<div class="card">
+            <div class="container" v-show="currentView=='notify'">
+                <div class="card">
                         <div class="card-content" >
                             <div class="row" style="margin-bottom: 0;">
-                                <h5>{{additionalData.text}}</h5>
+                                <p>{{additionalData.text}}</p>
                             </div>
                         </div>
                         <div class="card-action">
@@ -288,7 +288,7 @@
 <!-- Full-width images with number and caption text -->
 <div class="mySlides fade">
  <div class="numbertext">1 / 6</div>
- <img src="img/push.svg" >
+ <img src="img/push.svg" alt="">
  <div class="text">
    <h2>Configuration de la notification Push</h2>
    <p>Pour utiliser la notification push vous devez aller dans l'application Esup-otp-manager pour activer la méthode "Notification mobile", vous pouvez saisir les informations d'activation ou utiliser
@@ -298,7 +298,7 @@
 </div>
 <div class="mySlides fade">
  <div class="numbertext">2 / 6</div>
- <img src="img/totp2.svg" >
+ <img src="img/totp2.svg" alt="">
  <div class="text">
    <h2>Configuration TOTP</h2>
    <p>
@@ -308,7 +308,7 @@
 </div>
 <div class="mySlides fade">
  <div class="numbertext">3 / 6</div>
- <img src="img/codes_secours.svg" >
+ <img src="img/codes_secours.svg" alt="">
  <div class="text">
    <h2>Configuration codes secours</h2>
    <p>Pour utiliser la méthode codes secours vous devez aller dans l'application Esup-otp-manager pour l'activer puis un ensemble de code vous est alors affiché.
@@ -317,7 +317,7 @@
 </div>
 <div class="mySlides fade">
    <div class="numbertext">4 / 6</div>
-   <img src="img/random_code.svg" >
+   <img src="img/random_code.svg" alt="">
    <div class="text">
        <h2>Configuration code par sms</h2>
        <p>Pour utiliser la méthode code par sms vous devez aller dans l'application Esup-otp-manager, enregistrer votre numéro de téléphone portable pour recevoir un code à usage unique par sms.
@@ -326,7 +326,7 @@
  </div>
  <div class="mySlides fade">
    <div class="numbertext">5 / 6</div>
-   <img src="img/mail.svg" >
+   <img src="img/mail.svg" alt="">
    <div class="text">
        <h2>Configuration code courriel</h2>
        <p>
@@ -336,7 +336,7 @@
  </div>
  <div class="mySlides fade">
    <div class="numbertext">6 / 6</div>
-   <img src="img/esupnfc.svg" >
+   <img src="img/esupnfc.svg" alt="">
    <div class="text">
        <h2>Configuration carte esupnfc</h2>
        <p>Pour utiliser la méthode esupnfc vous devez aller dans l'application Esup-otp-manager pour l'activer et vous pouvez récupérer un code en badgeant la carte.
