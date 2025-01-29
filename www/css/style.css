@@ -557,14 +557,16 @@ body.dark-mode {
 }
 
 body.dark-mode #slide-out li {
-  color: #e0e0e0;
   background-color: #333;
 }
-body.dark-mode #slide-out li.active {
-  color: #e0e0e0;
+
+body.dark-mode #slide-out li.active,
+body.dark-mode #slide-out li:hover,
+body.dark-mode #slide-out li:focus-within {
   background-color: #121212;
 }
-body.dark-mode li.collection-item{
+
+body.dark-mode li.collection-item {
   color: #e0e0e0;
   background-color: #1e1e1e !important;
 }
@@ -601,10 +603,23 @@ body.dark-mode .circle-btn {
 body.dark-mode .circle-btn img.icon-custom {
   filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg) brightness(114%) contrast(112%) !important;
 }
+
 body.dark-mode .when-dark-svg-blue {
-  filter: invert(20%) sepia(43%) saturate(5667%) hue-rotate(209deg) brightness(97%) contrast(101%);
+  filter: invert(50%) sepia(43%) saturate(5667%) hue-rotate(209deg) brightness(97%) contrast(101%);
 }
-body.dark-mode .text, .next, .prev {
+
+.dark-mode .icon {
+    filter: invert(1.00);
+}
+
+.dark-mode .accessible-icon {
+    color: #0572E1;
+}
+
+body.dark-mode .text,
+.dark-mode .material-icons,
+.next,
+.prev {
   color: #e0e0e0 !important;
 }
 
