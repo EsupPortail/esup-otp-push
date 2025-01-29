@@ -936,14 +936,6 @@ var app = new Vue({
             this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
               .then((response) => {
                 this.extractData(response);
-                // on verifie que dans establishments on a pas déjà cette établissement
-                if (
-                  !this.establishments.find(
-                    (establishment) => establishment.url === etablishmentUrl
-                  )
-                ) {
-                  this.loadStoredEstablishments();
-                }
               })
               .catch((error) => {
                 console.error("Erreur lors de l'envoi des données:", error);
@@ -975,14 +967,6 @@ var app = new Vue({
               .then((response) => {
                 console.log("Réponse du serveur:", response);
                 this.extractData(response);
-                // on verifie que dans establishments on a pas déjà cette établissement
-                if (
-                  !this.establishments.find(
-                    (establishment) => establishment.url === etablishmentUrl
-                  )
-                ) {
-                  this.loadStoredEstablishments();
-                }
               })
               .catch((error) => {
                 console.error("Erreur lors de l'envoi des données:", error);
@@ -1024,6 +1008,8 @@ var app = new Vue({
                     "establishment_" + scannedData.etablissement,
                     JSON.stringify(establishmentData)
                   );
+                  //self.establishments.push(establishmentData);
+                  self.loadStoredEstablishments();
                 }
 
                 // Lancer le scanTag si tout est bon
