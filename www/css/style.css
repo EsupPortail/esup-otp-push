@@ -4,6 +4,7 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
 #app {
   position: relative;
   height: 100%;
@@ -19,9 +20,11 @@ main,
 footer {
   padding-left: 240px;
 }
+
 main {
   margin-top: 2rem;
 }
+
 .top-nav {
   height: auto;
 }
@@ -59,10 +62,12 @@ main {
     }
 
 }
+
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .sidenav-trigger {
         display: block;
     }
+
     .side-nav {
         display: none;
     }
@@ -129,15 +134,22 @@ nav a {
 }
 
 .side-nav button {
-    padding: 2px 0px;
+    padding: 2px 0;
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    outline: none;
 }
+
 .scrollable-container {
     height: calc(100vh - 100px);
     overflow-y: auto;
 }
+
 .totpAddAccountMar {
     margin-bottom: 20px;
 }
+
 .paddingTotp {
     padding-top: 40px;
 }
@@ -179,9 +191,9 @@ Switch
   font-size: 1.6em;
   font-weight: bold;
   color: #ccc;
-  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
   height: 14px;
-  padding: 6px 6px 5px 6px;
+  padding: 6px 6px 5px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -204,6 +216,7 @@ body.IE7 .Switch {
   top: -4px;
   width: 37px;
   height: 25px;
+  transition: all 0.15s ease-in-out;
   -webkit-transition: all 0.15s ease-in-out;
   -moz-transition: all 0.15s ease-in-out;
   -o-transition: all 0.15s ease-in-out;
@@ -219,9 +232,8 @@ body.IE7 .Switch {
 }
 
 /* Round Switch */
-/* Round Switch */
 .Switch.Round {
-  padding: 0px 20px;
+  padding: 0 20px;
   border-radius: 40px;
 }
 
@@ -424,6 +436,7 @@ ul.collection {
     width: 100%;
     text-align: left;
 }
+
 .icon {
   width: 2rem;
   height: 2rem;
@@ -431,13 +444,15 @@ ul.collection {
   display: inline-block;
   vertical-align: middle;
 }
+
 .icon-right {
-   width: 2rem;
-     height: 2rem;
-     display: inline-block;
-     vertical-align: middle;
-     margin-left: 0.5rem;
-  }
+  width: 2rem;
+  height: 2rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
 .sidenav-logo {
   max-width: 6rem;
   text-align: center;
@@ -457,10 +472,24 @@ ul.collection {
   margin-top: 0;
 }
 
+/** small screens **/
 @media only screen and (max-width: 480px) {
   .nav-link {
     font-size: 0.9rem;
   }
+}
+
+/** Materialize overrides for large screens **/
+@media only screen and (min-width: 993px) {
+    /* Do not hide burger icon on large screens */
+    nav a.button-collapse, .side-nav {
+      display: block;
+    }
+
+    /* Hide sidenav close button */
+    .sidenav-close {
+      display: none;
+    }
 }
 
 .btn-large.btn-custom {
@@ -510,20 +539,23 @@ ul.collection {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 57px; 
+  width: 57px;
   height: 57px;
   border-radius: 50%;
   background-color: white;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* Ombre pour un effet de profondeur */
 }
+
 .circle-btn img.icon-custom {
   width: 50px;
   height: 50px;
 }
+
 .circle-btn:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
+
 .circle-btn:active {
   transform: scale(0.93);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -539,17 +571,21 @@ ul.collection {
   align-items: center;
   flex-wrap: wrap;
 }
+
 .establishment-buttons button {
   border-radius: 5px;
 }
+
 .flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .text-center {
   text-align: center !important;
 }
+
 /* Dark Mode Styles */
 body.dark-mode {
   background-color: #121212;
@@ -560,50 +596,63 @@ body.dark-mode #slide-out li {
   color: #e0e0e0;
   background-color: #333;
 }
+
 body.dark-mode #slide-out li.active {
   color: #e0e0e0;
   background-color: #121212;
 }
+
 body.dark-mode li.collection-item{
   color: #e0e0e0;
   background-color: #1e1e1e !important;
 }
+
 body.dark-mode li.collection-item p {
   color: #e0e0e0 !important;
 }
+
 body.dark-mode .switch label input[type=checkbox]:checked+.lever:after {
   background-color: #0055cc !important;
 }
+
 body.dark-mode .switch label .lever {
   background-color: #4096e7 !important;
 }
+
 body.dark-mode .collection .collection-item{
   background-color: transparent !important;
 }
-body.dark-mode #totpAddAccount, 
-body.dark-mode #totpAddAccountScan, 
+
+body.dark-mode #totpAddAccount,
+body.dark-mode #totpAddAccountScan,
 body.dark-mode #qrcodeActivation,
 body.dark-mode #manualActivation,
 body.dark-mode #help-submenu,
 body.dark-mode #param-submenu {
   color: #ffffff !important;
 }
+
 body.dark-mode .collapsible-header {
   background-color: transparent !important;
   color: #ffffff !important;
 }
+
 body.dark-mode .collapsible-body .tabs {
   background-color: transparent !important;
 }
+
 body.dark-mode .circle-btn {
   background-color: transparent !important;
 }
+
 body.dark-mode .circle-btn img.icon-custom {
   filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg) brightness(114%) contrast(112%) !important;
 }
+
 body.dark-mode .when-dark-svg-blue {
   filter: invert(20%) sepia(43%) saturate(5667%) hue-rotate(209deg) brightness(97%) contrast(101%);
 }
+
 body.dark-mode .text, .next, .prev {
   color: #e0e0e0 !important;
 }
@@ -622,6 +671,7 @@ body.dark-mode ul#slide-out {
   background-color: #333 !important;
   color: #e0e0e0 !important;
 }
+
 .page-title.dark-mode {
   color: #e0e0e0;
 }
@@ -675,6 +725,7 @@ body.dark-mode ul#slide-out {
   justify-content: center;
   animation: fadeIn 0.9s ease-in-out;
 }
+
 .scan-animation {
   display: block;
   margin: 0 auto;
@@ -687,6 +738,7 @@ body.dark-mode ul#slide-out {
   from {
       opacity: 0;
   }
+
   to {
       opacity: 1;
   }
@@ -710,6 +762,7 @@ body.dark-mode ul#slide-out {
     opacity: 1;
     pointer-events: auto; /* Interactif lorsqu'il est actif */
 }
+
 /* slide suppression */
 /* Conteneur principal */
 .swipe-container {
@@ -766,13 +819,15 @@ body.dark-mode ul#slide-out {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 0px;
+  padding-right: 0;
 }
- /* Toast */
+
+/* Toast */
 .toast-error {
   background-color: #ff0000 !important;
   color: #ffffff !important;
 }
+
 /* button nfc */
 .btn-nfc {
   word-wrap: break-word; /* Pour éviter les débordements */
