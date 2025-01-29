@@ -29,9 +29,9 @@ async function populateTable()  {
          var idAccount = totpObjects[key];
         table += "<tr role='presentation'><td role='presentation' style='border-bottom:1px dotted grey'>" +
                                        "<button class='button-delete' aria-label='Supprimer' onclick=\"deleteTotp('" + key + "')\">" +
-                                       "<i class='fa fa-trash-o' style='font-size: 1.5em;' aria-hidden='true'></i>" +  <!-- Réduit la taille des icônes -->
+                                       "<i class='fa fa-trash-o' style='font-size: 1.5em;' aria-hidden='true'></i>" +  /*Réduit la taille des icônes*/
                                        "</button>&emsp;" +
-                                       "<span style='font-size:1.2em;' id=" + idAccount + " aria-label='Nom du compte: " + totpObjects[key] + "'>" + totpObjects[key] + "</span>" +  <!-- Réduit la taille du texte -->
+                                       "<span style='font-size:1.2em;' id=" + idAccount + " aria-label='Nom du compte: " + totpObjects[key] + "'>" + totpObjects[key] + "</span>" +  /*Réduit la taille du texte*/
                                        "<br/><span style='font-size:1.5em;' id=" + idAccount + " aria-label='Code généré: " + valTotp + "'>" + valTotp + "</span></td></tr>";
         }
         document.getElementById("result").innerHTML = table;
@@ -148,8 +148,109 @@ function totp_scan(event){
 function initNfc(){
   if (typeof nfc !== 'undefined') {
     Materialize.toast('<div role="alert">NFC plugin is available</div>', 4000);
-    alert('NFC plugin is available');
   } else {
     Materialize.toast('<div role="alert">NFC plugin is not available</div>', 4000);
   }
 }
+/* DarkMode */
+document.addEventListener('DOMContentLoaded', function () {
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const savedPreference = localStorage.getItem("darkMode");
+  const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  function enableDarkMode() {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+    switchDarkModeOnElements(true);
+  };
+  function disableDarkMode() {
+    document.body.classList.remove('dark-mode');
+    darkModeToggle.checked = false;
+    switchDarkModeOnElements(false);
+  };
+  
+  // Charger l'état du dark mode depuis le localStorage si défini
+  if (savedPreference === 'enabled') {
+    enableDarkMode();
+  } else if (savedPreference === 'disabled') {
+    disableDarkMode();
+  } else if (savedPreference === null && prefersDarkScheme.matches && device.platform === 'iOS') {
+    enableDarkMode();
+  } else {
+    disableDarkMode();
+  }
+
+  // Basculer entre le mode sombre et le mode clair
+  darkModeToggle.addEventListener('change', function () {
+    if (this.checked) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'enabled'); // Sauvegarder le choix
+      switchDarkModeOnElements(true); // Activer le mode sombre sur les autres éléments
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', 'disabled'); // Sauvegarder le choix
+      switchDarkModeOnElements(false); // Désactiver le mode sombre
+    }
+  });
+
+  if (darkModeToggle.checked) {
+    darkModeToggle.dispatchEvent(new Event('change'));
+  }
+  function switchDarkModeOnElements(isDarkMode) {
+    const elements = document.querySelectorAll('.card, .navbar, .btn, .page-title');
+    elements.forEach(el => {
+      if (isDarkMode) {
+        el.classList.add('dark-mode');
+      } else {
+        el.classList.remove('dark-mode');
+      }
+    });
+  }
+  prefersDarkScheme.addEventListener('change', (e) => {
+    if (e.matches) {
+      darkModeToggle.checked = true;
+      darkModeToggle.dispatchEvent(new Event('change'));
+    } else {
+      darkModeToggle.checked = false;
+      darkModeToggle.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+document.querySelectorAll(".swipe-container").forEach((container, index) => {
+  let startX;
+  const swipeContent = container.querySelector(".swipe-content");
+  const swipeDelete = container.querySelector(".swipe-delete");
+
+  container.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  container.addEventListener("touchmove", (e) => {
+    const currentX = e.touches[0].clientX;
+    const deltaX = startX - currentX;
+
+    if (deltaX > 0) {
+      swipeContent.style.transform = `translateX(-${Math.min(deltaX, 100)}px)`;
+    }
+  });
+
+  container.addEventListener("touchend", (e) => {
+    const deltaX = startX - e.changedTouches[0].clientX;
+
+    if (deltaX > 80) {
+      // Atteint le seuil pour supprimer
+      swipeContent.style.transform = "translateX(-100%)";
+      swipeDelete.classList.add("success");
+      // Appeler la méthode Vue pour supprimer l'élément
+      setTimeout(() => {
+        app.removeEstablishment(index); // Appelle une méthode Vue
+        // Réinitialise le style après suppression
+        swipeContent.style.transform = "translateX(0)";
+        swipeDelete.classList.remove("success");
+      }, 1000); // Supprime après 1 seconde
+    } else {
+      // Annule le swipe si le seuil n'est pas atteint
+      swipeContent.style.transform = "translateX(0)";
+    }
+  });
+});

@@ -21,8 +21,9 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="Fullscreen" value="false" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="android-manifest/uses-permission/[@android:name='android.permission.CAMERA']/@android:name" delete="true" />
+    <preference delete="true" name="android-manifest/uses-permission/[@android:name='android.permission.CAMERA']/@android:name" />
     <preference name="orientation" value="default" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <allow-intent href="market:*" />
         <resource-file src="google-services.json" target="app/google-services.json" />
@@ -36,7 +37,12 @@
         </edit-config>
         <resource-file src="GoogleService-Info.plist" />
     </platform>
-    <!-- Permission NFC pour iOS -->
+    <platform name="android">
+        <resource-file src="google-services.json" target="app/google-services.json" />
+    </platform>
+    <platform name="android">
+        <preference name="AndroidPostSplashScreenTheme" value="@style/Theme.AppCompat.DayNight.NoActionBar" />
+    </platform>
     <platform name="ios">
         <!-- Autorisation d'utiliser le NFC -->
         <config-file platform="ios" target="*-Info.plist" parent="NFCReaderUsageDescription">
@@ -47,8 +53,13 @@
             <param name="ios-package" value="BackgroundNFC" />
         </feature>
     </platform>
-
-    <!-- Inclure le plugin NFC -->
-    <plugin name="phonegap-nfc" spec="~1.2.0" />
+    <platform name="ios">
+        <config-file parent="NFCReaderUsageDescription" platform="ios" target="*-Info.plist">
+            <string>Cette application utilise le NFC pour scanner des cartes étudiantes ou professionnelles.</string>
+        </config-file>
+        <feature name="BackgroundNFC">
+            <param name="ios-package" value="BackgroundNFC" />
+        </feature>
+    </platform>
     <icon src="www/img/logo.png" />
 </widget>

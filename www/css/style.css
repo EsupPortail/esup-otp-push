@@ -12,29 +12,35 @@ html, body {
   min-width: 100%;
   padding: 0;
   margin: 0;
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 header,
 main,
 footer {
   padding-left: 240px;
+  padding-left: 240px;
+}
+main {
+  margin-top: 2rem;
+}
+.top-nav {
+  height: auto;
 }
 
 .nav-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 4rem;
-    background-color: #ffffff;
+    background-color: inherit;
     border-bottom: 1px solid #e0e0e0;
-    padding: 0 1rem;
-    margin-top: 10px;
-}
-
-.top-nav {
-  box-shadow: none;
-  font-size: 32px;
-  -webkit-font-smoothing: antialiased;
+    padding: 0 0.5rem;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -82,6 +88,7 @@ footer {
 
 nav {
   background-color: transparent !important;
+  margin-top: 0;
 }
 
 nav a {
@@ -295,9 +302,9 @@ svg {
 
 #totpAddAccount,
 #totpAddAccountScan {
-  padding: 30px;
-  color: #039be5;
-  border-bottom: 1px solid gray;
+    padding: 30px;
+    color: #039be5;
+    border-bottom: 1px solid gray;
 }
 
 ul.collection {
@@ -313,15 +320,15 @@ ul.collection {
 }
 
 #circle1 {
-  stroke: #0288d1;
-  stroke-linecap: butt;
-  fill: transparent;
+    stroke: #0288d1;
+    stroke-linecap: butt;
+    fill: transparent;
 }
 
 @media only screen and (max-width: 480px) {
-  nav {
-    margin-top: 30px;
-  }
+    nav {
+        margin-top: 30px;
+    }
 
   .sidenav-header {
     padding-top: 30px !important;
@@ -368,7 +375,6 @@ ul.collection {
 /* Couleur d'icône plus accessible */
 .accessible-icon {
   color: #0055cc;
-  background-color: #ffffff;
   border-radius: 50%;
   padding: 10px;
 }
@@ -454,6 +460,8 @@ ul.collection {
   align-items: center;
   max-height: 4rem;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   margin-top: 0;
 }
 
@@ -491,6 +499,7 @@ ul.collection {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  text-align: center !important;
 }
 
 .card p {
@@ -539,7 +548,6 @@ ul.collection {
   flex-wrap: wrap;
 }
 .establishment-buttons button {
-  margin-bottom: 3px;
   border-radius: 5px;
 }
 .flex-center {
@@ -549,4 +557,237 @@ ul.collection {
 }
 .text-center {
   text-align: center !important;
+}
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode #slide-out li {
+  color: #e0e0e0;
+  background-color: #333;
+}
+body.dark-mode #slide-out li.active {
+  color: #e0e0e0;
+  background-color: #121212;
+}
+body.dark-mode li.collection-item{
+  color: #e0e0e0;
+  background-color: #1e1e1e !important;
+}
+body.dark-mode li.collection-item p {
+  color: #e0e0e0 !important;
+}
+body.dark-mode .switch label input[type=checkbox]:checked+.lever:after {
+  background-color: #0055cc !important;
+}
+body.dark-mode .switch label .lever {
+  background-color: #4096e7 !important;
+}
+body.dark-mode .collection .collection-item{
+  background-color: transparent !important;
+}
+body.dark-mode #totpAddAccount, 
+body.dark-mode #totpAddAccountScan, 
+body.dark-mode #qrcodeActivation,
+body.dark-mode #manualActivation,
+body.dark-mode #help-submenu,
+body.dark-mode #param-submenu {
+  color: #ffffff !important;
+}
+body.dark-mode .collapsible-header {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+body.dark-mode .collapsible-body .tabs {
+  background-color: transparent !important;
+}
+body.dark-mode .circle-btn {
+  background-color: transparent !important;
+}
+body.dark-mode .circle-btn img.icon-custom {
+  filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg) brightness(114%) contrast(112%) !important;
+}
+body.dark-mode .when-dark-svg-blue {
+  filter: invert(20%) sepia(43%) saturate(5667%) hue-rotate(209deg) brightness(97%) contrast(101%);
+}
+body.dark-mode .text, .next, .prev {
+  color: #e0e0e0 !important;
+}
+
+.card.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.navbar.dark-mode {
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+body.dark-mode ul#slide-out {
+  background-color: #333 !important;
+  color: #e0e0e0 !important;
+}
+.page-title.dark-mode {
+  color: #e0e0e0;
+}
+
+/* Ajuste les boutons */
+.btn.dark-mode {
+  background-color: #424242;
+  color: #fff;
+}
+
+.btn.dark-mode:hover {
+  background-color: #616161;
+}
+
+/* Bottom sheet css */
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  color: #333 !important;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px 15px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.bottom-sheet.active {
+  transform: translateY(0);
+}
+
+.sheet-header {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sheet-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.success-animation {
+  margin-top: 3px;
+  color: green;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.9s ease-in-out;
+}
+.scan-animation {
+  display: block;
+  margin: 0 auto;
+  width: 100px; /* Ajuste la taille selon tes besoins */
+  height: auto;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Gris foncé transparent */
+    backdrop-filter: blur(2px); /* Applique un flou */
+    z-index: 99; /* Derrière le bottom sheet */
+    opacity: 0;
+    pointer-events: none; /* Inactif quand caché */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto; /* Interactif lorsqu'il est actif */
+}
+/* slide suppression */
+/* Conteneur principal */
+.swipe-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 51px; /* Ajustez selon vos besoins */
+  line-height: 56px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+/* Bouton principal */
+.swipe-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+/* Zone de suppression */
+.swipe-delete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 15px;
+  border-radius: 10px;
+  z-index: 1;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+/* Icône de suppression */
+.material-icons {
+  font-size: 24px;
+}
+
+/* Animation de suppression réussie */
+.swipe-delete.success {
+  background-color: green !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 0px;
+}
+ /* Toast */
+.toast-error {
+  background-color: #ff0000 !important;
+  color: #ffffff !important;
+}
+/* button nfc */
+.btn-nfc {
+  word-wrap: break-word; /* Pour éviter les débordements */
+  white-space: normal; /* Permet le retour à la ligne */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 !important;
 }
