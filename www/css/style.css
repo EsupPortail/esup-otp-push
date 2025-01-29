@@ -21,11 +21,12 @@ footer {
     padding-left: 240px;
 }
 
-h1, .h1{font-size: 3.56rem;}
-h2, .h2{font-size: 2.92rem;}
+h1, .h1{font-size: 2.92rem;}
+h2, .h2{font-size: 2.60rem;}
 h3, .h3{font-size: 2.28rem;}
 h4, .h4{font-size: 1.64rem;}
-h5, .h5{font-size: 1rem;}
+h5, .h5{font-size: 1.32rem;}
+h6, .h6{font-size: 1.00rem;}
 
 .nav-wrapper {
     display: flex;
