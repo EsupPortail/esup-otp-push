@@ -1,17 +1,11 @@
-html, body {
-    overflow: hidden;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 #app {
-  position: relative;
-  height: 100%;
-  min-height: 100%;
-  width: 100%;
-  min-width: 100%;
-  padding: 0;
-  margin: 0;
   position: relative;
   height: 100%;
   min-height: 100%;
@@ -25,7 +19,6 @@ header,
 main,
 footer {
   padding-left: 240px;
-  padding-left: 240px;
 }
 main {
   margin-top: 2rem;
@@ -35,55 +28,54 @@ main {
 }
 
 .nav-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: inherit;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0 0.5rem;
 }
 
 @media only screen and (max-width: 1024px) {
-    header,
-    main,
-    footer {
-        padding-left: 0;
-    }
+  header,
+  main,
+  footer {
+    padding-left: 0;
+  }
 
-    .side-nav {
-        display: block;
-    }
+  .side-nav {
+    display: block;
+  }
 
-    .nav-wrapper {
-        justify-content: space-between;
-    }
+  .nav-wrapper {
+    justify-content: space-between;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    /* Spécifique aux tablettes comme l'iPad */
-    .nav-wrapper {
-        margin-top: 0;
-        padding: 0 1rem;
-    }
-
+  /* Spécifique aux tablettes comme l'iPad */
+  .nav-wrapper {
+    margin-top: 0;
+    padding: 0 1rem;
+  }
 }
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
-    .sidenav-trigger {
-        display: block;
-    }
-    .side-nav {
-        display: none;
-    }
+  .sidenav-trigger {
+    display: block;
+  }
+  .side-nav {
+    display: none;
+  }
 
-    .side-nav.open {
-        display: block;
-    }
+  .side-nav.open {
+    display: block;
+  }
 
-    header,
-    main,
-    footer {
-        padding-left: 0;
-    }
+  header,
+  main,
+  footer {
+    padding-left: 0;
+  }
 }
 
 nav {
@@ -137,45 +129,43 @@ nav a {
 }
 
 .side-nav button {
-    padding: 2px 0px;
+  padding: 2px 0px;
 }
 .scrollable-container {
-    height: calc(100vh - 100px);
-    overflow-y: auto;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 .totpAddAccountMar {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .paddingTotp {
-    padding-top: 40px;
+  padding-top: 40px;
 }
 
 #circleTimer {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 400px;
-    position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  position: relative;
 }
 
-
 #circleTimer::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 #circleTimer::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 #circleTimer::-webkit-scrollbar-thumb {
-    background-color: rgba(128, 128, 128, 0.5);
-    border-radius: 4px;
-    border: 3px solid transparent;
+  background-color: rgba(128, 128, 128, 0.5);
+  border-radius: 4px;
+  border: 3px solid transparent;
 }
 
 #circleTimer::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(128, 128, 128, 0.8);
+  background-color: rgba(128, 128, 128, 0.8);
 }
-
 
 /*****************************************
 Switch
@@ -269,7 +259,6 @@ body.IE7 .Switch.Round {
   background-color: #818181;
 }
 
-
 .addbtn {
   display: flex;
   align-items: center;
@@ -296,15 +285,19 @@ svg {
 
 .waves-effect.waves-brown .waves-ripple {
   /* The alpha value allows the text and background color
-   of the button to still show through. */
+ of the button to still show through. */
   background-color: rgba(121, 85, 72, 0.65);
 }
 
 #totpAddAccount,
-#totpAddAccountScan {
-    padding: 30px;
-    color: #039be5;
-    border-bottom: 1px solid gray;
+#totpAddAccountScan,
+#qrcodeActivation,
+#manualActivation,
+#help-submenu,
+#param-submenu {
+  padding: 30px;
+  color: #039be5;
+  border-bottom: 1px solid gray;
 }
 
 ul.collection {
@@ -320,15 +313,15 @@ ul.collection {
 }
 
 #circle1 {
-    stroke: #0288d1;
-    stroke-linecap: butt;
-    fill: transparent;
+  stroke: #0055cc;
+  stroke-linecap: butt;
+  fill: transparent;
 }
 
 @media only screen and (max-width: 480px) {
-    nav {
-        margin-top: 30px;
-    }
+  nav {
+    margin-top: 0;
+  }
 
   .sidenav-header {
     padding-top: 30px !important;
@@ -355,13 +348,13 @@ ul.collection {
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-accept {
-    background-color: #004d40 !important;
-    color: #ffffff !important;
+  background-color: #004d40 !important;
+  color: #ffffff !important;
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-reject {
-    background-color: #b71c1c !important;
-    color: #ffffff !important;
+  background-color: #b71c1c !important;
+  color: #ffffff !important;
 }
 
 .side-nav {
@@ -422,15 +415,15 @@ ul.collection {
 }
 
 .nav-link {
-    display: block;
-    align-items: center;
-    padding: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1rem;
-    width: 100%;
-    text-align: left;
+  display: block;
+  align-items: center;
+  padding: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  width: 100%;
+  text-align: left;
 }
 .icon {
   width: 2rem;
@@ -440,12 +433,12 @@ ul.collection {
   vertical-align: middle;
 }
 .icon-right {
-   width: 2rem;
-     height: 2rem;
-     display: inline-block;
-     vertical-align: middle;
-     margin-left: 0.5rem;
-  }
+  width: 2rem;
+  height: 2rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
 .sidenav-logo {
   max-width: 6rem;
   text-align: center;
@@ -518,7 +511,7 @@ ul.collection {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 57px; 
+  width: 57px;
   height: 57px;
   border-radius: 50%;
   background-color: white;
@@ -572,24 +565,24 @@ body.dark-mode #slide-out li.active {
   color: #e0e0e0;
   background-color: #121212;
 }
-body.dark-mode li.collection-item{
+body.dark-mode li.collection-item {
   color: #e0e0e0;
   background-color: #1e1e1e !important;
 }
 body.dark-mode li.collection-item p {
   color: #e0e0e0 !important;
 }
-body.dark-mode .switch label input[type=checkbox]:checked+.lever:after {
+body.dark-mode .switch label input[type="checkbox"]:checked + .lever:after {
   background-color: #0055cc !important;
 }
 body.dark-mode .switch label .lever {
   background-color: #4096e7 !important;
 }
-body.dark-mode .collection .collection-item{
+body.dark-mode .collection .collection-item {
   background-color: transparent !important;
 }
-body.dark-mode #totpAddAccount, 
-body.dark-mode #totpAddAccountScan, 
+body.dark-mode #totpAddAccount,
+body.dark-mode #totpAddAccountScan,
 body.dark-mode #qrcodeActivation,
 body.dark-mode #manualActivation,
 body.dark-mode #help-submenu,
@@ -607,12 +600,16 @@ body.dark-mode .circle-btn {
   background-color: transparent !important;
 }
 body.dark-mode .circle-btn img.icon-custom {
-  filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg) brightness(114%) contrast(112%) !important;
+  filter: invert(100%) sepia(11%) saturate(7456%) hue-rotate(284deg)
+    brightness(114%) contrast(112%) !important;
 }
 body.dark-mode .when-dark-svg-blue {
-  filter: invert(20%) sepia(43%) saturate(5667%) hue-rotate(209deg) brightness(97%) contrast(101%);
+  filter: invert(20%) sepia(43%) saturate(5667%) hue-rotate(209deg)
+    brightness(97%) contrast(101%);
 }
-body.dark-mode .text, .next, .prev {
+body.dark-mode .text,
+.next,
+.prev {
   color: #e0e0e0 !important;
 }
 
@@ -693,30 +690,30 @@ body.dark-mode ul#slide-out {
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Gris foncé transparent */
-    backdrop-filter: blur(2px); /* Applique un flou */
-    z-index: 99; /* Derrière le bottom sheet */
-    opacity: 0;
-    pointer-events: none; /* Inactif quand caché */
-    transition: opacity 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Gris foncé transparent */
+  backdrop-filter: blur(2px); /* Applique un flou */
+  z-index: 99; /* Derrière le bottom sheet */
+  opacity: 0;
+  pointer-events: none; /* Inactif quand caché */
+  transition: opacity 0.3s ease-in-out;
 }
 
 .overlay.active {
-    opacity: 1;
-    pointer-events: auto; /* Interactif lorsqu'il est actif */
+  opacity: 1;
+  pointer-events: auto; /* Interactif lorsqu'il est actif */
 }
 /* slide suppression */
 /* Conteneur principal */
@@ -776,7 +773,7 @@ body.dark-mode ul#slide-out {
   justify-content: center;
   padding-right: 0px;
 }
- /* Toast */
+/* Toast */
 .toast-error {
   background-color: #ff0000 !important;
   color: #ffffff !important;
