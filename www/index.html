@@ -64,7 +64,7 @@
                 <div class="container">
                     <a href="#" v-on:click="checkTotp(); openMenu()" data-activates="slide-out" role="button"
                         tabindex="0" aria-controls="slide-out" aria-expanded="false"
-                        class="button-collapse top-nav full hide-on-large-only" id="navButton">
+                        class="button-collapse top-nav full" id="navButton">
                         <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
@@ -87,53 +87,45 @@
                     </div>
                 </div>
                 <li v-if="totpnb == 0">
-                    <button class="nav-link" v-on:click="navigate" id="home" name="home"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button class="nav-link" v-on:click="navigate" id="home" name="home">
                         <img src="img/home.svg" class="icon" alt="" style="pointer-events: none;">&emsp;Accueil
                     </button>
                 </li>
                 <li v-if="totpnb != 0">
-                    <button class="nav-link" v-on:click="navigate" id="totp" name="totp" class="nav-link"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button class="nav-link" v-on:click="navigate" id="totp" name="totp">
                         <img src="img/totp.svg" class="icon" alt="" style="pointer-events: none;">&emsp;TOTP
                     </button>
                 </li>
                 <li>
-                    <button class="nav-link" name="chooseMethods" v-on:click="navigate"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button class="nav-link" name="chooseMethods" v-on:click="navigate">
                         <img src="img/push-menu.svg" class="icon" alt="" style="pointer-events: none;">&emsp;PUSH
                     </button>
                 </li>
                 <li>
-                    <button v-on:click="navigate" id="nfc" name="nfc" class="nav-link" role="button"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button v-on:click="navigate" id="nfc" name="nfc" class="nav-link" role="button">
                         <img src="img/nfc.svg" class="icon" alt="">&emsp;NFC
                     </button>
                 </li>
                 <li v-if="totpnb == 0">
-                    <button class="nav-link" v-on:click="navigate" id="totp" name="totp"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button class="nav-link" v-on:click="navigate" id="totp" name="totp">
                         <img src="img/totp.svg" class="icon" alt="" style="pointer-events: none;">&emsp;TOTP
                     </button>
                 </li>
                 <li>
-                    <button class="nav-link" v-on:click="navigate" id="help" name="helpAndDoc"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button class="nav-link" v-on:click="navigate" id="help" name="helpAndDoc">
                         <img src="img/help.svg" class="icon" alt="" style="pointer-events: none;">&emsp;AIDE
                     </button>
                 </li>
                 <div class="divider"></div>
                 <li v-for="(values, otpServer) in otpServersObjects" :key="otpServer">
-                    <button class="nav-link" v-on:click="desync(otpServer)" class="nav-link"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;"
+                    <button class="nav-link" v-on:click="desync(otpServer)"
                         :aria-label="'Supprimer le compte ' + getName(otpServer)">
                         {{ getName(otpServer) }}
                         <img src="img/round-remove_circle.svg" class="icon-right" alt="">
                     </button>
                 </li>
                 <li>
-                    <button class="nav-link" class="sidenav-close nav-link" v-on:click="closeMenu"
-                        style="background-color: transparent; border: none; color: inherit; outline: none;">
+                    <button class="sidenav-close nav-link" v-on:click="closeMenu">
                         <img src="img/close.svg" class="icon" alt="">&emsp;Fermer menu
                     </button>
                 </li>
