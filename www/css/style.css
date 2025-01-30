@@ -64,23 +64,23 @@ main {
 }
 
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
-    .sidenav-trigger {
-        display: block;
-    }
+  .sidenav-trigger {
+    display: block;
+  }
 
-    .side-nav {
-        display: none;
-    }
+  .side-nav {
+    display: none;
+  }
 
-    .side-nav.open {
-        display: block;
-    }
+  .side-nav.open {
+    display: block;
+  }
 
-    header,
-    main,
-    footer {
-        padding-left: 0;
-    }
+  header,
+  main,
+  footer {
+    padding-left: 0;
+  }
 }
 
 nav {
@@ -134,11 +134,11 @@ nav a {
 }
 
 .side-nav button {
-    padding: 2px 0;
-    background-color: transparent;
-    border: none;
-    color: inherit;
-    outline: none;
+  padding: 2px 0;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  outline: none;
 }
 
 .scrollable-container {
@@ -482,15 +482,15 @@ ul.collection {
 
 /** Materialize overrides for large screens **/
 @media only screen and (min-width: 993px) {
-    /* Do not hide burger icon on large screens */
-    nav a.button-collapse, .side-nav {
-      display: block;
-    }
+  /* Do not hide burger icon on large screens */
+  nav a.button-collapse, .side-nav {
+    display: block;
+  }
 
-    /* Hide sidenav close button */
-    .sidenav-close {
-      display: none;
-    }
+  /* Hide sidenav close button */
+  .sidenav-close {
+    display: none;
+  }
 }
 
 .btn-large.btn-custom {
@@ -739,25 +739,9 @@ body.dark-mode ul#slide-out {
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
-  }
-
-  to {
-      opacity: 1;
-  }
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Gris foncé transparent */
-    backdrop-filter: blur(2px); /* Applique un flou */
-    z-index: 99; /* Derrière le bottom sheet */
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
