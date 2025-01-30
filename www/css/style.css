@@ -28,37 +28,13 @@ main {
   height: auto;
 }
 
-h1, .h1{font-size: 2.92rem;}
-h2, .h2{font-size: 2.60rem;}
-h3, .h3{font-size: 2.28rem;}
-h4, .h4{font-size: 1.64rem;}
-h5, .h5{font-size: 1.32rem;}
-h6, .h6{font-size: 1.00rem;}
-
 .nav-wrapper {
-<<<<<<< HEAD
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 4rem;
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 0 1rem;
-    margin-top: 10px;
-}
-
-.top-nav {
-    box-shadow: none;
-    font-size: 32px;
-    -webkit-font-smoothing: antialiased;
-=======
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: inherit;
   border-bottom: 1px solid #e0e0e0;
   padding: 0 0.5rem;
->>>>>>> main
 }
 
 @media only screen and (max-width: 1024px) {
@@ -86,22 +62,12 @@ h6, .h6{font-size: 1.00rem;}
 }
 
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
-<<<<<<< HEAD
-    .sidenav-trigger {
-        display: block;
-    }
-
-    .side-nav {
-        display: none;
-    }
-=======
   .sidenav-trigger {
     display: block;
   }
   .side-nav {
     display: none;
   }
->>>>>>> main
 
   .side-nav.open {
     display: block;
@@ -342,16 +308,10 @@ ul.collection {
 
 /* css for the timer */
 .timer {
-<<<<<<< HEAD
-    /*style="vertical-align:top;";*/
-    /*style="horizontal-align:top;";*/
-    /*position: static;*/
-=======
   /*style="vertical-align:top;";*/
   /*style="horizontal-align:top;";
 */
   /*position: static;*/
->>>>>>> main
 }
 
 #circle1 {
@@ -390,15 +350,6 @@ ul.collection {
 }
 
 .waves-effect.waves-light.btn.btn-large.btn-custom-accept {
-<<<<<<< HEAD
-    background-color: #004d40 !important;
-    color: #fff !important;
-}
-
-.waves-effect.waves-light.btn.btn-large.btn-custom-reject {
-    background-color: #b71c1c !important;
-    color: #fff !important;
-=======
   background-color: #004d40 !important;
   color: #ffffff !important;
 }
@@ -406,7 +357,6 @@ ul.collection {
 .waves-effect.waves-light.btn.btn-large.btn-custom-reject {
   background-color: #b71c1c !important;
   color: #ffffff !important;
->>>>>>> main
 }
 
 .side-nav {
@@ -419,31 +369,6 @@ ul.collection {
 
 /* Couleur d'icône plus accessible */
 .accessible-icon {
-<<<<<<< HEAD
-    color: #05c;
-    background-color: #fff;
-    border-radius: 50%;
-    padding: 10px;
-}
-
-.accessible-icon-text {
-    display: flex;
-    align-items: center;
-    color: #05c;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.button-delete {
-    color: #05c;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-=======
   color: #0055cc;
   border-radius: 50%;
   padding: 10px;
@@ -466,7 +391,6 @@ ul.collection {
   border: none;
   padding: 0;
   cursor: pointer;
->>>>>>> main
 }
 
 .collection {
@@ -513,40 +437,18 @@ ul.collection {
 }
 
 .icon-right {
-<<<<<<< HEAD
-   width: 2rem;
-     height: 2rem;
-     display: inline-block;
-     vertical-align: middle;
-     margin-left: 0.5rem;
-}
-
-=======
   width: 2rem;
   height: 2rem;
   display: inline-block;
   vertical-align: middle;
   margin-left: 0.5rem;
 }
->>>>>>> main
 .sidenav-logo {
   max-width: 6rem;
   text-align: center;
 }
 
 .page-title {
-<<<<<<< HEAD
-    font-size: 2rem;
-    color: #333;
-    margin: 0;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    max-height: 4rem;
-    overflow: hidden;
-    margin-top: 0;
-    line-height: 64px;
-=======
   font-size: 2rem;
   color: #333333;
   margin: 0;
@@ -558,7 +460,6 @@ ul.collection {
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-top: 0;
->>>>>>> main
 }
 
 @media only screen and (max-width: 480px) {
@@ -568,18 +469,6 @@ ul.collection {
 }
 
 .btn-large.btn-custom {
-<<<<<<< HEAD
-    background-color: #757575 !important;
-    color: #fff !important;
-    border-radius: 4px;
-    padding: 18px 24px;
-    text-transform: uppercase;
-    font-weight: bold;
-    box-shadow: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-=======
   background-color: #757575 !important;
   color: #ffffff !important;
   border-radius: 4px;
@@ -590,7 +479,6 @@ ul.collection {
   display: flex;
   justify-content: center;
   align-items: center;
->>>>>>> main
 }
 
 #sidenav-overlay {
