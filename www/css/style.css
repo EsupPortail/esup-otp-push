@@ -603,7 +603,7 @@ body.dark-mode #slide-out li.active {
   background-color: #121212;
 }
 
-body.dark-mode li.collection-item{
+body.dark-mode li.collection-item {
   color: #e0e0e0;
   background-color: #1e1e1e !important;
 }
@@ -612,15 +612,15 @@ body.dark-mode li.collection-item p {
   color: #e0e0e0 !important;
 }
 
-body.dark-mode .switch label input[type=checkbox]:checked+.lever:after {
-  background-color: #0055cc !important;
+body.dark-mode .switch label input[type="checkbox"]:checked + .lever::after {
+  background-color: #05c !important;
 }
 
 body.dark-mode .switch label .lever {
   background-color: #4096e7 !important;
 }
 
-body.dark-mode .collection .collection-item{
+body.dark-mode .collection .collection-item {
   background-color: transparent !important;
 }
 
@@ -656,7 +656,9 @@ body.dark-mode .when-dark-svg-blue {
     brightness(97%) contrast(101%);
 }
 
-body.dark-mode .text, .next, .prev {
+body.dark-mode .text,
+.next,
+.prev {
   color: #e0e0e0 !important;
 }
 
