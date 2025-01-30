@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>fr</string>
 	<key>CFBundleDisplayName</key>
 	<string>Esup Auth</string>
 	<key>CFBundleExecutable</key>
@@ -76,5 +74,7 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>fr</string>
 </dict>
 </plist>

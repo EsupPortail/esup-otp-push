@@ -18,9 +18,9 @@
     under the License.
 -->
 <html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <!--
+<head>
+    <meta charset="utf-8">
+    <!--
         Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
             https://cordova.apache.org/docs/en/latest/
         Some notes:
@@ -28,7 +28,6 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-    <title>Esup Auth</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,7 +66,7 @@
                         <i class="material-icons" aria-label="Menu">menu</i>
                     </a>
                     <div class="nav-wrapper">
-                        <div class="page-title" aria-hidden="true">{{ pageTitle }}</div>
+                        <h1 class="page-title" aria-hidden="true">{{ pageTitle }}</h1>
                         <!-- Switch Dark Mode -->
                         <div class="switch">
                             <label>
@@ -212,8 +211,8 @@
             <div class="container" v-show="currentView=='notify'">
                 <div class="card">
                     <div class="card-content">
-                        <div class="row" style="margin-bottom: 0; text-align: center;">
-                            <h5>{{additionalData.text}}</h5>
+                        <div class="row center" style="margin-bottom: 0;">
+                            <p>{{additionalData.text}}</p>
                         </div>
                     </div>
                     <div class="card-action">
@@ -316,7 +315,7 @@
                         <!-- Full-width images with number and caption text -->
                         <div class="mySlides fade">
                             <div class="numbertext">1 / 6</div>
-                            <img src="img/push.svg">
+                            <img src="img/push.svg" alt="">
                             <div class="text">
                                 <h2>Configuration de la notification Push</h2>
                                 <p>Pour utiliser la notification push vous devez aller dans l'application
@@ -329,7 +328,7 @@
                         </div>
                         <div class="mySlides fade">
                             <div class="numbertext">2 / 6</div>
-                            <img src="img/totp2.svg">
+                            <img src="img/totp2.svg" alt="">
                             <div class="text">
                                 <h2>Configuration TOTP</h2>
                                 <p>
@@ -342,7 +341,7 @@
                         </div>
                         <div class="mySlides fade">
                             <div class="numbertext">3 / 6</div>
-                            <img src="img/codes_secours.svg">
+                            <img src="img/codes_secours.svg" alt="">
                             <div class="text">
                                 <h2>Configuration codes secours</h2>
                                 <p>Pour utiliser la méthode codes secours vous devez aller dans l'application
@@ -352,7 +351,7 @@
                         </div>
                         <div class="mySlides fade">
                             <div class="numbertext">4 / 6</div>
-                            <img src="img/random_code.svg">
+                            <img src="img/random_code.svg" alt="">
                             <div class="text">
                                 <h2>Configuration code par sms</h2>
                                 <p>Pour utiliser la méthode code par sms vous devez aller dans l'application
@@ -363,7 +362,7 @@
                         </div>
                         <div class="mySlides fade">
                             <div class="numbertext">5 / 6</div>
-                            <img src="img/mail.svg">
+                            <img src="img/mail.svg" alt="">
                             <div class="text">
                                 <h2>Configuration code courriel</h2>
                                 <p>
@@ -374,7 +373,7 @@
                         </div>
                         <div class="mySlides fade">
                             <div class="numbertext">6 / 6</div>
-                            <img src="img/esupnfc.svg">
+                            <img src="img/esupnfc.svg" alt="">
                             <div class="text">
                                 <h2>Configuration carte esupnfc</h2>
                                 <p>Pour utiliser la méthode esupnfc vous devez aller dans l'application Esup-otp-manager
@@ -743,8 +742,9 @@
             <div class="container" v-show="currentView=='nfc'">
                 <!-- Sur cette ligne le bouton du scan du QrCode. Il s'affiche à droite -->
                 <div class="row" style="margin-bottom: 8px; margin-top: 15px;">
-                    <a class="circle-btn right" role="button" v-on:click="scanQrCode">
-                        <img src="img/scan-qr.svg" class="icon-custom" alt="">
+                    <a class="circle-btn right" role="button"
+                       v-on:click="scanQrCode" title="Scanner un QR code">
+                        <img src="img/scan-qr.svg" class="icon-custom" alt="Scanneur">
                     </a>
                 </div>
                 <div class="row">
