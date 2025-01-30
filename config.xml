@@ -26,10 +26,16 @@
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
+
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <edit-config file="*-Info.plist" mode="merge" target="CFBundleDevelopmentRegion">
+            <string>fr</string>
+        </edit-config>
+        <resource-file src="GoogleService-Info.plist" />
     </platform>
     <platform name="android">
         <resource-file src="google-services.json" target="app/google-services.json" />
@@ -38,7 +44,14 @@
         <preference name="AndroidPostSplashScreenTheme" value="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </platform>
     <platform name="ios">
-        <resource-file src="GoogleService-Info.plist" />
+        <!-- Autorisation d'utiliser le NFC -->
+        <config-file platform="ios" target="*-Info.plist" parent="NFCReaderUsageDescription">
+            <string>Cette application utilise le NFC pour scanner des cartes étudiantes ou professionnelles.</string>
+        </config-file>
+        <!-- Configurer le background mode pour NFC -->
+        <feature name="BackgroundNFC">
+            <param name="ios-package" value="BackgroundNFC" />
+        </feature>
     </platform>
     <platform name="ios">
         <config-file parent="NFCReaderUsageDescription" platform="ios" target="*-Info.plist">
