@@ -104,7 +104,7 @@
                         <img src="img/push-menu.svg" class="icon" alt="" style="pointer-events: none;">&emsp;PUSH
                     </button>
                 </li>
-                <li>
+                <li v-if="platform == 'Android'">
                     <button v-on:click="navigate" id="nfc" name="nfc" class="nav-link" role="button"
                         style="background-color: transparent; border: none; color: inherit; outline: none;">
                         <img src="img/nfc.svg" class="icon" alt="">&emsp;NFC

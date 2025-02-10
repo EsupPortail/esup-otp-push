@@ -153,7 +153,7 @@ function initNfc(){
   }
 }
 /* DarkMode */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('deviceready', function () {
   const darkModeToggle = document.getElementById('darkModeToggle');
   const savedPreference = localStorage.getItem("darkMode");
   const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
     enableDarkMode();
   } else if (savedPreference === 'disabled') {
     disableDarkMode();
-  } else if (savedPreference === null && prefersDarkScheme.matches && device.platform === 'iOS') {
+  } else if (savedPreference === null && prefersDarkScheme.matches && device.platform === 'iOS') { // iOS
     enableDarkMode();
   } else {
     disableDarkMode();

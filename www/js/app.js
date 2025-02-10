@@ -741,13 +741,13 @@ var app = new Vue({
 
             // Simuler l'envoi de la commande APDU et obtenir le résultat
             let byteResult = await this.sendApduCommandToTag(tag, command);
-            console.log("Result from card: " + byteResult);
+            console.log("Result 1 from card: " + byteResult);
             if (!byteResult) {
               console.error("Failed to receive response from card.");
               throw new Error("No response from card.");
             }
             result = this.byteArrayToHexString(byteResult); // Convertir le résultat en hexadécimal
-            console.log("Result from card: " + result);
+            console.log("Result 2 from card: " + result);
 
             // Mettre à jour le résultat dans nfcResult pour l'étape suivante
             nfcResult.fullApdu = result;
@@ -755,17 +755,22 @@ var app = new Vue({
         }
 
         console.log("Process complete. Result: ", nfcResult);
+        return nfcResult;
       } catch (error) {
         console.error("Error during Desfire read process: " + error.message);
+        Materialize.toast(
+          '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>',
+          5000
+        );
       }
     },
     desfireHttpRequestAsync: async function (param1, param2) {
       try {
         // Récupérer l'ID stocké localement
-        const numeroId = "[PHONE_ID]"; // Renseigner ici l'ID du smartphone
+        const numeroId = "iphone-de-test"; // Renseigner ici l'ID du smartphone
 
         // Récupérer l'URL du serveur NFC
-        const esupNfcTagServerUrl = "[URL_SERVEUR_NFC]"; // Renseigner ici l'URL du serveur
+        const esupNfcTagServerUrl = "esupnfctag-ppd.univ-paris1.fr"; // Renseigner ici l'URL du serveur
 
         // Construire l'URL de la requête avec les paramètres
         const url = `https://${esupNfcTagServerUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
@@ -819,15 +824,15 @@ var app = new Vue({
       }).join("");
     },
     sendApduCommandToTag: function (tag, command) {
+      let responseGlobal;
       return new Promise(async (resolve, reject) => {
         try {
-          // Connecter à la technologie IsoDep avant d'envoyer la commande APDU
-          console.log("Connected to tag:", tag);
+          console.log("Connected to tag:", tag.tag.id);
 
           // Envoyer la commande APDU à la carte
           try {
             console.log("Calling transceive with command: " + command);
-            await nfc.transceive(
+            const response = await nfc.transceive(
               command,
               function (data) {
                 console.log("Received data from card: " + data);
@@ -837,22 +842,21 @@ var app = new Vue({
               }
             );
             console.log("Transceive completed");
+
+            // Convertir la réponse en chaîne hexadécimale
+            let hexResponse = this.byteArrayToHexString(
+              new Uint8Array(response)
+            );
+            responseGlobal = new Uint8Array(response);
+            console.log("Received response from card: " + hexResponse);
           } catch (error) {
             console.error("Error during transceive: " + error.message);
           }
 
-          // Convertir la réponse en chaîne hexadécimale
-          let hexResponse = this.byteArrayToHexString(new Uint8Array(response));
-          console.log("Received response from card: " + hexResponse);
-
-          resolve(response); // Résoudre la promesse avec la réponse reçue sous forme d'ArrayBuffer
+          resolve(responseGlobal); // Résoudre la promesse avec la réponse reçue sous forme d'ArrayBuffer
         } catch (error) {
           console.error("Error sending APDU command: " + error);
           reject(error); // Rejeter la promesse en cas d'erreur
-        } finally {
-          // Fermer la connexion après l'envoi de la commande
-          await nfc.close();
-          console.log("Connection closed.");
         }
       });
     },
@@ -892,15 +896,17 @@ var app = new Vue({
 
         if (status === "OK") {
           Materialize.toast(
-            `<div class="alert">${(heure >= 6 && heure < 18) ? "Bonjour" : "Bonsoir"} ${userName}</div>`,
+            `<div class="alert">${
+              heure >= 6 && heure < 18 ? "Bonjour" : "Bonsoir"
+            } ${userName}</div>`,
             5000
           );
 
           console.log("Statut : " + status);
           console.log("Utilisateur : " + userName);
-        } else{
+        } else {
           Materialize.toast(
-            '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>', 
+            '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>',
             5000
           );
         }
@@ -916,7 +922,7 @@ var app = new Vue({
         }
       });
     },
-    hideBottomSheet: function() {
+    hideBottomSheet: function () {
       this.showBottomSheet = false;
       this.showSuccess = false;
     },
@@ -932,10 +938,26 @@ var app = new Vue({
             this.showSuccess = true;
             // Le tag NFC a été scanné avec succès
             console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
+            // Connecter à la technologie IsoDep avant d'envoyer la commande APDU
+            nfc.connect("android.nfc.tech.IsoDep", 500);
 
-            this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
+            this.desfireRead(cardId, tag)
               .then((response) => {
-                this.extractData(response);
+                console.log("END-DesfireRead >> " + response.msg);
+                if (response.code === "END") {
+                  let heure = new Date().getHours();
+                  Materialize.toast(
+                    `<div class="alert">${
+                      heure >= 6 && heure < 18 ? "Bonjour" : "Bonsoir"
+                    } ${response.msg}</div>`,
+                    5000
+                  );
+                } else {
+                  Materialize.toast(
+                    '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>',
+                    5000
+                  );
+                }
               })
               .catch((error) => {
                 console.error("Erreur lors de l'envoi des données:", error);
@@ -963,14 +985,14 @@ var app = new Vue({
             // Le tag NFC a été scanné avec succès
             console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
 
-            this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
+            /* this.sendCsnToServer(cardIdArr, etablishmentUrl, numeroId)
               .then((response) => {
                 console.log("Réponse du serveur:", response);
                 this.extractData(response);
               })
               .catch((error) => {
                 console.error("Erreur lors de l'envoi des données:", error);
-              });
+              }); */
           },
           (error) => {
             console.error("Erreur lors du scan NFC :", error);
@@ -1035,7 +1057,9 @@ var app = new Vue({
       );
     },
     removeEstablishment(index) {
-      localStorage.removeItem("establishment_" + this.establishments[index].etablissement);
+      localStorage.removeItem(
+        "establishment_" + this.establishments[index].etablissement
+      );
       this.establishments.splice(index, 1); // Supprime l'élément du tableau
     },
   },
