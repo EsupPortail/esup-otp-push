@@ -5,6 +5,14 @@ body {
   margin: 0;
   padding: 0;
 }
+
+h1, .h1{font-size: 2.92rem;}
+h2, .h2{font-size: 2.60rem;}
+h3, .h3{font-size: 2.28rem;}
+h4, .h4{font-size: 1.64rem;}
+h5, .h5{font-size: 1.32rem;}
+h6, .h6{font-size: 1.00rem;}
+
 #app {
   position: relative;
   height: 100%;
@@ -59,6 +67,7 @@ main {
     padding: 0 1rem;
   }
 }
+
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
   .sidenav-trigger {
     display: block;
@@ -182,6 +191,14 @@ Switch
   padding: 6px 6px 5px 6px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+label {
+  color: #797676;
+}
+
+.dark-mode label {
+  color: #E9E9E9;
 }
 
 body.IE7 .Switch {
@@ -425,6 +442,7 @@ ul.collection {
   width: 100%;
   text-align: left;
 }
+
 .icon {
   width: 2rem;
   height: 2rem;
@@ -432,6 +450,7 @@ ul.collection {
   display: inline-block;
   vertical-align: middle;
 }
+
 .icon-right {
   width: 2rem;
   height: 2rem;
