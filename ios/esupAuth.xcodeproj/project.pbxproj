@@ -7,12 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C80B921A6F3F58F76C31292 /* libPods-esupAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-esupAuth.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A3AC917C2D78B6CF00FB7F87 /* libPods-esupAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-esupAuth.a */; };
+		A3AC917E2D78B8DE00FB7F87 /* libRNDefaultPreference.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3AC917D2D78B8DE00FB7F87 /* libRNDefaultPreference.a */; };
 		BECFB9DD4877EB4F370CFED5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A3AC91772D78B48F00FB7F87 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3AC91722D78B48E00FB7F87 /* RNDefaultPreference.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNDefaultPreference;
+		};
+		A3AC91792D78B48F00FB7F87 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3AC91722D78B48E00FB7F87 /* RNDefaultPreference.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2E67E40820E0844100BC6368;
+			remoteInfo = "RNDefaultPreference-tvOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* esupAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = esupAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -25,6 +43,8 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = esupAuth/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = esupAuth/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A3AC914D2D77211800FB7F87 /* esupAuth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = esupAuth.entitlements; path = esupAuth/esupAuth.entitlements; sourceTree = "<group>"; };
+		A3AC91722D78B48E00FB7F87 /* RNDefaultPreference.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = RNDefaultPreference.xcodeproj; sourceTree = "<group>"; };
+		A3AC917D2D78B8DE00FB7F87 /* libRNDefaultPreference.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNDefaultPreference.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -33,7 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-esupAuth.a in Frameworks */,
+				A3AC917E2D78B8DE00FB7F87 /* libRNDefaultPreference.a in Frameworks */,
+				A3AC917C2D78B6CF00FB7F87 /* libPods-esupAuth.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +77,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A3AC917D2D78B8DE00FB7F87 /* libRNDefaultPreference.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-esupAuth.a */,
 			);
@@ -65,6 +87,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A3AC91722D78B48E00FB7F87 /* RNDefaultPreference.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -87,6 +110,15 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* esupAuth.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A3AC91732D78B48E00FB7F87 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A3AC91782D78B48F00FB7F87 /* libRNDefaultPreference.a */,
+				A3AC917A2D78B48F00FB7F87 /* libRNDefaultPreference-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -148,12 +180,35 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A3AC91732D78B48E00FB7F87 /* Products */;
+					ProjectRef = A3AC91722D78B48E00FB7F87 /* RNDefaultPreference.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* esupAuth */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		A3AC91782D78B48F00FB7F87 /* libRNDefaultPreference.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDefaultPreference.a;
+			remoteRef = A3AC91772D78B48F00FB7F87 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A3AC917A2D78B48F00FB7F87 /* libRNDefaultPreference-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNDefaultPreference-tvOS.a";
+			remoteRef = A3AC91792D78B48F00FB7F87 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {

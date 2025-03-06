@@ -1,5 +1,6 @@
 package org.esupportail.esupauth
 
+import com.kevinresol.react_native_default_preference.RNDefaultPreferencePackage;
 import android.app.Application
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -20,6 +21,7 @@ class MainApplication : Application(), ReactApplication {
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
+              add(RNDefaultPreferencePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

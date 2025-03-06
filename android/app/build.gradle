@@ -79,15 +79,15 @@ android {
 
     namespace "org.esupportail.esupauth"
     defaultConfig {
-        applicationId "org.esupportail.esupauth"
+        applicationId "org.esupportail.esupAuth"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 10107
         versionName "1.0"
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
+            storeFile file('/Users/pgmmen/.android/debug.keystore')
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
@@ -116,4 +116,5 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    implementation project(':react-native-default-preference')
 }

@@ -1,5 +1,6 @@
 import {View} from 'react-native';
 import {WebView} from 'react-native-webview';
+import DefaultPreference from 'react-native-default-preference';
 
 const INJECTED_JAVASCRIPT = `(function() {
     window.localStorage.setItem('test', 'toto');
@@ -21,9 +22,24 @@ function handleOnMessage(event) {
   // Do something with the old local storage
 }
 
+async function verifyMigration() {
+  await DefaultPreference.setName('settings'); // Définit le namespace
+
+  const keysToCheck = ["darkMode", "establishment_Paris 1 Panthéon-Sorbonne", "gcm_id", "totpObjects", "otpServers"];
+  
+  for (const key of keysToCheck) {
+    DefaultPreference.get(key).then(value => {
+      console.log(`🔍 ---->>> Vérification: ${key} =>`, JSON.parse(value));
+    }).catch(err => {
+      console.error(`❌ ----->>> Erreur récupération de ${key}`, err);
+    });
+  }
+}
+
 const MigrateStorage = () => {
   return (
     <View style={{width: '100%', height: 300}}>
+      {verifyMigration()}
       <WebView
         originWhitelist={['*']}
         source={{html: customHTML, baseUrl: 'https://localhost'}}
