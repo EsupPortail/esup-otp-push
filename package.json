@@ -34,7 +34,8 @@
         "ANDROIDX_CORE_VERSION": "1.6.+",
         "FCM_VERSION": "23.+",
         "IOS_FIREBASE_MESSAGING_VERSION": "~> 8.1.1"
-      }
+      },
+      "cordova-plugin-awesome-shared-preferences": {}
     }
   },
   "devDependencies": {
@@ -46,6 +47,7 @@
     "cordova-plugin-advanced-http": "^3.3.1",
     "cordova-plugin-android-permissions": "^1.1.5",
     "cordova-plugin-app-exit": "^0.0.2",
+    "cordova-plugin-awesome-shared-preferences": "github:adriano-di-giovanni/cordova-plugin-shared-preferences",
     "cordova-plugin-device": "^2.1.0",
     "cordova-plugin-file": "^8.1.0",
     "cordova-plugin-splashscreen": "^6.0.2",
