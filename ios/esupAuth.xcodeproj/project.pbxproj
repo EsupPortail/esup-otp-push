@@ -45,6 +45,7 @@
 		A3AC914D2D77211800FB7F87 /* esupAuth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = esupAuth.entitlements; path = esupAuth/esupAuth.entitlements; sourceTree = "<group>"; };
 		A3AC91722D78B48E00FB7F87 /* RNDefaultPreference.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = RNDefaultPreference.xcodeproj; sourceTree = "<group>"; };
 		A3AC917D2D78B8DE00FB7F87 /* libRNDefaultPreference.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNDefaultPreference.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3AC91A02D7B111D00FB7F87 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -77,6 +78,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A3AC91A02D7B111D00FB7F87 /* libsqlite3.tbd */,
 				A3AC917D2D78B8DE00FB7F87 /* libRNDefaultPreference.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-esupAuth.a */,

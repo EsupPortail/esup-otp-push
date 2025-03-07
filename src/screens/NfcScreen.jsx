@@ -19,7 +19,6 @@ import {
 } from 'react-native';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 import {desfireRead} from '../services/nfcService';
-import MigrateStorage from '../components/MigrateStorage';
 import { useTheme } from '@react-navigation/native';
 
 function NfcScreen() {
@@ -73,7 +72,6 @@ function NfcScreen() {
           <Text style={{color: colors.text}}>Scan a Tag</Text>
         </TouchableOpacity>
       </View>
-      <MigrateStorage />
     </View>
   );
 }
