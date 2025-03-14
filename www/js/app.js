@@ -16,6 +16,8 @@ var app = new Vue({
     mode: "test",
     currentView: "home",
     storage: undefined,
+    sharedPreferences: undefined,
+    isMigrationDone: undefined,
     gcm_id: undefined,
     platform: undefined,
     manufacturer: undefined,
@@ -42,10 +44,8 @@ var app = new Vue({
     showSuccess: false,
   },
   created: function () {
-    this.checkTotp();
     document.addEventListener("deviceready", this.init, false);
     document.addEventListener("resume", this.initAuth, false);
-    this.loadStoredEstablishments(); // Charger les établissements stockés
   },
 
   methods: {
@@ -108,26 +108,42 @@ var app = new Vue({
       });
     },
     checkTotp: function () {
-      this.totp = localStorage.getItem("totpObjects");
-      if (this.totp == "{}" || this.totp == undefined) {
-        this.totpnb = 0;
-      } else if (this.totpnb != 1) {
-        this.totpnb = 1;
-        this.currentView = "totp";
-      }
+      //this.totp = localStorage.getItem("totpObjects");
+      var self = this;
+      this.sharedPreferences.get("totpObjects", (totp) => {
+        console.log("CHECKTOTP--------");
+        self.totp = totp;
+        console.log(self.totp);
+        console.log(self.totpnb)
+        if (self.totp == "{}" || self.totp == undefined) {
+          self.totpnb = 0;
+        } else if (self.totpnb != 1) {
+          self.totpnb = 1;
+          self.currentView = "totp";
+        }
+        console.log(self.totpnb);
+      });
     },
-    init: function () {
+    init: async function () {
       navigator.splashscreen.hide();
       if (cordova.platformId != "android") {
         StatusBar.backgroundColorByHexString("#212121");
       }
       this.storage = window.localStorage;
+      this.isMigrationDone = this.storage.getItem("isMigrationDone");
+      console.log("isMigrationDone : " + this.isMigrationDone);
+      this.sharedPreferences =
+        window.plugins.SharedPreferences.getInstance("settings");
+      this.showSharedPreferences();
+      this.checkTotp();
       this.initOTPServers();
       this.transfer2OtpServers();
+      this.isMigrationDone ?? this.startSharedPreferences();
+      this.loadStoredEstablishments(); // Charger les établissements stockés
       this.platform = device.platform;
       this.manufacturer = device.manufacturer;
       this.model = device.model;
-      this.gcm_id = this.storage.getItem("gcm_id");
+      this.gcm_id = this.isMigrationDone ? await this.GETsharedPreferences('gcm_id') : this.storage.getItem("gcm_id");
       this.requestNotificationPermission();
       this.push_init();
       this.initAuth();
@@ -197,7 +213,8 @@ var app = new Vue({
       this.push.on("registration", function (data) {
         if (self.gcm_id == null) {
           self.gcm_id = data.registrationId;
-          self.storage.setItem("gcm_id", self.gcm_id);
+          //self.storage.setItem("gcm_id", self.gcm_id);
+          self.sharedPreferences.put("gcm_id", JSON.stringify(self.gcm_id));
         } else if (self.gcm_id != data.registrationId) {
           for (otpServer in this.otpServersObjects)
             self.refresh(
@@ -208,7 +225,8 @@ var app = new Vue({
               data.registrationId
             );
           self.gcm_id = data.registrationId;
-          self.storage.setItem("gcm_id", self.gcm_id);
+          //self.storage.setItem("gcm_id", self.gcm_id);
+          self.sharedPreferences.put("gcm_id", JSON.stringify(self.gcm_id));
         }
       });
 
@@ -263,10 +281,11 @@ var app = new Vue({
       }
     },
     initOTPServers: function () {
-      var otpServers = localStorage.getItem("otpServers");
-      if (otpServers != null) {
-        this.otpServersObjects = JSON.parse(otpServers);
-      }
+      this.sharedPreferences.get("otpServers", (otpServers) => {
+        if (otpServers != null) {
+          this.otpServersObjects = JSON.parse(otpServers);
+        }
+      });
     },
     scan: function () {
       var self = this;
@@ -347,7 +366,11 @@ var app = new Vue({
               hostName: data.hostName,
               uid: uid,
             };
-            this.storage.setItem(
+            /*this.storage.setItem(
+              "otpServers",
+              JSON.stringify(this.otpServersObjects)
+            );*/
+            this.sharedPreferences.put(
               "otpServers",
               JSON.stringify(this.otpServersObjects)
             );
@@ -447,6 +470,8 @@ var app = new Vue({
         success: function (data) {
           if (data.code == "Ok") {
             self.gcm_id = registrationId;
+            //this.storage.setItem("gcm_id", registrationId);
+            this.sharedPreferences.put("gcm_id", JSON.stringify(registrationId));
             Materialize.toast('<div role="alert">Refresh gcm_id</div>', 4000);
             this.navigate({
               target: {
@@ -527,7 +552,11 @@ var app = new Vue({
             4000
           );
           delete this.otpServersObjects[otpServer];
-          self.storage.setItem(
+          /*self.storage.setItem(
+            "otpServers",
+            JSON.stringify(this.otpServersObjects)
+          );*/
+          self.sharedPreferences.put(
             "otpServers",
             JSON.stringify(this.otpServersObjects)
           );
@@ -569,7 +598,11 @@ var app = new Vue({
       ) {
         this.otpServersObjects[this.additionalData.otpServer].hostToken =
           this.additionalData.hostToken;
-        this.storage.setItem(
+        /*this.storage.setItem(
+          "otpServers",
+          JSON.stringify(this.otpServersObjects)
+        );*/
+        this.sharedPreferences.put(
           "otpServers",
           JSON.stringify(this.otpServersObjects)
         );
@@ -583,7 +616,11 @@ var app = new Vue({
       ) {
         this.otpServersObjects[this.additionalData.otpServer].hostName =
           this.additionalData.hostName;
-        this.storage.setItem(
+        /*this.storage.setItem(
+          "otpServers",
+          JSON.stringify(this.otpServersObjects)
+        );*/
+        this.sharedPreferences.put(
           "otpServers",
           JSON.stringify(this.otpServersObjects)
         );
@@ -636,7 +673,11 @@ var app = new Vue({
               this.otpServersObjects[
                 this.additionalData.otpServer
               ].tokenSecret = data.tokenSecret;
-              this.storage.setItem(
+              /*this.storage.setItem(
+                "otpServers",
+                JSON.stringify(this.otpServersObjects)
+              );*/
+              this.sharedPreferences.put(
                 "otpServers",
                 JSON.stringify(this.otpServersObjects)
               );
@@ -915,12 +956,40 @@ var app = new Vue({
       }
     },
     loadStoredEstablishments: function () {
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith("establishment_")) {
-          const establishment = JSON.parse(localStorage.getItem(key));
-          this.establishments.push(establishment);
+      var self = this;
+      this.sharedPreferences.keys(
+        (keys) => {
+          keys.forEach((key) => {
+            if (key.startsWith("establishment_")) {
+              self.sharedPreferences.get(
+                key,
+                (value) => {
+                  if (value) {
+                    try {
+                      const establishment = (typeof value === "string") ? JSON.parse(value) : value;
+                      self.establishments.push(establishment);
+                    } catch (error) {
+                      console.error(
+                        `❌ Erreur lors du parsing de ${key}:`,
+                        error
+                      );
+                    }
+                  }
+                },
+                (error) => {
+                  console.error(
+                    `❌ Erreur lors de la récupération de ${key}:`,
+                    error
+                  );
+                }
+              );
+            }
+          });
+        },
+        (error) => {
+          console.error("❌ Erreur lors de la récupération des clés:", error);
         }
-      });
+      );
     },
     hideBottomSheet: function () {
       this.showBottomSheet = false;
@@ -1026,7 +1095,7 @@ var app = new Vue({
                     (establishment) => establishment.url === scannedData.url
                   )
                 ) {
-                  localStorage.setItem(
+                  self.sharedPreferences.put(
                     "establishment_" + scannedData.etablissement,
                     JSON.stringify(establishmentData)
                   );
@@ -1057,10 +1126,50 @@ var app = new Vue({
       );
     },
     removeEstablishment(index) {
-      localStorage.removeItem(
-        "establishment_" + this.establishments[index].etablissement
+      const establishmentKey = "establishment_" + this.establishments[index].etablissement;
+
+      // Suppression de l'établissement dans SharedPreferences
+      this.sharedPreferences.del(
+        establishmentKey,
+        () => {
+          localStorage.removeItem(
+            "establishment_" + this.establishments[index].etablissement
+          );
+          console.log(
+            `✅ Établissement supprimé : ${this.establishments[index].etablissement}`
+          );
+          this.establishments.splice(index, 1); // Supprime l'élément du tableau
+        },
+        (error) => {
+          console.error(
+            `❌ Erreur lors de la suppression de l'établissement:`,
+            error
+          );
+        }
       );
-      this.establishments.splice(index, 1); // Supprime l'élément du tableau
     },
+    startSharedPreferences: function () {
+      window.dispatchEvent(new Event("migration_update"));
+    },
+    GETsharedPreferences: function (key) {
+      return new Promise((resolve, reject) => {
+        this.sharedPreferences.get(key, (value) => {
+          resolve(value);
+        }, (error) => {
+          reject(error);
+        });
+      });
+    },
+    // show sharedPreferences content
+    showSharedPreferences: function () {
+      console.log("LE CONTENU DES SHAREDPREFERENCES >>>>>>>>");
+      this.sharedPreferences.keys(async () => {
+        const keysToCheck = ["darkMode", "establishment_Paris 1 Panthéon-Sorbonne", "gcm_id", "totpObjects", "otpServers"];
+        for(let key of keysToCheck) {
+          let value = await GETsharedPreferences(key);
+          console.log(key + " : " + value);
+        }
+      });
+    }
   },
 });

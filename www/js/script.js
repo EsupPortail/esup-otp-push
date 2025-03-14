@@ -1,13 +1,23 @@
 function addT() {
-  var totpObjects = localStorage.getItem("totpObjects");
-  if (totpObjects == "{}" || totpObjects == undefined) {
-    document.getElementById("circle1").style.visibility = "hidden";
-  } else {
-    document.getElementById("circle1").style.visibility = "visible";
-  }
+  var sharedPreferences =
+    window.plugins.SharedPreferences.getInstance("settings");
+
+  sharedPreferences.get(
+    "totpObjects",
+    (totpObjects) => {
+      if (totpObjects == "{}" || totpObjects == undefined) {
+        document.getElementById("circle1").style.visibility = "hidden";
+      } else {
+        document.getElementById("circle1").style.visibility = "visible";
+      }
+    },
+    (error) => {
+      console.error("❌ Erreur lors de la récupération de totpObjects:", error);
+    }
+  );
 }
 async function populateTable() {
-  var totpObjects = getTotpObjects();
+  var totpObjects = await getTotpObjects();
   var table = "";
   for (var key in totpObjects) {
     var secret = key; // Utilisez le code secret (en base32) comme clé
@@ -46,8 +56,6 @@ async function populateTable() {
   document.getElementById("result").innerHTML = table;
 }
 
-addT();
-populateTable();
 jQuery.noConflict();
 
 const length = 87.39775848388672;
@@ -72,12 +80,16 @@ function startTimer() {
 }
 startTimer();
 
-function deleteTotp(key) {
-  var totpObjects = getTotpObjects();
+async function deleteTotp(key) {
+  var sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+  var totpObjects = await getTotpObjects();
   var result = confirm("Voulez-vous supprimer [" + totpObjects[key] + "] ?");
   if (result) {
     delete totpObjects[key];
-    localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
+    console.log("DELETETOTP--------");
+    console.log(totpObjects);
+    //localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
+    sharedPreferences.put("totpObjects", JSON.stringify(totpObjects));
     populateTable();
     addT();
   }
@@ -93,20 +105,40 @@ function navigate(event) {
 }
 
 function getTotpObjects() {
-  var totpObjects = localStorage.getItem("totpObjects");
-  if (totpObjects == null) {
-    totpObjects = new Object();
-  } else {
-    totpObjects = JSON.parse(totpObjects);
-  }
-  return totpObjects;
+  return new Promise((resolve, reject) => {
+    var sharedPreferences =
+      window.plugins.SharedPreferences.getInstance("settings");
+    sharedPreferences.get(
+      "totpObjects",
+      (value) => {
+        let totpObjects = new Object();
+        if (value) {
+          totpObjects = JSON.parse(value);
+          console.log("GETTOTP--------totpObjects");
+          console.log(totpObjects);
+        }
+        resolve(totpObjects);
+      },
+      (error) => {
+        console.error(
+          "❌ Erreur lors de la récupération de totpObjects:",
+          error
+        );
+        reject(error);
+      }
+    );
+  });
 }
 
-function setAccount(key, name) {
-  let totpObjects = getTotpObjects();
+async function setAccount(key, name) {
+  var sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+  let totpObjects = await getTotpObjects();
   if (key.length >= 16 && key.length % 2 === 0) {
     totpObjects[key] = name;
-    localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
+    console.log("SETACCOUNT--------");
+    console.log(totpObjects);
+    //localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
+    sharedPreferences.put("totpObjects", JSON.stringify(totpObjects));
     populateTable();
     addT();
   } else {
@@ -122,8 +154,9 @@ function addAccount() {
   setAccount(key, name);
 }
 
-function totp_scan(event) {
-  cordova.plugins.barcodeScanner.scan(
+async function totp_scan(event) {
+  var sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+  await cordova.plugins.barcodeScanner.scan(
     function (result) {
       var s =
         "Result: " +
@@ -142,7 +175,8 @@ function totp_scan(event) {
       );
       var totpObjects = getTotpObjects();
       totpObjects[key] = name;
-      localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
+      //localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
+      sharedPreferences.put("totpObjects", JSON.stringify(totpObjects))
       populateTable();
       addT();
       var variable = "totp";
@@ -169,10 +203,14 @@ function initNfc() {
   }
 }
 /* DarkMode */
-document.addEventListener("deviceready", function () {
+document.addEventListener("deviceready", async function () {
+  addT();
+  populateTable();
+
   const darkModeToggle = document.getElementById("darkModeToggle");
-  const savedPreference = localStorage.getItem("darkMode");
+  const savedPreference = await GETsharedPreferences('darkMode'); //localStorage.getItem("darkMode");
   const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  console.log("Deviceready de scripts.js");
   migrateLocalStorageToSharedPreferences();
   function enableDarkMode() {
     document.body.classList.add("dark-mode");
@@ -203,13 +241,17 @@ document.addEventListener("deviceready", function () {
 
   // Basculer entre le mode sombre et le mode clair
   darkModeToggle.addEventListener("change", function () {
+    var sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+
     if (this.checked) {
       document.body.classList.add("dark-mode");
-      localStorage.setItem("darkMode", "enabled"); // Sauvegarder le choix
+      //localStorage.setItem("darkMode", "enabled"); // A cause de migrate qui utilise le localStorage
+      sharedPreferences.put("darkMode", "enabled");
       switchDarkModeOnElements(true); // Activer le mode sombre sur les autres éléments
     } else {
       document.body.classList.remove("dark-mode");
-      localStorage.setItem("darkMode", "disabled"); // Sauvegarder le choix
+      //localStorage.setItem("darkMode", "disabled"); // A cause de migrate qui utilise le localStorage
+      sharedPreferences.put("darkMode", "disabled");
       switchDarkModeOnElements(false); // Désactiver le mode sombre
     }
   });
@@ -238,51 +280,6 @@ document.addEventListener("deviceready", function () {
       darkModeToggle.dispatchEvent(new Event("change"));
     }
   });
-  // Migrer le localstorage
-  function migrateLocalStorageToSharedPreferences() {
-    console.log("📂 Début de la migration...");
-    var sharedPreferences =
-      window.plugins.SharedPreferences.getInstance("settings"); // Namespace 'settings'
-
-    for (var i = 0; i < localStorage.length; i++) {
-      var key = localStorage.key(i);
-      var value = localStorage.getItem(key);
-
-      // Vérifier si la clé et la valeur sont valides
-      if (key && value !== null) {
-        try {
-          // Si c'est un objet JSON, le convertir en chaîne
-          if (value.startsWith("{") || value.startsWith("[")) {
-            value = JSON.stringify(JSON.parse(value));
-          }
-
-          // Stocker dans SharedPreferences
-          sharedPreferences.put(
-            key,
-            value,
-            function () {
-              console.log("✅ ", key, "->", value);
-            },
-            function (error) {
-              console.error("❌ Erreur en sauvegardant", key, error);
-            }
-          );
-        } catch (err) {
-          console.error("⚠️ Erreur de parsing JSON pour", key, err);
-        }
-      } else {
-        console.warn("⚠️ Clé ignorée (vide ou invalide):", key);
-      }
-    }
-
-    console.log("🎉 Migration terminée avec succès !");
-    sharedPreferences.keys((keys) => {
-      console.log(keys);
-    });
-    sharedPreferences.get("establishment_Paris 1 Panthéon-Sorbonne", (value) => {
-      console.log(value);
-    });
-  }
 });
 
 document.querySelectorAll(".swipe-container").forEach((container, index) => {
@@ -323,3 +320,100 @@ document.querySelectorAll(".swipe-container").forEach((container, index) => {
     }
   });
 });
+
+// Écoute l'événement de mise à jour
+window.addEventListener("migration_update", function () {
+  console.log("🔄 Migration relancée après mise à jour !");
+  migrateLocalStorageToSharedPreferences(); // Relancer la migration
+});
+
+
+// Vérifier si la clé existe déjà dans le sharedPreferences
+function checkKey() {
+  const keysToCheck = ["darkMode", "establishment_Paris 1 Panthéon-Sorbonne", "gcm_id", "totpObjects", "otpServers"];
+  var sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+  for(let key of keysToCheck) {
+    sharedPreferences.has(
+      key,
+      function (exists) {
+        if (exists) {
+          console.log(`🗑 Suppression de ${key} de localStorage`);
+          localStorage.removeItem(key);
+        }
+      },
+      function (error) {
+        console.error(`❌ Erreur lors de la vérification de la clé ${key} dans SharedPreferences`, error);
+      }
+    );
+  }
+}
+
+
+// Migrer le localstorage
+function migrateLocalStorageToSharedPreferences() {
+  console.log("On vérifie si la migration est déjà faite ***********************");
+  if (localStorage.getItem("isMigrationDone")) return;
+  console.log("📂 Début de la migration...");
+  var sharedPreferences =
+    window.plugins.SharedPreferences.getInstance("settings"); // Namespace 'settings'
+  
+    //checkKey();
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    var value = localStorage.getItem(key);
+
+    // Vérifier si la clé et la valeur sont valides
+    if (key && value !== null) {
+      try {
+        // Si c'est un objet JSON, le convertir en chaîne
+        if (value.startsWith("{") || value.startsWith("[")) {
+          value = JSON.stringify(JSON.parse(value));
+        }
+
+        // Stocker dans SharedPreferences
+        sharedPreferences.put(
+          key,
+          value,
+          function () {
+            console.log(key, "->", value);
+          },
+          function (error) {
+            console.error("❌ Erreur en sauvegardant", key, error);
+          }
+        );
+      } catch (err) {
+        console.error("⚠️ Erreur de parsing JSON pour", key, err);
+      }
+    } else {
+      console.warn("⚠️ Clé ignorée (vide ou invalide):", key);
+    }
+  }
+
+  console.log("🎉 Migration terminée avec succès !");
+  localStorage.setItem("isMigrationDone", true);
+  sharedPreferences.keys(async (keys) => {
+    const keysToCheck = ["darkMode", "establishment_Paris 1 Panthéon-Sorbonne", "gcm_id", "totpObjects", "otpServers"];
+    //console.log(keys);
+    for(let key of keysToCheck) {
+      let value = await GETsharedPreferences(key);
+      console.log(key + " : " + value);
+      //localStorage.setItem(key, value);
+    }
+  });
+  sharedPreferences.get("establishment_Paris 1 Panthéon-Sorbonne", (value) => {
+    console.log(value);
+  });
+}
+
+function GETsharedPreferences (key) {
+  var sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+
+  return new Promise((resolve, reject) => {
+    sharedPreferences.get(key, (value) => {
+      resolve(value);
+    }, (error) => {
+      reject(error);
+    });
+  });
+}
