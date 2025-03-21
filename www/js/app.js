@@ -18,6 +18,8 @@ var app = new Vue({
     storage: undefined,
     sharedPreferences: undefined,
     isMigrationDone: undefined,
+    nfcListener: undefined,
+    migrationManager: undefined,
     gcm_id: undefined,
     platform: undefined,
     manufacturer: undefined,
@@ -49,6 +51,48 @@ var app = new Vue({
   },
 
   methods: {
+    init: async function () {
+      navigator.splashscreen.hide();
+      if (cordova.platformId != "android") {
+        StatusBar.backgroundColorByHexString("#212121");
+      }
+      
+      this.storage = window.localStorage;
+      this.sharedPreferences = window.plugins.SharedPreferences.getInstance("settings");
+      this.migrationManager = new MigrationManager();
+      this.migrationManager.hello();
+
+      await this.migrationManager.initializeApp();
+      await this.migrationManager.startMigration().then(
+        async () => {
+          addT();
+          populateTable();
+          this.push_init();
+          this.checkTotp();
+          this.initOTPServers();
+          this.transfer2OtpServers();
+          this.loadStoredEstablishments();
+          this.gcm_id = await this.GETsharedPreferences("gcm_id")
+        },
+      );
+      
+      this.isMigrationDone = localStorage.getItem("isMigrationDone");
+      console.log("✅ isMigrationDone :", this.isMigrationDone);
+
+      this.showSharedPreferences();
+      /*this.checkTotp();
+      this.initOTPServers();
+      this.transfer2OtpServers();
+
+      await this.loadStoredEstablishments(); // Charger les établissements stockés*/
+
+      this.platform = device.platform;
+      this.manufacturer = device.manufacturer;
+      this.model = device.model;
+
+      this.requestNotificationPermission();
+      this.initAuth();
+    },
     handleAddAccountAndNavigate: function () {
       this.addAccount();
       this.navigate();
@@ -110,43 +154,28 @@ var app = new Vue({
     checkTotp: function () {
       //this.totp = localStorage.getItem("totpObjects");
       var self = this;
-      this.sharedPreferences.get("totpObjects", (totp) => {
-        console.log("CHECKTOTP--------");
-        self.totp = totp;
-        console.log(self.totp);
-        console.log(self.totpnb)
-        if (self.totp == "{}" || self.totp == undefined) {
-          self.totpnb = 0;
-        } else if (self.totpnb != 1) {
-          self.totpnb = 1;
-          self.currentView = "totp";
+      this.sharedPreferences.get(
+        "totpObjects",
+        (totp) => {
+          console.log("CHECKTOTP--------");
+          self.totp = totp;
+          console.log(self.totp);
+          console.log(self.totpnb);
+          if (self.totp == "{}" || self.totp == undefined) {
+            self.totpnb = 0;
+          } else if (self.totpnb != 1) {
+            self.totpnb = 1;
+            self.currentView = "totp";
+          }
+          console.log(self.totpnb);
+        },
+        (error) => {
+          console.log(
+            "Erreur lors de la récupération des codes TOTP : ",
+            error
+          );
         }
-        console.log(self.totpnb);
-      });
-    },
-    init: async function () {
-      navigator.splashscreen.hide();
-      if (cordova.platformId != "android") {
-        StatusBar.backgroundColorByHexString("#212121");
-      }
-      this.storage = window.localStorage;
-      this.isMigrationDone = this.storage.getItem("isMigrationDone");
-      console.log("isMigrationDone : " + this.isMigrationDone);
-      this.sharedPreferences =
-        window.plugins.SharedPreferences.getInstance("settings");
-      this.showSharedPreferences();
-      this.checkTotp();
-      this.initOTPServers();
-      this.transfer2OtpServers();
-      this.isMigrationDone ?? this.startSharedPreferences();
-      this.loadStoredEstablishments(); // Charger les établissements stockés
-      this.platform = device.platform;
-      this.manufacturer = device.manufacturer;
-      this.model = device.model;
-      this.gcm_id = this.isMigrationDone ? await this.GETsharedPreferences('gcm_id') : this.storage.getItem("gcm_id");
-      this.requestNotificationPermission();
-      this.push_init();
-      this.initAuth();
+      );
     },
     requestNotificationPermission: function () {
       if (this.platform === "Android" && parseInt(device.version) >= 13) {
@@ -210,11 +239,11 @@ var app = new Vue({
         windows: {},
       });
 
-      this.push.on("registration", function (data) {
+      this.push.on("registration", async function (data) {
         if (self.gcm_id == null) {
           self.gcm_id = data.registrationId;
           //self.storage.setItem("gcm_id", self.gcm_id);
-          self.sharedPreferences.put("gcm_id", JSON.stringify(self.gcm_id));
+          await self.migrationManager.setSharedPreference("gcm_id", self.gcm_id);
         } else if (self.gcm_id != data.registrationId) {
           for (otpServer in this.otpServersObjects)
             self.refresh(
@@ -226,7 +255,7 @@ var app = new Vue({
             );
           self.gcm_id = data.registrationId;
           //self.storage.setItem("gcm_id", self.gcm_id);
-          self.sharedPreferences.put("gcm_id", JSON.stringify(self.gcm_id));
+          await self.migrationManager.setSharedPreference("gcm_id", self.gcm_id);
         }
       });
 
@@ -281,11 +310,20 @@ var app = new Vue({
       }
     },
     initOTPServers: function () {
-      this.sharedPreferences.get("otpServers", (otpServers) => {
-        if (otpServers != null) {
-          this.otpServersObjects = JSON.parse(otpServers);
+      this.sharedPreferences.get(
+        "otpServers",
+        (otpServers) => {
+          if (otpServers != null) {
+            this.otpServersObjects = JSON.parse(otpServers);
+          }
+        },
+        (error) => {
+          console.log(
+            "Erreur lors de la récupération des serveurs OTP : ",
+            error
+          );
         }
-      });
+      );
     },
     scan: function () {
       var self = this;
@@ -370,9 +408,9 @@ var app = new Vue({
               "otpServers",
               JSON.stringify(this.otpServersObjects)
             );*/
-            this.sharedPreferences.put(
+            this.migrationManager.setSharedPreference(
               "otpServers",
-              JSON.stringify(this.otpServersObjects)
+              this.otpServersObjects
             );
             Materialize.toast(
               '<div role="alert">Synchronisation effectuée</div>',
@@ -467,11 +505,14 @@ var app = new Vue({
           registrationId,
         dataType: "json",
         cache: false,
-        success: function (data) {
+        success: async function (data) {
           if (data.code == "Ok") {
             self.gcm_id = registrationId;
             //this.storage.setItem("gcm_id", registrationId);
-            this.sharedPreferences.put("gcm_id", JSON.stringify(registrationId));
+            await this.migrationManager.setSharedPreference(
+              "gcm_id",
+              registrationId
+            );
             Materialize.toast('<div role="alert">Refresh gcm_id</div>', 4000);
             this.navigate({
               target: {
@@ -556,9 +597,9 @@ var app = new Vue({
             "otpServers",
             JSON.stringify(this.otpServersObjects)
           );*/
-          self.sharedPreferences.put(
+          self.migrationManager.setSharedPreference(
             "otpServers",
-            JSON.stringify(this.otpServersObjects)
+            this.otpServersObjects
           );
           if (this.push != null) this.push.clearAllNotifications();
           self.checkTotp();
@@ -602,9 +643,9 @@ var app = new Vue({
           "otpServers",
           JSON.stringify(this.otpServersObjects)
         );*/
-        this.sharedPreferences.put(
+        this.migrationManager.setSharedPreference(
           "otpServers",
-          JSON.stringify(this.otpServersObjects)
+          this.otpServersObjects
         );
       }
       //MAJ libellé du serveur
@@ -620,9 +661,9 @@ var app = new Vue({
           "otpServers",
           JSON.stringify(this.otpServersObjects)
         );*/
-        this.sharedPreferences.put(
+        this.migrationManager.setSharedPreference(
           "otpServers",
-          JSON.stringify(this.otpServersObjects)
+          this.otpServersObjects
         );
       }
       if (this.additionalData.action == "auth") {
@@ -677,9 +718,9 @@ var app = new Vue({
                 "otpServers",
                 JSON.stringify(this.otpServersObjects)
               );*/
-              this.sharedPreferences.put(
+              this.migrationManager.setSharedPreference(
                 "otpServers",
-                JSON.stringify(this.otpServersObjects)
+                this.otpServersObjects
               );
             }
             this.notified = false;
@@ -745,7 +786,7 @@ var app = new Vue({
           ")"
         );
     },
-    async desfireRead(cardId, tag) {
+    async desfireRead(cardId, tag, etablissementUrl, numeroId) {
       let result = "";
       let nfcResult = {
         code: "ERROR",
@@ -760,7 +801,9 @@ var app = new Vue({
           // Appel au serveur pour récupérer la prochaine commande APDU à envoyer
           let response = await this.desfireHttpRequestAsync(
             `result=${result}`,
-            `cardId=${cardId}`
+            `cardId=${cardId}`,
+            etablissementUrl,
+            numeroId
           );
 
           // Parse la réponse du serveur
@@ -805,16 +848,14 @@ var app = new Vue({
         );
       }
     },
-    desfireHttpRequestAsync: async function (param1, param2) {
+    desfireHttpRequestAsync: async function (
+      param1,
+      param2,
+      etablissementUrl,
+      numeroId
+    ) {
       try {
-        // Récupérer l'ID stocké localement
-        const numeroId = "iphone-de-test"; // Renseigner ici l'ID du smartphone
-
-        // Récupérer l'URL du serveur NFC
-        const esupNfcTagServerUrl = "esupnfctag-ppd.univ-paris1.fr"; // Renseigner ici l'URL du serveur
-
-        // Construire l'URL de la requête avec les paramètres
-        const url = `https://${esupNfcTagServerUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
+        const url = `${etablissementUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
         console.log("Requesting URL: " + url);
 
         // Effectuer la requête HTTP GET avec le plugin avancé
@@ -955,39 +996,43 @@ var app = new Vue({
         console.error("Réponse du serveur invalide.");
       }
     },
-    loadStoredEstablishments: function () {
+    loadStoredEstablishments: async function () {
       var self = this;
-      this.sharedPreferences.keys(
-        (keys) => {
-          keys.forEach((key) => {
-            if (key.startsWith("establishment_")) {
-              self.sharedPreferences.get(
-                key,
-                (value) => {
-                  if (value) {
-                    try {
-                      const establishment = (typeof value === "string") ? JSON.parse(value) : value;
-                      self.establishments.push(establishment);
-                    } catch (error) {
-                      console.error(
-                        `❌ Erreur lors du parsing de ${key}:`,
-                        error
-                      );
-                    }
-                  }
-                },
-                (error) => {
-                  console.error(
-                    `❌ Erreur lors de la récupération de ${key}:`,
-                    error
-                  );
+      self.sharedPreferences.get(
+        "establishments",
+        (value) => {
+          if (value) {
+            try {
+              const establishments = JSON.parse(value);
+              establishments.forEach((establishment) => {
+                // On verifie que l'établissement n'est pas déjà dans la liste
+                if (
+                  !self.establishments.find((e) => e.url === establishment.url)
+                ) {
+                  self.establishments.push(establishment);
                 }
+              });
+
+              // Attendre que Vue mette à jour l'UI avant d'attacher les événements
+              this.$nextTick(() => {
+                console.log("🏫 Liste des établissements chargée !");
+                attachSwipeEvents();
+              });
+            } catch (error) {
+              cconsole.error(
+                "❌ Erreur lors du parsing des établissements :",
+                error
               );
             }
-          });
+          } else {
+            console.log("⚠️ Aucun établissement trouvé.");
+          }
         },
         (error) => {
-          console.error("❌ Erreur lors de la récupération des clés:", error);
+          console.error(
+            "❌ Erreur lors de la récupération des établissements :",
+            error
+          );
         }
       );
     },
@@ -996,50 +1041,71 @@ var app = new Vue({
       this.showSuccess = false;
     },
     scanTagForEstablishment: function (etablishmentUrl, numeroId) {
+      var self = this;
       console.log("----ETAPE SCAN TAG----");
       if (device.platform === "Android") {
         // Affiche le bottom sheet
         this.showBottomSheet = true;
-        nfc.addTagDiscoveredListener(
-          (tag) => {
-            let cardId = nfc.bytesToHexString(tag.tag.id);
-            let cardIdArr = cardId.split(" ");
-            this.showSuccess = true;
-            // Le tag NFC a été scanné avec succès
-            console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
-            // Connecter à la technologie IsoDep avant d'envoyer la commande APDU
-            nfc.connect("android.nfc.tech.IsoDep", 500);
 
-            this.desfireRead(cardId, tag)
-              .then((response) => {
-                console.log("END-DesfireRead >> " + response.msg);
-                if (response.code === "END") {
-                  let heure = new Date().getHours();
-                  Materialize.toast(
-                    `<div class="alert">${
-                      heure >= 6 && heure < 18 ? "Bonjour" : "Bonsoir"
-                    } ${response.msg}</div>`,
-                    5000
-                  );
-                } else {
-                  Materialize.toast(
-                    '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>',
-                    5000
-                  );
-                }
-              })
-              .catch((error) => {
-                console.error("Erreur lors de l'envoi des données:", error);
+        // Si un listener NFC est déjà actif, on le supprime avant d'en ajouter un nouveau
+        if (this.nfcListener) {
+          nfc.removeTagDiscoveredListener(this.nfcListener);
+          console.log("✅ NFC Listener Détecté et supprimé");
+          self.nfcListener = undefined;
+        }
+
+        // Définition du callback NFC et stockage dans this.nfcListener
+        this.nfcListener = (tag) => {
+          let cardId = nfc.bytesToHexString(tag.tag.id);
+          let cardIdArr = cardId.split(" ");
+          this.showSuccess = true;
+          // Le tag NFC a été scanné avec succès
+          console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
+          // Connecter à la technologie IsoDep avant d'envoyer la commande APDU
+          nfc.connect("android.nfc.tech.IsoDep", 1500);
+
+          this.desfireRead(cardId, tag, etablishmentUrl, numeroId)
+            .then((response) => {
+              console.log("END-DesfireRead >> " + response.msg);
+              // Suppression de l'écouteur NFC afin de ne pas être déclenché par un autre établissement
+              nfc.removeTagDiscoveredListener(self.nfcListener); // On supprime l'écouteur NFC
+              console.log("✅ NFC Listener supprimé");
+              self.nfcListener = undefined; // On définit la variable nfcListener à undefined
+              nfc.close(); // On ferme la connexion avec le tag NFC
+              if (response.code === "END") {
+                let heure = new Date().getHours();
+                Materialize.toast(
+                  `<div class="alert">${
+                    heure >= 6 && heure < 18 ? "Bonjour" : "Bonsoir"
+                  } ${response.msg}</div>`,
+                  5000
+                );
+              } else {
+                Materialize.toast(
+                  '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>',
+                  5000
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Erreur lors de l'envoi des données:", error);
+              this.showBottomSheet = false;
+              this.showSuccess = false;
+            })
+            .finally(() => {
+              // Fermer le bottom sheet après une animation de 1,5s
+              setTimeout(() => {
                 this.showBottomSheet = false;
                 this.showSuccess = false;
-              })
-              .finally(() => {
-                // Fermer le bottom sheet après une animation de 1,5s
-                setTimeout(() => {
-                  this.showBottomSheet = false;
-                  this.showSuccess = false;
-                }, 2500);
-              });
+              }, 2500);
+            });
+        };
+        nfc.addTagDiscoveredListener(
+          self.nfcListener,
+          () => {
+            console.log(
+              "The callback that is called when the listener is added."
+            );
           },
           (error) => {
             console.error("Erreur lors du scan NFC :", error);
@@ -1072,7 +1138,7 @@ var app = new Vue({
     scanQrCode: function () {
       var self = this;
       cordova.plugins.barcodeScanner.scan(
-        function (result) {
+        async function (result) {
           if (!result.cancelled) {
             try {
               const scannedData = JSON.parse(result.text);
@@ -1095,12 +1161,29 @@ var app = new Vue({
                     (establishment) => establishment.url === scannedData.url
                   )
                 ) {
-                  self.sharedPreferences.put(
-                    "establishment_" + scannedData.etablissement,
-                    JSON.stringify(establishmentData)
+                  let establishments = JSON.parse(
+                    await self.GETsharedPreferences("establishments")
                   );
+                  establishments.push(establishmentData);
+                  self.migrationManager.setSharedPreference(
+                    "establishments",
+                    establishments,
+                    () => {
+                      console.log(
+                        "🏫 Établissement ajouté avec succès :",
+                        establishmentData
+                      );
+                      self.loadStoredEstablishments();
+                    },
+                    (error) => {
+                      console.error(
+                        "❌ Erreur en sauvegardant le tableau d'établissements",
+                        error
+                      );
+                    }
+                  );
+
                   //self.establishments.push(establishmentData);
-                  self.loadStoredEstablishments();
                 }
 
                 // Lancer le scanTag si tout est bon
@@ -1126,23 +1209,24 @@ var app = new Vue({
       );
     },
     removeEstablishment(index) {
-      const establishmentKey = "establishment_" + this.establishments[index].etablissement;
+      let updatedEstablishments = [...this.establishments];
 
-      // Suppression de l'établissement dans SharedPreferences
-      this.sharedPreferences.del(
-        establishmentKey,
+      // Suppression de l'établissement ciblé
+      const removedEstablishment = updatedEstablishments.splice(index, 1);
+
+      // Mettre à jour SharedPreferences
+      this.migrationManager.setSharedPreference(
+        "establishments",
+        JSON.stringify(updatedEstablishments),
         () => {
-          localStorage.removeItem(
-            "establishment_" + this.establishments[index].etablissement
-          );
           console.log(
-            `✅ Établissement supprimé : ${this.establishments[index].etablissement}`
+            `✅ Établissement supprimé : ${removedEstablishment[0].etablissement}`
           );
-          this.establishments.splice(index, 1); // Supprime l'élément du tableau
+          this.establishments = updatedEstablishments; // Mettre à jour Vue.js avec le tableau modifié
         },
         (error) => {
           console.error(
-            `❌ Erreur lors de la suppression de l'établissement:`,
+            "❌ Erreur lors de la mise à jour des établissements :",
             error
           );
         }
@@ -1153,23 +1237,40 @@ var app = new Vue({
     },
     GETsharedPreferences: function (key) {
       return new Promise((resolve, reject) => {
-        this.sharedPreferences.get(key, (value) => {
-          resolve(value);
-        }, (error) => {
-          reject(error);
-        });
+        this.sharedPreferences.get(
+          key,
+          (value) => {
+            if ( typeof value === "object" ) {
+              value = JSON.parse(value);
+            }
+            resolve(value);
+          },
+          (error) => {
+            console.log(
+              `GET :: Erreur lors de la récupération de la clé ${key}: `,
+              error
+            );
+            reject(error);
+          }
+        );
       });
     },
     // show sharedPreferences content
     showSharedPreferences: function () {
       console.log("LE CONTENU DES SHAREDPREFERENCES >>>>>>>>");
       this.sharedPreferences.keys(async () => {
-        const keysToCheck = ["darkMode", "establishment_Paris 1 Panthéon-Sorbonne", "gcm_id", "totpObjects", "otpServers"];
-        for(let key of keysToCheck) {
+        const keysToCheck = [
+          "darkMode",
+          "establishments",
+          "gcm_id",
+          "totpObjects",
+          "otpServers",
+        ];
+        for (let key of keysToCheck) {
           let value = await GETsharedPreferences(key);
           console.log(key + " : " + value);
         }
       });
-    }
+    },
   },
 });

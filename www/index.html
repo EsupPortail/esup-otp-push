@@ -754,17 +754,19 @@
                             <div class="card-content">
                                 <span class="card-title">Authentification via NFC</span>
                                 <div class="establishment-buttons" v-show="establishments.length!=0">
-                                    <div class="swipe-container">
-                                        <div class="swipe-content">
-                                            <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
-                                            <button v-for="establishment in establishments" :key="establishment.url"
-                                                class="btn-large full-width btn-nfc"
-                                                v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
-                                                {{ establishment.etablissement }}
-                                            </button>
-                                        </div>
-                                        <div class="swipe-delete">
-                                            <i class="material-icons">delete</i>
+                                    <div class="show-establishment-buttons">
+                                        <div class="swipe-container" v-for="establishment in establishments" :key="establishment.url">
+                                            <div class="swipe-content">
+                                                <!-- Les boutons des établissements où l'utilisateur s'est déjà connecté -->
+                                                <button 
+                                                    class="btn-large full-width btn-nfc"
+                                                    v-on:click="scanTagForEstablishment(establishment.url, establishment.numeroId)">
+                                                    {{ establishment.etablissement }}
+                                                </button>
+                                            </div>
+                                            <div class="swipe-delete">
+                                                <i class="material-icons">delete</i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -802,6 +804,7 @@
     <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/MigrationManager.js"></script>
     <script type="text/javascript" src="js/totp.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>

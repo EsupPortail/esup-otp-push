@@ -716,6 +716,14 @@ body.dark-mode ul#slide-out {
   pointer-events: auto; /* Interactif lorsqu'il est actif */
 }
 /* slide suppression */
+.show-establishment-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+}
 /* Conteneur principal */
 .swipe-container {
   position: relative;
@@ -729,10 +737,9 @@ body.dark-mode ul#slide-out {
 
 /* Bouton principal */
 .swipe-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   background-color: white;
+  text-align: center;
   width: 100%;
   height: 100%;
   border-radius: 10px;
