@@ -1232,9 +1232,6 @@ var app = new Vue({
         }
       );
     },
-    startSharedPreferences: function () {
-      window.dispatchEvent(new Event("migration_update"));
-    },
     GETsharedPreferences: function (key) {
       return new Promise((resolve, reject) => {
         this.sharedPreferences.get(

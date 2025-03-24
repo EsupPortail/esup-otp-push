@@ -25,7 +25,8 @@ class MigrationManager {
       console.log("🆕 Première installation détectée, initialisation des valeurs...");
       
       await this.setSharedPreference("darkMode", ""); // Mode sombre désactivé par défaut
-      localStorage.setItem("darkMode", "disabled");
+      const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "enabled" : "disabled";
+      localStorage.setItem("darkMode", darkMode);
       await this.setSharedPreference("totpObjects", "{}"); // Objet vide pour les TOTP
       localStorage.setItem("totpObjects", JSON.stringify({}));
       await this.setSharedPreference("otpServers", "{}"); // Objet vide pour les OTP Servers
@@ -69,7 +70,7 @@ class MigrationManager {
   
         try {
           // Vérifier si c'est un JSON
-          if (value.startsWith("{") || value.startsWith("[")) {
+          if (value.startsWith("{") || value.startsWith("[") || key === "darkMode") {
             value = JSON.parse(value);
           }
   
