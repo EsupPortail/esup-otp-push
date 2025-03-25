@@ -672,8 +672,26 @@ body.dark-mode ul#slide-out {
 }
 
 .success-animation {
-  margin-top: 3px;
+  margin-top: 2px;
   color: green;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.9s ease-in-out;
+}
+.wait-animation {
+  margin-top: 2px;
+  color: #0055cc;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.9s ease-in-out;
+}
+.error-animation {
+  margin-top: 2px;
+  color: #b71c1c;
   font-size: 20px;
   display: flex;
   align-items: center;

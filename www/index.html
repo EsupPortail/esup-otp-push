@@ -789,6 +789,14 @@
                             <i class="material-icons">check_circle</i>
                             <p>Scan réussi!</p>
                         </div>
+                        <div v-show="showPleaseWait" class="wait-animation">
+                            <i class="material-icons">info_outline</i>
+                            <p>Veuillez patienter...</p>
+                        </div>
+                        <div v-show="showError" class="error-animation">
+                            <i class="material-icons">error</i>
+                            <p>Une erreur s'est produite</p>
+                        </div>
                     </div>
                     <div class="sheet-body">
                         <img src="img/Animation.gif" alt="Scan Animation" class="scan-animation">

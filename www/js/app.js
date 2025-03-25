@@ -44,6 +44,8 @@ var app = new Vue({
     establishments: [],
     showBottomSheet: false,
     showSuccess: false,
+    showError: false,
+    showPleaseWait: false,
   },
   created: function () {
     document.addEventListener("deviceready", this.init, false);
@@ -1058,7 +1060,7 @@ var app = new Vue({
         this.nfcListener = (tag) => {
           let cardId = nfc.bytesToHexString(tag.tag.id);
           let cardIdArr = cardId.split(" ");
-          this.showSuccess = true;
+          this.showPleaseWait = true;
           // Le tag NFC a été scanné avec succès
           console.log(`Tag NFC détecté : ${JSON.stringify(tag)}`);
           // Connecter à la technologie IsoDep avant d'envoyer la commande APDU
@@ -1073,6 +1075,8 @@ var app = new Vue({
               self.nfcListener = undefined; // On définit la variable nfcListener à undefined
               nfc.close(); // On ferme la connexion avec le tag NFC
               if (response.code === "END") {
+                this.showPleaseWait = false;
+                this.showSuccess = true;
                 let heure = new Date().getHours();
                 Materialize.toast(
                   `<div class="alert">${
@@ -1081,6 +1085,8 @@ var app = new Vue({
                   5000
                 );
               } else {
+                this.showPleaseWait = false;
+                this.showError = true;
                 Materialize.toast(
                   '<div role="alert">Carte invalide ou Méthode d\'authentification non activée</div>',
                   5000
@@ -1089,14 +1095,12 @@ var app = new Vue({
             })
             .catch((error) => {
               console.error("Erreur lors de l'envoi des données:", error);
-              this.showBottomSheet = false;
-              this.showSuccess = false;
+              this.resetBottomSheet();
             })
             .finally(() => {
-              // Fermer le bottom sheet après une animation de 1,5s
+              // Fermer le bottom sheet après une animation de 1,5s (si on a pas déjà fermé le bottom sheet)
               setTimeout(() => {
-                this.showBottomSheet = false;
-                this.showSuccess = false;
+                this.resetBottomSheet();
               }, 2500);
             });
         };
@@ -1232,6 +1236,9 @@ var app = new Vue({
         }
       );
     },
+    /**
+     * Récupérer une valeur depuis SharedPreferences
+     */
     GETsharedPreferences: function (key) {
       return new Promise((resolve, reject) => {
         this.sharedPreferences.get(
@@ -1252,7 +1259,9 @@ var app = new Vue({
         );
       });
     },
-    // show sharedPreferences content
+    /**
+     * show sharedPreferences content
+     */
     showSharedPreferences: function () {
       console.log("LE CONTENU DES SHAREDPREFERENCES >>>>>>>>");
       this.sharedPreferences.keys(async () => {
@@ -1268,6 +1277,15 @@ var app = new Vue({
           console.log(key + " : " + value);
         }
       });
+    },
+    /**
+     * BottomSheet réinitialisation
+     */
+    resetBottomSheet() {
+      this.showBottomSheet = false;
+      this.showSuccess = false;
+      this.showPleaseWait = false;
+      this.showError = false;
     },
   },
 });
