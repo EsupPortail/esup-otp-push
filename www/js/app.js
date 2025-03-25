@@ -1221,7 +1221,7 @@ var app = new Vue({
       // Mettre à jour SharedPreferences
       this.migrationManager.setSharedPreference(
         "establishments",
-        JSON.stringify(updatedEstablishments),
+        updatedEstablishments,
         () => {
           console.log(
             `✅ Établissement supprimé : ${removedEstablishment[0].etablissement}`
