@@ -162,7 +162,7 @@ async function totp_scan(event) {
   var sharedPreferences =
     window.plugins.SharedPreferences.getInstance("settings");
   await cordova.plugins.barcodeScanner.scan(
-    function (result) {
+    async function (result) {
       var s =
         "Result: " +
         result.text +
@@ -178,7 +178,7 @@ async function totp_scan(event) {
       var name = decodeURIComponent(
         url.pathname.replace(/\/\/totp\//g, "").replace(/\//g, "")
       );
-      var totpObjects = getTotpObjects();
+      var totpObjects = await getTotpObjects();
       totpObjects[key] = name;
       //localStorage.setItem("totpObjects", JSON.stringify(totpObjects));
       sharedPreferences.put("totpObjects", JSON.stringify(totpObjects));
