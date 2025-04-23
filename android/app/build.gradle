@@ -110,6 +110,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -118,3 +119,4 @@ dependencies {
     }
     implementation project(':react-native-default-preference')
 }
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")

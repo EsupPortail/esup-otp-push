@@ -52,7 +52,7 @@ async function sendApduCommandToTag(tag, command) {
 }
 
 // Fonction principale pour lire une carte Desfire
-export async function desfireRead(cardId) {
+export async function desfireRead(cardId, etablissementUrl, numeroId) {
   let result = '';
   let nfcResult = {code: 'ERROR'};
 
@@ -65,11 +65,13 @@ export async function desfireRead(cardId) {
       let response = await desfireHttpRequestAsync(
         `result=${result}`,
         `cardId=${cardId}`,
+        etablissementUrl,
+        numeroId
       );
       nfcResult = JSON.parse(response);
 
       if (nfcResult.code === 'CONTINUE') {
-        alert('Desfire error, but server requests to continue...');
+        console.warn('Desfire error, but server requests to continue...');
         result = '';
       } else if (nfcResult.code === 'END' || nfcResult.code === 'ERROR') {
         break;
@@ -96,12 +98,10 @@ export async function desfireRead(cardId) {
 }
 
 // Fonction pour faire une requête HTTP
-async function desfireHttpRequestAsync(param1, param2) {
+async function desfireHttpRequestAsync(param1, param2, etablissementUrl, numeroId) {
   try {
-    const numeroId = 'iphone-de-test';
-    const esupNfcTagServerUrl = 'https://esupnfctag-ppd.univ-paris1.fr';
 
-    const url = `${esupNfcTagServerUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
+    const url = `${etablissementUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
     console.log('Requesting URL:', url);
 
     const response = await fetch(url);

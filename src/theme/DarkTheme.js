@@ -5,6 +5,9 @@ const DarkTheme = {
         ...NavigationDarkTheme.colors,
         background: '#000',
         text: '#fff',
+        primary: '#0055cc',
+        secondary: '#1e1e1e',
+        actionSheet: '#fff',
     }
 }
 

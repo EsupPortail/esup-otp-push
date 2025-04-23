@@ -3,13 +3,20 @@ import {React, useContext} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import NfcScreen from '../screens/NfcScreen';
 import HomeScreen from '../screens/HomeScreen';
+import ManualTotpScreen from '../screens/ManualTotpScreen';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import DarkModeToggle from '../components/DarkModeToggle';
-import {useTheme} from '@react-navigation/native';
+import {useTheme, NavigationContainer} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import TotpScreen from '../screens/TotpScreen';
+import {createStackNavigator} from '@react-navigation/stack';
+import QRCodeScannerScreen from '../screens/QRCodeScannerScreen';
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-const AppStack = () => {
+const DrawerNavigator = () => {
   const {colors} = useTheme();
   const screenWidth = useWindowDimensions().width;
 
@@ -24,13 +31,87 @@ const AppStack = () => {
           </Text>
         ),
         drawerStyle: {
-            width: screenWidth * 0.8,
-        }
+          width: screenWidth * 0.8,
+        },
       }}>
-      <Drawer.Screen name="Accueil" component={HomeScreen} />
-      <Drawer.Screen name="Nfc" component={NfcScreen} />
-      <Drawer.Screen name="PUSH" component={NfcScreen} />
+      <Drawer.Screen
+        name="Accueil"
+        component={HomeScreen}
+        options={{
+          drawerIcon: ({color, size}) => (
+            <View>
+              <Text style={{color, fontSize: size}}>🏠</Text>
+            </View>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="NFC"
+        component={NfcScreen}
+        options={{
+          drawerIcon: ({color, size}) => (
+            <Icon name="cellphone-nfc" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="PUSH"
+        component={NfcScreen}
+        options={{
+          drawerIcon: ({color, size}) => (
+            <Icon name="notification-clear-all" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="TOTP"
+        component={TotpScreen}
+        options={{
+          drawerIcon: ({color, size}) => (
+            <MaterialIcon name="pin" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="AIDE"
+        component={NfcScreen}
+        options={{
+          drawerIcon: ({color, size}) => (
+            <MaterialIcon name="question-mark" color={color} size={size} />
+          ),
+        }}
+      />
     </Drawer.Navigator>
+  );
+};
+
+const AppStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Drawer"
+        component={DrawerNavigator}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="QRCodeScanner"
+        component={QRCodeScannerScreen}
+        options={{
+          headerTitle: 'Scanner QR Code',
+          headerStyle: {backgroundColor: useTheme().colors.card},
+          headerTintColor: useTheme().colors.text,
+        }}
+      />
+      <Stack.Screen
+        name="ManualTotp"
+        component={ManualTotpScreen}
+        options={{
+          headerTitle: 'Ajouter un compte TOTP',
+          headerStyle: {backgroundColor: useTheme().colors.card},
+          headerTintColor: useTheme().colors.text,
+        }} 
+      />
+    </Stack.Navigator>
   );
 };
 

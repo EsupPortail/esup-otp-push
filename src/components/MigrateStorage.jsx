@@ -11,14 +11,14 @@ export async function MigrateToMMKV() {
 
   await DefaultPreference.setName('settings'); // Définit le namespace
 
-  const keysToCheck = ["darkMode", "establishment_Paris 1 Panthéon-Sorbonne", "gcm_id", "totpObjects", "otpServers"];
+  const keysToCheck = ["darkMode", "establishments", "gcm_id", "totpObjects", "otpServers"];
   
   for (const key of keysToCheck) {
-    DefaultPreference.get(key).then(value => {
+    await DefaultPreference.get(key).then(value => {
       if (value){
         const parsedValue = JSON.parse(value);
         storage.set(key, parsedValue);
-        console.log(`🔍 ---->>> Vérification: ${key} =>`, parsedValue);
+        console.log(`🔍 ---->>> Vérification: ${key} =>`, parsedValue, typeof parsedValue);
       } else {
         console.warn("⚠️ ---->>> otpObjects n'existe pas encore, initialisation...");
       }

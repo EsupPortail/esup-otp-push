@@ -14,18 +14,25 @@ export default function App() {
   );
   const appContext = useMemo(() => {
     return {isDarkTheme, setIsDarkTheme};
-  });
+  }, [isDarkTheme]);
 
   useEffect(() => {
-    if (!isMigrated) {
-      MigrateToMMKV().then(() => setIsMigrated(true));
-    }
-    //voir le contenu de mmkv
-    console.log(
-      storage
-        .getAllKeys()
-        .forEach(key => console.log(key, ':::', storage.getString(key))),
-    );
+    const migrate = async () => {
+      if (isMigrated) {
+        await MigrateToMMKV();
+        setIsMigrated(true);
+      }
+      
+      // Voir le contenu de mmkv
+      console.log(
+        storage.getAllKeys().forEach(key => 
+          console.log(key, ':::', storage.getString(key))
+        )
+      );
+    };
+  
+    migrate(); // Exécute la fonction asynchrone
+  
   }, [isMigrated]);
 
   return (
