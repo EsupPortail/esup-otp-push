@@ -2,15 +2,11 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
-  useCallback,
 } from 'react';
 import {
   Text,
   StyleSheet,
   View,
-  ActivityIndicator,
-  Animated,
-  TouchableOpacity,
   Image,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
