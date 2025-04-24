@@ -21,7 +21,7 @@ const NfcBottomSheet = forwardRef((props, ref) => {
   const {colors} = useTheme();
   const bottomSheetRef = useRef(null);
   const [state, setState] = React.useState('closed'); // closed, waiting, success, error
-  const snapPoints = ['60%'];
+  const snapPoints = ['50%'];
 
   useImperativeHandle(ref, () => ({
     open: () => {
@@ -48,13 +48,13 @@ const NfcBottomSheet = forwardRef((props, ref) => {
     return (
       <View style={[styles.bottomSheetContent, {}]}>
         <View style={styles.sheetHeader}>
-          <Text style={[styles.sheetTitle, {color: colors.text}]}>
+          <Text style={[styles.sheetTitle, {color: '#fff'}]}>
             Scannez votre carte NFC
           </Text>
           {state === 'success' && (
             <View style={styles.statusContainer}>
               <Icon name="check-circle" size={40} color="green" />
-              <Text style={[styles.statusText, {color: colors.text}]}>
+              <Text style={[styles.statusText, {color: '#fff'}]}>
                 Scan réussi !
               </Text>
             </View>
@@ -70,7 +70,7 @@ const NfcBottomSheet = forwardRef((props, ref) => {
           {state === 'error' && (
             <View style={styles.statusContainer}>
               <Icon name="alert-circle" size={40} color="red" />
-              <Text style={[styles.statusText, {color: colors.text}]}>
+              <Text style={[styles.statusText, {color: '#fff'}]}>
               Carte invalide ou Méthode d'authentification non activée
               </Text>
             </View>
@@ -78,7 +78,7 @@ const NfcBottomSheet = forwardRef((props, ref) => {
         </View>
         {state === 'waiting' && (
           <View style={styles.sheetBody}>
-            <Text style={[styles.instructionText, {color: colors.text}]}>
+            <Text style={[styles.instructionText, {color: '#fff'}]}>
               Placez votre carte sous l'appareil.
             </Text>
           </View>
@@ -92,8 +92,8 @@ const NfcBottomSheet = forwardRef((props, ref) => {
       ref={bottomSheetRef}
       index={state === 'closed' ? -1 : 0}
       snapPoints={snapPoints}
-      backgroundStyle={{backgroundColor: colors.card}}
-      handleIndicatorStyle={{backgroundColor: colors.text}}
+      backgroundStyle={{backgroundColor: colors.bottomSheet}}
+      handleIndicatorStyle={{backgroundColor: '#fff'}}
       enablePanDownToClose={true}
       >
       <BottomSheetView style={styles.contentContainer}>
@@ -157,10 +157,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   image: {
-    width: 120,
+    width: 200,
     height: 120,
-    marginTop: 10,
-    resizeMode: 'contain',
   },
 });
 

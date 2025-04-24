@@ -8,6 +8,7 @@ const LightTheme = {
         primary: '#0055cc',
         secondary: '#555',
         actionSheet: '#fff',
+        bottomSheet: 'rgb(18, 18, 18)'
     }
 }
 

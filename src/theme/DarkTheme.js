@@ -8,6 +8,7 @@ const DarkTheme = {
         primary: '#0055cc',
         secondary: '#1e1e1e',
         actionSheet: '#fff',
+        bottomSheet: '#1e1e1e'
     }
 }
 
