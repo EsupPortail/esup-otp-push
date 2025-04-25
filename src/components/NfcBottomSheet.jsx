@@ -11,26 +11,32 @@ import {
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const NfcBottomSheet = forwardRef((props, ref) => {
   const {colors} = useTheme();
   const bottomSheetRef = useRef(null);
-  const [state, setState] = React.useState('closed'); // closed, waiting, success, error
+  const [state, setState] = React.useState('closed'); // closed, waiting, success, error, start
+  const [message, setMessage] = React.useState('');
   const snapPoints = ['50%'];
 
   useImperativeHandle(ref, () => ({
     open: () => {
-      setState('waiting');
+      setState('start');
       bottomSheetRef.current?.expand();
     },
-    setSuccess: () => {
+    setWaiting: () => {
+      setState('waiting');
+    },
+    setSuccess: (msg) => {
       setState('success');
-      setTimeout(() => bottomSheetRef.current?.close(), 2000);
+      setMessage(msg);
+      setTimeout(() => bottomSheetRef.current?.close(), 3000);
     },
     setError: () => {
       setState('error');
-      setTimeout(() => bottomSheetRef.current?.close(), 3000);
+      setTimeout(() => bottomSheetRef.current?.close(), 3500);
     },
     close: () => {
       setState('closed');
@@ -49,30 +55,52 @@ const NfcBottomSheet = forwardRef((props, ref) => {
           </Text>
           {state === 'success' && (
             <View style={styles.statusContainer}>
-              <Icon name="check-circle" size={40} color="green" />
+              <LottieView
+                source={require('../assets/images/Animation-nfc-success.json')}
+                style={styles.image}
+                autoPlay
+                loop
+              />
               <Text style={[styles.statusText, {color: '#fff'}]}>
-                Scan réussi !
+                {message}
               </Text>
+            </View>
+          )}
+          {state === 'start' && (
+            <View style={styles.statusContainer}>
+              <LottieView
+                source={require('../assets/images/Animation.json')}
+                style={styles.image}
+                autoPlay
+                loop
+              />
             </View>
           )}
           {state === 'waiting' && (
             <View style={styles.statusContainer}>
-              <Image
-                source={require('../assets/images/Animation.gif')}
+              <LottieView
+                source={require('../assets/images/Animation-nfc-wait.json')}
                 style={styles.image}
+                autoPlay
+                loop
               />
             </View>
           )}
           {state === 'error' && (
             <View style={styles.statusContainer}>
-              <Icon name="alert-circle" size={40} color="red" />
+              <LottieView
+                source={require('../assets/images/Animation-nfc-error.json')}
+                style={styles.image}
+                autoPlay
+                loop
+              />
               <Text style={[styles.statusText, {color: '#fff'}]}>
               Carte invalide ou Méthode d'authentification non activée
               </Text>
             </View>
           )}
         </View>
-        {state === 'waiting' && (
+        {state === 'start' && (
           <View style={styles.sheetBody}>
             <Text style={[styles.instructionText, {color: '#fff'}]}>
               Placez votre carte sous l'appareil.
@@ -153,8 +181,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   image: {
-    width: 200,
-    height: 120,
+    width: 230,
+    height: 130,
   },
 });
 

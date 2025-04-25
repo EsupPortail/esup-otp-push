@@ -149,22 +149,16 @@ function NfcScreen() {
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
       console.warn('Tag found', tag);
+      bottomSheetRef.current?.setWaiting();
       const result = await desfireRead(tag.id, url, numeroId);
       console.warn('Result', result);
 
       if (result.code === 'END') {
-        bottomSheetRef.current?.setSuccess();
         var heure = new Date().getHours();
-        Alert.alert(
-          'Succès',
-          `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${result.msg}`,
-        );
+        var msg = `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${result.msg}`;
+        bottomSheetRef.current?.setSuccess(msg);
       } else {
         bottomSheetRef.current?.setError();
-        /*Alert.alert(
-          'Erreur',
-          "Carte invalide ou Méthode d'authentification non activée",
-        );*/
       }
     } catch (ex) {
       console.error('Erreur NFC:', err instanceof Error ? err.stack : JSON.stringify(err));
