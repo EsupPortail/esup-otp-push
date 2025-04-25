@@ -134,6 +134,7 @@ const TotpScreen = () => {
           )}
           keyExtractor={(item) => item[0]}
           ListEmptyComponent={<Text style={{color: colors.text}}>Aucun Totp configuré</Text>}
+          ItemSeparatorComponent={() => <View style={[styles.separator, {borderColor: 'grey'}]} />}
         />
         <CustomActionSheet 
           visible={isActionSheetOpen}
@@ -166,4 +167,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
+  separator: {
+    borderWidth: 1,
+    borderRadius: 1,
+    marginLeft: 12, 
+    marginRight: 70, 
+    borderStyle: 'dotted'
+  }
 });

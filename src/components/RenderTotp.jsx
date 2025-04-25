@@ -1,30 +1,36 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useCallback} from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {Swipeable} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
-import { Totp } from '../utils/totp';
+import {Totp} from '../utils/totp';
 
 const RenderTotp = ({item, code, onDelete}) => {
   const {colors} = useTheme();
-  const [secret,name] = item;
+  const [secret, name] = item;
+
+  const renderRightActions =  () => (
+      <TouchableOpacity
+        style={[styles.deleteButton, {backgroundColor: 'red'}]}
+        onPress={onDelete}>
+        <Icon name="delete" size={24} color="#fff" />
+      </TouchableOpacity>
+    );
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={[styles.code, {color: colors.text}]}>{Totp.formatCode(code)}</Text>
+    <Swipeable renderRightActions={renderRightActions}>
+      <View style={styles.container}>
+        <View>
+          <Text style={[styles.code, {color: colors.text}]}>
+            {Totp.formatCode(code)}
+          </Text>
+        </View>
+        <View style={styles.nameRow}>
+          <Text style={{color: colors.text}}>{name}</Text>
+        </View>
       </View>
-      <View style={styles.nameRow}>
-        <Text style={{color: colors.text}}>{name}</Text>
-        <TouchableOpacity onPress={onDelete}>
-          <MaterialIcon
-            name="delete"
-            color={colors.primary}
-            size={20}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </Swipeable>
   );
 };
 
@@ -46,6 +52,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  deleteButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 60,
+    borderRadius: 8,
+    marginVertical: 5,
   },
   icon: {},
 });
