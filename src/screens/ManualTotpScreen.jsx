@@ -10,7 +10,6 @@ const ManualTotpScreen = ({ route }) => {
   const { colors } = useTheme();
   const navigation = useNavigation();
   console.log(onPress);
-  console.log(errors);
 
   const onSubmit = ({ name, secret }) => {
     if (secret.length < 16 || secret.length % 2 !== 0) {

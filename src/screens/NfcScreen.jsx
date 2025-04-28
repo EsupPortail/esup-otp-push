@@ -25,14 +25,13 @@ import {storage} from '../utils/storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from '../components/NfcBottomSheet';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 const getEstablishments = () => {
   var establishments = storage.getString('establishments');
   return establishments ? JSON.parse(establishments) : [];
 };
 const setEstablishmentsStorage = newEstablishments => {
-  //storage.set('establishments', JSON.stringify(newEstablishments));
+  storage.set('establishments', JSON.stringify(newEstablishments));
 };
 function NfcScreen() {
   const {colors} = useTheme();
@@ -63,77 +62,7 @@ function NfcScreen() {
     cleanupNfc();
   }, []);
 
-  /**
-   * Permet de lancer la lecture d'un QR code et de l'ajouter à la liste des établissements
-   */
-  const handleScanQrCode = useCallback(() => {
-    console.log('handleScanQrCode appelé');
-    navigation.navigate('QRCodeScanner', {
-      onScan: qrData => {
-        try {
-          const parsed = JSON.parse(qrData);
-          if (!parsed.url || !parsed.numeroId || !parsed.etablissement) {
-            throw new Error('Données QR code invalides');
-          }
-          const newEstablishment = {
-            url: parsed.url,
-            numeroId: parsed.numeroId,
-            etablissement: parsed.etablissement,
-          };
-          const newEstablishments = [...establishments, newEstablishment];
-          setEstablishments(newEstablishments);
-          //setEstablishmentsStorage(newEstablishments);
-          console.log('Établissement ajouté:', newEstablishment);
-        } catch (error) {
-          console.error('Erreur parsing QR:', error);
-          Alert.alert('Erreur', 'QR code invalide pour un établissement.');
-        }
-      },
-    });
-  }, [navigation, establishments]);
-  /**
-   * Permet de supprimer un établissement de la liste
-   */
-  const deleteEstablishment = useCallback(
-    index => {
-      const newEstablishments = establishments.filter((_, i) => i !== index);
-      setEstablishments(newEstablishments);
-      //setEstablishmentsStorage(newEstablishments);
-      console.log('Établissement supprimé, index:', index);
-    },
-    [establishments],
-  );
-  /**
-   * Permet de définir les actions à afficher sur la droite d'un élément de la liste
-   */
-  const renderRightActions = useCallback(
-    index => (
-      <TouchableOpacity
-        style={[styles.deleteButton, {backgroundColor: 'red'}]}
-        onPress={() => deleteEstablishment(index)}>
-        <Icon name="delete" size={24} color="#fff" />
-      </TouchableOpacity>
-    ),
-    [deleteEstablishment],
-  );
-  /**
-   * Permet de définir le contenu d'un élément de la liste
-   */
-  const renderItem = useCallback(
-    ({item, index}) => (
-      <Swipeable renderRightActions={() => renderRightActions(index)}>
-        <TouchableOpacity
-          style={[
-            styles.establishmentButton,
-            {backgroundColor: colors.secondary},
-          ]}
-          onPress={() => scanTagForEstablishment(item.url, item.numeroId)}>
-          <Text style={styles.establishmentText}>{item.etablissement}</Text>
-        </TouchableOpacity>
-      </Swipeable>
-    ),
-    [colors, scanTagForEstablishment],
-  );
+
   /**
    * Permet de lancer la lecture d'un tag NFC et retourne le résultat
    */
@@ -169,6 +98,83 @@ function NfcScreen() {
       NfcManager.cancelTechnologyRequest();
     }
   }, []);
+
+  /**
+   * Permet de lancer la lecture d'un QR code et de l'ajouter à la liste des établissements
+   */
+  const handleScanQrCode = useCallback(() => {
+    console.log('handleScanQrCode appelé');
+    navigation.navigate('QRCodeScanner', {
+      onScan: qrData => {
+        try {
+          const parsed = JSON.parse(qrData);
+          if (!parsed.url || !parsed.numeroId || !parsed.etablissement) {
+            throw new Error('Données QR code invalides');
+          }
+          const newEstablishment = {
+            url: parsed.url,
+            numeroId: parsed.numeroId,
+            etablissement: parsed.etablissement,
+          };
+          // Vérifier si l'URL existe déjà
+          const exists = establishments.some((est) => est.url === newEstablishment.url);
+          if (exists) {
+            Alert.alert('Erreur', 'Cet établissement est déjà ajouté.');
+            return;
+          }
+          const newEstablishments = [...establishments, newEstablishment];
+          setEstablishments(newEstablishments);
+          setEstablishmentsStorage(newEstablishments);
+          scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId);
+          console.log('Établissement ajouté:', newEstablishment);
+        } catch (error) {
+          console.error('Erreur parsing QR:', error);
+          Alert.alert('Erreur', 'QR code invalide pour un établissement.');
+        }
+      },
+    });
+  }, [navigation, establishments]);
+  /**
+   * Permet de supprimer un établissement de la liste
+   */
+  const deleteEstablishment = 
+    (url) => {
+      console.log('Avant suppression, establishments:', establishments);
+      const newEstablishments = establishments.filter((est) => est.url !== url);
+      console.log('Après suppression, newEstablishments:', newEstablishments);
+      setEstablishments(newEstablishments);
+      setEstablishmentsStorage(newEstablishments);
+      console.log('Établissement supprimé, url:', url);
+    }
+  /**
+   * Permet de définir les actions à afficher sur la droite d'un élément de la liste
+   */
+  const renderRightActions =
+    (url) => (
+      <TouchableOpacity
+        style={[styles.deleteButton, { backgroundColor: 'red' }]}
+        onPress={() => deleteEstablishment(url)}
+      >
+        <Icon name="delete" size={24} color="#fff" />
+      </TouchableOpacity>
+    )
+  /**
+   * Permet de définir le contenu d'un élément de la liste
+   */
+  const renderItem = useCallback(
+    ({ item }) => (
+      <Swipeable renderRightActions={() => renderRightActions(item.url)}>
+        <TouchableOpacity
+          style={[styles.establishmentButton, { backgroundColor: colors.secondary }]}
+          onPress={() => scanTagForEstablishment(item.url, item.numeroId)}
+        >
+          <Text style={styles.establishmentText}>{item.etablissement}</Text>
+        </TouchableOpacity>
+      </Swipeable>
+    ),
+    [colors, establishments],
+  );
+
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -187,7 +193,7 @@ function NfcScreen() {
           <FlatList
             data={establishments}
             renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item) => item.url}
             extraData={establishments}
           />
         ) : (
