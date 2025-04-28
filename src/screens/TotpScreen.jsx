@@ -59,7 +59,7 @@ const TotpScreen = () => {
           console.log('📸 QR Code scanné:', parsed);
           const newTotpObjects = { ...totpObjects, [parsed.secret]: parsed.name };
           setTotpObjects(newTotpObjects);
-          //Totp.setTotpObjects(newTotpObjects);
+          Totp.setTotpObjects(newTotpObjects);
         } catch (error) {
           throw new Error(error.message || 'QR code invalide pour TOTP');
         }
@@ -71,6 +71,7 @@ const TotpScreen = () => {
       onPress: (newTotpObjects) => {
         setTotpObjects(newTotpObjects);
         console.log(newTotpObjects);
+        Totp.setTotpObjects(newTotpObjects);
       },
     });
   };
@@ -87,6 +88,7 @@ const TotpScreen = () => {
           const newTotpObjects = { ...totpObjects };
           delete newTotpObjects[secret];
           setTotpObjects(newTotpObjects);
+          Totp.setTotpObjects(newTotpObjects);
         },
       },
     ]);

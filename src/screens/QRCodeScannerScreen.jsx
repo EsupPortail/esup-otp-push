@@ -22,9 +22,7 @@ const QRCodeScannerScreen = ({route}) => {
         try {
           onScan(qrValue);
           setIsScanning(false);
-          Alert.alert('Succès', 'QR code scanné avec succès.', [
-            {text: 'OK', onPress: () => navigation.goBack()},
-          ]);
+          navigation.goBack();
           console.log(isScanning);
         } catch (error) {
           setIsScanning(false);

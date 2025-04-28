@@ -10,12 +10,13 @@ const ManualTotpScreen = ({ route }) => {
   const { colors } = useTheme();
   const navigation = useNavigation();
   console.log(onPress);
+  console.log(errors);
 
   const onSubmit = ({ name, secret }) => {
     if (secret.length < 16 || secret.length % 2 !== 0) {
       Alert.alert(
         'Erreur',
-        'La clé doit faire au moins 16 caractères et être un multiple de 2'
+        'Clé invalide'
       );
       return;
     }
@@ -24,7 +25,7 @@ const ManualTotpScreen = ({ route }) => {
     const updated = { ...totpObjects, [secret]: name };
 
     //Totp.setTotpObjects(updated);
-    Alert.alert('✅ Succès', 'Compte TOTP ajouté !');
+    //Alert.alert('✅ Succès', 'Compte TOTP ajouté !');
     if (onPress) onPress(updated);
     reset(); // Réinitialiser le formulaire
 
@@ -43,9 +44,10 @@ const ManualTotpScreen = ({ route }) => {
         control={control}
         name="name"
         defaultValue=""
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
+        rules={{ required: 'Champ obligatoire' }}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <>
+            <TextInput
             placeholder="ex: MonCompte"
             value={value}
             onChangeText={onChange}
@@ -54,17 +56,22 @@ const ManualTotpScreen = ({ route }) => {
               { borderColor: colors.text, color: colors.text },
             ]}
           />
+          {error &&  <Text style={{color: 'red'}}>{error.message}</Text>}
+          </>
         )}
       />
-
       <Text style={{ marginTop: 20, color: colors.text }}>Clé secrète</Text>
       <Controller
         control={control}
         name="secret"
         defaultValue=""
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
+        rules={{ required: 'champ obligatoire', minLength: {
+          value: 16,
+          message: 'La clé doit faire au moins 16 caractères'
+        }}}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <>
+            <TextInput
             placeholder="ex: ABCDEFGH12345678"
             value={value}
             onChangeText={onChange}
@@ -74,6 +81,8 @@ const ManualTotpScreen = ({ route }) => {
                 { borderColor: colors.text, color: colors.text },
               ]}
           />
+          {error &&  <Text style={{color: 'red'}}>{error.message}</Text>}
+          </>
         )}
       />
 
