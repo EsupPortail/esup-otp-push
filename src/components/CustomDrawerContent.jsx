@@ -26,9 +26,6 @@ const CustomDrawerContent = props => {
           contentContainerStyle={styles.menuContainer}>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
-        <View>
-          <Text>CustomDrawerContent</Text>
-        </View>
       </View>
     </ImageBackground>
   );
