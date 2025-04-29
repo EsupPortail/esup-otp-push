@@ -18,7 +18,7 @@ export default function App() {
 
   useEffect(() => {
     const migrate = async () => {
-      if (isMigrated) {
+      if (!isMigrated) {
         await MigrateToMMKV();
         setIsMigrated(true);
       }
@@ -33,7 +33,7 @@ export default function App() {
   
     migrate(); // Exécute la fonction asynchrone
   
-  }, [isMigrated]);
+  }, []);
 
   return (
     <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>

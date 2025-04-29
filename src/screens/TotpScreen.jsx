@@ -11,7 +11,7 @@ import CustomActionSheet from '../components/CustomActionSheet';
 // Methods
 const getTotpObjects = () => {
   var totpObjects = storage.getString('totpObjects');
-  return totpObjects ? JSON.parse(totpObjects) : null;
+  return totpObjects ? JSON.parse(totpObjects) : {};
 };
 // Calculer le temps restant jusqu'à la prochaine tranche de 30 secondes
 const getTimeToNextPeriod = () => {

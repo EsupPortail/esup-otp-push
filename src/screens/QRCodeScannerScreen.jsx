@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {useTheme} from '@react-navigation/native';
-import {Camera} from 'react-native-camera-kit';
+import {Camera, CameraType} from 'react-native-camera-kit';
 import {useNavigation} from '@react-navigation/native';
 import {Totp} from '../utils/totp';
 
@@ -41,6 +41,7 @@ const QRCodeScannerScreen = ({route}) => {
     <View style={[styles.container, {backgroundColor: colors.background}]}>
       <Camera
         ref={cameraRef}
+        cameraType={CameraType.Back}
         style={styles.camera}
         scanBarcode={isScanning}
         onReadCode={onReadCode}
