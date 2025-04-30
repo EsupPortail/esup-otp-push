@@ -7,16 +7,13 @@
 
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   TouchableOpacity,
   View,
   FlatList,
   Alert,
+  Platform
 } from 'react-native';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 import {desfireRead} from '../services/nfcService';
@@ -71,7 +68,7 @@ function NfcScreen() {
       // Annuler toute session active avant d'en démarrer une nouvelle
       await NfcManager.cancelTechnologyRequest().catch(() => {});
 
-      bottomSheetRef.current?.open();
+      Platform.OS === 'android' && bottomSheetRef.current?.open();
 
       // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.IsoDep);
