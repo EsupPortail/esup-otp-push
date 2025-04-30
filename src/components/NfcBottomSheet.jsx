@@ -84,6 +84,9 @@ const NfcBottomSheet = forwardRef((props, ref) => {
                 autoPlay
                 loop
               />
+              <Text style={[styles.statusText, {color: '#fff'}]}>
+                Traitement en cours… Gardez la carte posée sur le lecteur
+              </Text>
             </View>
           )}
           {state === 'error' && (
