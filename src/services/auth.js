@@ -229,7 +229,8 @@ export const refresh = async (url, uid, tokenSecret, gcmId, registrationId) => {
   try {
     const cleanedUrl = url.endsWith('/') ? url : `${url}/`;
     const cleanedTokenSecret = tokenSecret.replace(/^"|"$/g, '');
-    const requestUrl = `${cleanedUrl}users/${uid}/methods/push/refresh/${cleanedTokenSecret}/${gcmId}/${registrationId}`;
+    const cleanedGcmId = gcmId.replace(/^"|"$/g, '');
+    const requestUrl = `${cleanedUrl}users/${uid}/methods/push/refresh/${cleanedTokenSecret}/${cleanedGcmId}/${registrationId}`;
     console.log('Requête refresh URL:', requestUrl);
 
     const response = await axios.post(
