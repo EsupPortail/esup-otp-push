@@ -288,17 +288,18 @@ export const getName = (otpServer, otpServersObjects) => {
 
     if (
       serverData.hostName == null ||
+      serverData.hostName === 'Serveur inconnu' ||
       serverData.hostName === 'Esup Auth'
     ) {
-      const urlObj = new URL(serverData.host);
-      return (
-        urlObj.hostname.split('.').slice(-2).join('.') +
-        ' (' +
-        serverData.uid +
-        ')'
-      );
+      // Extraction manuelle du hostname (compatible React Native)
+      const host = serverData.host.replace(/\/+$/, ''); // Supprime les / finaux
+      const hostnameMatch = host.match(/^(?:https?:\/\/)?([^\/]+)/i);
+      const hostname = hostnameMatch ? hostnameMatch[1] : host;
+      const domainParts = hostname.split('.');
+      const shortDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : hostname;
+      return `${shortDomain} (${serverData.uid})`;
     } else {
-      return serverData.hostName + ' (' + serverData.uid + ')';
+      return `${serverData.hostName} (${serverData.uid})`;
     }
   } catch (error) {
     console.error('Erreur dans getName:', error.message);
