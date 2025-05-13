@@ -61,7 +61,7 @@ export const notification = (data, otpServersObjects, setOtpServersObjects, setN
         url: cleanedUrl,
         otpServer: otpServerKey,
         text: data.text
-          ? data.text.replace('compte', `compte ${updatedOtpServers[otpServerKey].hostName || 'inconnu'} `)
+          ? data.text.replace('compte', `compte ${getName(otpServerKey, updatedOtpServers) || ''} `)
           : 'Veuillez valider votre connexion.',
       });
       setNotified(true);
@@ -276,5 +276,32 @@ export const desactivateUser = async (url, uid, tokenSecret, gcmId) => {
     console.error('Erreur dans desactivateUser:', error.message, error.response?.data);
     showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
     return { success: false, message: error.message };
+  }
+};
+
+export const getName = (otpServer, otpServersObjects) => {
+  try {
+    const serverData = otpServersObjects[otpServer];
+    if (!serverData) {
+      throw new Error(`Serveur ${otpServer} non trouvé dans otpServersObjects`);
+    }
+
+    if (
+      serverData.hostName == null ||
+      serverData.hostName === 'Esup Auth'
+    ) {
+      const urlObj = new URL(serverData.host);
+      return (
+        urlObj.hostname.split('.').slice(-2).join('.') +
+        ' (' +
+        serverData.uid +
+        ')'
+      );
+    } else {
+      return serverData.hostName + ' (' + serverData.uid + ')';
+    }
+  } catch (error) {
+    console.error('Erreur dans getName:', error.message);
+    return otpServer; // Retourne la clé brute en cas d’erreur
   }
 };
