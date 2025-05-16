@@ -35,6 +35,7 @@
     "react-native-svg": "^15.11.2",
     "react-native-vector-icons": "^10.2.0",
     "react-native-webview": "^13.13.2",
+    "rxjs": "^7.8.2",
     "totp-generator": "^1.0.0"
   },
   "devDependencies": {

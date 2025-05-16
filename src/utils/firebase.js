@@ -22,10 +22,3 @@ export const initializeFirebase = async () => {
 
   return gcmId;
 };
-
-export const onTokenRefresh = (callback) => {
-  return messaging().onTokenRefresh((newToken) => {
-    storage.set('gcm_id', newToken);
-    callback(newToken);
-  });
-};

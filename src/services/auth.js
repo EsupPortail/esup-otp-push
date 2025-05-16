@@ -306,3 +306,84 @@ export const getName = (otpServer, otpServersObjects) => {
     return otpServer; // Retourne la clé brute en cas d’erreur
   }
 };
+
+// Gestion du pending
+export const otpServerStatus = async (
+  otpServer,
+  otpServersObjects,
+  setOtpServersObjects,
+  setNotified,
+  setAdditionalData,
+  otpServersStack
+) => {
+  console.log('📱 otpServerStatus appelé pour:', otpServer);
+  if (!otpServer || !otpServersObjects[otpServer]) {
+    console.warn('📱 otpServerStatus: otpServer manquant ou invalide');
+    if (otpServersStack.length > 0) {
+      return otpServerStatus(
+        otpServersStack.pop(),
+        otpServersObjects,
+        setOtpServersObjects,
+        setNotified,
+        setAdditionalData,
+        otpServersStack
+      );
+    }
+    return;
+  }
+
+  const { host, uid, tokenSecret } = otpServersObjects[otpServer];
+  if (!host || !uid || !tokenSecret) {
+    console.warn('📱 otpServerStatus: host, uid ou tokenSecret manquant');
+    if (otpServersStack.length > 0) {
+      return otpServerStatus(
+        otpServersStack.pop(),
+        otpServersObjects,
+        setOtpServersObjects,
+        setNotified,
+        setAdditionalData,
+        otpServersStack
+      );
+    }
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      `${host}users/${uid}/methods/push/${tokenSecret}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000,
+      }
+    );
+    console.log('📱 Réponse otpServerStatus:', response.data);
+
+    if (response.data.code === 'Ok') {
+      const data = { ...response.data, otpServer, url: host, uid };
+      notification(data, otpServersObjects, setOtpServersObjects, setNotified, setAdditionalData);
+    } else {
+      if (otpServersStack.length > 0) {
+        return otpServerStatus(
+          otpServersStack.pop(),
+          otpServersObjects,
+          setOtpServersObjects,
+          setNotified,
+          setAdditionalData,
+          otpServersStack
+        );
+      }
+    }
+  } catch (error) {
+    console.error('📱 Erreur dans otpServerStatus:', error.message);
+    if (otpServersStack.length > 0) {
+      return otpServerStatus(
+        otpServersStack.pop(),
+        otpServersObjects,
+        setOtpServersObjects,
+        setNotified,
+        setAdditionalData,
+        otpServersStack
+      );
+    }
+  }
+};
