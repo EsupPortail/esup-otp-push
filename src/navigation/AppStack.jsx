@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import NfcScreen from '../screens/NfcScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ManualTotpScreen from '../screens/ManualTotpScreen';
+import PushScreen from '../screens/PushScreen';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import DarkModeToggle from '../components/DarkModeToggle';
 import {useTheme, NavigationContainer} from '@react-navigation/native';
@@ -56,7 +57,7 @@ const DrawerNavigator = () => {
       />
       <Drawer.Screen
         name="PUSH"
-        component={NfcScreen}
+        component={PushScreen}
         options={{
           drawerIcon: ({color, size}) => (
             <Icon name="notification-clear-all" color={color} size={size} />
