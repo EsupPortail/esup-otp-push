@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import messaging from '@react-native-firebase/messaging';
 import { storage } from '../utils/storage';
 import { notification, refresh, otpServerStatus } from '../services/auth';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 const useNotifications = () => {
   const [notified, setNotified] = useState(false);
