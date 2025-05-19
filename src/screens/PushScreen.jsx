@@ -1,64 +1,109 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useTheme } from '@react-navigation/native';
-import { Swipeable, GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Ajustez selon votre bibliothèque
-import { storage } from '../utils/storage';
-import { getName } from '../services/auth';
+import {storage} from '../utils/storage';
+import {desync, getName, showToast, sync} from '../services/auth';
+import CustomActionSheet from '../components/CustomActionSheet';
+import {getManufacturer, getModel} from 'react-native-device-info';
+import useNotifications from '../hooks/useNotifications';
 
 const PushScreen = () => {
-  const { colors } = useTheme();
-  const [otpServersObjects, setOtpServersObjects] = useState(() => {
-    try {
-      const servers = storage.getString('otpServers') ? JSON.parse(storage.getString('otpServers')) : {};
-      console.log('📱 otpServersObjects chargé:', JSON.stringify(servers));
-      return servers;
-    } catch (error) {
-      console.error('📱 Erreur lors du chargement de otpServers:', error.message);
-      return {};
-    }
-  });
+  const {colors} = useTheme();
+  const navigation = useNavigation();
+  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+  const {otpServersObjects, setOtpServersObjects} = useNotifications();
 
   useEffect(() => {
     try {
       storage.set('otpServers', JSON.stringify(otpServersObjects));
-      console.log('📱 otpServersObjects mis à jour dans storage:', JSON.stringify(otpServersObjects));
+      console.log(
+        '📱 otpServersObjects mis à jour dans storage:',
+        JSON.stringify(otpServersObjects),
+      );
     } catch (error) {
-      console.error('📱 Erreur lors de la mise à jour de storage:', error.message);
+      console.error(
+        '📱 Erreur lors de la mise à jour de storage:',
+        error.message,
+      );
     }
   }, [otpServersObjects]);
 
-  const handleDelete = (serverKey) => {
-    const server = otpServersObjects[serverKey];
-    Alert.alert(
-      'Supprimer le serveur',
-      `Voulez-vous vraiment supprimer ${server ? getName(serverKey, otpServersObjects) : 'ce serveur'} ?`,
-      [
-        { text: 'Annuler', style: 'cancel' },
-        {
-          text: 'Supprimer',
-          style: 'destructive',
-          onPress: () => {
-            const updatedServers = { ...otpServersObjects };
-            delete updatedServers[serverKey];
-            setOtpServersObjects(updatedServers);
-            console.log('📱 Serveur supprimé:', serverKey);
-          },
-        },
-      ]
-    );
+  const handleScan = () => {
+    navigation.navigate('QRCodeScanner', {
+      onScan: async url => {
+        try {
+          console.log('📱 Scan QR code **** PUSH', url);
+
+          const urlParts = url.split('/');
+          const host = url.split('users')[0];
+          const uid = urlParts[4];
+          const code = urlParts[7];
+
+          // Récupérer infos device (plateforme, fabricant, modèle)
+          const manufacturer = await getManufacturer();
+          const model = getModel();
+
+          const gcmId = storage.getString('gcm_id') || '';
+
+          const result = await sync(
+            host,
+            uid,
+            code,
+            gcmId,
+            manufacturer,
+            model,
+          );
+
+          if (result.success) {
+            console.log('📱 Sync réussi ✅', result.data);
+            showToast('QR code synchronisé');
+
+            // 🔄 Rafraîchir otpServersObjects depuis storage
+            const updatedRaw = storage.getString('otpServers');
+            const updated = updatedRaw ? JSON.parse(updatedRaw) : {};
+            setOtpServersObjects(updated);
+          } else {
+            console.warn('📱 Échec sync ❌', result.message);
+            showToast('Erreur de synchronisation');
+          }
+        } catch (error) {
+          console.error('📱 Erreur pendant le scan + sync', error.message);
+          showToast('Échec du traitement du QR code');
+        }
+      },
+    });
   };
 
-  const renderRightActions = (serverKey) => (
+  const handleDelete = async (serverKey)=> {
+    try {
+        await desync(serverKey, otpServersObjects, setOtpServersObjects);
+        const updatedServers = {...otpServersObjects};
+        delete updatedServers[serverKey];
+        setOtpServersObjects(updatedServers);
+        console.log('📱 Serveur supprimé:', serverKey);
+      } catch (error) {
+        console.error('❌ Erreur suppression serveur', error);
+      }
+  };
+
+  const renderRightActions = serverKey => (
     <TouchableOpacity
-      style={[styles.deleteButton, { backgroundColor: 'red' }]}
-      onPress={() => handleDelete(serverKey)}
-    >
+      style={[styles.deleteButton, {backgroundColor: 'red'}]}
+      onPress={() => handleDelete(serverKey)}>
       <Icon name="delete" size={24} color="#fff" />
     </TouchableOpacity>
   );
 
-  const renderServerItem = ({ item }) => {
+  const renderServerItem = ({item}) => {
     const server = otpServersObjects[item.key];
     if (!server || typeof server !== 'object') {
       console.warn('📱 Serveur introuvable ou invalide pour la clé:', item.key);
@@ -67,7 +112,7 @@ const PushScreen = () => {
     return (
       <Swipeable renderRightActions={() => renderRightActions(item.key)}>
         <TouchableOpacity
-          style={[styles.serverButton, { backgroundColor: colors.secondary }]}
+          style={[styles.serverButton, {backgroundColor: colors.secondary}]}
           onPress={() => console.log('📱 Clic sur serveur:', item.key)} // Placeholder, ajoutez une action si besoin
         >
           <Text style={styles.serverText}>
@@ -79,37 +124,58 @@ const PushScreen = () => {
   };
 
   const serverList = Object.keys(otpServersObjects)
-    .filter((key) => {
-      const isValid = otpServersObjects[key] && typeof otpServersObjects[key] === 'object' && otpServersObjects[key].host && otpServersObjects[key].uid;
+    .filter(key => {
+      const isValid =
+        otpServersObjects[key] &&
+        typeof otpServersObjects[key] === 'object' &&
+        otpServersObjects[key].host &&
+        otpServersObjects[key].uid;
       if (!isValid) {
-        console.warn('📱 Clé ignorée, serveur invalide:', key, JSON.stringify(otpServersObjects[key]));
+        console.warn(
+          '📱 Clé ignorée, serveur invalide:',
+          key,
+          JSON.stringify(otpServersObjects[key]),
+        );
       }
       return isValid;
     })
-    .map((key) => ({
+    .map(key => ({
       key,
       name: getName(key, otpServersObjects) || 'Serveur sans nom',
     }));
 
   return (
-    <GestureHandlerRootView style={[styles.container, { backgroundColor: colors.background }]}>
+    <GestureHandlerRootView
+      style={[styles.container, {backgroundColor: colors.background}]}>
+      <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
+        <Icon name="plus-circle" color={colors.primary} size={50} />
+      </TouchableOpacity>
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, { color: colors.text }]}>
+        <Text style={[styles.cardTitle, {color: colors.text}]}>
           Serveurs Push Configurés
         </Text>
         {serverList.length === 0 ? (
-          <Text style={[styles.emptyText, { color: colors.text }]}>
-            Aucun serveur push configuré. Ajoutez un serveur pour recevoir des notifications.
+          <Text style={[styles.emptyText, {color: colors.text}]}>
+            Aucun serveur push configuré. Ajoutez un serveur pour recevoir des
+            notifications.
           </Text>
         ) : (
           <FlatList
             data={serverList}
             renderItem={renderServerItem}
-            keyExtractor={(item) => item.key}
+            keyExtractor={item => item.key}
             extraData={otpServersObjects}
           />
         )}
       </View>
+      <CustomActionSheet
+        visible={isActionSheetOpen}
+        onClose={() => setIsActionSheetOpen(false)}
+        actions={[
+          {label: 'Scanner QR code', onPress: handleScan},
+          {label: 'Saisie manuelle', onPress: () => {}},
+        ]}
+      />
     </GestureHandlerRootView>
   );
 };

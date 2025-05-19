@@ -6,15 +6,29 @@ import { notification, refresh, otpServerStatus } from '../services/auth';
 const useNotifications = () => {
   const [notified, setNotified] = useState(false);
   const [additionalData, setAdditionalData] = useState(null);
-  const [otpServersObjects, setOtpServersObjects] = useState(
-    storage.getString('otpServers') ? JSON.parse(storage.getString('otpServers')) : {}
-  );
+
+  const [otpServersObjects, setOtpServersObjects] = useState(() => {
+    try {
+      const raw = storage.getString('otpServers');
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      console.warn('Erreur parsing otpServers:', e.message);
+      return {};
+    }
+  });
+
+  const otpServersRef = useRef(otpServersObjects);
   const otpServersStackRef = useRef([]);
   const isProcessingRef = useRef(false);
-  const lastProcessedLtRef = useRef(null); // Pour éviter de retraiter la même notification
+  const lastProcessedLtRef = useRef(null);
+
+  // Garde en mémoire la dernière version de otpServersObjects
+  useEffect(() => {
+    otpServersRef.current = otpServersObjects;
+  }, [otpServersObjects]);
 
   useEffect(() => {
-    console.log('📱 useEffect exécuté avec otpServersObjects:', JSON.stringify(otpServersObjects), 'notified:', notified);
+    console.log('📱 useEffect exécuté');
 
     if (isProcessingRef.current) {
       console.log('📱 useEffect ignoré: déjà en cours de traitement');
@@ -37,7 +51,7 @@ const useNotifications = () => {
           console.log('📱 gcm_id initialisé:', newToken);
         } else if (currentGcmId !== newToken) {
           console.log('📱 Mise à jour du gcm_id:', currentGcmId, '->', newToken);
-          const servers = Object.entries(otpServersObjects);
+          const servers = Object.entries(otpServersRef.current);
           for (const [otpServerKey, serverData] of servers) {
             try {
               const result = await refresh(
@@ -70,7 +84,7 @@ const useNotifications = () => {
           if (remoteMessage.data.lt !== lastProcessedLtRef.current) {
             notification(
               remoteMessage.data,
-              otpServersObjects,
+              otpServersRef.current,
               setOtpServersObjects,
               setNotified,
               setAdditionalData
@@ -88,7 +102,9 @@ const useNotifications = () => {
     };
 
     const initAuth = async () => {
-      if (Object.keys(otpServersObjects).length === 0) {
+      const currentOtpServers = otpServersRef.current;
+
+      if (Object.keys(currentOtpServers).length === 0) {
         console.warn('📱 initAuth: Aucun serveur OTP configuré');
         return;
       }
@@ -98,7 +114,7 @@ const useNotifications = () => {
         return;
       }
 
-      otpServersStackRef.current = [...Object.keys(otpServersObjects)];
+      otpServersStackRef.current = [...Object.keys(currentOtpServers)];
       console.log('📱 initAuth: otpServersStack initialisé:', otpServersStackRef.current);
 
       while (otpServersStackRef.current.length > 0) {
@@ -107,7 +123,7 @@ const useNotifications = () => {
         try {
           await otpServerStatus(
             otpServer,
-            otpServersObjects,
+            otpServersRef.current,
             setOtpServersObjects,
             setNotified,
             setAdditionalData,
@@ -125,16 +141,21 @@ const useNotifications = () => {
     };
 
     const setup = async () => {
-      await initializeToken();
-      await checkInitialNotification();
-      await initAuth();
-      isProcessingRef.current = false;
+      try {
+        await initializeToken();
+        await checkInitialNotification();
+        await initAuth();
+      } catch (e) {
+        console.error('Erreur setup:', e.message);
+      } finally {
+        isProcessingRef.current = false;
+      }
     };
+
     setup();
 
     const unsubscribeForeground = messaging().onMessage(async (remoteMessage) => {
       console.log('📱 Notification foreground data:', remoteMessage.data);
-      console.log('📱 Notification foreground response:', remoteMessage);
       if (
         remoteMessage.data &&
         (remoteMessage.data.action === 'auth' || remoteMessage.data.action === 'desync') &&
@@ -144,7 +165,7 @@ const useNotifications = () => {
         if (remoteMessage.data.lt !== lastProcessedLtRef.current) {
           notification(
             remoteMessage.data,
-            otpServersObjects,
+            otpServersRef.current,
             setOtpServersObjects,
             setNotified,
             setAdditionalData
@@ -159,7 +180,7 @@ const useNotifications = () => {
     });
 
     const unsubscribeOpened = messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log('📱 Notification pending ouverte (background):', remoteMessage);
+      console.log('📱 Notification ouverte (background):', remoteMessage);
       if (
         remoteMessage &&
         remoteMessage.data &&
@@ -170,17 +191,17 @@ const useNotifications = () => {
         if (remoteMessage.data.lt !== lastProcessedLtRef.current) {
           notification(
             remoteMessage.data,
-            otpServersObjects,
+            otpServersRef.current,
             setOtpServersObjects,
             setNotified,
             setAdditionalData
           );
           lastProcessedLtRef.current = remoteMessage.data.lt;
         } else {
-          console.log('📱 Notification ouverte déjà traitée:', remoteMessage.data.lt);
+          console.log('📱 Notification déjà traitée:', remoteMessage.data.lt);
         }
       } else {
-        console.warn('📱 Notification ouverte ignorée: données invalides', remoteMessage?.data);
+        console.warn('📱 Notification ignorée: données invalides', remoteMessage?.data);
       }
     });
 
@@ -191,7 +212,7 @@ const useNotifications = () => {
         console.log('📱 Token refresh:', newToken);
 
         if (currentGcmId !== newToken) {
-          const servers = Object.entries(otpServersObjects);
+          const servers = Object.entries(otpServersRef.current);
           for (const [otpServerKey, serverData] of servers) {
             try {
               const result = await refresh(
@@ -221,9 +242,16 @@ const useNotifications = () => {
       unsubscribeTokenRefresh();
       isProcessingRef.current = false;
     };
-  }, [otpServersObjects, notified]);
+  }, [notified]); // otpServersObjects retiré pour éviter les boucles
 
-  return { notified, setNotified, additionalData, setAdditionalData, otpServersObjects, setOtpServersObjects };
+  return {
+    notified,
+    setNotified,
+    additionalData,
+    setAdditionalData,
+    otpServersObjects,
+    setOtpServersObjects,
+  };
 };
 
 export default useNotifications;

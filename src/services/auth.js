@@ -2,7 +2,7 @@ import axios from 'axios';
 import { storage } from '../utils/storage';
 import { Platform, ToastAndroid, Alert } from 'react-native';
 
-const showToast = (message) => {
+export const showToast = (message) => {
   if (Platform.OS === 'android') {
     ToastAndroid.show(message, ToastAndroid.LONG);
   } else {
@@ -10,7 +10,30 @@ const showToast = (message) => {
   }
 };
 
-export const notification = (data, otpServersObjects, setOtpServersObjects, setNotified, setAdditionalData) => {
+const updateOtpServers = (updated, setOtpServersObjects) => {
+  setOtpServersObjects(prev => {
+    const prevStr = JSON.stringify(prev);
+    const nextStr = JSON.stringify(updated);
+    if (prevStr !== nextStr) {
+      storage.set('otpServers', nextStr);
+      console.log('otpServers mis à jour:', updated);
+      return updated;
+    }
+    return prev; // aucune modification
+  });
+};
+
+// ===============================
+// Notification reçue
+// ===============================
+
+export const notification = (
+  data,
+  otpServersObjects,
+  setOtpServersObjects,
+  setNotified,
+  setAdditionalData
+) => {
   try {
     if (!data.url || !data.uid) {
       showToast('Données de notification incomplètes (url ou uid manquant)');
@@ -21,9 +44,10 @@ export const notification = (data, otpServersObjects, setOtpServersObjects, setN
     const otpServerKey = `${cleanedUrl}${data.uid}`;
     console.log('otpServerKey généré:', otpServerKey);
 
+    const gcmId = storage.getString('gcm_id') || '';
     let updatedOtpServers = { ...otpServersObjects };
 
-    const gcmId = storage.getString('gcm_id') || '';
+    // Création initiale
     if (!updatedOtpServers[otpServerKey] && data.trustGcm_id === 'true') {
       updatedOtpServers[otpServerKey] = {
         host: cleanedUrl,
@@ -35,10 +59,12 @@ export const notification = (data, otpServersObjects, setOtpServersObjects, setN
       console.log('Nouveau serveur initialisé avec tokenSecret = gcm_id:', gcmId);
     }
 
+    // Mise à jour hostToken si manquant
     if (updatedOtpServers[otpServerKey] && !updatedOtpServers[otpServerKey].hostToken && data.hostToken) {
       updatedOtpServers[otpServerKey].hostToken = data.hostToken;
     }
 
+    // Mise à jour du nom du serveur
     if (
       updatedOtpServers[otpServerKey] &&
       updatedOtpServers[otpServerKey].hostName !== data.hostName &&
@@ -47,10 +73,10 @@ export const notification = (data, otpServersObjects, setOtpServersObjects, setN
       updatedOtpServers[otpServerKey].hostName = data.hostName;
     }
 
-    setOtpServersObjects(updatedOtpServers);
-    storage.set('otpServers', JSON.stringify(updatedOtpServers));
-    console.log('otpServers mis à jour:', updatedOtpServers);
+    // Persist only if changed
+    updateOtpServers(updatedOtpServers, setOtpServersObjects);
 
+    // Auth
     if (
       data.action === 'auth' &&
       updatedOtpServers[otpServerKey]?.host &&
@@ -65,11 +91,14 @@ export const notification = (data, otpServersObjects, setOtpServersObjects, setN
           : 'Veuillez valider votre connexion.',
       });
       setNotified(true);
+
+    // Desync
     } else if (
       data.action === 'desync' &&
       updatedOtpServers[otpServerKey]?.hostToken === data.hostToken
     ) {
       desync(otpServerKey, updatedOtpServers, setOtpServersObjects);
+      setNotified(true);
     }
   } catch (error) {
     console.error('Erreur dans notification:', error.message);
@@ -77,47 +106,47 @@ export const notification = (data, otpServersObjects, setOtpServersObjects, setN
   }
 };
 
-export const accept = async (additionalData, otpServersObjects, setOtpServersObjects, setNotified, setAdditionalData) => {
+// ===============================
+// Accept
+// ===============================
+
+export const accept = async (
+  additionalData,
+  otpServersObjects,
+  setOtpServersObjects,
+  setNotified,
+  setAdditionalData
+) => {
   try {
-    if (
-      !otpServersObjects[additionalData.otpServer] ||
-      !otpServersObjects[additionalData.otpServer].host ||
-      !otpServersObjects[additionalData.otpServer].uid ||
-      !otpServersObjects[additionalData.otpServer].tokenSecret ||
-      !additionalData.lt
-    ) {
+    const otpServer = additionalData.otpServer;
+    const server = otpServersObjects[otpServer];
+
+    if (!server || !server.host || !server.uid || !server.tokenSecret || !additionalData.lt) {
       showToast('Données manquantes pour accept');
       return;
     }
 
     if (
-      additionalData.hostToken != null &&
-      otpServersObjects[additionalData.otpServer].hostToken !== additionalData.hostToken
+      additionalData.hostToken &&
+      server.hostToken !== additionalData.hostToken
     ) {
       showToast('hostToken non correspondant');
       return;
     }
 
-    const serverData = otpServersObjects[additionalData.otpServer];
-    const url = `${serverData.host}users/${serverData.uid}/methods/push/${additionalData.lt}/${serverData.tokenSecret}`;
-    console.log('Requête accept URL:', url, 'tokenSecret:', serverData.tokenSecret);
+    const url = `${server.host}users/${server.uid}/methods/push/${additionalData.lt}/${server.tokenSecret}`;
+    console.log('Requête accept URL:', url);
 
-    const response = await axios.post(
-      url,
-      {},
-      { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
-    );
+    const response = await axios.post(url, {}, {
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 10000,
+    });
 
     if (response.data.code === 'Ok') {
-      let updatedOtpServers = { ...otpServersObjects };
+      let updated = { ...otpServersObjects };
       if (response.data.tokenSecret) {
-        updatedOtpServers[additionalData.otpServer] = {
-          ...serverData,
-          tokenSecret: response.data.tokenSecret,
-        };
-        setOtpServersObjects(updatedOtpServers);
-        storage.set('otpServers', JSON.stringify(updatedOtpServers));
-        console.log('Nouveau tokenSecret:', response.data.tokenSecret);
+        updated[otpServer] = { ...server, tokenSecret: response.data.tokenSecret };
+        updateOtpServers(updated, setOtpServersObjects);
       }
       setNotified(false);
       setAdditionalData(null);
@@ -133,6 +162,10 @@ export const accept = async (additionalData, otpServersObjects, setOtpServersObj
   }
 };
 
+// ===============================
+// Reject
+// ===============================
+
 export const reject = (setNotified, setAdditionalData) => {
   try {
     setNotified(false);
@@ -144,6 +177,9 @@ export const reject = (setNotified, setAdditionalData) => {
   }
 };
 
+// ===============================
+// Sync
+// ===============================
 export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manufacturer = 'unknown', model = 'unknown') => {
   try {
     const cleanedHost = host.endsWith('/') ? host : `${host}/`;
@@ -182,17 +218,22 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
   }
 };
 
+// ===============================
+// Desync
+// ===============================
+
 export const desync = async (otpServer, otpServersObjects, setOtpServersObjects) => {
   try {
-    if (!otpServersObjects[otpServer]) {
+    const server = otpServersObjects[otpServer];
+    if (!server) {
       showToast('Serveur introuvable');
       return;
     }
 
-    const confirm = await new Promise((resolve) => {
+    const confirm = await new Promise(resolve => {
       Alert.alert(
         'Confirmation',
-        `Voulez-vous vraiment désactiver la connexion de ${otpServersObjects[otpServer].hostName || 'ce serveur'} avec votre mobile ?`,
+        `Voulez-vous vraiment désactiver la connexion de ${server.hostName || 'ce serveur'} avec votre mobile ?`,
         [
           { text: 'Annuler', style: 'cancel', onPress: () => resolve(false) },
           { text: 'Confirmer', onPress: () => resolve(true) },
@@ -200,12 +241,9 @@ export const desync = async (otpServer, otpServersObjects, setOtpServersObjects)
       );
     });
 
-    if (!confirm) {
-      return;
-    }
+    if (!confirm) return;
 
-    const serverData = otpServersObjects[otpServer];
-    const url = `${serverData.host}users/${serverData.uid}/methods/push/${serverData.tokenSecret}`;
+    const url = `${server.host}users/${server.uid}/methods/push/${server.tokenSecret}`;
     console.log('Requête desync URL:', url);
 
     await axios.delete(url, {
@@ -213,15 +251,13 @@ export const desync = async (otpServer, otpServersObjects, setOtpServersObjects)
       timeout: 10000,
     });
 
-    const updatedOtpServers = { ...otpServersObjects };
-    delete updatedOtpServers[otpServer];
-    setOtpServersObjects(updatedOtpServers);
-    storage.set('otpServers', JSON.stringify(updatedOtpServers));
-    console.log('otpServers mis à jour:', updatedOtpServers);
+    const updated = { ...otpServersObjects };
+    delete updated[otpServer];
+    updateOtpServers(updated, setOtpServersObjects);
     showToast('Désactivation effectuée');
   } catch (error) {
     console.error('Erreur dans desync:', error.message, error.response?.data);
-    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''} - Probablement que le serveur n'est pas joignable` : ''}`);
+    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
   }
 };
 
