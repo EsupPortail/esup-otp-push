@@ -48,11 +48,11 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="NFC"
-        component={NfcScreen}
+        name="TOTP"
+        component={TotpScreen}
         options={{
           drawerIcon: ({color, size}) => (
-            <Icon name="cellphone-nfc" color={color} size={size} />
+            <MaterialIcon name="pin" color={color} size={size} />
           ),
         }}
       />
@@ -66,11 +66,11 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
-        name="TOTP"
-        component={TotpScreen}
+        name="NFC"
+        component={NfcScreen}
         options={{
           drawerIcon: ({color, size}) => (
-            <MaterialIcon name="pin" color={color} size={size} />
+            <Icon name="cellphone-nfc" color={color} size={size} />
           ),
         }}
       />
