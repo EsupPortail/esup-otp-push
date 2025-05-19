@@ -22,7 +22,7 @@ const getTimeToNextPeriod = () => {
 };
 
 // Component
-const TotpScreen = () => {
+const TotpScreen = ({withoutAddButton}) => {
   const {colors} = useTheme();
   const [totpObjects, setTotpObjects] = useState(getTotpObjects());
   const [codes, setCodes] = useState({});
@@ -97,9 +97,12 @@ const TotpScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
-          <Icon name="plus-circle" color={colors.primary} size={50} />
-        </TouchableOpacity>
+        {
+          !withoutAddButton && 
+          <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
+            <Icon name="plus-circle" color={colors.primary} size={50} />
+          </TouchableOpacity>
+        }
         <CountdownCircleTimer
           isPlaying={Object.keys(totpObjects).length > 0}
           duration={30}
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    rowGap: 50,
+    rowGap: 20,
   },
   header: {
     flexDirection: 'row',

@@ -16,7 +16,7 @@ import CustomActionSheet from '../components/CustomActionSheet';
 import {getManufacturer, getModel} from 'react-native-device-info';
 import useNotifications from '../hooks/useNotifications';
 
-const PushScreen = () => {
+const PushScreen = ({withoutAddButton}) => {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
@@ -170,9 +170,11 @@ const PushScreen = () => {
   return (
     <GestureHandlerRootView
       style={[styles.container, {backgroundColor: colors.background}]}>
-      <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
-        <Icon name="plus-circle" color={colors.primary} size={50} />
-      </TouchableOpacity>
+      {!withoutAddButton && (
+        <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
+          <Icon name="plus-circle" color={colors.primary} size={50} />
+        </TouchableOpacity>
+      )}
       <View style={styles.card}>
         <Text style={[styles.cardTitle, {color: colors.text}]}>
           Serveurs Push Configurés

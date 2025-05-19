@@ -13,7 +13,7 @@ import {
   View,
   FlatList,
   Alert,
-  Platform
+  Platform,
 } from 'react-native';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 import {desfireRead} from '../services/nfcService';
@@ -30,7 +30,7 @@ const getEstablishments = () => {
 const setEstablishmentsStorage = newEstablishments => {
   storage.set('establishments', JSON.stringify(newEstablishments));
 };
-function NfcScreen() {
+function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
   const isScanningRef = useRef(false);
   const bottomSheetRef = useRef(null);
@@ -59,7 +59,6 @@ function NfcScreen() {
     cleanupNfc();
   }, []);
 
-
   /**
    * Permet de lancer la lecture d'un tag NFC et retourne le résultat
    */
@@ -81,13 +80,18 @@ function NfcScreen() {
 
       if (result.code === 'END') {
         var heure = new Date().getHours();
-        var msg = `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${result.msg}`;
+        var msg = `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${
+          result.msg
+        }`;
         bottomSheetRef.current?.setSuccess(msg);
       } else {
         bottomSheetRef.current?.setError();
       }
     } catch (ex) {
-      console.error('Erreur NFC:', err instanceof Error ? err.stack : JSON.stringify(err));
+      console.error(
+        'Erreur NFC:',
+        err instanceof Error ? err.stack : JSON.stringify(err),
+      );
       bottomSheetRef.current?.setError();
     } finally {
       await NfcManager.cancelTechnologyRequest().catch(() => {});
@@ -114,7 +118,9 @@ function NfcScreen() {
             etablissement: parsed.etablissement,
           };
           // Vérifier si l'URL existe déjà
-          const exists = establishments.some((est) => est.url === newEstablishment.url);
+          const exists = establishments.some(
+            est => est.url === newEstablishment.url,
+          );
           if (exists) {
             Alert.alert('Erreur', 'Cet établissement est déjà ajouté.');
             return;
@@ -122,7 +128,10 @@ function NfcScreen() {
           const newEstablishments = [...establishments, newEstablishment];
           setEstablishments(newEstablishments);
           setEstablishmentsStorage(newEstablishments);
-          scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId);
+          scanTagForEstablishment(
+            newEstablishment.url,
+            newEstablishment.numeroId,
+          );
           console.log('Établissement ajouté:', newEstablishment);
         } catch (error) {
           console.error('Erreur parsing QR:', error);
@@ -134,37 +143,36 @@ function NfcScreen() {
   /**
    * Permet de supprimer un établissement de la liste
    */
-  const deleteEstablishment = 
-    (url) => {
-      console.log('Avant suppression, establishments:', establishments);
-      const newEstablishments = establishments.filter((est) => est.url !== url);
-      console.log('Après suppression, newEstablishments:', newEstablishments);
-      setEstablishments(newEstablishments);
-      setEstablishmentsStorage(newEstablishments);
-      console.log('Établissement supprimé, url:', url);
-    }
+  const deleteEstablishment = url => {
+    console.log('Avant suppression, establishments:', establishments);
+    const newEstablishments = establishments.filter(est => est.url !== url);
+    console.log('Après suppression, newEstablishments:', newEstablishments);
+    setEstablishments(newEstablishments);
+    setEstablishmentsStorage(newEstablishments);
+    console.log('Établissement supprimé, url:', url);
+  };
   /**
    * Permet de définir les actions à afficher sur la droite d'un élément de la liste
    */
-  const renderRightActions =
-    (url) => (
-      <TouchableOpacity
-        style={[styles.deleteButton, { backgroundColor: 'red' }]}
-        onPress={() => deleteEstablishment(url)}
-      >
-        <Icon name="delete" size={24} color="#fff" />
-      </TouchableOpacity>
-    )
+  const renderRightActions = url => (
+    <TouchableOpacity
+      style={[styles.deleteButton, {backgroundColor: 'red'}]}
+      onPress={() => deleteEstablishment(url)}>
+      <Icon name="delete" size={24} color="#fff" />
+    </TouchableOpacity>
+  );
   /**
    * Permet de définir le contenu d'un élément de la liste
    */
   const renderItem = useCallback(
-    ({ item }) => (
+    ({item}) => (
       <Swipeable renderRightActions={() => renderRightActions(item.url)}>
         <TouchableOpacity
-          style={[styles.establishmentButton, { backgroundColor: colors.secondary }]}
-          onPress={() => scanTagForEstablishment(item.url, item.numeroId)}
-        >
+          style={[
+            styles.establishmentButton,
+            {backgroundColor: colors.secondary},
+          ]}
+          onPress={() => scanTagForEstablishment(item.url, item.numeroId)}>
           <Text style={styles.establishmentText}>{item.etablissement}</Text>
         </TouchableOpacity>
       </Swipeable>
@@ -179,9 +187,11 @@ function NfcScreen() {
   return (
     <GestureHandlerRootView
       style={[styles.container, {backgroundColor: colors.background}]}>
-      <TouchableOpacity style={styles.qrButton} onPress={handleScanQrCode}>
-        <Icon name="qrcode-scan" size={30} color={colors.text} />
-      </TouchableOpacity>
+      {!withoutAddButton && (
+        <TouchableOpacity style={styles.qrButton} onPress={handleScanQrCode}>
+          <Icon name="qrcode-scan" size={30} color={colors.text} />
+        </TouchableOpacity>
+      )}
       <View style={styles.card}>
         <Text style={[styles.cardTitle, {color: colors.text}]}>
           Authentification via NFC
@@ -190,7 +200,7 @@ function NfcScreen() {
           <FlatList
             data={establishments}
             renderItem={renderItem}
-            keyExtractor={(item) => item.url}
+            keyExtractor={item => item.url}
             extraData={establishments}
           />
         ) : (
