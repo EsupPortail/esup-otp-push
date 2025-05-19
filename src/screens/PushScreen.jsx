@@ -37,6 +37,12 @@ const PushScreen = () => {
     }
   }, [otpServersObjects]);
 
+  const refreshScreen = async () => {
+    const updatedRaw = storage.getString('otpServers');
+    const updated = updatedRaw ? JSON.parse(updatedRaw) : {};
+    setOtpServersObjects(updated);
+  };
+
   const handleScan = () => {
     navigation.navigate('QRCodeScanner', {
       onScan: async url => {
@@ -68,9 +74,7 @@ const PushScreen = () => {
             showToast('QR code synchronisé');
 
             // 🔄 Rafraîchir otpServersObjects depuis storage
-            const updatedRaw = storage.getString('otpServers');
-            const updated = updatedRaw ? JSON.parse(updatedRaw) : {};
-            setOtpServersObjects(updated);
+            refreshScreen();
           } else {
             console.warn('📱 Échec sync ❌', result.message);
             showToast('Erreur de synchronisation');
@@ -83,16 +87,35 @@ const PushScreen = () => {
     });
   };
 
-  const handleDelete = async (serverKey)=> {
+  const handleDelete = async serverKey => {
     try {
-        await desync(serverKey, otpServersObjects, setOtpServersObjects);
-        const updatedServers = {...otpServersObjects};
-        delete updatedServers[serverKey];
-        setOtpServersObjects(updatedServers);
-        console.log('📱 Serveur supprimé:', serverKey);
-      } catch (error) {
-        console.error('❌ Erreur suppression serveur', error);
-      }
+      await desync(serverKey, otpServersObjects, setOtpServersObjects);
+      const updatedServers = {...otpServersObjects};
+      delete updatedServers[serverKey];
+      setOtpServersObjects(updatedServers);
+      console.log('📱 Serveur supprimé:', serverKey);
+    } catch (error) {
+      console.error('❌ Erreur suppression serveur', error);
+    }
+  };
+
+  const handleManualInput = () => {
+    navigation.navigate('ManualPush', {
+      onPress: async ({host, uid, code}) => {
+        const manufacturer = await getManufacturer();
+        const model = getModel();
+        const gcmId = storage.getString('gcm_id') || '';
+        const result = sync(host, uid, code, gcmId, manufacturer, model);
+
+        if (result.success) {
+          console.log('📱 Sync réussi ✅', result.data);
+          showToast('Synchronisation effectuée');
+
+          // 🔄 Rafraîchir otpServersObjects depuis storage
+          refreshScreen();
+        }
+      },
+    });
   };
 
   const renderRightActions = serverKey => (
@@ -173,7 +196,7 @@ const PushScreen = () => {
         onClose={() => setIsActionSheetOpen(false)}
         actions={[
           {label: 'Scanner QR code', onPress: handleScan},
-          {label: 'Saisie manuelle', onPress: () => {}},
+          {label: 'Saisie manuelle', onPress: handleManualInput},
         ]}
       />
     </GestureHandlerRootView>

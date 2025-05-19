@@ -23,20 +23,15 @@ const ManualTotpScreen = ({ route }) => {
     const totpObjects = Totp.getTotpObjects();
     const updated = { ...totpObjects, [secret]: name };
 
-    //Totp.setTotpObjects(updated);
-    //Alert.alert('✅ Succès', 'Compte TOTP ajouté !');
+    
     if (onPress) onPress(updated);
-    reset(); // Réinitialiser le formulaire
+    reset();
 
-    // Tu peux naviguer vers la liste ou rafraîchir si besoin
     navigation.goBack();
   };
 
   return (
     <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-        Ajouter un compte TOTP
-      </Text>
 
       <Text style={{ marginTop: 20, color: colors.text }}>Nom du compte</Text>
       <Controller

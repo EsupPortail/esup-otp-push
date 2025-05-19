@@ -13,6 +13,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import TotpScreen from '../screens/TotpScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import QRCodeScannerScreen from '../screens/QRCodeScannerScreen';
+import ManualPushScreen from '../screens/ManualPushScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -108,6 +109,15 @@ const AppStack = () => {
         component={ManualTotpScreen}
         options={{
           headerTitle: 'Ajouter un compte TOTP',
+          headerStyle: {backgroundColor: useTheme().colors.card},
+          headerTintColor: useTheme().colors.text,
+        }} 
+      />
+      <Stack.Screen
+        name="ManualPush"
+        component={ManualPushScreen}
+        options={{
+          headerTitle: 'Push Notification',
           headerStyle: {backgroundColor: useTheme().colors.card},
           headerTintColor: useTheme().colors.text,
         }} 
