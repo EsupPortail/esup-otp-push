@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>703115166283-gbsnn93mjmcum5ke3r2c1fbbo3hfa4jk.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.703115166283-gbsnn93mjmcum5ke3r2c1fbbo3hfa4jk</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB39gN8ZenNucB7es2scQg2upqtOsNh6pQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>703115166283</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.esupportail.esupAuth</string>
+	<key>PROJECT_ID</key>
+	<string>esup-otp-276500</string>
+	<key>STORAGE_BUCKET</key>
+	<string>esup-otp-276500.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:703115166283:ios:2690d41bfb2bf96bb083ce</string>
+	<key>DATABASE_URL</key>
+	<string>https://esup-otp-276500.firebaseio.com</string>
+</dict>
+</plist>

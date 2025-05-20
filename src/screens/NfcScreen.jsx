@@ -86,7 +86,7 @@ function NfcScreen({withoutAddButton}) {
       } else {
         showError();
       }
-    } catch (ex) {
+    } catch (err) {
       console.error(
         'Erreur NFC:',
         err instanceof Error ? err.stack : JSON.stringify(err),
