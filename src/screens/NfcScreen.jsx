@@ -21,7 +21,7 @@ import {useNavigation, useTheme} from '@react-navigation/native';
 import {storage} from '../utils/storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
-import NfcBottomSheet from '../components/NfcBottomSheet';
+import { openBottomSheet, showError, showSuccess, showWaiting } from '../services/nfcBottomSheetService';
 
 const getEstablishments = () => {
   var establishments = storage.getString('establishments');
@@ -33,7 +33,6 @@ const setEstablishmentsStorage = newEstablishments => {
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
   const isScanningRef = useRef(false);
-  const bottomSheetRef = useRef(null);
   const navigation = useNavigation();
   const [establishments, setEstablishments] = useState(getEstablishments());
 
@@ -67,14 +66,14 @@ function NfcScreen({withoutAddButton}) {
       // Annuler toute session active avant d'en démarrer une nouvelle
       await NfcManager.cancelTechnologyRequest().catch(() => {});
 
-      Platform.OS === 'android' && bottomSheetRef.current?.open();
+      Platform.OS === 'android' && openBottomSheet();
 
       // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.IsoDep);
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
       console.warn('Tag found', tag);
-      bottomSheetRef.current?.setWaiting();
+      showWaiting();
       const result = await desfireRead(tag.id, url, numeroId);
       console.warn('Result', result);
 
@@ -83,16 +82,16 @@ function NfcScreen({withoutAddButton}) {
         var msg = `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${
           result.msg
         }`;
-        bottomSheetRef.current?.setSuccess(msg);
+        showSuccess(msg);
       } else {
-        bottomSheetRef.current?.setError();
+        showError();
       }
     } catch (ex) {
       console.error(
         'Erreur NFC:',
         err instanceof Error ? err.stack : JSON.stringify(err),
       );
-      bottomSheetRef.current?.setError();
+      showError();
     } finally {
       await NfcManager.cancelTechnologyRequest().catch(() => {});
       // stop the nfc scanning
@@ -210,7 +209,6 @@ function NfcScreen({withoutAddButton}) {
           </Text>
         )}
       </View>
-      <NfcBottomSheet ref={bottomSheetRef} />
     </GestureHandlerRootView>
   );
 }

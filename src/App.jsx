@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import AppStack from './navigation/AppStack';
-import {useState, useMemo, useEffect} from 'react';
+import {useState, useMemo, useEffect, useRef} from 'react';
 import {View} from 'react-native';
 import DarkTheme from './theme/DarkTheme';
 import LightTheme from './theme/LightTheme';
@@ -11,6 +11,9 @@ import useNotifications from './hooks/useNotifications';
 import {initializeFirebase} from './utils/firebase';
 import MireActionSheet from './components/MireActionSheet';
 import { cleanOtpServers } from './services/auth';
+import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
+import NfcBottomSheet from './components/NfcBottomSheet';
+import { setBottomSheetRef } from './services/nfcBottomSheetService';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -22,6 +25,7 @@ export default function App() {
   const appContext = useMemo(() => {
     return {isDarkTheme, setIsDarkTheme};
   }, [isDarkTheme]);
+  const bottomSheetRef = useRef(null);
   const {
     notified,
     setNotified,
@@ -46,11 +50,16 @@ export default function App() {
       );
     };
 
+    if (bottomSheetRef.current) {
+      setBottomSheetRef(bottomSheetRef.current);
+    }
+
     migrate(); // Exécute la fonction asynchrone
     initializeFirebase(); // Initialiser firebase
   }, []);
 
   return (
+    <GestureHandlerRootView style={{flex: 1}}>
     <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
       <AppContext.Provider value={appContext}>
         <AppStack />
@@ -64,7 +73,9 @@ export default function App() {
             setAdditionalData={setAdditionalData}
           />
         </View>
+        <NfcBottomSheet ref={bottomSheetRef} />
       </AppContext.Provider>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
