@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   qrButton: {
     position: 'absolute',
     top: 15,
-    right: 20,
+    left: 20,
     padding: 10,
     width: 50,
     height: 50,

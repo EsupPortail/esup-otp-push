@@ -177,7 +177,7 @@ const PushScreen = ({withoutAddButton}) => {
       )}
       <View style={styles.card}>
         <Text style={[styles.cardTitle, {color: colors.text}]}>
-          Serveurs Push Configurés
+          Push mobile
         </Text>
         {serverList.length === 0 ? (
           <Text style={[styles.emptyText, {color: colors.text}]}>
