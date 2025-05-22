@@ -48,6 +48,7 @@ const useNotifications = () => {
           console.warn('📵 Permission de notifications refusée');
           return;
         }
+        console.log('***********Permission de notifications autorisée');
 
         let currentGcmId = storage.getString('gcm_id') || '';
         currentGcmId = currentGcmId.replace(/^"|"$/g, '');
@@ -195,12 +196,13 @@ const useNotifications = () => {
 
     const unsubscribeForeground = messaging().onMessage(async remoteMessage => {
       console.log('📱 Notification foreground data:', remoteMessage.data);
+      console.log('📱 Notification foreground ****:', remoteMessage);
       if (
         remoteMessage.data &&
-        (remoteMessage.data.action === 'auth' ||
-          remoteMessage.data.action === 'desync') &&
-        remoteMessage.data.url &&
-        remoteMessage.data.uid
+        ((remoteMessage.data.action === 'auth' &&
+          remoteMessage.data.url &&
+          remoteMessage.data.uid) ||
+          remoteMessage.data.action === 'desync')
       ) {
         if (remoteMessage.data.lt !== lastProcessedLtRef.current) {
           notification(
@@ -229,12 +231,11 @@ const useNotifications = () => {
       remoteMessage => {
         console.log('📱 Notification ouverte (background):', remoteMessage);
         if (
-          remoteMessage &&
-          remoteMessage.data &&
-          (remoteMessage.data.action === 'auth' ||
-            remoteMessage.data.action === 'desync') &&
-          remoteMessage.data.url &&
-          remoteMessage.data.uid
+          remoteMessage?.data &&
+          ((remoteMessage.data.action === 'auth' &&
+            remoteMessage.data.url &&
+            remoteMessage.data.uid) ||
+            remoteMessage.data.action === 'desync')
         ) {
           if (remoteMessage.data.lt !== lastProcessedLtRef.current) {
             notification(

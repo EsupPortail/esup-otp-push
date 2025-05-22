@@ -88,11 +88,32 @@ const PushScreen = ({withoutAddButton}) => {
   };
 
   const handleDelete = async serverKey => {
+    const confirm = await new Promise(resolve => {
+      Alert.alert(
+        'Supprimer serveur',
+        'Êtes-vous sûr de vouloir supprimer ce serveur ?',
+        [
+          {
+            text: 'Annuler',
+            onPress: () => resolve(false),
+            style: 'cancel',
+          },
+          {
+            text: 'Supprimer',
+            onPress: () => resolve(true),
+            style: 'destructive',
+          },
+        ],
+      );
+    })
+
+    if (!confirm) return;
+
     try {
       await desync(serverKey, otpServersObjects, setOtpServersObjects);
-      const updatedServers = {...otpServersObjects};
+      /*const updatedServers = {...otpServersObjects};
       delete updatedServers[serverKey];
-      setOtpServersObjects(updatedServers);
+      setOtpServersObjects(updatedServers);*/
       console.log('📱 Serveur supprimé:', serverKey);
     } catch (error) {
       console.error('❌ Erreur suppression serveur', error);

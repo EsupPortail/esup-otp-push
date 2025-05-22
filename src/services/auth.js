@@ -35,74 +35,92 @@ export const notification = (
   setAdditionalData
 ) => {
   try {
-    if (!data.url || !data.uid) {
-      showToast('Données de notification incomplètes (url ou uid manquant)');
+    const isAuth = data.action === 'auth';
+    const isDesync = data.action === 'desync';
+
+    // Si ni auth ni desync, ignorer
+    if (!isAuth && !isDesync) {
+      console.warn('🔕 Notification ignorée : action inconnue');
       return;
     }
 
-    const cleanedUrl = data.url.endsWith('/') ? data.url : `${data.url}/`;
-    const otpServerKey = `${cleanedUrl}${data.uid}`;
-    console.log('otpServerKey généré:', otpServerKey);
+    // Pour les AUTH, on exige url + uid
+    if (isAuth && (!data.url || !data.uid)) {
+      showToast('📵 Notification auth invalide : url ou uid manquant');
+      return;
+    }
 
-    const gcmId = storage.getString('gcm_id') || '';
+    // Générer une clé pour le serveur si possible
+    const cleanedUrl = data.url?.endsWith('/') ? data.url : `${data.url}/`;
+    const otpServerKey = (cleanedUrl && data.uid) ? `${cleanedUrl}${data.uid}` : null;
+
+    // Cloner pour update
     let updatedOtpServers = { ...otpServersObjects };
 
-    // Création initiale
-    if (!updatedOtpServers[otpServerKey] && data.trustGcm_id === 'true') {
-      updatedOtpServers[otpServerKey] = {
-        host: cleanedUrl,
-        hostToken: data.hostToken || '',
-        uid: data.uid,
-        tokenSecret: gcmId,
-        hostName: data.hostName || 'Serveur inconnu',
-      };
-      console.log('Nouveau serveur initialisé avec tokenSecret = gcm_id:', gcmId);
-    }
+    // Cas AUTH
+    if (isAuth) {
+      const gcmId = storage.getString('gcm_id') || '';
 
-    // Mise à jour hostToken si manquant
-    if (updatedOtpServers[otpServerKey] && !updatedOtpServers[otpServerKey].hostToken && data.hostToken) {
-      updatedOtpServers[otpServerKey].hostToken = data.hostToken;
-    }
+      if (!updatedOtpServers[otpServerKey] && data.trustGcm_id === 'true') {
+        updatedOtpServers[otpServerKey] = {
+          host: cleanedUrl,
+          hostToken: data?.hostToken,
+          uid: data.uid,
+          tokenSecret: gcmId,
+          hostName: data.hostName || 'Serveur inconnu',
+        };
+        console.log('🔐 Nouveau serveur initialisé');
+      }
 
-    // Mise à jour du nom du serveur
-    if (
-      updatedOtpServers[otpServerKey] &&
-      updatedOtpServers[otpServerKey].hostName !== data.hostName &&
-      updatedOtpServers[otpServerKey].hostToken === data.hostToken
-    ) {
-      updatedOtpServers[otpServerKey].hostName = data.hostName;
-    }
+      if (updatedOtpServers[otpServerKey]) {
+        if (!updatedOtpServers[otpServerKey].hostToken && data.hostToken) {
+          updatedOtpServers[otpServerKey].hostToken = data.hostToken;
+        }
 
-    // Persist only if changed
-    updateOtpServers(updatedOtpServers, setOtpServersObjects);
+        if (
+          updatedOtpServers[otpServerKey].hostName !== data.hostName &&
+          data.hostToken === updatedOtpServers[otpServerKey].hostToken
+        ) {
+          updatedOtpServers[otpServerKey].hostName = data.hostName;
+        }
 
-    // Auth
-    if (
-      data.action === 'auth' &&
-      updatedOtpServers[otpServerKey]?.host &&
-      (!data.hostToken || data.hostToken === updatedOtpServers[otpServerKey].hostToken)
-    ) {
-      setAdditionalData({
-        ...data,
-        url: cleanedUrl,
-        otpServer: otpServerKey,
-        text: data.text
-          ? data.text.replace('compte', `compte ${getName(otpServerKey, updatedOtpServers) || ''} `)
-          : 'Veuillez valider votre connexion.',
+        setOtpServersObjects(updatedOtpServers);
+        storage.set('otpServers', JSON.stringify(updatedOtpServers));
+        console.log('🗂️ otpServers mis à jour');
+
+        setAdditionalData({
+          ...data,
+          url: cleanedUrl,
+          otpServer: otpServerKey,
+          text: data.text
+            ? data.text.replace(
+                'compte',
+                `compte ${getName(otpServerKey, updatedOtpServers)} `
+              )
+            : 'Veuillez valider votre connexion.',
+        });
+        setNotified(true);
+      } else {
+        console.warn('⚠️ Serveur introuvable après init OTP');
+      }
+
+    } else if (isDesync) {
+      // Cas DESYNC
+      const matchingKey = Object.keys(updatedOtpServers).find(key => {
+        const server = updatedOtpServers[key];
+        return server?.hostToken === data.hostToken;
       });
-      setNotified(true);
 
-    // Desync
-    } else if (
-      data.action === 'desync' &&
-      updatedOtpServers[otpServerKey]?.hostToken === data.hostToken
-    ) {
-      desync(otpServerKey, updatedOtpServers, setOtpServersObjects);
-      setNotified(true);
+      if (matchingKey) {
+        desync(matchingKey, updatedOtpServers, setOtpServersObjects);
+      } else {
+        console.warn('❌ Aucun serveur OTP correspondant au hostToken fourni');
+        showToast('Notification de désactivation reçue, mais aucun serveur trouvé.');
+      }
     }
   } catch (error) {
-    console.error('Erreur dans notification:', error.message);
-    showToast(`Erreur de notification : ${error.message}`);
+    console.error('❌ Erreur dans notification:', error.message);
+    showToast(`Erreur dans notification : ${error.message}`);
   }
 };
 
@@ -229,19 +247,6 @@ export const desync = async (otpServer, otpServersObjects, setOtpServersObjects)
       showToast('Serveur introuvable');
       return;
     }
-
-    const confirm = await new Promise(resolve => {
-      Alert.alert(
-        'Confirmation',
-        `Voulez-vous vraiment désactiver la connexion de ${server.hostName || 'ce serveur'} avec votre mobile ?`,
-        [
-          { text: 'Annuler', style: 'cancel', onPress: () => resolve(false) },
-          { text: 'Confirmer', onPress: () => resolve(true) },
-        ]
-      );
-    });
-
-    if (!confirm) return;
 
     const url = `${server.host}users/${server.uid}/methods/push/${server.tokenSecret}`;
     console.log('Requête desync URL:', url);
