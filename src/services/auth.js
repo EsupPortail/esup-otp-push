@@ -29,7 +29,7 @@ const updateOtpServers = (updated, setOtpServersObjects) => {
 
 export const notification = (
   data,
-  otpServersObjects,
+  otpServersFromRef,
   setOtpServersObjects,
   setNotified,
   setAdditionalData
@@ -38,33 +38,47 @@ export const notification = (
     const isAuth = data.action === 'auth';
     const isDesync = data.action === 'desync';
 
-    // Si ni auth ni desync, ignorer
     if (!isAuth && !isDesync) {
       console.warn('🔕 Notification ignorée : action inconnue');
       return;
     }
 
-    // Pour les AUTH, on exige url + uid
-    if (isAuth && (!data.url || !data.uid)) {
-      showToast('📵 Notification auth invalide : url ou uid manquant');
-      return;
+    // Ref clone
+    const updatedOtpServers = { ...otpServersFromRef };
+
+    // Clé serveur unique
+    let otpServerKey = null;
+    if (data.url && data.uid) {
+      const cleanedUrl = data.url.endsWith('/') ? data.url : `${data.url}/`;
+      otpServerKey = `${cleanedUrl}${data.uid}`;
+      data.otpServer = otpServerKey;
+
+      // Fallback: injecter hostToken si absent
+      if (
+        updatedOtpServers[otpServerKey] &&
+        !updatedOtpServers[otpServerKey].hostToken &&
+        data.hostToken
+      ) {
+        updatedOtpServers[otpServerKey].hostToken = data.hostToken;
+        console.log('🧩 hostToken mis à jour via fallback');
+      }
     }
 
-    // Générer une clé pour le serveur si possible
-    const cleanedUrl = data.url?.endsWith('/') ? data.url : `${data.url}/`;
-    const otpServerKey = (cleanedUrl && data.uid) ? `${cleanedUrl}${data.uid}` : null;
-
-    // Cloner pour update
-    let updatedOtpServers = { ...otpServersObjects };
-
-    // Cas AUTH
+    //
+    // === Cas AUTH ===
+    //
     if (isAuth) {
+      if (!otpServerKey) {
+        showToast('📵 Notification auth invalide : url ou uid manquant');
+        return;
+      }
+
       const gcmId = storage.getString('gcm_id') || '';
 
       if (!updatedOtpServers[otpServerKey] && data.trustGcm_id === 'true') {
         updatedOtpServers[otpServerKey] = {
-          host: cleanedUrl,
-          hostToken: data?.hostToken,
+          host: data.url.endsWith('/') ? data.url : `${data.url}/`,
+          hostToken: data.hostToken || '',
           uid: data.uid,
           tokenSecret: gcmId,
           hostName: data.hostName || 'Serveur inconnu',
@@ -72,16 +86,16 @@ export const notification = (
         console.log('🔐 Nouveau serveur initialisé');
       }
 
-      if (updatedOtpServers[otpServerKey]) {
-        if (!updatedOtpServers[otpServerKey].hostToken && data.hostToken) {
-          updatedOtpServers[otpServerKey].hostToken = data.hostToken;
+      const server = updatedOtpServers[otpServerKey];
+      if (server) {
+        if (!server.hostToken && data.hostToken) {
+          server.hostToken = data.hostToken;
         }
-
         if (
-          updatedOtpServers[otpServerKey].hostName !== data.hostName &&
-          data.hostToken === updatedOtpServers[otpServerKey].hostToken
+          server.hostName !== data.hostName &&
+          data.hostToken === server.hostToken
         ) {
-          updatedOtpServers[otpServerKey].hostName = data.hostName;
+          server.hostName = data.hostName;
         }
 
         setOtpServersObjects(updatedOtpServers);
@@ -90,7 +104,7 @@ export const notification = (
 
         setAdditionalData({
           ...data,
-          url: cleanedUrl,
+          url: server.host,
           otpServer: otpServerKey,
           text: data.text
             ? data.text.replace(
@@ -103,18 +117,22 @@ export const notification = (
       } else {
         console.warn('⚠️ Serveur introuvable après init OTP');
       }
+    }
 
-    } else if (isDesync) {
-      // Cas DESYNC
-      const matchingKey = Object.keys(updatedOtpServers).find(key => {
-        const server = updatedOtpServers[key];
-        return server?.hostToken === data.hostToken;
+    //
+    // === Cas DESYNC ===
+    //
+    else if (isDesync) {
+      let matchingKey = findMatchingOtpServer({
+        otpServers: updatedOtpServers,
+        otpServerKey,
+        hostToken: data.hostToken,
       });
 
       if (matchingKey) {
         desync(matchingKey, updatedOtpServers, setOtpServersObjects);
       } else {
-        console.warn('❌ Aucun serveur OTP correspondant au hostToken fourni');
+        console.warn('❌ Aucun serveur OTP correspondant à la désactivation');
         showToast('Notification de désactivation reçue, mais aucun serveur trouvé.');
       }
     }
@@ -123,6 +141,7 @@ export const notification = (
     showToast(`Erreur dans notification : ${error.message}`);
   }
 };
+
 
 // ===============================
 // Accept
@@ -428,3 +447,39 @@ export const otpServerStatus = async (
     }
   }
 };
+
+// ===============================
+// Find matching OTP server
+// ===============================
+export function findMatchingOtpServer({ otpServers, otpServerKey, hostToken }) {
+  // 1. Correspondance directe via la clé
+  if (otpServerKey && otpServers[otpServerKey]) {
+    console.log('✅ Match direct via otpServerKey:', otpServerKey);
+    return otpServerKey;
+  }
+
+  // 2. Fallback : recherche par hostToken
+  if (hostToken) {
+    const fallbackKey = Object.keys(otpServers).find(key => {
+      const serverToken = otpServers[key]?.hostToken || '';
+      const match = serverToken === hostToken;
+      console.log(`🔍 Match hostToken ? ${serverToken} === ${hostToken} → ${match}`);
+      return match;
+    });
+
+    if (fallbackKey) {
+      console.log('✅ Match via hostToken:', fallbackKey);
+      return fallbackKey;
+    }
+  }
+
+  // 3. Dernier recours : un seul serveur connu
+  const allKeys = Object.keys(otpServers);
+  if (allKeys.length === 1) {
+    console.warn('⚠️ Fallback : 1 seul serveur connu, on le prend par défaut');
+    return allKeys[0];
+  }
+
+  // Aucun match trouvé
+  return null;
+}
