@@ -14,6 +14,7 @@ import TotpScreen from '../screens/TotpScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import QRCodeScannerScreen from '../screens/QRCodeScannerScreen';
 import ManualPushScreen from '../screens/ManualPushScreen';
+import HelpScreen from '../screens/HelpScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -76,7 +77,7 @@ const DrawerNavigator = () => {
       />
       <Drawer.Screen
         name="AIDE"
-        component={NfcScreen}
+        component={HelpScreen}
         options={{
           drawerIcon: ({color, size}) => (
             <MaterialIcon name="question-mark" color={color} size={size} />
