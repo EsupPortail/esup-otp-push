@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Totp from '../utils/totp';
 import { storage } from '../utils/storage';
 import { Platform, ToastAndroid, Alert } from 'react-native';
 
@@ -244,6 +245,12 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
       storage.set('otpServers', JSON.stringify(updatedOtpServers));
       console.log('otpServers mis à jour:', updatedOtpServers);
       showToast('Synchronisation effectuée');
+
+      if (response.data.autoActivateTotp){
+        const serverName = getName(otpServerKey, updatedOtpServers);
+        await autoActivateTotp(otpServerKey, response.data.totpKey, updatedOtpServers);
+      }
+
       return { success: true, data: response.data };
     } else {
       throw new Error(response.data.message || 'Erreur lors de la synchronisation');
@@ -483,3 +490,42 @@ export function findMatchingOtpServer({ otpServers, otpServerKey, hostToken }) {
   // Aucun match trouvé
   return null;
 }
+// ===============================
+// Activate TOTP
+// ===============================
+export const autoActivateTotp = async (otpServerKey, totpKey, otpServersObjects) => {
+  try {
+    const server = otpServersObjects[otpServerKey];
+    if (!server) {
+      showToast('Serveur introuvable');
+      console.warn('📡 Serveur introuvable pour autoActivateTotp:', otpServerKey);
+      return { success: false, message: 'Serveur introuvable' };
+    }
+
+    const url = `${server.host}users/${server.uid}/methods/totp/autoActivateTotp/${server.tokenSecret}`;
+    console.log('📡 Appel autoActivateTotp URL:', url);
+
+    const response = await axios.post(url, {}, { timeout: 10000 });
+    console.log('📡 autoActivateTotp response:', response.data);
+
+    if (response.data.code === 'Ok') {
+      console.log('✅ autoActivateTotp OK');
+
+      // Stocker le TOTP dans storage
+      const serverName = getName(otpServerKey, otpServersObjects);
+      // Ajout du nouveau TOTP
+      const currentTotpObjects = Totp.getTotpObjects();
+      currentTotpObjects[totpKey] = serverName;
+      Totp.setTotpObjects(currentTotpObjects);
+
+      showToast('Activation TOTP effectuée');
+      return { success: true };
+    } else {
+      throw new Error('Réponse invalide');
+    }
+  } catch (error) {
+    console.error('❌ Erreur autoActivateTotp:', error.message);
+    showToast('Erreur lors de l’activation TOTP');
+    return { success: false, message: error.message };
+  }
+};

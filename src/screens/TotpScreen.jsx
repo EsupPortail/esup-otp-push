@@ -18,7 +18,6 @@ import CustomActionSheet from '../components/CustomActionSheet';
 // Methods
 const getTotpObjects = () => {
   const raw = storage.getString('totpObjects');
-  console.log('🧪 Récupération storage totpObjects:', raw);
   return raw ? JSON.parse(raw) : {};
 };
 // Calculer le temps restant jusqu'à la prochaine tranche de 30 secondes
@@ -37,6 +36,18 @@ const TotpScreen = ({withoutAddButton}) => {
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   const navigation = useNavigation();
   const displayTimer = Object.keys(totpObjects).length > 0;
+
+  // Écouter les changements de totpObjects
+  useEffect(() => {
+    const subscription = Totp.onTotpObjectsChange().subscribe((newObjects) => {
+      console.log('🔁 TotpObjects changé via RxJS:', newObjects);
+      setTotpObjects(newObjects);
+    });
+
+    setTotpObjects(Totp.getTotpObjects());
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Générer et MAJ les codes TOTP pour toutes les clés secrètes
   useEffect(() => {
