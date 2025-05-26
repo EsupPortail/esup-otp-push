@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, FlatList, TouchableOpacity, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useTheme, useNavigation} from '@react-navigation/native';
@@ -10,8 +17,9 @@ import CustomActionSheet from '../components/CustomActionSheet';
 
 // Methods
 const getTotpObjects = () => {
-  var totpObjects = storage.getString('totpObjects');
-  return totpObjects ? JSON.parse(totpObjects) : {};
+  const raw = storage.getString('totpObjects');
+  console.log('🧪 Récupération storage totpObjects:', raw);
+  return raw ? JSON.parse(raw) : {};
 };
 // Calculer le temps restant jusqu'à la prochaine tranche de 30 secondes
 const getTimeToNextPeriod = () => {
@@ -28,6 +36,7 @@ const TotpScreen = ({withoutAddButton}) => {
   const [codes, setCodes] = useState({});
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   const navigation = useNavigation();
+  const displayTimer = Object.keys(totpObjects).length > 0;
 
   // Générer et MAJ les codes TOTP pour toutes les clés secrètes
   useEffect(() => {
@@ -50,14 +59,14 @@ const TotpScreen = ({withoutAddButton}) => {
 
   const handleScan = () => {
     navigation.navigate('QRCodeScanner', {
-      onScan: (qrValue) => {
+      onScan: qrValue => {
         try {
           const parsed = Totp.parseTotpUrl(qrValue);
           if (!parsed || !parsed.secret || !parsed.name) {
             throw new Error('QR code invalide pour TOTP');
           }
           console.log('📸 QR Code scanné:', parsed);
-          const newTotpObjects = { ...totpObjects, [parsed.secret]: parsed.name };
+          const newTotpObjects = {...totpObjects, [parsed.secret]: parsed.name};
           setTotpObjects(newTotpObjects);
           Totp.setTotpObjects(newTotpObjects);
         } catch (error) {
@@ -67,8 +76,8 @@ const TotpScreen = ({withoutAddButton}) => {
     });
   };
   const handleManualInput = () => {
-    navigation.navigate('ManualTotp',{
-      onPress: (newTotpObjects) => {
+    navigation.navigate('ManualTotp', {
+      onPress: newTotpObjects => {
         setTotpObjects(newTotpObjects);
         console.log(newTotpObjects);
         Totp.setTotpObjects(newTotpObjects);
@@ -76,77 +85,86 @@ const TotpScreen = ({withoutAddButton}) => {
     });
   };
 
-  const onDelete = (secret) => {
-    Alert.alert('Supprimer le code ?', 'Voulez-vous vraiment supprimer ce code ?', [
-      {
-        text: 'Annuler',
-        style: 'cancel',
-      },
-      {
-        text: 'Supprimer',
-        onPress: () => {
-          const newTotpObjects = { ...totpObjects };
-          delete newTotpObjects[secret];
-          setTotpObjects(newTotpObjects);
-          Totp.setTotpObjects(newTotpObjects);
+  const onDelete = secret => {
+    Alert.alert(
+      'Supprimer le code ?',
+      'Voulez-vous vraiment supprimer ce code ?',
+      [
+        {
+          text: 'Annuler',
+          style: 'cancel',
         },
-      },
-    ]);
-  }
+        {
+          text: 'Supprimer',
+          onPress: () => {
+            const newTotpObjects = {...totpObjects};
+            delete newTotpObjects[secret];
+            setTotpObjects(newTotpObjects);
+            Totp.setTotpObjects(newTotpObjects);
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {
-          !withoutAddButton && 
+        {!withoutAddButton && (
           <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
             <Icon name="plus-circle" color={colors.primary} size={50} />
           </TouchableOpacity>
-        }
-        <CountdownCircleTimer
-          isPlaying={Object.keys(totpObjects).length > 0}
-          duration={30}
-          initialRemainingTime={getTimeToNextPeriod()}
-          colors={[colors.primary]}
-          trailColor="transparent"
-          size={50}
-          strokeWidth={5}
-          onComplete={() => {
-            // Met à jour les codes quand le timer atteint 0
-            const newCodes = {};
-            Object.keys(totpObjects).forEach(secret => {
-              newCodes[secret] = Totp.token(secret);
-            });
-            setCodes(newCodes);
-            return {shouldRepeat: true};
-          }}>
-          {({remainingTime}) => (
-            <Text style={{color: colors.text, fontWeight: 'bold'}}>
-              {remainingTime}
-            </Text>
-          )}
-        </CountdownCircleTimer>
+        )}
+        {displayTimer && (
+          <CountdownCircleTimer
+            isPlaying={Object.keys(totpObjects).length > 0}
+            duration={30}
+            initialRemainingTime={getTimeToNextPeriod()}
+            colors={[colors.primary]}
+            trailColor="transparent"
+            size={50}
+            strokeWidth={5}
+            onComplete={() => {
+              // Met à jour les codes quand le timer atteint 0
+              const newCodes = {};
+              Object.keys(totpObjects).forEach(secret => {
+                newCodes[secret] = Totp.token(secret);
+              });
+              setCodes(newCodes);
+              return {shouldRepeat: true};
+            }}>
+            {({remainingTime}) => (
+              <Text style={{color: colors.text, fontWeight: 'bold'}}>
+                {remainingTime}
+              </Text>
+            )}
+          </CountdownCircleTimer>
+        )}
       </View>
       <View style={styles.content}>
-        <FlatList 
+        <FlatList
           data={Object.entries(totpObjects)}
           renderItem={({item}) => (
-            <RenderTotp 
-            item={item} 
-            code={codes[item[0]]} 
-            onDelete={ () => onDelete(item[0]) }
+            <RenderTotp
+              item={item}
+              code={codes[item[0]]}
+              onDelete={() => onDelete(item[0])}
             />
           )}
-          keyExtractor={(item) => item[0]}
-          ListEmptyComponent={<Text style={{color: colors.text}}>Aucun Totp configuré</Text>}
-          ItemSeparatorComponent={() => <View style={[styles.separator, {borderColor: 'grey'}]} />}
+          keyExtractor={item => item[0]}
+          ListEmptyComponent={
+            <Text style={{color: colors.text}}>Aucun Totp configuré</Text>
+          }
+          ItemSeparatorComponent={() => (
+            <View style={[styles.separator, {borderColor: 'grey'}]} />
+          )}
         />
-        <CustomActionSheet 
+        <CustomActionSheet
           visible={isActionSheetOpen}
           onClose={() => setIsActionSheetOpen(false)}
           actions={[
-            { label: 'Scanner QR code', onPress: handleScan },
-            { label: 'Saisie manuelle', onPress: handleManualInput },
+            {label: 'Scanner QR code', onPress: handleScan},
+            {label: 'Saisie manuelle', onPress: handleManualInput},
           ]}
         />
       </View>
@@ -175,8 +193,8 @@ const styles = StyleSheet.create({
   separator: {
     borderWidth: 1,
     borderRadius: 1,
-    marginLeft: 12, 
-    marginRight: 70, 
-    borderStyle: 'dotted'
-  }
+    marginLeft: 12,
+    marginRight: 70,
+    borderStyle: 'dotted',
+  },
 });
