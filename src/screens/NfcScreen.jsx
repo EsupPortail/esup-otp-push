@@ -21,7 +21,13 @@ import {useNavigation, useTheme} from '@react-navigation/native';
 import {storage} from '../utils/storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
-import { openBottomSheet, showError, showSuccess, showWaiting } from '../services/nfcBottomSheetService';
+import {
+  openBottomSheet,
+  showError,
+  showSuccess,
+  showWaiting,
+} from '../services/nfcBottomSheetService';
+import CustomActionSheet from '../components/CustomActionSheet';
 
 const getEstablishments = () => {
   var establishments = storage.getString('establishments');
@@ -35,6 +41,7 @@ function NfcScreen({withoutAddButton}) {
   const isScanningRef = useRef(false);
   const navigation = useNavigation();
   const [establishments, setEstablishments] = useState(getEstablishments());
+  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
 
   useEffect(() => {
     NfcManager.start();
@@ -187,14 +194,14 @@ function NfcScreen({withoutAddButton}) {
     <GestureHandlerRootView
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
-        <TouchableOpacity style={styles.qrButton} onPress={handleScanQrCode}>
-          <Icon name="qrcode-scan" size={30} color={colors.text} />
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
+            <Icon name="plus-circle" color={colors.primary} size={50} />
+          </TouchableOpacity>
+          <Text style={[styles.cardTitle, {color: colors.text}]}>NFC</Text>
+        </View>
       )}
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, {color: colors.text}]}>
-          Authentification via NFC
-        </Text>
         {establishments.length > 0 ? (
           <FlatList
             data={establishments}
@@ -209,6 +216,14 @@ function NfcScreen({withoutAddButton}) {
           </Text>
         )}
       </View>
+      <CustomActionSheet
+        visible={isActionSheetOpen}
+        onClose={() => setIsActionSheetOpen(false)}
+        actions={[
+          {label: 'Scanner QR code', onPress: handleScanQrCode},
+          {label: 'Saisie manuelle', onPress: () => {}},
+        ]}
+      />
     </GestureHandlerRootView>
   );
 }
@@ -230,12 +245,11 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 8,
     padding: 10,
-    marginTop: 60,
+    marginTop: 10,
   },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
   },
   establishmentButton: {
     padding: 15,
@@ -258,6 +272,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginTop: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   wrapper: {},
 });

@@ -39,7 +39,7 @@ const TotpScreen = ({withoutAddButton}) => {
 
   // Écouter les changements de totpObjects
   useEffect(() => {
-    const subscription = Totp.onTotpObjectsChange().subscribe((newObjects) => {
+    const subscription = Totp.onTotpObjectsChange().subscribe(newObjects => {
       console.log('🔁 TotpObjects changé via RxJS:', newObjects);
       setTotpObjects(newObjects);
     });
@@ -122,9 +122,12 @@ const TotpScreen = ({withoutAddButton}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         {!withoutAddButton && (
-          <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
-            <Icon name="plus-circle" color={colors.primary} size={50} />
-          </TouchableOpacity>
+          <View style={styles.headerLeft}>
+            <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
+              <Icon name="plus-circle" color={colors.primary} size={50} />
+            </TouchableOpacity>
+            <Text style={[styles.cardTitle, {color: colors.text}]}>TOTP</Text>
+          </View>
         )}
         {displayTimer && (
           <CountdownCircleTimer
@@ -195,7 +198,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 8,
   },
   content: {
     display: 'flex',
@@ -207,5 +209,14 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 70,
     borderStyle: 'dotted',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

@@ -17,9 +17,9 @@ export default function HomeScreen() {
         <>
           <TotpScreen />
           <View style={[styles.separator, {borderColor: 'grey'}]} />
-          <NfcScreen />
-          <View style={[styles.separator, {borderColor: 'grey'}]} />
           <PushScreen />
+          <View style={[styles.separator, {borderColor: 'grey'}]} />
+          <NfcScreen />
         </>
       }
       ListFooterComponent={

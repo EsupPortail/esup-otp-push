@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {accept, reject} from '../services/auth';
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 
 const {height} = Dimensions.get('window');
 const MireActionSheet = ({
@@ -76,25 +76,22 @@ const MireActionSheet = ({
             <Text style={styles.title}>
               {additionalData.text || 'Veuillez valider votre connexion.'}
             </Text>
+            {/* Boîte pour les actions */}
+            <View style={styles.spacer} />
+            <View style={[styles.actionBox, {backgroundColor: 'transparent'}]}>
+              <TouchableOpacity
+                style={[styles.button, {backgroundColor: '#004d40'}]}
+                onPress={handleAccept}>
+                <Text style={styles.buttonText}>Accepter</Text>
+              </TouchableOpacity>
+              <View style={styles.spacerBetween} />
+              <TouchableOpacity
+                style={[styles.button, {backgroundColor: '#b71c1c'}]}
+                onPress={handleReject}>
+                <Text style={styles.buttonText}>Rejeter</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          {/* Espace transparent */}
-          <View style={styles.spacer} />
-          {/* Boîte pour les actions */}
-          <View style={[styles.actionBox, {backgroundColor: 'transparent'}]}>
-            <TouchableOpacity
-              style={[styles.button, {backgroundColor: colors.primary}]}
-              onPress={handleAccept}>
-              <Text style={styles.buttonText}>Accepter</Text>
-            </TouchableOpacity>
-            <View style={styles.spacerBetween} />
-            <TouchableOpacity
-              style={[styles.button, {backgroundColor: colors.notification}]}
-              onPress={handleReject}>
-              <Text style={styles.buttonText}>Rejeter</Text>
-            </TouchableOpacity>
-          </View>
-          {/* Espace transparent */}
-          <View style={styles.spacer} />
         </Animated.View>
       </TouchableOpacity>
     </Modal>

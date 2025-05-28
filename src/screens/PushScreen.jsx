@@ -105,7 +105,7 @@ const PushScreen = ({withoutAddButton}) => {
           },
         ],
       );
-    })
+    });
 
     if (!confirm) return;
 
@@ -192,14 +192,16 @@ const PushScreen = ({withoutAddButton}) => {
     <GestureHandlerRootView
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
-        <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
-          <Icon name="plus-circle" color={colors.primary} size={50} />
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
+            <Icon name="plus-circle" color={colors.primary} size={50} />
+          </TouchableOpacity>
+          <Text style={[styles.cardTitle, {color: colors.text}]}>
+            PUSH
+          </Text>
+        </View>
       )}
       <View style={styles.card}>
-        <Text style={[styles.cardTitle, {color: colors.text}]}>
-          Push mobile
-        </Text>
         {serverList.length === 0 ? (
           <Text style={[styles.emptyText, {color: colors.text}]}>
             Aucun serveur push configuré. Ajoutez un serveur pour recevoir des
@@ -237,9 +239,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
   },
   serverButton: {
     padding: 15,
@@ -263,6 +264,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  icon: {
+    width: 50,
+    height: 50,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  }
 });
 
 export default PushScreen;
