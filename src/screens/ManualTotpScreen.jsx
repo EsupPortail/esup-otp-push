@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation, useTheme } from '@react-navigation/native';
-import { Totp } from '../utils/totp'; // Ton gestionnaire MMKV
+import { useTotpStore } from '../stores/useTotpStore';
 
 const ManualTotpScreen = ({ route }) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
@@ -20,7 +20,7 @@ const ManualTotpScreen = ({ route }) => {
       return;
     }
 
-    const totpObjects = Totp.getTotpObjects();
+    const totpObjects = useTotpStore.getState().totpObjects;;
     const updated = { ...totpObjects, [secret]: name };
 
     

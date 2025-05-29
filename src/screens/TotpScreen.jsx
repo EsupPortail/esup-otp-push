@@ -81,7 +81,6 @@ const TotpScreen = ({withoutAddButton}) => {
       onPress: newTotpObjects => {
         setTotpObjects(newTotpObjects);
         console.log(newTotpObjects);
-        Totp.setTotpObjects(newTotpObjects);
       },
     });
   };
