@@ -1,11 +1,6 @@
 import {TOTP} from 'totp-generator';
-import {storage} from './storage';
-import { Subject } from 'rxjs';
-
-const totpObjectsSubject = new Subject()
 
 export const Totp = {
-  onTotpObjectsChange: () => totpObjectsSubject.asObservable(),
   token: secret => {
     try {
       const {otp} = TOTP.generate(secret, {
@@ -20,10 +15,6 @@ export const Totp = {
       return null;
     }
   },
-  getTotpObjects: () => {
-    const totpObjects = storage.getString('totpObjects');
-    return totpObjects ? JSON.parse(totpObjects) : {};
-  },
   isValid: (token, secret) => {
     try {
       const {otp} = TOTP.generate(secret, {
@@ -36,11 +27,6 @@ export const Totp = {
       console.error('Erreur lors de la validation du TOTP:', error);
       return false;
     }
-  },
-  setTotpObjects: objects => {
-    storage.set('totpObjects', JSON.stringify(objects));
-    console.log('📡 TotpObjects mis à jour, émission notification');
-    totpObjectsSubject.next(objects);
   },
   formatCode: code => {
     if (!code) return 'N/A';

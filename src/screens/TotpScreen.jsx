@@ -14,6 +14,7 @@ import {storage} from '../utils/storage';
 import {Totp} from '../utils/totp';
 import RenderTotp from '../components/RenderTotp';
 import CustomActionSheet from '../components/CustomActionSheet';
+import {useTotpStore} from '../stores/useTotpStore';
 
 // Methods
 const getTotpObjects = () => {
@@ -31,23 +32,13 @@ const getTimeToNextPeriod = () => {
 // Component
 const TotpScreen = ({withoutAddButton}) => {
   const {colors} = useTheme();
-  const [totpObjects, setTotpObjects] = useState(getTotpObjects());
+  const totpObjects = useTotpStore(state => state.totpObjects);
+  const setTotpObjects = useTotpStore(state => state.setTotpObjects);
+  const removeTotp = useTotpStore(state => state.removeTotp);
   const [codes, setCodes] = useState({});
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   const navigation = useNavigation();
   const displayTimer = Object.keys(totpObjects).length > 0;
-
-  // Écouter les changements de totpObjects
-  useEffect(() => {
-    const subscription = Totp.onTotpObjectsChange().subscribe(newObjects => {
-      console.log('🔁 TotpObjects changé via RxJS:', newObjects);
-      setTotpObjects(newObjects);
-    });
-
-    setTotpObjects(Totp.getTotpObjects());
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   // Générer et MAJ les codes TOTP pour toutes les clés secrètes
   useEffect(() => {
@@ -79,7 +70,6 @@ const TotpScreen = ({withoutAddButton}) => {
           console.log('📸 QR Code scanné:', parsed);
           const newTotpObjects = {...totpObjects, [parsed.secret]: parsed.name};
           setTotpObjects(newTotpObjects);
-          Totp.setTotpObjects(newTotpObjects);
         } catch (error) {
           throw new Error(error.message || 'QR code invalide pour TOTP');
         }
@@ -108,10 +98,7 @@ const TotpScreen = ({withoutAddButton}) => {
         {
           text: 'Supprimer',
           onPress: () => {
-            const newTotpObjects = {...totpObjects};
-            delete newTotpObjects[secret];
-            setTotpObjects(newTotpObjects);
-            Totp.setTotpObjects(newTotpObjects);
+            removeTotp(secret);
           },
         },
       ],
