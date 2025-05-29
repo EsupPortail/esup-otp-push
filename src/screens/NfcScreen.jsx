@@ -28,19 +28,15 @@ import {
   showWaiting,
 } from '../services/nfcBottomSheetService';
 import CustomActionSheet from '../components/CustomActionSheet';
+import { useNfcStore } from '../stores/useNfcStore';
 
-const getEstablishments = () => {
-  var establishments = storage.getString('establishments');
-  return establishments ? JSON.parse(establishments) : [];
-};
-const setEstablishmentsStorage = newEstablishments => {
-  storage.set('establishments', JSON.stringify(newEstablishments));
-};
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
   const isScanningRef = useRef(false);
   const navigation = useNavigation();
-  const [establishments, setEstablishments] = useState(getEstablishments());
+  const establishments = useNfcStore(state => state.establishments);
+  const addEstablishment = useNfcStore(state => state.addEstablishment);
+  const removeEstablishment = useNfcStore(state => state.removeEstablishment);
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
 
   useEffect(() => {
@@ -131,9 +127,7 @@ function NfcScreen({withoutAddButton}) {
             Alert.alert('Erreur', 'Cet établissement est déjà ajouté.');
             return;
           }
-          const newEstablishments = [...establishments, newEstablishment];
-          setEstablishments(newEstablishments);
-          setEstablishmentsStorage(newEstablishments);
+          addEstablishment(newEstablishment);
           scanTagForEstablishment(
             newEstablishment.url,
             newEstablishment.numeroId,
@@ -150,11 +144,7 @@ function NfcScreen({withoutAddButton}) {
    * Permet de supprimer un établissement de la liste
    */
   const deleteEstablishment = url => {
-    console.log('Avant suppression, establishments:', establishments);
-    const newEstablishments = establishments.filter(est => est.url !== url);
-    console.log('Après suppression, newEstablishments:', newEstablishments);
-    setEstablishments(newEstablishments);
-    setEstablishmentsStorage(newEstablishments);
+    removeEstablishment(url);
     console.log('Établissement supprimé, url:', url);
   };
   /**
