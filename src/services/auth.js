@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Totp from '../utils/totp';
 import { storage } from '../utils/storage';
+import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { Platform, ToastAndroid, Alert } from 'react-native';
 
 export const showToast = (message) => {
@@ -10,6 +11,8 @@ export const showToast = (message) => {
     Alert.alert('Info', message);
   }
 };
+
+const zustandStore = useOtpServersStore.getState();
 
 const updateOtpServers = (updated, setOtpServersObjects) => {
   setOtpServersObjects(prev => {
@@ -22,6 +25,15 @@ const updateOtpServers = (updated, setOtpServersObjects) => {
     }
     return prev; // aucune modification
   });
+};
+export const updateOtpServersZustand = (updated) => {
+  const prev = useOtpServersStore.getState().otpServers;
+  const prevStr = JSON.stringify(prev);
+  const nextStr = JSON.stringify(updated);
+  if (prevStr !== nextStr) {
+    useOtpServersStore.getState().setOtpServers(updated);
+    console.log('🟢 otpServers Zustand mis à jour:', updated);
+  }
 };
 
 // ===============================
@@ -100,7 +112,8 @@ export const notification = (
         }
 
         setOtpServersObjects(updatedOtpServers);
-        storage.set('otpServers', JSON.stringify(updatedOtpServers));
+        //storage.set('otpServers', JSON.stringify(updatedOtpServers));
+        zustandStore.setOtpServers(updatedOtpServers);
         console.log('🗂️ otpServers mis à jour');
 
         setAdditionalData({
@@ -242,7 +255,7 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
           uid,
         },
       };
-      storage.set('otpServers', JSON.stringify(updatedOtpServers));
+      zustandStore.setOtpServers(updatedOtpServers);
       console.log('otpServers mis à jour:', updatedOtpServers);
       showToast('Synchronisation effectuée');
 
@@ -284,7 +297,8 @@ export const desync = async (otpServer, otpServersObjects, setOtpServersObjects)
 
     const updated = { ...otpServersObjects };
     delete updated[otpServer];
-    updateOtpServers(updated, setOtpServersObjects);
+    console.log('🔁 updatedOtpServers DESYNC', updated);
+    updateOtpServersZustand(updated);
     showToast('Désactivation effectuée');
   } catch (error) {
     console.error('Erreur dans desync:', error.message, error.response?.data);
