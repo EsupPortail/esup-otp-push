@@ -133,12 +133,11 @@ const PushScreen = ({withoutAddButton}) => {
 
     return (
       <Swipeable renderRightActions={() => renderRightActions(item.key)}>
-        <TouchableOpacity
-          style={[styles.serverButton, {backgroundColor: colors.secondary}]}>
+        <View style={[styles.serverButton]}>
           <Text style={styles.serverText}>
             {getName(item.key, otpServers) || 'Serveur sans nom'}
           </Text>
-        </TouchableOpacity>
+        </View>
       </Swipeable>
     );
   };
@@ -161,18 +160,20 @@ const PushScreen = ({withoutAddButton}) => {
           <Text style={[styles.cardTitle, {color: colors.text}]}>PUSH</Text>
         </View>
       )}
-      <View style={styles.card}>
-        {serverList.length === 0 ? (
-          <Text style={[styles.emptyText, {color: colors.text}]}>
-            Aucun serveur push configuré.
-          </Text>
-        ) : (
-          <FlatList
-            data={serverList}
-            renderItem={renderServerItem}
-            keyExtractor={item => item.key}
-          />
-        )}
+      <View style={styles.content}>
+        <FlatList
+          data={serverList}
+          renderItem={renderServerItem}
+          keyExtractor={item => item.key}
+          ListEmptyComponent={
+            <Text style={{color: colors.text}}>
+              Aucun serveur push configuré
+            </Text>
+          }
+          ItemSeparatorComponent={() => (
+            <View style={[styles.separator, {borderColor: 'grey'}]} />
+          )}
+        />
       </View>
       <CustomActionSheet
         visible={isActionSheetOpen}
@@ -190,8 +191,8 @@ const styles = StyleSheet.create({
   container: {flex: 1, padding: 20},
   card: {borderRadius: 8, padding: 10, marginTop: 20},
   cardTitle: {fontSize: 18, fontWeight: 'bold'},
-  serverButton: {padding: 15, borderRadius: 8, marginVertical: 5},
-  serverText: {fontSize: 16, textAlign: 'center', color: '#fff'},
+  serverButton: {padding: 8, marginVertical: 2, marginHorizontal: 5},
+  serverText: {fontSize: 16, color: '#fff'},
   deleteButton: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {fontSize: 16, textAlign: 'center', marginTop: 20},
   header: {flexDirection: 'row', alignItems: 'center', gap: 10},
+  content: {display: 'flex', flexDirection: 'column'},
 });
 
 export default PushScreen;
