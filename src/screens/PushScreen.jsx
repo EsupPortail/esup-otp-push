@@ -27,7 +27,7 @@ const PushScreen = ({withoutAddButton}) => {
 
   useEffect(() => {
     try {
-      storage.set('otpServers', JSON.stringify(otpServers));
+      //storage.set('otpServers', JSON.stringify(otpServers));
       console.log('📱 otpServers persistés dans storage:', otpServers);
     } catch (e) {
       console.error('Erreur de sauvegarde dans storage:', e.message);
@@ -134,7 +134,7 @@ const PushScreen = ({withoutAddButton}) => {
     return (
       <Swipeable renderRightActions={() => renderRightActions(item.key)}>
         <View style={[styles.serverButton]}>
-          <Text style={styles.serverText}>
+          <Text style={[styles.serverText, {color: colors.text}]}>
             {getName(item.key, otpServers) || 'Serveur sans nom'}
           </Text>
         </View>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   card: {borderRadius: 8, padding: 10, marginTop: 20},
   cardTitle: {fontSize: 18, fontWeight: 'bold'},
   serverButton: {padding: 8, marginVertical: 2, marginHorizontal: 5},
-  serverText: {fontSize: 16, color: '#fff'},
+  serverText: {fontSize: 16},
   deleteButton: {
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { storage } from '../utils/storage';
 
+const initialEstablishments = storage.getString('establishments')
+  ? JSON.parse(storage.getString('establishments'))
+  : [];
+
 export const useNfcStore = create((set, get) => ({
-  establishments: storage.getString('establishments')
-    ? JSON.parse(storage.getString('establishments'))
-    : [],
+  establishments: initialEstablishments,
 
   setEstablishments: (newList) => {
     storage.set('establishments', JSON.stringify(newList));

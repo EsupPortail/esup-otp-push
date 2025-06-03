@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { storage } from '../utils/storage';
 
+const initialOtpServers = storage.getString('otpServers')
+  ? JSON.parse(storage.getString('otpServers'))
+  : {};
+
 export const useOtpServersStore = create((set, get) => ({
-  otpServers: storage.getString('otpServers')
-    ? JSON.parse(storage.getString('otpServers'))
-    : {},
+  otpServers: initialOtpServers,
 
   setOtpServers: (newOtp) => {
     storage.set('otpServers', JSON.stringify(newOtp));

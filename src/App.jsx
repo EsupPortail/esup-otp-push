@@ -10,10 +10,11 @@ import {MigrateToMMKV} from './components/MigrateStorage';
 import useNotifications from './hooks/useNotifications';
 import {initializeFirebase} from './utils/firebase';
 import MireActionSheet from './components/MireActionSheet';
-import { cleanOtpServers } from './services/auth';
-import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
+import {cleanOtpServers} from './services/auth';
+import {Gesture, GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from './components/NfcBottomSheet';
-import { setBottomSheetRef } from './services/nfcBottomSheetService';
+import {setBottomSheetRef} from './services/nfcBottomSheetService';
+import AppSplashScreen from './components/AppSplashScreen';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -50,32 +51,51 @@ export default function App() {
       );
     };
 
-    if (bottomSheetRef.current) {
-      setBottomSheetRef(bottomSheetRef.current);
-    }
-
     migrate(); // Exécute la fonction asynchrone
     initializeFirebase(); // Initialiser firebase
   }, []);
 
+  useEffect(() => {
+    if (bottomSheetRef.current) {
+      setBottomSheetRef(bottomSheetRef.current);
+      console.log('📱 bottomSheetRef initialisé:', bottomSheetRef.current);
+    }
+  }, [bottomSheetRef.current]);
+
+  useEffect(() => {
+    if (isMigrated) {
+      const darkValue = storage.getString('darkMode');
+      setIsDarkTheme(darkValue === 'enabled');
+    }
+  }, [isMigrated]);
+
+  if (!isMigrated) return <AppSplashScreen />;
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-    <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
-      <AppContext.Provider value={appContext}>
-        <AppStack />
-        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-          <MireActionSheet
-            visible={notified}
-            additionalData={additionalData}
-            otpServersObjects={otpServersObjects}
-            setOtpServersObjects={setOtpServersObjects}
-            setNotified={setNotified}
-            setAdditionalData={setAdditionalData}
-          />
-        </View>
-        <NfcBottomSheet ref={bottomSheetRef} />
-      </AppContext.Provider>
-    </NavigationContainer>
+      <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
+        <AppContext.Provider value={appContext}>
+          <AppStack />
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}>
+            <MireActionSheet
+              visible={notified}
+              additionalData={additionalData}
+              otpServersObjects={otpServersObjects}
+              setOtpServersObjects={setOtpServersObjects}
+              setNotified={setNotified}
+              setAdditionalData={setAdditionalData}
+            />
+          </View>
+          <NfcBottomSheet ref={bottomSheetRef} />
+        </AppContext.Provider>
+      </NavigationContainer>
     </GestureHandlerRootView>
   );
 }

@@ -18,7 +18,6 @@ import {
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 import {desfireRead} from '../services/nfcService';
 import {useNavigation, useTheme} from '@react-navigation/native';
-import {storage} from '../utils/storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {
@@ -29,6 +28,7 @@ import {
 } from '../services/nfcBottomSheetService';
 import CustomActionSheet from '../components/CustomActionSheet';
 import { useNfcStore } from '../stores/useNfcStore';
+import { nfcSessionManager } from '../utils/nfcSessionManager';
 
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
@@ -66,16 +66,14 @@ function NfcScreen({withoutAddButton}) {
    */
   const scanTagForEstablishment = useCallback(async (url, numeroId) => {
     try {
-      // Annuler toute session active avant d'en démarrer une nouvelle
-      await NfcManager.cancelTechnologyRequest().catch(() => {});
-
       Platform.OS === 'android' && openBottomSheet();
 
-      // register for the NFC tag with NDEF in it
-      await NfcManager.requestTechnology(NfcTech.IsoDep);
-      // the resolved tag object will contain `ndefMessage` property
-      const tag = await NfcManager.getTag();
+      const started = await nfcSessionManager.startSession();
+      if (!started) return;
+
+      const tag = await nfcSessionManager.getTag();
       console.warn('Tag found', tag);
+
       showWaiting();
       const result = await desfireRead(tag.id, url, numeroId);
       console.warn('Result', result);
@@ -90,15 +88,14 @@ function NfcScreen({withoutAddButton}) {
         showError();
       }
     } catch (err) {
-      console.error(
-        'Erreur NFC:',
-        err instanceof Error ? err.stack : JSON.stringify(err),
-      );
-      showError();
+      if (err?.name === 'UserCancel') {
+        console.warn('🚫 NFC annulé par l’utilisateur');
+      } else {
+        console.error('❌ Erreur NFC:', err.stack || err.message);
+        showError();
+      }
     } finally {
-      await NfcManager.cancelTechnologyRequest().catch(() => {});
-      // stop the nfc scanning
-      NfcManager.cancelTechnologyRequest();
+      await nfcSessionManager.cancelSession();
     }
   }, []);
 
@@ -181,7 +178,7 @@ function NfcScreen({withoutAddButton}) {
   }, []);
 
   return (
-    <GestureHandlerRootView
+    <View
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
         <View style={styles.header}>
@@ -214,7 +211,7 @@ function NfcScreen({withoutAddButton}) {
           {label: 'Saisie manuelle', onPress: () => {}},
         ]}
       />
-    </GestureHandlerRootView>
+    </View>
   );
 }
 

@@ -1,7 +1,10 @@
-import React, {
+import {
   useRef,
   forwardRef,
   useImperativeHandle,
+  useState,
+  memo,
+  useEffect
 } from 'react';
 import {
   Text,
@@ -12,13 +15,16 @@ import {
 import {useTheme} from '@react-navigation/native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import LottieView from 'lottie-react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import nfcManager from 'react-native-nfc-manager';
+import { nfcSessionManager } from '../utils/nfcSessionManager';
 
 const NfcBottomSheet = forwardRef((props, ref) => {
   const {colors} = useTheme();
   const bottomSheetRef = useRef(null);
-  const [state, setState] = React.useState('closed'); // closed, waiting, success, error, start
-  const [message, setMessage] = React.useState('');
+  const [state, setState] = useState('closed'); // closed, waiting, success, error, start
+  const [message, setMessage] = useState('');
+  const [bottomSheetIndex, setBottomSheetIndex] = useState(-1);
+
   const snapPoints = ['50%'];
 
   useImperativeHandle(ref, () => ({
@@ -122,6 +128,19 @@ const NfcBottomSheet = forwardRef((props, ref) => {
       backgroundStyle={{backgroundColor: colors.bottomSheet}}
       handleIndicatorStyle={{backgroundColor: '#fff'}}
       enablePanDownToClose={true}
+      onChange={index => {
+        console.log('OnChange appelé:', index);
+        setBottomSheetIndex(index);
+      }} // écoute la fermeture manuelle
+      onClose={() => {
+        console.log('OnClose appelé: animation terminée');
+        /*if (state !== 'closed' && bottomSheetIndex === -1) {
+          setState('closed');
+          nfcSessionManager.cancelSession();
+        }*/
+        setState('closed');
+        nfcSessionManager.cancelSession();
+      }}
       >
       <BottomSheetView style={styles.contentContainer}>
         {renderContent()}
@@ -189,4 +208,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(NfcBottomSheet);
+export default memo(NfcBottomSheet);

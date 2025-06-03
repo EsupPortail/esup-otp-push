@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { storage } from '../utils/storage';
 
+const initialTotpObjects = storage.getString('totpObjects')
+  ? JSON.parse(storage.getString('totpObjects'))
+  : {};
+
 export const useTotpStore = create((set, get) => ({
-  totpObjects: storage.getString('totpObjects')
-    ? JSON.parse(storage.getString('totpObjects'))
-    : {},
+  totpObjects: initialTotpObjects,
 
   setTotpObjects: (newTotp) => {
     storage.set('totpObjects', JSON.stringify(newTotp));
