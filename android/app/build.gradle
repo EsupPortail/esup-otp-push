@@ -83,7 +83,7 @@ android {
         applicationId "org.esupportail.esupAuth"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12202
+        versionCode 12203
         versionName "2.0"
     }
     signingConfigs {

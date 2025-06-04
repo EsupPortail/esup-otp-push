@@ -45,7 +45,7 @@ const ManualPushScreen = ({route}) => {
           </>
         )}
       />
-      <Text style={{marginTop: 20, color: colors.text}}>Code</Text>
+      <Text style={{marginTop: 20, color: colors.text}}>Code d'activation</Text>
       <Controller
         control={control}
         name="code"
@@ -66,7 +66,7 @@ const ManualPushScreen = ({route}) => {
           </>
         )}
       />
-      <Text style={{marginTop: 20, color: colors.text}}>Clé secrète</Text>
+      <Text style={{marginTop: 20, color: colors.text}}>Adresse</Text>
       <Controller
         control={control}
         name="host"
