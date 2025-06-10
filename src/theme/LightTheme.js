@@ -5,7 +5,7 @@ const LightTheme = {
         ...NavigationLightTheme.colors,
         background: '#fff',
         text: '#000',
-        primary: '#0055cc',
+        primary: '#555',
         secondary: '#555',
         actionSheet: '#fff',
         bottomSheet: 'rgb(18, 18, 18)'

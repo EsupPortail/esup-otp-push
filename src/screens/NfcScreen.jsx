@@ -138,6 +138,17 @@ function NfcScreen({withoutAddButton}) {
     });
   }, [navigation, establishments]);
   /**
+   * Permet de lancer la saisie manuelle d'un établissement
+   */
+  const handleManualInput = () => {
+    navigation.navigate('ManualNfc', {
+      onPress: newEstablishment => {
+        //console.log('Ajout de l\'établissement manuellement:', newEstablishment);
+        //addEstablishment(newEstablishment);
+      },
+    });
+  };
+  /**
    * Permet de supprimer un établissement de la liste
    */
   const deleteEstablishment = url => {
@@ -208,7 +219,7 @@ function NfcScreen({withoutAddButton}) {
         onClose={() => setIsActionSheetOpen(false)}
         actions={[
           {label: 'Scanner QR code', onPress: handleScanQrCode},
-          {label: 'Saisie manuelle', onPress: () => {}},
+          {label: 'Saisie manuelle', onPress: handleManualInput},
         ]}
       />
     </View>

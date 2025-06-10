@@ -15,6 +15,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import QRCodeScannerScreen from '../screens/QRCodeScannerScreen';
 import ManualPushScreen from '../screens/ManualPushScreen';
 import HelpScreen from '../screens/HelpScreen';
+import ManualNfcScreen from '../screens/ManualNfcScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -119,6 +120,15 @@ const AppStack = () => {
         component={ManualPushScreen}
         options={{
           headerTitle: 'Push Notification',
+          headerStyle: {backgroundColor: useTheme().colors.card},
+          headerTintColor: useTheme().colors.text,
+        }} 
+      />
+      <Stack.Screen
+        name="ManualNfc"
+        component={ManualNfcScreen}
+        options={{
+          headerTitle: 'Ajouter un établissement',
           headerStyle: {backgroundColor: useTheme().colors.card},
           headerTintColor: useTheme().colors.text,
         }} 
