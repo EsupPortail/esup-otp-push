@@ -5,7 +5,7 @@ const HelpScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
-        Aide encore en cours de rédaction
+        Aide encore en rédaction
       </Text>
     </View>
   )
