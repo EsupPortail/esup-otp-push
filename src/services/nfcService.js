@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {Platform} from 'react-native';
 import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
 
@@ -66,7 +67,7 @@ export async function desfireRead(cardId, etablissementUrl, numeroId) {
         `result=${result}`,
         `cardId=${cardId}`,
         etablissementUrl,
-        numeroId
+        numeroId,
       );
       nfcResult = JSON.parse(response);
 
@@ -98,9 +99,13 @@ export async function desfireRead(cardId, etablissementUrl, numeroId) {
 }
 
 // Fonction pour faire une requête HTTP
-async function desfireHttpRequestAsync(param1, param2, etablissementUrl, numeroId) {
+async function desfireHttpRequestAsync(
+  param1,
+  param2,
+  etablissementUrl,
+  numeroId,
+) {
   try {
-
     const url = `${etablissementUrl}/desfire-ws?${param1}&${param2}&numeroId=${numeroId}`;
     console.log('Requesting URL:', url);
 
@@ -130,4 +135,44 @@ function byteArrayToHexString(byteArray) {
   return Array.from(byteArray, byte =>
     ('0' + (byte & 0xff).toString(16)).slice(-2),
   ).join('');
+}
+
+// Utilitaire pour obtenir les infos de l'établissement
+export async function fetchEtablissement(url) {
+  try {
+    console.log('[Requesting URL]--- :', url);
+
+    const response = await axios.get(url, {
+      headers: {'Content-Type': 'application/json'},
+      timeout: 10000,
+    });
+    console.log('Réponse:', response.data);
+
+    if (response.data.code !== 'Ok') {
+      throw new Error(
+        `Réponse invalide: ${response.data.message || 'Code non Ok'}`,
+      );
+    }
+
+    const {server_infos} = response.data;
+    if (
+      !server_infos?.numeroId ||
+      !server_infos?.etablissement ||
+      !server_infos?.url
+    ) {
+      throw new Error('Données server_infos incomplètes');
+    }
+
+    return {
+      numeroId: server_infos.numeroId,
+      etablissement: server_infos.etablissement,
+      url: server_infos.url,
+    };
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération de l'établissement:",
+      error.message,
+    );
+    throw error;
+  }
 }

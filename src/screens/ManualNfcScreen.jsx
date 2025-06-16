@@ -10,7 +10,13 @@ const ManualNfcScreen = ({route}) => {
   const navigation = useNavigation();
 
 
-  const onSubmit = () => {}
+  const onSubmit = ({url}) => {
+    if (url) {
+      onPress(url);
+      reset();
+      navigation.goBack();
+    }
+  }
 
   return (
     <View style={{ padding: 20 }}>

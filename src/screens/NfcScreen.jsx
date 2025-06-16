@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
-import {desfireRead} from '../services/nfcService';
+import {desfireRead, fetchEtablissement} from '../services/nfcService';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -142,10 +142,26 @@ function NfcScreen({withoutAddButton}) {
    */
   const handleManualInput = () => {
     navigation.navigate('ManualNfc', {
-      onPress: newEstablishment => {
-        //console.log('Ajout de l\'établissement manuellement:', newEstablishment);
-        //addEstablishment(newEstablishment);
-      },
+      onPress: async (url) => {
+        try {
+          const nfcInfos = await fetchEtablissement(url+'/esupnfc/infos');
+        const newEstablishment = {
+          url: nfcInfos.url,
+          numeroId: nfcInfos.numeroId,
+          etablissement: nfcInfos.etablissement,
+        };
+        const exists = establishments.some((est) => est.url === newEstablishment.url);
+        if (exists) {
+          Alert.alert('Erreur', 'Cet établissement est déjà ajouté.');
+          return;
+        }
+        addEstablishment(newEstablishment);
+        scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId);
+        console.log('Établissement ajouté:', newEstablishment);
+        } catch (error) {
+          console.error('[ManualNfc] Erreur:', error.message);
+        }
+      }
     });
   };
   /**
