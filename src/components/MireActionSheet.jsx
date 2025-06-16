@@ -80,7 +80,7 @@ const MireActionSheet = ({
             <View style={styles.spacer} />
             <View style={[styles.actionBox, {backgroundColor: 'transparent'}]}>
               <TouchableOpacity
-                style={[styles.button, {backgroundColor: '#86E38A'}]}
+                style={[styles.button, {backgroundColor: '#4CAF50'}]}
                 onPress={handleAccept}>
                 <Text style={styles.buttonText}>Accepter</Text>
               </TouchableOpacity>

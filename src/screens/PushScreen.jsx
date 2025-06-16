@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import {useTheme, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -52,12 +53,14 @@ const PushScreen = ({withoutAddButton}) => {
           const manufacturer = await getManufacturer();
           const model = getModel();
           const gcmId = storage.getString('gcm_id') || '';
+          const platform = Platform.OS;
 
           const result = await sync(
             host,
             uid,
             code,
             gcmId,
+            platform,
             manufacturer,
             model,
           );
