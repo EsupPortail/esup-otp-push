@@ -35,7 +35,7 @@ const DrawerNavigator = () => {
           </Text>
         ),
         drawerStyle: {
-          width: screenWidth * 0.8,
+          width: screenWidth * 0.7,
         },
       }}>
       <Drawer.Screen
@@ -49,6 +49,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
+      {/*
       <Drawer.Screen
         name="TOTP"
         component={TotpScreen}
@@ -76,6 +77,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
+      */}
       <Drawer.Screen
         name="AIDE"
         component={HelpScreen}
