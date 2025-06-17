@@ -111,7 +111,8 @@ const PushScreen = ({withoutAddButton}) => {
         const manufacturer = await getManufacturer();
         const model = getModel();
         const gcmId = storage.getString('gcm_id') || '';
-        const result = await sync(host, uid, code, gcmId, manufacturer, model);
+        const platform = Platform.OS;
+        const result = await sync(host, uid, code, gcmId, platform, manufacturer, model);
 
         if (result.success) {
           console.log('📱 Sync réussi ✅', result.data);
