@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {Platform} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
 
 // Fonction pour envoyer une commande APDU au tag NFC
@@ -149,9 +149,9 @@ export async function fetchEtablissement(url) {
     console.log('Réponse:', response.data);
 
     if (response.data.code !== 'Ok') {
-      throw new Error(
-        `Réponse invalide: ${response.data.message || 'Code non Ok'}`,
-      );
+      console.error(`Réponse invalide: ${response.data.message || 'Code non Ok'}`);
+      // Authentification NFC non disponible pour ce serveur
+      Alert.alert('Erreur', 'Authentification NFC non disponible pour ce serveur.');
     }
 
     const {server_infos} = response.data;
