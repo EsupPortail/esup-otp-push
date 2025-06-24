@@ -218,14 +218,34 @@ export const accept = async (
 // Reject
 // ===============================
 
-export const reject = (setNotified, setAdditionalData) => {
+export const reject = async (additionalData, otpServersObjects,setNotified, setAdditionalData) => {
   try {
-    setNotified(false);
-    setAdditionalData(null);
-    showToast('Authentification refusée');
+    const otpServer = additionalData.otpServer;
+    const server = otpServersObjects[otpServer];
+    if (!server || !server.host || !server.uid || !server.tokenSecret || !additionalData.lt) {
+      showToast('Données manquantes pour refuser');
+      return;
+    }
+
+    const url = `${server.host}users/${server.uid}/methods/push/${additionalData.lt}/${server.tokenSecret}/reject`;
+    console.log('[reject] Requête reject URL:', url);
+
+    const response = await axios.post(url, {
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 10000,
+    });
+
+    if (response.data.code === 'Ok') {
+      setNotified(false);
+      setAdditionalData(null);
+      showToast('Authentification refusée');
+    } else {
+      throw new Error('Réponse serveur invalide');
+    }
+    
   } catch (error) {
-    console.error('Erreur dans reject:', error.message);
-    showToast(`Erreur dans reject: ${error.message}`);
+    console.error('[REJECT] Erreur dans reject:', error.message);
+    showToast(`Erreur lors du refus: ${error.message}`);
   }
 };
 

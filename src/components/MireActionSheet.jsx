@@ -50,7 +50,7 @@ const MireActionSheet = ({
   };
 
   const handleReject = () => {
-    reject(setNotified, setAdditionalData);
+    reject(additionalData, otpServersObjects, setNotified, setAdditionalData);
   };
 
   return (
