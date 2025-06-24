@@ -1,3 +1,3 @@
-import { MMKV } from "react-native-mmkv";
+import { getStorage } from "./secureStorage";
 
-export const storage = new MMKV();
+export const storage = getStorage();

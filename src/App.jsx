@@ -15,6 +15,7 @@ import {Gesture, GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from './components/NfcBottomSheet';
 import {setBottomSheetRef} from './services/nfcBottomSheetService';
 import AppSplashScreen from './components/AppSplashScreen';
+import { setStorage } from './utils/secureStorage';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -35,6 +36,15 @@ export default function App() {
     otpServersObjects,
     setOtpServersObjects,
   } = useNotifications();
+
+  // initStorage
+  useEffect(() => {
+    const initStorage = async () => {
+      const storage = await initializeSecureStorage();
+      setStorage(storage);
+    }
+    initStorage();
+  }, []);
 
   useEffect(() => {
     const migrate = async () => {

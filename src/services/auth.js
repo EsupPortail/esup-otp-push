@@ -1,7 +1,7 @@
 import axios from 'axios';
-import Totp from '../utils/totp';
 import { storage } from '../utils/storage';
 import { useOtpServersStore } from '../stores/useOtpServersStore';
+import { useTotpStore } from '../stores/useTotpStore';
 import { Platform, ToastAndroid, Alert } from 'react-native';
 
 export const showToast = (message) => {
@@ -13,6 +13,7 @@ export const showToast = (message) => {
 };
 
 const zustandStore = useOtpServersStore.getState();
+const zustandTotpStore = useTotpStore.getState();
 
 const updateOtpServers = (updated, setOtpServersObjects) => {
   setOtpServersObjects(prev => {
@@ -527,10 +528,11 @@ export const autoActivateTotp = async (otpServerKey, totpKey, otpServersObjects)
 
       // Stocker le TOTP dans storage
       const serverName = getName(otpServerKey, otpServersObjects);
+      console.log('[autoActivateTotp] 📡 serverName:', serverName);
       // Ajout du nouveau TOTP
-      const currentTotpObjects = Totp.getTotpObjects();
+      const currentTotpObjects = zustandTotpStore.totpObjects;
       currentTotpObjects[totpKey] = serverName;
-      Totp.setTotpObjects(currentTotpObjects);
+      zustandTotpStore.setTotpObjects(currentTotpObjects);
 
       showToast('Activation TOTP effectuée');
       return { success: true };
