@@ -32,6 +32,7 @@ import { nfcSessionManager } from '../utils/nfcSessionManager';
 
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
+  const platform = Platform.OS;
   const isScanningRef = useRef(false);
   const navigation = useNavigation();
   const establishments = useNfcStore(state => state.establishments);
@@ -66,7 +67,7 @@ function NfcScreen({withoutAddButton}) {
    */
   const scanTagForEstablishment = useCallback(async (url, numeroId) => {
     try {
-      Platform.OS === 'android' && openBottomSheet();
+     if(platform === "android") openBottomSheet();
 
       const started = await nfcSessionManager.startSession();
       if (!started) return;
