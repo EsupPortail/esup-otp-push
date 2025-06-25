@@ -145,6 +145,10 @@ function NfcScreen({withoutAddButton}) {
       onPress: async (url) => {
         try {
           const nfcInfos = await fetchEtablissement(url+'/esupnfc/infos');
+        if (!nfcInfos){
+          Alert.alert('Erreur', 'Authentification NFC non disponible pour ce serveur.');
+          return;
+        };
         const newEstablishment = {
           url: nfcInfos.url,
           numeroId: nfcInfos.numeroId,

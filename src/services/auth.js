@@ -3,6 +3,8 @@ import { storage } from '../utils/storage';
 import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { useTotpStore } from '../stores/useTotpStore';
 import { Platform, ToastAndroid, Alert } from 'react-native';
+import { fetchEtablissement } from './nfcService';
+import { useNfcStore } from '../stores/useNfcStore';
 
 export const showToast = (message) => {
   if (Platform.OS === 'android') {
@@ -14,6 +16,7 @@ export const showToast = (message) => {
 
 const zustandStore = useOtpServersStore.getState();
 const zustandTotpStore = useTotpStore.getState();
+const zustandNfcStore = useNfcStore.getState();
 
 const updateOtpServers = (updated, setOtpServersObjects) => {
   setOtpServersObjects(prev => {
@@ -283,6 +286,12 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
       if (response.data.autoActivateTotp){
         const serverName = getName(otpServerKey, updatedOtpServers);
         await autoActivateTotp(otpServerKey, response.data.totpKey, updatedOtpServers);
+      }
+
+      const result = await autoActivateNfc(cleanedHost);
+      if (result?.success) {
+        console.log('[sync] Auto activation NFC effectuée');
+        showToast('Activation NFC effectuée');
       }
 
       return { success: true, data: response.data };
@@ -565,3 +574,31 @@ export const autoActivateTotp = async (otpServerKey, totpKey, otpServersObjects)
     return { success: false, message: error.message };
   }
 };
+//==========================
+// Auto Activate NFC
+//==========================
+export const autoActivateNfc = async (url) => {
+  try {
+    const nfcInfos = await fetchEtablissement(url+'esupnfc/infos');
+    if (!nfcInfos){
+      showToast('[autoActivateNFC] Authentification NFC non disponible pour ce serveur.');
+      return;
+    };
+    const exists = zustandNfcStore.establishments.some((est) => est.url === nfcInfos.url);
+    if (exists) {
+      showToast('NFC déjà configuré pour cet établissement');
+      console.log('[autoActivateNFC] Cet établissement est déjà ajouté.');
+      return;
+    }
+    const newEstablishment = {
+      url: nfcInfos.url,
+      numeroId: nfcInfos.numeroId,
+      etablissement: nfcInfos.etablissement,
+    };
+    zustandNfcStore.setEstablishments([...zustandNfcStore.establishments, newEstablishment]);
+    console.log('[autoActivateNFC] Établissement ajouté:', newEstablishment);
+    return { success: true };
+  } catch (error) {
+    console.error('[autoActivateNFC] Erreur:', error.message);
+  }
+}

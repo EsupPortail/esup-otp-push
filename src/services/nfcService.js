@@ -151,7 +151,7 @@ export async function fetchEtablissement(url) {
     if (response.data.code !== 'Ok') {
       console.error(`Réponse invalide: ${response.data.message || 'Code non Ok'}`);
       // Authentification NFC non disponible pour ce serveur
-      Alert.alert('Erreur', 'Authentification NFC non disponible pour ce serveur.');
+      return null;
     }
 
     const {server_infos} = response.data;
