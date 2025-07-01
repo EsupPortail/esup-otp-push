@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {Alert, Platform} from 'react-native';
 import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
+import { nfcSessionManager } from '../utils/nfcSessionManager';
 
 // Fonction pour envoyer une commande APDU au tag NFC
 async function sendApduCommandToTag(tag, command) {
@@ -176,3 +177,52 @@ export async function fetchEtablissement(url) {
     throw error;
   }
 }
+
+export const scanTagForEstablishment = async (url, numeroId) => {
+  try {
+    console.log('[scanTagForEstablishment] Début lecture NFC pour:', { url, numeroId });
+    
+    const { openBottomSheet, showError, showWaiting, showSuccess } = require('./nfcBottomSheetService');
+    // Ouvrir le BottomSheet sur Android
+    if (Platform.OS === 'android') {
+      openBottomSheet();
+    }
+
+    // Démarrer la session NFC
+    const started = await nfcSessionManager.startSession();
+    if (!started) {
+      console.warn('[scanTagForEstablishment] Échec démarrage session NFC');
+      showError();
+      return;
+    }
+
+    // Obtenir le tag NFC
+    const tag = await nfcSessionManager.getTag();
+    console.warn('[scanTagForEstablishment] Tag trouvé:', tag);
+
+    // Afficher l'état d'attente
+    showWaiting();
+
+    // Lire la carte NFC
+    const result = await desfireRead(tag.id, url, numeroId);
+    console.warn('[scanTagForEstablishment] Résultat lecture:', result);
+
+    if (result.code === 'END') {
+      const heure = new Date().getHours();
+      const msg = `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${result.msg}`;
+      showSuccess(msg);
+    } else {
+      showError();
+    }
+  } catch (err) {
+    if (err?.name === 'UserCancel') {
+      console.warn('[scanTagForEstablishment] NFC annulé par l’utilisateur');
+      showError('Scan NFC annulé');
+    } else {
+      console.error('[scanTagForEstablishment] Erreur NFC:', err.stack || err.message);
+      showError('Erreur lors du scan NFC');
+    }
+  } finally {
+    await nfcSessionManager.cancelSession();
+  }
+};

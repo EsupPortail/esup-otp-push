@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
-import {desfireRead, fetchEtablissement} from '../services/nfcService';
+import {desfireRead, fetchEtablissement, scanTagForEstablishment} from '../services/nfcService';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -63,80 +63,11 @@ function NfcScreen({withoutAddButton}) {
   }, []);
 
   /**
-   * Permet de lancer la lecture d'un tag NFC et retourne le résultat
-   */
-  const scanTagForEstablishment = useCallback(async (url, numeroId) => {
-    try {
-     if(platform === "android") openBottomSheet();
-
-      const started = await nfcSessionManager.startSession();
-      if (!started) return;
-
-      const tag = await nfcSessionManager.getTag();
-      console.warn('Tag found', tag);
-
-      showWaiting();
-      const result = await desfireRead(tag.id, url, numeroId);
-      console.warn('Result', result);
-
-      if (result.code === 'END') {
-        var heure = new Date().getHours();
-        var msg = `${heure >= 6 && heure < 18 ? 'Bonjour' : 'Bonsoir'} ${
-          result.msg
-        }`;
-        showSuccess(msg);
-      } else {
-        showError();
-      }
-    } catch (err) {
-      if (err?.name === 'UserCancel') {
-        console.warn('🚫 NFC annulé par l’utilisateur');
-      } else {
-        console.error('❌ Erreur NFC:', err.stack || err.message);
-        showError();
-      }
-    } finally {
-      await nfcSessionManager.cancelSession();
-    }
-  }, []);
-
-  /**
    * Permet de lancer la lecture d'un QR code et de l'ajouter à la liste des établissements
    */
   const handleScanQrCode = useCallback(() => {
     console.log('handleScanQrCode appelé');
-    navigation.navigate('QRCodeScanner', {
-      onScan: qrData => {
-        try {
-          const parsed = JSON.parse(qrData);
-          if (!parsed.url || !parsed.numeroId || !parsed.etablissement) {
-            throw new Error('Données QR code invalides');
-          }
-          const newEstablishment = {
-            url: parsed.url,
-            numeroId: parsed.numeroId,
-            etablissement: parsed.etablissement,
-          };
-          // Vérifier si l'URL existe déjà
-          const exists = establishments.some(
-            est => est.url === newEstablishment.url,
-          );
-          if (exists) {
-            Alert.alert('Erreur', 'Cet établissement est déjà ajouté.');
-            return;
-          }
-          addEstablishment(newEstablishment);
-          scanTagForEstablishment(
-            newEstablishment.url,
-            newEstablishment.numeroId,
-          );
-          console.log('Établissement ajouté:', newEstablishment);
-        } catch (error) {
-          console.error('Erreur parsing QR:', error);
-          Alert.alert('Erreur', 'QR code invalide pour un établissement.');
-        }
-      },
-    });
+    navigation.navigate('QRCodeScanner');
   }, [navigation, establishments]);
   /**
    * Permet de lancer la saisie manuelle d'un établissement

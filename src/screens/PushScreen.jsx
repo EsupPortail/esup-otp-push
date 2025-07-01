@@ -42,42 +42,7 @@ const PushScreen = ({withoutAddButton}) => {
   };
 
   const handleScan = () => {
-    navigation.navigate('QRCodeScanner', {
-      onScan: async url => {
-        try {
-          console.log('📱 Scan QR code **** PUSH', url);
-          const urlParts = url.split('/');
-          const host = url.split('users')[0];
-          const uid = urlParts[4];
-          const code = urlParts[7];
-          const manufacturer = await getManufacturer();
-          const model = getModel();
-          const gcmId = storage.getString('gcm_id') || '';
-          const platform = Platform.OS;
-
-          const result = await sync(
-            host,
-            uid,
-            code,
-            gcmId,
-            platform,
-            manufacturer,
-            model,
-          );
-          if (result.success) {
-            console.log('📱 Sync réussi ✅', result.data);
-            showToast('QR code synchronisé');
-            refreshScreen();
-          } else {
-            console.warn('📱 Échec sync ❌', result.message);
-            showToast('Erreur de synchronisation');
-          }
-        } catch (e) {
-          console.error('📱 Erreur traitement QR:', e.message);
-          showToast('Erreur QR code');
-        }
-      },
-    });
+    navigation.navigate('QRCodeScanner');
   };
 
   const handleDelete = async serverKey => {

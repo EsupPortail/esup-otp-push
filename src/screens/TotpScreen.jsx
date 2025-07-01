@@ -60,21 +60,7 @@ const TotpScreen = ({withoutAddButton}) => {
   }, [totpObjects]);
 
   const handleScan = () => {
-    navigation.navigate('QRCodeScanner', {
-      onScan: qrValue => {
-        try {
-          const parsed = Totp.parseTotpUrl(qrValue);
-          if (!parsed || !parsed.secret || !parsed.name) {
-            throw new Error('QR code invalide pour TOTP');
-          }
-          console.log('📸 QR Code scanné:', parsed);
-          const newTotpObjects = {...totpObjects, [parsed.secret]: parsed.name};
-          setTotpObjects(newTotpObjects);
-        } catch (error) {
-          throw new Error(error.message || 'QR code invalide pour TOTP');
-        }
-      },
-    });
+    navigation.navigate('QRCodeScanner');
   };
   const handleManualInput = () => {
     navigation.navigate('ManualTotp', {

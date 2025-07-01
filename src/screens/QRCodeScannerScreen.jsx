@@ -3,38 +3,50 @@ import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {Camera, CameraType} from 'react-native-camera-kit';
 import {useNavigation} from '@react-navigation/native';
-import {Totp} from '../utils/totp';
+import { handleUniversalQrCodeScan } from '../utils/qrCodeHandler';
 
-const QRCodeScannerScreen = ({route}) => {
+const QRCodeScannerScreen = () => {
   const {colors} = useTheme();
   const navigation = useNavigation();
-  const {onScan} = route.params || {};
   const [isScanning, setIsScanning] = useState(true);
   const cameraRef = useRef(null);
+  const hasScanned = useRef(false); // Ajout pour bloquer les scans multiples
 
   // Gérer le scan
   const onReadCode = useCallback(
-    (event) => {
-      if (!isScanning) return; // Ignorer si le scan est arrêté
+    async (event) => {
+      if (!isScanning || hasScanned.current) return; // Ignorer si le scan est arrêté
+
+      hasScanned.current = true; // Marquer comme scanné
+      setIsScanning(false); // Désactiver le scan
 
       const qrValue = event.nativeEvent.codeStringValue;
-      if (qrValue && onScan) {
+      if (qrValue) {
         try {
-          onScan(qrValue);
-          setIsScanning(false);
-          navigation.goBack();
-          console.log(isScanning);
+          const result = await handleUniversalQrCodeScan(qrValue);
+          if (result.success) {
+            setIsScanning(false);
+            if(navigation.canGoBack()) navigation.goBack();
+          } else {
+            throw new Error(result.message || 'Échec du traitement du QR code');
+          }
         } catch (error) {
           setIsScanning(false);
           Alert.alert(
             'Erreur',
             error.message || 'QR code invalide pour TOTP.',
-            [{text: 'Annuler', onPress: () => navigation.goBack()}],
+            [{text: 'Annuler', onPress: () => {
+              if(navigation.canGoBack()) navigation.goBack();
+            }}],
           );
+        } finally {
+          hasScanned.current = false; // Réinitialiser après traitement
         }
+      } else {
+        hasScanned.current = false; // Réinitialiser après traitement
       }
     },
-    [isScanning, onScan, navigation],
+    [isScanning, navigation],
   );
 
   return (
@@ -51,7 +63,9 @@ const QRCodeScannerScreen = ({route}) => {
       />
       <TouchableOpacity
         style={[styles.backButton, {backgroundColor: colors.card}]}
-        onPress={() => navigation.goBack()}>
+        onPress={() => {
+          if(navigation.canGoBack()) navigation.goBack();
+        }}>
         <Text style={[styles.backText, {color: colors.primary}]}>Retour</Text>
       </TouchableOpacity>
     </View>
