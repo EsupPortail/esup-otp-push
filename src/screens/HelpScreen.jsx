@@ -1,13 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
+import helpData from '../data/helpData'
+import Accordion from '../components/Accordion'
 
 const HelpScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
-        Aide encore en rédaction
-      </Text>
-    </View>
+    <ScrollView style={styles.container}>
+      {
+        helpData.map(({key, title, content}, index) => {
+          return (
+            <Accordion key={key} title={title} content={content} index={index} />
+          )
+        })
+      }
+    </ScrollView>
   )
 }
 
@@ -16,7 +22,6 @@ export default HelpScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+        marginTop: 20,
+    }
 })
