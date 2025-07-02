@@ -101,12 +101,6 @@ const handlePushQrCode = async (url) => {
       showToast('Échec de la synchronisation PUSH');
     }
 
-    if (result.data?.autoActivateTotp) {
-      const otpServerKey = `${host}${uid}`;
-      const otpServersObjects = useOtpServersStore.getState().otpServers;
-      await autoActivateTotp(otpServerKey, result.data.totpKey, otpServersObjects);
-    }
-
     console.log('[handlePushQrCode] PUSH synchronisé:', result);
     showToast('Synchronisation PUSH réussie');
     return { success: true, data: result.data };
