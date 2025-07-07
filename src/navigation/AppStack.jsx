@@ -1,21 +1,18 @@
-import {StyleSheet, View, Text, useWindowDimensions} from 'react-native';
-import {React, useContext} from 'react';
+import {StyleSheet, View, Text, useWindowDimensions, Image} from 'react-native';
+import {React} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import NfcScreen from '../screens/NfcScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ManualTotpScreen from '../screens/ManualTotpScreen';
-import PushScreen from '../screens/PushScreen';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import DarkModeToggle from '../components/DarkModeToggle';
-import {useTheme, NavigationContainer} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useTheme} from '@react-navigation/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import TotpScreen from '../screens/TotpScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import QRCodeScannerScreen from '../screens/QRCodeScannerScreen';
 import ManualPushScreen from '../screens/ManualPushScreen';
 import HelpScreen from '../screens/HelpScreen';
 import ManualNfcScreen from '../screens/ManualNfcScreen';
+import ManualInputScreen from '../screens/ManualInputScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -94,10 +91,21 @@ const DrawerNavigator = () => {
 const AppStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/*<Stack.Screen
         name="Drawer"
         component={DrawerNavigator}
         options={{headerShown: false}}
+      />*/}
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitle: 'Esup Auth',
+          headerStyle: {backgroundColor: useTheme().colors.card},
+          headerTintColor: useTheme().colors.text,
+          headerLeft: () => <Image source={require('../assets/images/logo.png')} style={styles.iconLeft} />,
+          headerRight: () => <DarkModeToggle />,
+        }}
       />
       <Stack.Screen
         name="QRCodeScanner"
@@ -108,7 +116,16 @@ const AppStack = () => {
           headerTintColor: useTheme().colors.text,
         }}
       />
-      <Stack.Screen
+      <Stack.Screen 
+        name="ManualInput" 
+        component={ManualInputScreen} 
+        options={{
+          headerTitle: 'Saisie manuelle',
+          headerStyle: {backgroundColor: useTheme().colors.card},
+          headerTintColor: useTheme().colors.text,
+        }}
+      />
+      {/*<Stack.Screen
         name="ManualTotp"
         component={ManualTotpScreen}
         options={{
@@ -134,7 +151,7 @@ const AppStack = () => {
           headerStyle: {backgroundColor: useTheme().colors.card},
           headerTintColor: useTheme().colors.text,
         }} 
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
@@ -151,4 +168,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: 10,
   },
+  iconLeft: {
+    marginLeft: 10,
+    marginRight: 20,
+    width: 32,
+    height: 30,
+  }
 });

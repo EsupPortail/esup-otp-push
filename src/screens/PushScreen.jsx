@@ -6,22 +6,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Platform,
 } from 'react-native';
-import {useTheme, useNavigation} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {storage} from '../utils/storage';
-import {desync, getName, showToast, sync} from '../services/auth';
-import {getManufacturer, getModel} from 'react-native-device-info';
-import CustomActionSheet from '../components/CustomActionSheet';
+import {desync, getName} from '../services/auth';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
 
 const PushScreen = ({withoutAddButton}) => {
   const {colors} = useTheme();
-  const navigation = useNavigation();
-  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
-
   const otpServers = useOtpServersStore(state => state.otpServers);
   const setOtpServers = useOtpServersStore(state => state.setOtpServers);
   const removeOtpServer = useOtpServersStore(state => state.removeOtpServer);
@@ -39,10 +33,6 @@ const PushScreen = ({withoutAddButton}) => {
     const updatedRaw = storage.getString('otpServers');
     const updated = updatedRaw ? JSON.parse(updatedRaw) : {};
     setOtpServers(updated);
-  };
-
-  const handleScan = () => {
-    navigation.navigate('QRCodeScanner');
   };
 
   const handleDelete = async serverKey => {
@@ -68,24 +58,6 @@ const PushScreen = ({withoutAddButton}) => {
     } catch (e) {
       console.error('❌ Erreur suppression serveur:', e);
     }
-  };
-
-  const handleManualInput = () => {
-    navigation.navigate('ManualPush', {
-      onPress: async ({host, uid, code}) => {
-        const manufacturer = await getManufacturer();
-        const model = getModel();
-        const gcmId = storage.getString('gcm_id') || '';
-        const platform = Platform.OS;
-        const result = await sync(host, uid, code, gcmId, platform, manufacturer, model);
-
-        if (result.success) {
-          console.log('📱 Sync réussi ✅', result.data);
-          showToast('Synchronisation effectuée');
-          refreshScreen();
-        }
-      },
-    });
   };
 
   const renderRightActions = serverKey => (
@@ -123,9 +95,6 @@ const PushScreen = ({withoutAddButton}) => {
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
-            <Icon name="plus-circle" size={50} color={colors.primary} />
-          </TouchableOpacity>
           <Text style={[styles.cardTitle, {color: colors.text}]}>PUSH</Text>
         </View>
       )}
@@ -144,14 +113,6 @@ const PushScreen = ({withoutAddButton}) => {
           )}
         />
       </View>
-      <CustomActionSheet
-        visible={isActionSheetOpen}
-        onClose={() => setIsActionSheetOpen(false)}
-        actions={[
-          {label: 'Scanner QR code', onPress: handleScan},
-          {label: 'Saisie manuelle', onPress: handleManualInput},
-        ]}
-      />
     </GestureHandlerRootView>
   );
 };

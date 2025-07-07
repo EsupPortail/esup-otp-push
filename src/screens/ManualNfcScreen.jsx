@@ -3,9 +3,9 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation, useTheme } from '@react-navigation/native';
 
-const ManualNfcScreen = ({route}) => {
+const ManualNfcScreen = ({onPressFn}) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
-  const { onPress } = route.params || {};
+  const { onPress } = onPressFn;
   const { colors } = useTheme();
   const navigation = useNavigation();
 
@@ -19,7 +19,7 @@ const ManualNfcScreen = ({route}) => {
   }
 
   return (
-    <View style={{ padding: 20 }}>
+    <View>
       <Text style={{ marginTop: 20, color: colors.text }}>Adresse</Text>
       <Controller 
         control={control}

@@ -3,14 +3,14 @@ import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useNavigation, useTheme} from '@react-navigation/native';
 
-const ManualPushScreen = ({route}) => {
+const ManualPushScreen = ({onPressFn}) => {
   const {
     control,
     handleSubmit,
     reset,
     formState: {errors},
   } = useForm();
-  const {onPress} = route.params || {};
+  const {onPress} = onPressFn;
   const {colors} = useTheme();
   const navigation = useNavigation();
 
@@ -23,7 +23,7 @@ const ManualPushScreen = ({route}) => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
+    <View>
       <Text style={{marginTop: 20, color: colors.text}}>Nom de compte</Text>
       <Controller
         control={control}

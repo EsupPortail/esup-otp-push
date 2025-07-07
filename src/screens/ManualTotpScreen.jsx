@@ -4,9 +4,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { useTotpStore } from '../stores/useTotpStore';
 
-const ManualTotpScreen = ({ route }) => {
+const ManualTotpScreen = ({ onPressFn }) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
-  const { onPress } = route.params || {};
+  const { onPress } = onPressFn;
   const { colors } = useTheme();
   const navigation = useNavigation();
   console.log(onPress);
@@ -31,7 +31,7 @@ const ManualTotpScreen = ({ route }) => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
+    <View>
 
       <Text style={{ marginTop: 20, color: colors.text }}>Nom du compte</Text>
       <Controller

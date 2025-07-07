@@ -7,13 +7,11 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useTheme, useNavigation} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import {storage} from '../utils/storage';
 import {Totp} from '../utils/totp';
 import RenderTotp from '../components/RenderTotp';
-import CustomActionSheet from '../components/CustomActionSheet';
 import {useTotpStore} from '../stores/useTotpStore';
 
 // Methods
@@ -33,11 +31,8 @@ const getTimeToNextPeriod = () => {
 const TotpScreen = ({withoutAddButton}) => {
   const {colors} = useTheme();
   const totpObjects = useTotpStore(state => state.totpObjects);
-  const setTotpObjects = useTotpStore(state => state.setTotpObjects);
   const removeTotp = useTotpStore(state => state.removeTotp);
   const [codes, setCodes] = useState({});
-  const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
-  const navigation = useNavigation();
   const displayTimer = Object.keys(totpObjects).length > 0;
 
   // Générer et MAJ les codes TOTP pour toutes les clés secrètes
@@ -58,18 +53,6 @@ const TotpScreen = ({withoutAddButton}) => {
 
     return () => clearTimeout(timeout);
   }, [totpObjects]);
-
-  const handleScan = () => {
-    navigation.navigate('QRCodeScanner');
-  };
-  const handleManualInput = () => {
-    navigation.navigate('ManualTotp', {
-      onPress: newTotpObjects => {
-        setTotpObjects(newTotpObjects);
-        console.log(newTotpObjects);
-      },
-    });
-  };
 
   const onDelete = secret => {
     Alert.alert(
@@ -95,9 +78,6 @@ const TotpScreen = ({withoutAddButton}) => {
       <View style={styles.header}>
         {!withoutAddButton && (
           <View style={styles.headerLeft}>
-            <TouchableOpacity onPress={() => setIsActionSheetOpen(true)}>
-              <Icon name="plus-circle" color={colors.primary} size={50} />
-            </TouchableOpacity>
             <Text style={[styles.cardTitle, {color: colors.text}]}>TOTP</Text>
           </View>
         )}
@@ -144,14 +124,6 @@ const TotpScreen = ({withoutAddButton}) => {
           ItemSeparatorComponent={() => (
             <View style={[styles.separator, {borderColor: 'grey'}]} />
           )}
-        />
-        <CustomActionSheet
-          visible={isActionSheetOpen}
-          onClose={() => setIsActionSheetOpen(false)}
-          actions={[
-            {label: 'Scanner QR code', onPress: handleScan},
-            {label: 'Saisie manuelle', onPress: handleManualInput},
-          ]}
         />
       </View>
     </View>
