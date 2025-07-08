@@ -16,11 +16,14 @@ import {
   Platform,
 } from 'react-native';
 import NfcManager from 'react-native-nfc-manager';
-import {fetchEtablissement, scanTagForEstablishment} from '../services/nfcService';
+import {
+  fetchEtablissement,
+  scanTagForEstablishment,
+} from '../services/nfcService';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable} from 'react-native-gesture-handler';
-import { useNfcStore } from '../stores/useNfcStore';
+import {useNfcStore} from '../stores/useNfcStore';
 
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
@@ -48,14 +51,41 @@ function NfcScreen({withoutAddButton}) {
       isScanningRef.current = false;
     }
   };
+  /**
+   * Vérifier que le NFC est activé ou supporté et afficher un message d'alerte
+   */
+  const isNfcEnabled = async () => {
+    try {
+      const isEnabled = await NfcManager.isEnabled();
+      if (!isEnabled) {
+        Alert.alert(
+          'Activer NFC',
+          'Pour utiliser la méthode NFC, vous devez activer la fonctionnalité NFC dans les paramètres de votre appareil.',
+        );
+      }
+
+      const isSupported = await NfcManager.isSupported();
+      if (!isSupported) {
+        Alert.alert(
+          'NFC - Informations',
+          'Pour utiliser la méthode NFC, votre appareil doit supporter la fonctionnalité NFC.',
+        );
+      }
+
+      return isEnabled && isSupported;
+    } catch (error) {
+      console.error('Erreur lors de la vérification du NFC:', error);
+    }
+  };
   const handleBottomSheetCancel = useCallback(() => {
     cleanupNfc();
   }, []);
   const howToEnable = () => {
-    Alert.alert('NFC - Informations',
-      "Pour utiliser la méthode NFC, vous devez aller sur Esup-otp-manager pour activer la méthode NFC et scanner le QRCode affiché. Ce QRCode peut aussi être sur la mire d'authentification si votre organisation a activé cette méthode."
-    )
-  }
+    Alert.alert(
+      'NFC - Informations',
+      "Pour utiliser la méthode NFC, vous devez aller sur Esup-otp-manager pour activer la méthode NFC et scanner le QRCode affiché. Ce QRCode peut aussi être sur la mire d'authentification si votre organisation a activé cette méthode.",
+    );
+  };
   /**
    * Permet de supprimer un établissement de la liste
    */
@@ -84,7 +114,12 @@ function NfcScreen({withoutAddButton}) {
             styles.establishmentButton,
             {backgroundColor: colors.secondary},
           ]}
-          onPress={() => scanTagForEstablishment(item.url, item.numeroId)}>
+          onPress={() => {
+            isNfcEnabled().then(isEnabled => {
+              if (!isEnabled) return;
+              scanTagForEstablishment(item.url, item.numeroId);
+            });
+          }}>
           <Text style={styles.establishmentText}>{item.etablissement}</Text>
         </TouchableOpacity>
       </Swipeable>
@@ -97,8 +132,7 @@ function NfcScreen({withoutAddButton}) {
   }, []);
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: colors.background}]}>
+    <View style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
         <TouchableOpacity style={styles.header} onPress={howToEnable}>
           <Icon name="cellphone-nfc" color={colors.text} size={30} />
