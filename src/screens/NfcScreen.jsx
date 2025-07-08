@@ -51,45 +51,11 @@ function NfcScreen({withoutAddButton}) {
   const handleBottomSheetCancel = useCallback(() => {
     cleanupNfc();
   }, []);
-
-  /**
-   * Permet de lancer la lecture d'un QR code et de l'ajouter à la liste des établissements
-   */
-  const handleScanQrCode = useCallback(() => {
-    console.log('handleScanQrCode appelé');
-    navigation.navigate('QRCodeScanner');
-  }, [navigation, establishments]);
-  /**
-   * Permet de lancer la saisie manuelle d'un établissement
-   */
-  const handleManualInput = () => {
-    navigation.navigate('ManualNfc', {
-      onPress: async (url) => {
-        try {
-          const nfcInfos = await fetchEtablissement(url+'/esupnfc/infos');
-        if (!nfcInfos){
-          Alert.alert('Erreur', 'Authentification NFC non disponible pour ce serveur.');
-          return;
-        };
-        const newEstablishment = {
-          url: nfcInfos.url,
-          numeroId: nfcInfos.numeroId,
-          etablissement: nfcInfos.etablissement,
-        };
-        const exists = establishments.some((est) => est.url === newEstablishment.url);
-        if (exists) {
-          Alert.alert('Erreur', 'Cet établissement est déjà ajouté.');
-          return;
-        }
-        addEstablishment(newEstablishment);
-        scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId);
-        console.log('Établissement ajouté:', newEstablishment);
-        } catch (error) {
-          console.error('[ManualNfc] Erreur:', error.message);
-        }
-      }
-    });
-  };
+  const howToEnable = () => {
+    Alert.alert('NFC - Informations',
+      "Pour utiliser la méthode NFC, vous devez aller sur Esup-otp-manager pour activer la méthode NFC et scanner le QRCode affiché. Ce QRCode peut aussi être sur la mire d'authentification si votre organisation a activé cette méthode."
+    )
+  }
   /**
    * Permet de supprimer un établissement de la liste
    */
@@ -134,10 +100,10 @@ function NfcScreen({withoutAddButton}) {
     <View
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
-        <View style={styles.header}>
+        <TouchableOpacity style={styles.header} onPress={howToEnable}>
           <Icon name="cellphone-nfc" color={colors.text} size={30} />
           <Text style={[styles.cardTitle, {color: colors.text}]}>NFC</Text>
-        </View>
+        </TouchableOpacity>
       )}
       <View style={styles.card}>
         {establishments.length > 0 ? (

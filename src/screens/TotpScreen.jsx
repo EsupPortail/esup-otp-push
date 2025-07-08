@@ -4,6 +4,7 @@ import {
   View,
   FlatList,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useTheme} from '@react-navigation/native';
@@ -73,14 +74,20 @@ const TotpScreen = ({withoutAddButton}) => {
     );
   };
 
+  const howToEnable = () => {
+    Alert.alert('TOTP - Informations',
+      " Pour utiliser la méthode TOTP, vous devez aller dans l'application Esup-otp-manager pour activer la méthode TOTP, ensuite appuyez sur le bouton 'Générer un QrCode', puis scannez le code à l'aide de votre application Esup Auth."
+    )
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         {!withoutAddButton && (
-          <View style={styles.headerLeft}>
+          <TouchableOpacity style={styles.headerLeft} onPress={howToEnable}>
             <MaterialIcon name="pin" color={colors.text} size={30} />
             <Text style={[styles.cardTitle, {color: colors.text}]}>TOTP</Text>
-          </View>
+          </TouchableOpacity>
         )}
         {displayTimer && (
           <CountdownCircleTimer
@@ -120,8 +127,8 @@ const TotpScreen = ({withoutAddButton}) => {
           )}
           keyExtractor={item => item[0]}
           ListEmptyComponent={
-            <Text style={{color: colors.text, fontSize:16, textAlign:'center'}}>
-              Pour utiliser la méthode TOTP, vous devez aller dans l'application Esup-otp-manager pour activer la méthode TOTP, ensuite appuyez sur le bouton "Générer un QrCode", puis scannez le code à l'aide de votre application Esup Auth.
+            <Text style={{color: colors.text, fontSize:14}}>
+              Aucun TOTP configuré
             </Text>
           }
           ItemSeparatorComponent={() => (

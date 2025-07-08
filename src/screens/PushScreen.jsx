@@ -35,6 +35,12 @@ const PushScreen = ({withoutAddButton}) => {
     setOtpServers(updated);
   };
 
+  const howToEnable = () => {
+    Alert.alert('PUSH - Informations',
+      "Pour utiliser la notification push, Activez la méthode dans Esup-otp-manager et scannez le code affiché pour pouvoir recevoir la notification."
+    )
+  }
+
   const handleDelete = async serverKey => {
     const confirm = await new Promise(resolve => {
       Alert.alert(
@@ -94,10 +100,10 @@ const PushScreen = ({withoutAddButton}) => {
     <GestureHandlerRootView
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
-        <View style={styles.header}>
+        <TouchableOpacity style={styles.header} onPress={howToEnable}>
           <Icon name="notification-clear-all" color={colors.text} size={30} />
           <Text style={[styles.cardTitle, {color: colors.text}]}>PUSH</Text>
-        </View>
+        </TouchableOpacity>
       )}
       <View style={styles.content}>
         <FlatList
@@ -105,8 +111,8 @@ const PushScreen = ({withoutAddButton}) => {
           renderItem={renderServerItem}
           keyExtractor={item => item.key}
           ListEmptyComponent={
-            <Text style={{color: colors.text, fontSize:16, textAlign:'center', marginTop: 15}}>
-              Pour utiliser la notification push, Activez la méthode dans Esup-otp-manager et scannez le code affiché pour pouvoir recevoir la notification.
+            <Text style={{color: colors.text, fontSize:14, marginTop: 15}}>
+              Aucun serveur PUSH configuré
             </Text>
           }
           ItemSeparatorComponent={() => (
