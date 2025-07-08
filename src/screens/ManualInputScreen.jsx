@@ -12,7 +12,7 @@ import { getManufacturer, getModel } from 'react-native-device-info';
 import { useTotpStore } from '../stores/useTotpStore';
 
 const ManualInputScreen = () => {
-  const [selectedOption, setSelectedOption] = React.useState('');
+  const [selectedOption, setSelectedOption] = React.useState('totp');
   const establishments = useNfcStore(state => state.establishments);
   const addEstablishment = useNfcStore(state => state.addEstablishment);
   const setTotpObjects = useTotpStore(state => state.setTotpObjects);
@@ -69,8 +69,8 @@ const ManualInputScreen = () => {
       <View style={styles.inputContainer}>
         <RadioButton
           options={[
-            {label: 'PUSH', value: 'push'},
             {label: 'TOTP', value: 'totp'},
+            {label: 'PUSH', value: 'push'},
             {label: 'NFC', value: 'nfc'},
           ]}
           checked={selectedOption}
