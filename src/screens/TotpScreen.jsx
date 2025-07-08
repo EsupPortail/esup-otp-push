@@ -3,7 +3,6 @@ import {
   Text,
   View,
   FlatList,
-  TouchableOpacity,
   Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
@@ -13,6 +12,7 @@ import {storage} from '../utils/storage';
 import {Totp} from '../utils/totp';
 import RenderTotp from '../components/RenderTotp';
 import {useTotpStore} from '../stores/useTotpStore';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Methods
 const getTotpObjects = () => {
@@ -78,6 +78,7 @@ const TotpScreen = ({withoutAddButton}) => {
       <View style={styles.header}>
         {!withoutAddButton && (
           <View style={styles.headerLeft}>
+            <MaterialIcon name="pin" color={colors.text} size={30} />
             <Text style={[styles.cardTitle, {color: colors.text}]}>TOTP</Text>
           </View>
         )}
@@ -119,7 +120,9 @@ const TotpScreen = ({withoutAddButton}) => {
           )}
           keyExtractor={item => item[0]}
           ListEmptyComponent={
-            <Text style={{color: colors.text}}>Aucun Totp configuré</Text>
+            <Text style={{color: colors.text, fontSize:16, textAlign:'center'}}>
+              Pour utiliser la méthode TOTP, vous devez aller dans l'application Esup-otp-manager pour activer la méthode TOTP, ensuite appuyez sur le bouton "Générer un QrCode", puis scannez le code à l'aide de votre application Esup Auth.
+            </Text>
           }
           ItemSeparatorComponent={() => (
             <View style={[styles.separator, {borderColor: 'grey'}]} />

@@ -95,6 +95,7 @@ const PushScreen = ({withoutAddButton}) => {
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
         <View style={styles.header}>
+          <Icon name="notification-clear-all" color={colors.text} size={30} />
           <Text style={[styles.cardTitle, {color: colors.text}]}>PUSH</Text>
         </View>
       )}
@@ -104,8 +105,8 @@ const PushScreen = ({withoutAddButton}) => {
           renderItem={renderServerItem}
           keyExtractor={item => item.key}
           ListEmptyComponent={
-            <Text style={{color: colors.text}}>
-              Aucun serveur push configuré
+            <Text style={{color: colors.text, fontSize:16, textAlign:'center', marginTop: 15}}>
+              Pour utiliser la notification push, Activez la méthode dans Esup-otp-manager et scannez le code affiché pour pouvoir recevoir la notification.
             </Text>
           }
           ItemSeparatorComponent={() => (

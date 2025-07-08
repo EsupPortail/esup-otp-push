@@ -135,6 +135,7 @@ function NfcScreen({withoutAddButton}) {
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
         <View style={styles.header}>
+          <Icon name="cellphone-nfc" color={colors.text} size={30} />
           <Text style={[styles.cardTitle, {color: colors.text}]}>NFC</Text>
         </View>
       )}
@@ -147,7 +148,7 @@ function NfcScreen({withoutAddButton}) {
             extraData={establishments}
           />
         ) : (
-          <Text style={[styles.emptyText, {color: colors.text}]}>
+          <Text style={[styles.emptyText, {color: colors.text, marginTop: 15}]}>
             Authentifiez-vous en toute sécurité via votre carte NFC. Scannez le
             QR code de votre établissement et suivez les instructions.
           </Text>
@@ -173,7 +174,6 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 8,
-    padding: 10,
     marginTop: 10,
   },
   cardTitle: {
@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     textAlign: 'center',
-    marginTop: 20,
   },
   header: {
     flexDirection: 'row',
