@@ -560,8 +560,8 @@ export const autoActivateTotp = async (otpServerKey, totpKey, otpServersObjects)
       console.log('[autoActivateTotp] 📡 serverName:', serverName);
       // Ajout du nouveau TOTP
       const currentTotpObjects = zustandTotpStore.totpObjects;
-      currentTotpObjects[totpKey] = serverName;
-      zustandTotpStore.setTotpObjects(currentTotpObjects);
+      const updated = {...currentTotpObjects, [totpKey]: serverName};
+      zustandTotpStore.setTotpObjects(updated);
 
       showToast('Activation TOTP effectuée');
       return { success: true };
