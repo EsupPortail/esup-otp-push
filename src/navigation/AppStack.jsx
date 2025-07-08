@@ -1,4 +1,4 @@
-import {StyleSheet, View, Text, useWindowDimensions, Image} from 'react-native';
+import {StyleSheet, View, Text, useWindowDimensions, Image, TouchableOpacity, Alert} from 'react-native';
 import {React} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from '../screens/HomeScreen';
@@ -88,6 +88,14 @@ const DrawerNavigator = () => {
   );
 };
 
+const showAppInfos = () => {
+  Alert.alert(
+    'Infos',
+    'Version: 2.0\n\n' +
+    'EsupPortail'
+  );
+};
+
 const AppStack = () => {
   return (
     <Stack.Navigator>
@@ -103,7 +111,9 @@ const AppStack = () => {
           headerTitle: 'Esup Auth',
           headerStyle: {backgroundColor: useTheme().colors.card},
           headerTintColor: useTheme().colors.text,
-          headerLeft: () => <Image source={require('../assets/images/logo.png')} style={styles.iconLeft} />,
+          headerLeft: () => <TouchableOpacity onPress={showAppInfos}>
+            <Image source={require('../assets/images/logo.png')} style={styles.iconLeft} />
+          </TouchableOpacity>,
           headerRight: () => <DarkModeToggle />,
         }}
       />
