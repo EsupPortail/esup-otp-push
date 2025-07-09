@@ -1,23 +1,48 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
-import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, FlatList, TouchableOpacity, Alert} from 'react-native';
 import NfcScreen from './NfcScreen';
 import TotpScreen from './TotpScreen';
 import PushScreen from './PushScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomActionSheet from '../components/CustomActionSheet';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { initNetworkMonitoring, isNetworkConnected, stopNetworkMonitoring } from '../services/networkService';
 
 export default function HomeScreen() {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
   const data = [];
 
+  useEffect(() => {
+    initNetworkMonitoring();
+    const checkInitialStatus = async () => {
+      const connected = isNetworkConnected();
+      setIsConnected(connected);
+    };
+    checkInitialStatus();
+
+    return () => {
+      stopNetworkMonitoring();
+    };
+  }, []);
+
   const handleScanQrCode = () => {
+    if (!isConnected) {
+      Alert.alert('Hors ligne', 'Connexion requise pour scanner un QR code.');
+      return;
+    }
+
     console.log('handleScanQrCode appelé');
     navigation.navigate('QRCodeScanner');
   };
   const handleManualInput = () => {
+    if (!isConnected) {
+      Alert.alert('Hors ligne', 'Connexion requise pour la saisie manuelle.');
+      return;
+    }
+
     navigation.navigate('ManualInput');
   };
 
