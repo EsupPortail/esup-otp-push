@@ -10,15 +10,30 @@ const ManualPushScreen = ({onPressFn}) => {
     reset,
     formState: {errors},
   } = useForm();
-  const {onPress} = onPressFn;
   const {colors} = useTheme();
   const navigation = useNavigation();
+  const {onPress} = onPressFn;
+
+  // Retirer les espaces
+  const cleanInput = (text) => text.trim();
 
   const onSubmit = ({uid, code, host}) => {
-    if (uid && code && host) {
-      onPress({uid, code, host});
+    try {
+      const cleanedUid = cleanInput(uid);
+    const cleanedCode = cleanInput(code);
+    const cleanedHost = cleanInput(host);
+
+    console.log('cleanedUid:', cleanedUid);
+    console.log('cleanedCode:', cleanedCode);
+    console.log('cleanedHost:', cleanedHost);
+
+    if (cleanedUid && cleanedCode && cleanedHost) {
+      onPress({uid: cleanedUid, code: cleanedCode, host: cleanedHost});
       reset();
       navigation.goBack();
+    }
+    } catch (error) {
+        console.error('Erreur:', error);
     }
   };
 

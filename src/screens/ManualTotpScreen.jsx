@@ -9,10 +9,14 @@ const ManualTotpScreen = ({ onPressFn }) => {
   const { onPress } = onPressFn;
   const { colors } = useTheme();
   const navigation = useNavigation();
+  // Retirer les espaces
+  const cleanInput = (text) => text.trim();
   console.log(onPress);
 
   const onSubmit = ({ name, secret }) => {
-    if (secret.length < 16 || secret.length % 2 !== 0) {
+    const cleanedSecret = cleanInput(secret);
+    const cleanedName = cleanInput(name);
+    if (cleanedSecret.length < 16 || cleanedSecret.length % 2 !== 0) {
       Alert.alert(
         'Erreur',
         'Clé invalide'
@@ -21,7 +25,7 @@ const ManualTotpScreen = ({ onPressFn }) => {
     }
 
     const totpObjects = useTotpStore.getState().totpObjects;;
-    const updated = { ...totpObjects, [secret]: name };
+    const updated = { ...totpObjects, [cleanedSecret]: cleanedName };
 
     
     if (onPress) onPress(updated);

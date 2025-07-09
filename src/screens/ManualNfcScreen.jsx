@@ -8,11 +8,14 @@ const ManualNfcScreen = ({onPressFn}) => {
   const { onPress } = onPressFn;
   const { colors } = useTheme();
   const navigation = useNavigation();
+  // Retirer les espaces
+  const cleanInput = (text) => text.trim();
 
 
   const onSubmit = ({url}) => {
-    if (url) {
-      onPress(url);
+    const cleanedUrl = cleanInput(url);
+    if (cleanedUrl) {
+      onPress(cleanedUrl);
       reset();
       navigation.goBack();
     }
