@@ -123,7 +123,7 @@ const NfcBottomSheet = forwardRef((props, ref) => {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={state === 'closed' ? -1 : 0}
+      index={(state === 'closed') || (bottomSheetIndex === -1) ? -1 : 0}
       snapPoints={snapPoints}
       backgroundStyle={{backgroundColor: colors.bottomSheet}}
       handleIndicatorStyle={{backgroundColor: '#fff'}}
@@ -134,11 +134,8 @@ const NfcBottomSheet = forwardRef((props, ref) => {
       }} // écoute la fermeture manuelle
       onClose={() => {
         console.log('OnClose appelé: animation terminée');
-        /*if (state !== 'closed' && bottomSheetIndex === -1) {
-          setState('closed');
-          nfcSessionManager.cancelSession();
-        }*/
         setState('closed');
+        bottomSheetRef.current?.close();
         nfcSessionManager.cancelSession();
       }}
       >
