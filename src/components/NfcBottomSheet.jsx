@@ -4,7 +4,8 @@ import {
   useImperativeHandle,
   useState,
   memo,
-  useEffect
+  useEffect,
+  useCallback
 } from 'react';
 import {
   Text,
@@ -49,6 +50,18 @@ const NfcBottomSheet = forwardRef((props, ref) => {
       bottomSheetRef.current?.close();
     },
   }));
+
+  const handleClose = useCallback(() => {
+    console.log('OnClose appelé: animation terminée');
+    setState('closed');
+    nfcSessionManager.cancelSession();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      nfcSessionManager.cancelSession();
+    };
+  }, []);
 
   const renderContent = () => {
     const animationStyle = {};
@@ -128,15 +141,12 @@ const NfcBottomSheet = forwardRef((props, ref) => {
       backgroundStyle={{backgroundColor: colors.bottomSheet}}
       handleIndicatorStyle={{backgroundColor: '#fff'}}
       enablePanDownToClose={true}
-      onChange={index => {
+      onChange={(index) => {
         console.log('OnChange appelé:', index);
         setBottomSheetIndex(index);
-      }} // écoute la fermeture manuelle
-      onClose={() => {
-        console.log('OnClose appelé: animation terminée');
-        setState('closed');
-        bottomSheetRef.current?.close();
-        nfcSessionManager.cancelSession();
+        if (index === -1) {
+          handleClose();
+        }
       }}
       >
       <BottomSheetView style={styles.contentContainer}>

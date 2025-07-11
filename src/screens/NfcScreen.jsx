@@ -82,8 +82,8 @@ function NfcScreen({withoutAddButton}) {
   }, []);
   const howToEnable = () => {
     Alert.alert(
-      'NFC - Informations',
-      "Pour utiliser la méthode NFC, vous devez aller sur Esup-otp-manager pour activer la méthode NFC et scanner le QRCode affiché. Ce QRCode peut aussi être sur la mire d'authentification si votre organisation a activé cette méthode.",
+      'Aide NFC',
+      "Pour utiliser cette méthode, Scannez le QRCode affiché puis passez votre carte NFC. Vérifiez bien que vous avez activé le NFC sur votre téléphone.",
     );
   };
   /**

@@ -2,6 +2,8 @@ import axios from 'axios';
 import {Alert, Platform} from 'react-native';
 import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
 import { nfcSessionManager } from '../utils/nfcSessionManager';
+import { showToast } from './auth';
+import { showError, openBottomSheet, showWaiting, showSuccess } from './nfcBottomSheetService';
 
 // Fonction pour envoyer une commande APDU au tag NFC
 async function sendApduCommandToTag(tag, command) {
@@ -182,7 +184,6 @@ export const scanTagForEstablishment = async (url, numeroId) => {
   try {
     console.log('[scanTagForEstablishment] Début lecture NFC pour:', { url, numeroId });
     
-    const { openBottomSheet, showError, showWaiting, showSuccess } = require('./nfcBottomSheetService');
     // Ouvrir le BottomSheet sur Android
     if (Platform.OS === 'android') {
       openBottomSheet();
@@ -217,11 +218,16 @@ export const scanTagForEstablishment = async (url, numeroId) => {
   } catch (err) {
     if (err?.name === 'UserCancel') {
       console.warn('[scanTagForEstablishment] NFC annulé par l’utilisateur');
-      showError('Scan NFC annulé');
+    } 
+    
+    if (err.message.includes('Network request failed')) {
+      showToast('NFC - Connexion réseau indispoible.');
     } else {
+      showToast(err.message || 'Échec de la lecture de la balise NFC.');
       console.error('[scanTagForEstablishment] Erreur NFC:', err.stack || err.message);
-      showError('Erreur lors du scan NFC');
     }
+    showError();
+
   } finally {
     await nfcSessionManager.cancelSession();
   }

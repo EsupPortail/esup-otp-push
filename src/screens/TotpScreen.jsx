@@ -75,8 +75,8 @@ const TotpScreen = ({withoutAddButton}) => {
   };
 
   const howToEnable = () => {
-    Alert.alert('TOTP - Informations',
-      " Pour utiliser la méthode TOTP, vous devez aller dans l'application Esup-otp-manager pour activer la méthode TOTP, ensuite appuyez sur le bouton 'Générer un QrCode', puis scannez le code à l'aide de votre application Esup Auth."
+    Alert.alert('Aide TOTP',
+      " Pour activer cette méthode, rendez-vous dans esup-otp-manager, activez TOTP, puis scannez le QRCode affiché avec cette application d’authentification"
     )
   }
 

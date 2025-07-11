@@ -91,8 +91,8 @@ const DrawerNavigator = () => {
 const showAppInfos = () => {
   Alert.alert(
     'Infos',
-    'Version: 2.0\n\n' +
-    'EsupPortail'
+    'Esup Auth 2.0\n\n' +
+    'by ESUP-Portail'
   );
 };
 

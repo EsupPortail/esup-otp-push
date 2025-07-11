@@ -5,44 +5,19 @@ import TotpScreen from './TotpScreen';
 import PushScreen from './PushScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomActionSheet from '../components/CustomActionSheet';
-import { useEffect, useState } from 'react';
-import { initNetworkMonitoring, isNetworkConnected, stopNetworkMonitoring } from '../services/networkService';
+import { useState } from 'react';
 
 export default function HomeScreen() {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
-  const [isConnected, setIsConnected] = useState(true);
   const data = [];
 
-  useEffect(() => {
-    initNetworkMonitoring();
-    const checkInitialStatus = async () => {
-      const connected = isNetworkConnected();
-      setIsConnected(connected);
-    };
-    checkInitialStatus();
-
-    return () => {
-      stopNetworkMonitoring();
-    };
-  }, []);
-
   const handleScanQrCode = () => {
-    if (!isConnected) {
-      Alert.alert('Hors ligne', 'Connexion requise pour scanner un QR code.');
-      return;
-    }
-
     console.log('handleScanQrCode appelé');
     navigation.navigate('QRCodeScanner');
   };
   const handleManualInput = () => {
-    if (!isConnected) {
-      Alert.alert('Hors ligne', 'Connexion requise pour la saisie manuelle.');
-      return;
-    }
-
     navigation.navigate('ManualInput');
   };
 
@@ -66,7 +41,7 @@ export default function HomeScreen() {
       }
     />
     <TouchableOpacity style={styles.floattingButton} onPress={() => setIsActionSheetOpen(true)}>
-      <Icon name="plus-circle" color={colors.primary} size={50} />
+      <Icon name="plus-circle" color={colors.primary} size={56} />
     </TouchableOpacity>
     <CustomActionSheet
         visible={isActionSheetOpen}

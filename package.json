@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^5.1.2",
+    "@gorhom/bottom-sheet": "^5.1.6",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-firebase/app": "^22.1.0",
     "@react-native-firebase/messaging": "^22.1.0",
@@ -27,7 +27,7 @@
     "react-native-countdown-circle-timer": "^3.2.1",
     "react-native-default-preference": "^1.4.4",
     "react-native-device-info": "^14.0.4",
-    "react-native-gesture-handler": "^2.24.0",
+    "react-native-gesture-handler": "^2.27.1",
     "react-native-get-random-values": "^1.11.0",
     "react-native-keychain": "^10.0.0",
     "react-native-mmkv": "^3.2.0",

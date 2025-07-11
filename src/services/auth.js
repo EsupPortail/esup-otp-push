@@ -210,10 +210,13 @@ export const accept = async (
       throw new Error('Réponse serveur invalide');
     }
   } catch (error) {
-    console.error('Erreur dans accept:', error.message, error.response?.data);
+    if (error.message.includes('Network Error')) {
+      showToast('⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.');
+    } else {
+      showToast(error.message || 'Erreur lors de la validation.');
+    }
     setNotified(false);
     setAdditionalData(null);
-    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
   }
 };
 
@@ -485,6 +488,11 @@ export const otpServerStatus = async (
       }
     }
   } catch (error) {
+    if (error.message.includes('Network Error')) {
+      showToast('⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.');
+    } else {
+      showToast(`📱 Erreur dans otpServerStatus: ${error.message}`);
+    }
     console.error('📱 Erreur dans otpServerStatus:', error.message);
     if (otpServersStack.length > 0) {
       return otpServerStatus(

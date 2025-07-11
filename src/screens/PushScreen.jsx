@@ -36,8 +36,8 @@ const PushScreen = ({withoutAddButton}) => {
   };
 
   const howToEnable = () => {
-    Alert.alert('PUSH - Informations',
-      "Pour utiliser la notification push, Activez la méthode dans Esup-otp-manager et scannez le code affiché pour pouvoir recevoir la notification."
+    Alert.alert('Aide PUSH',
+      "Pour activer cette méthode, rendez-vous dans esup-otp-manager, activez PUSH, puis scannez le QRCode affiché avec cette application d’authentification"
     )
   }
 
