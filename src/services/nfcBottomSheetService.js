@@ -28,6 +28,10 @@ export const showError = () => {
   if (ensureRef()) ref.setError();
 };
 
+export const showDisabled = () => {
+  if (ensureRef()) ref.setDisabled();
+};
+
 export const closeBottomSheet = () => {
   if (ensureRef()) ref.close();
 };

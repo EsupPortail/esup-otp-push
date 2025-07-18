@@ -7,6 +7,11 @@ const initialEstablishments = storage.getString('establishments')
 
 export const useNfcStore = create((set, get) => ({
   establishments: initialEstablishments,
+  isNfcEnabled: false,
+
+  setIsNfcEnabled: (newState) => {
+    set({ isNfcEnabled: newState });
+  },
 
   setEstablishments: (newList) => {
     storage.set('establishments', JSON.stringify(newList));

@@ -3,6 +3,9 @@ import messaging from '@react-native-firebase/messaging';
 import { AppState } from 'react-native';
 import { storage } from '../utils/storage';
 import { notification, refresh, otpServerStatus } from '../services/auth';
+import { useNfcStore } from '../stores/useNfcStore';
+import nfcManager from 'react-native-nfc-manager';
+import { set } from 'react-hook-form';
 
 const useNotifications = () => {
   const [notified, setNotified] = useState(false);
@@ -10,6 +13,8 @@ const useNotifications = () => {
   const [otpServersObjects, setOtpServersObjects] = useState(
     storage.getString('otpServers') ? JSON.parse(storage.getString('otpServers')) : {}
   );
+  const setIsNfcEnabled = useNfcStore(state => state.setIsNfcEnabled);
+  const isNfcEnabled = useNfcStore(state => state.isNfcEnabled);
 
   const otpServersRef = useRef(otpServersObjects);
   const otpServersStackRef = useRef([]);
@@ -216,13 +221,23 @@ const useNotifications = () => {
 
   // 🔁 App resume handler (comme "resume" dans Cordova)
   useEffect(() => {
-    const handleAppStateChange = nextAppState => {
+    const handleAppStateChange = async (nextAppState) => {
+      const stateOfNfc = await nfcManager.isEnabled();
       if (
         appStateRef.current.match(/inactive|background/) &&
         nextAppState === 'active'
       ) {
         console.log('📲 L’utilisateur revient sur l’app (resume)');
         initAuth(); // ⚠️ on utilise bien la fonction définie plus haut
+
+        if (!isNfcEnabled && stateOfNfc) {
+          console.log(`[Store et real state NFC] ${isNfcEnabled} !== ${stateOfNfc}`);
+          console.log('📲 NFC désactivé, on réactive');
+          setIsNfcEnabled(true);
+        } else {
+          console.log('[useNotifications] NFC state unchanged');
+          setIsNfcEnabled(stateOfNfc);
+        }
       }
 
       appStateRef.current = nextAppState;

@@ -17,10 +17,9 @@ import {
 } from 'react-native';
 import NfcManager from 'react-native-nfc-manager';
 import {
-  fetchEtablissement,
   scanTagForEstablishment,
 } from '../services/nfcService';
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useNfcStore} from '../stores/useNfcStore';
@@ -28,17 +27,44 @@ import {useNfcStore} from '../stores/useNfcStore';
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
   const isScanningRef = useRef(false);
-  const navigation = useNavigation();
+  const [isNfcSupported, setIsNfcSupported] = useState(null); // null = en cours de vérification
+  const setIsNfcEnabled = useNfcStore(state => state.setIsNfcEnabled);
+  const isNfcEnabled = useNfcStore(state => state.isNfcEnabled);
   const establishments = useNfcStore(state => state.establishments);
-  const addEstablishment = useNfcStore(state => state.addEstablishment);
   const removeEstablishment = useNfcStore(state => state.removeEstablishment);
 
   useEffect(() => {
-    NfcManager.start();
+    checkNfc().then(({ isEnabled, isSupported }) => {
+      setIsNfcEnabled(isEnabled);
+      setIsNfcSupported(isSupported);
+
+      if (!isEnabled && isSupported) {
+        Alert.alert(
+          'Activer NFC',
+          'Pour utiliser la méthode NFC, vous devez activer la fonctionnalité NFC dans les paramètres de votre appareil.',
+          [
+            {
+              text: 'Ouvrir les paramètres',
+              onPress: enableNfc,
+            },
+            {
+              text: 'Plus tard',
+            }
+          ]
+        );
+      }
+
+      if (isEnabled) {
+        NfcManager.start();
+      }
+    });
+
+
+
     return () => {
       NfcManager.close();
     };
-  }, []);
+  }, [isNfcEnabled]);
 
   const cleanupNfc = async () => {
     if (isScanningRef.current) {
@@ -54,16 +80,8 @@ function NfcScreen({withoutAddButton}) {
   /**
    * Vérifier que le NFC est activé ou supporté et afficher un message d'alerte
    */
-  const isNfcEnabled = async () => {
+  const checkNfc = async () => {
     try {
-      const isEnabled = await NfcManager.isEnabled();
-      if (!isEnabled) {
-        Alert.alert(
-          'Activer NFC',
-          'Pour utiliser la méthode NFC, vous devez activer la fonctionnalité NFC dans les paramètres de votre appareil.',
-        );
-      }
-
       const isSupported = await NfcManager.isSupported();
       if (!isSupported) {
         Alert.alert(
@@ -72,15 +90,46 @@ function NfcScreen({withoutAddButton}) {
         );
       }
 
-      return isEnabled && isSupported;
+      const isEnabled = await NfcManager.isEnabled();
+
+      return { isEnabled, isSupported };
     } catch (error) {
       console.error('Erreur lors de la vérification du NFC:', error);
     }
   };
-  const handleBottomSheetCancel = useCallback(() => {
-    cleanupNfc();
-  }, []);
+
+  const enableNfc = async () => {
+    try {
+      await NfcManager.goToNfcSetting().then(result => {
+        console.log('[NFC setting result:]', result);
+      });
+      // Vérifier à nouveau si NFC est activé après retour des paramètres
+      const enabled = await NfcManager.isEnabled();
+      console.log('[NFC enabled after setting:]', enabled);
+      setIsNfcEnabled(enabled);
+      if (enabled) NfcManager.start();
+    } catch (error) {
+      Alert.alert('Erreur', 'Impossible d’ouvrir les paramètres NFC.');
+    }
+  };
+
   const howToEnable = () => {
+    if (!isNfcEnabled) {
+      Alert.alert(
+        'Activer NFC',
+        'Pour utiliser cette méthode, activez la fonctionnalité NFC dans les paramètres de votre appareil.',
+        [
+          {
+            text: 'Ouvrir les paramètres',
+            onPress: enableNfc,
+          },
+          {
+            text: 'Plus tard',
+          }
+        ]
+      );
+      return;
+    }
     Alert.alert(
       'Aide NFC',
       "Pour utiliser cette méthode, Scannez le QRCode affiché puis passez votre carte NFC. Vérifiez bien que vous avez activé le NFC sur votre téléphone.",
@@ -115,10 +164,8 @@ function NfcScreen({withoutAddButton}) {
             {backgroundColor: colors.secondary},
           ]}
           onPress={() => {
-            isNfcEnabled().then(isEnabled => {
-              if (!isEnabled) return;
-              scanTagForEstablishment(item.url, item.numeroId);
-            });
+            //if (!isNFCenabled) return;
+            scanTagForEstablishment(item.url, item.numeroId);
           }}>
           <Text style={styles.establishmentText}>{item.etablissement}</Text>
         </TouchableOpacity>
@@ -127,9 +174,25 @@ function NfcScreen({withoutAddButton}) {
     [colors, establishments],
   );
 
-  const handleSheetChanges = useCallback(index => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  // En cours de vérification
+  if (isNfcSupported === null) {
+    return (
+      <View style={styles.container}>
+        <Text style={[styles.text, { color: colors.text }]}>Vérification du support NFC...</Text>
+      </View>
+    );
+  }
+
+  // NFC non supporté
+  if (!isNfcSupported) {
+    return (
+      <View style={styles.container}>
+        <Text style={[styles.text, { color: colors.text }]}>
+          NFC non supporté sur cet appareil.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, {backgroundColor: colors.background}]}>

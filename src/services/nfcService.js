@@ -3,7 +3,8 @@ import {Alert, Platform} from 'react-native';
 import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
 import { nfcSessionManager } from '../utils/nfcSessionManager';
 import { showToast } from './auth';
-import { showError, openBottomSheet, showWaiting, showSuccess } from './nfcBottomSheetService';
+import { showError, openBottomSheet, showWaiting, showSuccess, showDisabled } from './nfcBottomSheetService';
+import { useNfcStore } from '../stores/useNfcStore';
 
 // Fonction pour envoyer une commande APDU au tag NFC
 async function sendApduCommandToTag(tag, command) {
@@ -182,11 +183,19 @@ export async function fetchEtablissement(url) {
 
 export const scanTagForEstablishment = async (url, numeroId) => {
   try {
+    const { isNfcEnabled } = useNfcStore.getState();
+    console.log('[scanTagForEstablishment] état NFC:', isNfcEnabled);
     console.log('[scanTagForEstablishment] Début lecture NFC pour:', { url, numeroId });
     
     // Ouvrir le BottomSheet sur Android
     if (Platform.OS === 'android') {
       openBottomSheet();
+    }
+
+    // Afficher un message d'erreur si NFC n'est pas activé
+    if (!isNfcEnabled) {
+      showDisabled();
+      return;
     }
 
     // Démarrer la session NFC

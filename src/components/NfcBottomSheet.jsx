@@ -22,7 +22,7 @@ import { nfcSessionManager } from '../utils/nfcSessionManager';
 const NfcBottomSheet = forwardRef((props, ref) => {
   const {colors} = useTheme();
   const bottomSheetRef = useRef(null);
-  const [state, setState] = useState('closed'); // closed, waiting, success, error, start
+  const [state, setState] = useState('closed'); // closed, waiting, success, error, start, disabled
   const [message, setMessage] = useState('');
   const [bottomSheetIndex, setBottomSheetIndex] = useState(-1);
 
@@ -43,6 +43,10 @@ const NfcBottomSheet = forwardRef((props, ref) => {
     },
     setError: () => {
       setState('error');
+      setTimeout(() => bottomSheetRef.current?.close(), 3500);
+    },
+    setDisabled: () => {
+      setState('disabled');
       setTimeout(() => bottomSheetRef.current?.close(), 3500);
     },
     close: () => {
@@ -118,6 +122,19 @@ const NfcBottomSheet = forwardRef((props, ref) => {
               />
               <Text style={[styles.statusText, {color: '#fff'}]}>
               Carte invalide ou Méthode d'authentification non activée
+              </Text>
+            </View>
+          )}
+          {state === 'disabled' && (
+            <View style={styles.statusContainer}>
+              <LottieView
+                source={require('../assets/images/Animation-nfc-error.json')}
+                style={styles.image}
+                autoPlay
+                loop
+              />
+              <Text style={[styles.statusText, {color: '#fff'}]}>
+                NFC désactivé
               </Text>
             </View>
           )}
