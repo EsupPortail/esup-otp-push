@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { storage } from '../utils/storage';
-import { useOtpServersStore } from '../stores/useOtpServersStore';
-import { useTotpStore } from '../stores/useTotpStore';
-import { Platform, ToastAndroid, Alert } from 'react-native';
-import { fetchEtablissement } from './nfcService';
-import { useNfcStore } from '../stores/useNfcStore';
+import {storage} from '../utils/storage';
+import {useOtpServersStore} from '../stores/useOtpServersStore';
+import {useTotpStore} from '../stores/useTotpStore';
+import {Platform, ToastAndroid, Alert} from 'react-native';
+import {fetchEtablissement} from './nfcService';
+import {useNfcStore} from '../stores/useNfcStore';
 
-export const showToast = (message) => {
+export const showToast = message => {
   if (Platform.OS === 'android') {
     ToastAndroid.show(message, ToastAndroid.LONG);
   } else {
@@ -30,7 +30,7 @@ const updateOtpServers = (updated, setOtpServersObjects) => {
     return prev; // aucune modification
   });
 };
-export const updateOtpServersZustand = (updated) => {
+export const updateOtpServersZustand = updated => {
   const prev = useOtpServersStore.getState().otpServers;
   const prevStr = JSON.stringify(prev);
   const nextStr = JSON.stringify(updated);
@@ -49,7 +49,7 @@ export const notification = (
   otpServersFromRef,
   setOtpServersObjects,
   setNotified,
-  setAdditionalData
+  setAdditionalData,
 ) => {
   try {
     const isAuth = data.action === 'auth';
@@ -61,7 +61,7 @@ export const notification = (
     }
 
     // Ref clone
-    const updatedOtpServers = { ...otpServersFromRef };
+    const updatedOtpServers = {...otpServersFromRef};
 
     // Clé serveur unique
     let otpServerKey = null;
@@ -127,7 +127,7 @@ export const notification = (
           text: data.text
             ? data.text.replace(
                 'compte',
-                `compte ${getName(otpServerKey, updatedOtpServers)} `
+                `compte ${getName(otpServerKey, updatedOtpServers)} `,
               )
             : 'Veuillez valider votre connexion.',
         });
@@ -151,7 +151,9 @@ export const notification = (
         desync(matchingKey, updatedOtpServers, setOtpServersObjects);
       } else {
         console.warn('❌ Aucun serveur OTP correspondant à la désactivation');
-        showToast('Notification de désactivation reçue, mais aucun serveur trouvé.');
+        showToast(
+          'Notification de désactivation reçue, mais aucun serveur trouvé.',
+        );
       }
     }
   } catch (error) {
@@ -159,7 +161,6 @@ export const notification = (
     showToast(`Erreur dans notification : ${error.message}`);
   }
 };
-
 
 // ===============================
 // Accept
@@ -170,13 +171,19 @@ export const accept = async (
   otpServersObjects,
   setOtpServersObjects,
   setNotified,
-  setAdditionalData
+  setAdditionalData,
 ) => {
   try {
     const otpServer = additionalData.otpServer;
     const server = otpServersObjects[otpServer];
 
-    if (!server || !server.host || !server.uid || !server.tokenSecret || !additionalData.lt) {
+    if (
+      !server ||
+      !server.host ||
+      !server.uid ||
+      !server.tokenSecret ||
+      !additionalData.lt
+    ) {
       showToast('Données manquantes pour accept');
       return;
     }
@@ -192,15 +199,22 @@ export const accept = async (
     const url = `${server.host}users/${server.uid}/methods/push/${additionalData.lt}/${server.tokenSecret}`;
     console.log('Requête accept URL:', url);
 
-    const response = await axios.post(url, {}, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 10000,
-    });
+    const response = await axios.post(
+      url,
+      {},
+      {
+        headers: {'Content-Type': 'application/json'},
+        timeout: 10000,
+      },
+    );
 
     if (response.data.code === 'Ok') {
-      let updated = { ...otpServersObjects };
+      let updated = {...otpServersObjects};
       if (response.data.tokenSecret) {
-        updated[otpServer] = { ...server, tokenSecret: response.data.tokenSecret };
+        updated[otpServer] = {
+          ...server,
+          tokenSecret: response.data.tokenSecret,
+        };
         updateOtpServers(updated, setOtpServersObjects);
       }
       setNotified(false);
@@ -211,7 +225,9 @@ export const accept = async (
     }
   } catch (error) {
     if (error.message.includes('Network Error')) {
-      showToast('⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.');
+      showToast(
+        '⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.',
+      );
     } else {
       showToast(error.message || 'Erreur lors de la validation.');
     }
@@ -224,11 +240,22 @@ export const accept = async (
 // Reject
 // ===============================
 
-export const reject = async (additionalData, otpServersObjects,setNotified, setAdditionalData) => {
+export const reject = async (
+  additionalData,
+  otpServersObjects,
+  setNotified,
+  setAdditionalData,
+) => {
   try {
     const otpServer = additionalData.otpServer;
     const server = otpServersObjects[otpServer];
-    if (!server || !server.host || !server.uid || !server.tokenSecret || !additionalData.lt) {
+    if (
+      !server ||
+      !server.host ||
+      !server.uid ||
+      !server.tokenSecret ||
+      !additionalData.lt
+    ) {
       showToast('Données manquantes pour refuser');
       return;
     }
@@ -237,7 +264,7 @@ export const reject = async (additionalData, otpServersObjects,setNotified, setA
     console.log('[reject] Requête reject URL:', url);
 
     const response = await axios.post(url, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       timeout: 10000,
     });
 
@@ -248,7 +275,6 @@ export const reject = async (additionalData, otpServersObjects,setNotified, setA
     } else {
       throw new Error('Réponse serveur invalide');
     }
-    
   } catch (error) {
     console.error('[REJECT] Erreur dans reject:', error.message);
     showToast(`Erreur lors du refus: ${error.message}`);
@@ -258,7 +284,15 @@ export const reject = async (additionalData, otpServersObjects,setNotified, setA
 // ===============================
 // Sync
 // ===============================
-export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manufacturer = 'unknown', model = 'unknown') => {
+export const sync = async (
+  host,
+  uid,
+  code,
+  gcmId,
+  platform = Platform.OS,
+  manufacturer = 'unknown',
+  model = 'unknown',
+) => {
   try {
     const cleanedHost = host.endsWith('/') ? host : `${host}/`;
     const url = `${cleanedHost}users/${uid}/methods/push/activate/${code}/${gcmId}/${platform}/${manufacturer}/${model}`;
@@ -267,8 +301,10 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
     const response = await axios.post(
       url,
       {},
-      { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
+      {headers: {'Content-Type': 'application/json'}, timeout: 10000},
     );
+
+    console.log('[AUTH] sync response:', response.data);
 
     if (response.data.code === 'Ok') {
       const otpServerKey = `${cleanedHost}${uid}`;
@@ -286,25 +322,37 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
       console.log('otpServers mis à jour:', updatedOtpServers);
       showToast('Synchronisation effectuée');
 
-      if (response.data.autoActivateTotp){
+      if (response.data.autoActivateTotp) {
         const serverName = getName(otpServerKey, updatedOtpServers);
-        await autoActivateTotp(otpServerKey, response.data.totpKey, updatedOtpServers);
+        await autoActivateTotp(
+          otpServerKey,
+          response.data.totpKey,
+          updatedOtpServers,
+        );
       }
 
-      const result = await autoActivateNfc(cleanedHost);
-      if (result?.success) {
-        console.log('[sync] Auto activation NFC effectuée');
-        showToast('Activation NFC effectuée');
+      if (response.data.autoActivateEsupnfc) {
+        const result = await autoActivateNfc(otpServerKey, updatedOtpServers, response.data.esupnfc_server_infos);
+        if (result?.success) {
+          console.log('[sync] Auto activation NFC effectuée');
+          showToast('Activation NFC effectuée');
+        }
       }
 
-      return { success: true, data: response.data };
+      return {success: true, data: response.data};
     } else {
-      throw new Error(response.data.message || 'Erreur lors de la synchronisation');
+      throw new Error(
+        response.data.message || 'Erreur lors de la synchronisation',
+      );
     }
   } catch (error) {
     console.error('Erreur dans sync:', error.message, error.response?.data);
-    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
-    return { success: false, message: error.message };
+    showToast(
+      `${error.message}${
+        error.response ? `: ${error.response.data?.message || ''}` : ''
+      }`,
+    );
+    return {success: false, message: error.message};
   }
 };
 
@@ -312,7 +360,11 @@ export const sync = async (host, uid, code, gcmId, platform = Platform.OS, manuf
 // Desync
 // ===============================
 
-export const desync = async (otpServer, otpServersObjects, setOtpServersObjects) => {
+export const desync = async (
+  otpServer,
+  otpServersObjects,
+  setOtpServersObjects,
+) => {
   try {
     const server = otpServersObjects[otpServer];
     if (!server) {
@@ -324,18 +376,22 @@ export const desync = async (otpServer, otpServersObjects, setOtpServersObjects)
     console.log('Requête desync URL:', url);
 
     await axios.delete(url, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       timeout: 10000,
     });
 
-    const updated = { ...otpServersObjects };
+    const updated = {...otpServersObjects};
     delete updated[otpServer];
     console.log('🔁 updatedOtpServers DESYNC', updated);
     updateOtpServersZustand(updated);
     showToast('Désactivation effectuée');
   } catch (error) {
     console.error('Erreur dans desync:', error.message, error.response?.data);
-    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
+    showToast(
+      `${error.message}${
+        error.response ? `: ${error.response.data?.message || ''}` : ''
+      }`,
+    );
   }
 };
 
@@ -350,20 +406,24 @@ export const refresh = async (url, uid, tokenSecret, gcmId, registrationId) => {
     const response = await axios.post(
       requestUrl,
       {},
-      { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
+      {headers: {'Content-Type': 'application/json'}, timeout: 10000},
     );
 
     if (response.data.code === 'Ok') {
       storage.set('gcm_id', registrationId);
       showToast('Refresh gcm_id');
-      return { success: true };
+      return {success: true};
     } else {
       throw new Error(response.data.message || 'Erreur lors du refresh');
     }
   } catch (error) {
     console.error('Erreur dans refresh:', error.message, error.response?.data);
-    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
-    return { success: false, message: error.message };
+    showToast(
+      `${error.message}${
+        error.response ? `: ${error.response.data?.message || ''}` : ''
+      }`,
+    );
+    return {success: false, message: error.message};
   }
 };
 
@@ -377,19 +437,29 @@ export const desactivateUser = async (url, uid, tokenSecret, gcmId) => {
     const response = await axios.post(
       requestUrl,
       {},
-      { headers: { 'Content-Type': 'application/json' }, timeout: 10000 }
+      {headers: {'Content-Type': 'application/json'}, timeout: 10000},
     );
 
     if (response.data.code === 'Ok') {
       showToast('Désactivation effectuée');
-      return { success: true };
+      return {success: true};
     } else {
-      throw new Error(response.data.message || 'Erreur lors de la désactivation');
+      throw new Error(
+        response.data.message || 'Erreur lors de la désactivation',
+      );
     }
   } catch (error) {
-    console.error('Erreur dans desactivateUser:', error.message, error.response?.data);
-    showToast(`${error.message}${error.response ? `: ${error.response.data?.message || ''}` : ''}`);
-    return { success: false, message: error.message };
+    console.error(
+      'Erreur dans desactivateUser:',
+      error.message,
+      error.response?.data,
+    );
+    showToast(
+      `${error.message}${
+        error.response ? `: ${error.response.data?.message || ''}` : ''
+      }`,
+    );
+    return {success: false, message: error.message};
   }
 };
 
@@ -410,7 +480,8 @@ export const getName = (otpServer, otpServersObjects) => {
       const hostnameMatch = host.match(/^(?:https?:\/\/)?([^\/]+)/i);
       const hostname = hostnameMatch ? hostnameMatch[1] : host;
       const domainParts = hostname.split('.');
-      const shortDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : hostname;
+      const shortDomain =
+        domainParts.length >= 2 ? domainParts.slice(-2).join('.') : hostname;
       return `${shortDomain} (${serverData.uid})`;
     } else {
       return `${serverData.hostName} (${serverData.uid})`;
@@ -428,7 +499,7 @@ export const otpServerStatus = async (
   setOtpServersObjects,
   setNotified,
   setAdditionalData,
-  otpServersStack
+  otpServersStack,
 ) => {
   console.log('📱 otpServerStatus appelé pour:', otpServer);
   if (!otpServer || !otpServersObjects[otpServer]) {
@@ -440,13 +511,13 @@ export const otpServerStatus = async (
         setOtpServersObjects,
         setNotified,
         setAdditionalData,
-        otpServersStack
+        otpServersStack,
       );
     }
     return;
   }
 
-  const { host, uid, tokenSecret } = otpServersObjects[otpServer];
+  const {host, uid, tokenSecret} = otpServersObjects[otpServer];
   if (!host || !uid || !tokenSecret) {
     console.warn('📱 otpServerStatus: host, uid ou tokenSecret manquant');
     if (otpServersStack.length > 0) {
@@ -456,7 +527,7 @@ export const otpServerStatus = async (
         setOtpServersObjects,
         setNotified,
         setAdditionalData,
-        otpServersStack
+        otpServersStack,
       );
     }
     return;
@@ -466,15 +537,21 @@ export const otpServerStatus = async (
     const response = await axios.get(
       `${host}users/${uid}/methods/push/${tokenSecret}`,
       {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         timeout: 10000,
-      }
+      },
     );
     console.log('📱 Réponse otpServerStatus:', response.data);
 
     if (response.data.code === 'Ok') {
-      const data = { ...response.data, otpServer, url: host, uid };
-      notification(data, otpServersObjects, setOtpServersObjects, setNotified, setAdditionalData);
+      const data = {...response.data, otpServer, url: host, uid};
+      notification(
+        data,
+        otpServersObjects,
+        setOtpServersObjects,
+        setNotified,
+        setAdditionalData,
+      );
     } else {
       if (otpServersStack.length > 0) {
         return otpServerStatus(
@@ -483,13 +560,15 @@ export const otpServerStatus = async (
           setOtpServersObjects,
           setNotified,
           setAdditionalData,
-          otpServersStack
+          otpServersStack,
         );
       }
     }
   } catch (error) {
     if (error.message.includes('Network Error')) {
-      showToast('⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.');
+      showToast(
+        '⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.',
+      );
     } else {
       showToast(`📱 Erreur dans otpServerStatus: ${error.message}`);
     }
@@ -501,7 +580,7 @@ export const otpServerStatus = async (
         setOtpServersObjects,
         setNotified,
         setAdditionalData,
-        otpServersStack
+        otpServersStack,
       );
     }
   }
@@ -510,7 +589,7 @@ export const otpServerStatus = async (
 // ===============================
 // Find matching OTP server
 // ===============================
-export function findMatchingOtpServer({ otpServers, otpServerKey, hostToken }) {
+export function findMatchingOtpServer({otpServers, otpServerKey, hostToken}) {
   // 1. Correspondance directe via la clé
   if (otpServerKey && otpServers[otpServerKey]) {
     console.log('✅ Match direct via otpServerKey:', otpServerKey);
@@ -522,7 +601,9 @@ export function findMatchingOtpServer({ otpServers, otpServerKey, hostToken }) {
     const fallbackKey = Object.keys(otpServers).find(key => {
       const serverToken = otpServers[key]?.hostToken || '';
       const match = serverToken === hostToken;
-      console.log(`🔍 Match hostToken ? ${serverToken} === ${hostToken} → ${match}`);
+      console.log(
+        `🔍 Match hostToken ? ${serverToken} === ${hostToken} → ${match}`,
+      );
       return match;
     });
 
@@ -545,19 +626,26 @@ export function findMatchingOtpServer({ otpServers, otpServerKey, hostToken }) {
 // ===============================
 // Activate TOTP
 // ===============================
-export const autoActivateTotp = async (otpServerKey, totpKey, otpServersObjects) => {
+export const autoActivateTotp = async (
+  otpServerKey,
+  totpKey,
+  otpServersObjects,
+) => {
   try {
     const server = otpServersObjects[otpServerKey];
     if (!server) {
       showToast('Serveur introuvable');
-      console.warn('📡 Serveur introuvable pour autoActivateTotp:', otpServerKey);
-      return { success: false, message: 'Serveur introuvable' };
+      console.warn(
+        '📡 Serveur introuvable pour autoActivateTotp:',
+        otpServerKey,
+      );
+      return {success: false, message: 'Serveur introuvable'};
     }
 
     const url = `${server.host}users/${server.uid}/methods/totp/autoActivateTotp/${server.tokenSecret}`;
     console.log('📡 Appel autoActivateTotp URL:', url);
 
-    const response = await axios.post(url, {}, { timeout: 10000 });
+    const response = await axios.post(url, {}, {timeout: 10000});
     console.log('📡 autoActivateTotp response:', response.data);
 
     if (response.data.code === 'Ok') {
@@ -572,41 +660,54 @@ export const autoActivateTotp = async (otpServerKey, totpKey, otpServersObjects)
       zustandTotpStore.setTotpObjects(updated);
 
       showToast('Activation TOTP effectuée');
-      return { success: true };
+      return {success: true};
     } else {
       throw new Error('Réponse invalide');
     }
   } catch (error) {
     console.error('❌ Erreur autoActivateTotp:', error.message);
     showToast('Erreur lors de l’activation TOTP');
-    return { success: false, message: error.message };
+    return {success: false, message: error.message};
   }
 };
 //==========================
 // Auto Activate NFC
 //==========================
-export const autoActivateNfc = async (url) => {
+export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => {
   try {
-    const nfcInfos = await fetchEtablissement(url+'esupnfc/infos');
-    if (!nfcInfos){
-      showToast('[autoActivateNFC] Authentification NFC non disponible pour ce serveur.');
+    const server = otpServersObjects[otpServerKey];
+    // nouveau ws code
+    const wsUrl = `${server.host}users/${server.uid}/methods/esupnfc/autoActivateWithPush/${server.tokenSecret}`;
+    console.log('📡 [autoActivateNFC] Appel autoActivateNfc URL:', wsUrl);
+
+    const response = await axios.post(wsUrl, {}, {timeout: 10000});
+    if (response.data.code !== 'Ok') {
+      showToast(
+        'Authentification NFC non disponible pour ce serveur.',
+      );
       return;
-    };
-    const exists = zustandNfcStore.establishments.some((est) => est.url === nfcInfos.url);
+    }
+    console.log('[autoActivateNFC] autoActivateNfc DATA:', data);
+    const exists = zustandNfcStore.establishments.some(
+      est => est.url === data.url,
+    );
     if (exists) {
       showToast('NFC déjà configuré pour cet établissement');
       console.log('[autoActivateNFC] Cet établissement est déjà ajouté.');
       return;
     }
     const newEstablishment = {
-      url: nfcInfos.url,
-      numeroId: nfcInfos.numeroId,
-      etablissement: nfcInfos.etablissement,
+      url: data.url,
+      numeroId: data.numeroId,
+      etablissement: data.etablissement,
     };
-    zustandNfcStore.setEstablishments([...zustandNfcStore.establishments, newEstablishment]);
+    zustandNfcStore.setEstablishments([
+      ...zustandNfcStore.establishments,
+      newEstablishment,
+    ]);
     console.log('[autoActivateNFC] Établissement ajouté:', newEstablishment);
-    return { success: true };
+    return {success: true};
   } catch (error) {
     console.error('[autoActivateNFC] Erreur:', error.message);
   }
-}
+};

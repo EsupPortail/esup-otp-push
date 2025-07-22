@@ -146,11 +146,11 @@ export async function fetchEtablissement(url) {
   try {
     console.log('[Requesting URL]--- :', url);
 
-    const response = await axios.get(url, {
+    const response = await axios.post(url, {
       headers: {'Content-Type': 'application/json'},
       timeout: 10000,
     });
-    console.log('Réponse:', response.data);
+    console.log('[NFCSERVICE fetchEtablissement] Réponse:', response.data);
 
     if (response.data.code !== 'Ok') {
       console.error(`Réponse invalide: ${response.data.message || 'Code non Ok'}`);
