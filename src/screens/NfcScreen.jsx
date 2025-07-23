@@ -59,11 +59,6 @@ function NfcScreen({withoutAddButton}) {
       }
     });
 
-
-
-    return () => {
-      NfcManager.close();
-    };
   }, [isNfcEnabled]);
 
   const cleanupNfc = async () => {
