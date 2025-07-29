@@ -5,6 +5,7 @@ import {useTotpStore} from '../stores/useTotpStore';
 import {Platform, ToastAndroid, Alert} from 'react-native';
 import {fetchEtablissement} from './nfcService';
 import {useNfcStore} from '../stores/useNfcStore';
+import { use } from 'react';
 
 export const showToast = message => {
   if (Platform.OS === 'android') {
@@ -13,10 +14,6 @@ export const showToast = message => {
     Alert.alert('Info', message);
   }
 };
-
-const zustandStore = useOtpServersStore.getState();
-const zustandTotpStore = useTotpStore.getState();
-const zustandNfcStore = useNfcStore.getState();
 
 const updateOtpServers = (updated, setOtpServersObjects) => {
   setOtpServersObjects(prev => {
@@ -117,7 +114,7 @@ export const notification = (
 
         setOtpServersObjects(updatedOtpServers);
         //storage.set('otpServers', JSON.stringify(updatedOtpServers));
-        zustandStore.setOtpServers(updatedOtpServers);
+        useOtpServersStore.getState().setOtpServers(updatedOtpServers);
         console.log('🗂️ otpServers mis à jour');
 
         setAdditionalData({
@@ -318,7 +315,7 @@ export const sync = async (
           uid,
         },
       };
-      zustandStore.setOtpServers(updatedOtpServers);
+      useOtpServersStore.getState().setOtpServers(updatedOtpServers);
       console.log('otpServers mis à jour:', updatedOtpServers);
       showToast('Synchronisation effectuée');
 
@@ -655,9 +652,10 @@ export const autoActivateTotp = async (
       const serverName = getName(otpServerKey, otpServersObjects);
       console.log('[autoActivateTotp] 📡 serverName:', serverName);
       // Ajout du nouveau TOTP
-      const currentTotpObjects = zustandTotpStore.totpObjects;
+      const currentTotpObjects = useTotpStore.getState().totpObjects;
+      console.log('[autoActivateTotp] 📡 currentTotpObjects:', currentTotpObjects);
       const updated = {...currentTotpObjects, [totpKey]: serverName};
-      zustandTotpStore.setTotpObjects(updated);
+      useTotpStore.getState().setTotpObjects(updated);
 
       showToast('Activation TOTP effectuée');
       return {success: true};
@@ -675,6 +673,7 @@ export const autoActivateTotp = async (
 //==========================
 export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => {
   try {
+    const currentNfcObjects = useNfcStore.getState().establishments;
     const server = otpServersObjects[otpServerKey];
     // nouveau ws code
     const wsUrl = `${server.host}users/${server.uid}/methods/esupnfc/autoActivateWithPush/${server.tokenSecret}`;
@@ -688,7 +687,7 @@ export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => 
       return;
     }
     console.log('[autoActivateNFC] autoActivateNfc DATA:', data);
-    const exists = zustandNfcStore.establishments.some(
+    const exists = currentNfcObjects.some(
       est => est.url === data.url,
     );
     if (exists) {
@@ -701,8 +700,8 @@ export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => 
       numeroId: data.numeroId,
       etablissement: data.etablissement,
     };
-    zustandNfcStore.setEstablishments([
-      ...zustandNfcStore.establishments,
+    useNfcStore.getState().setEstablishments([
+      ...currentNfcObjects,
       newEstablishment,
     ]);
     console.log('[autoActivateNFC] Établissement ajouté:', newEstablishment);
