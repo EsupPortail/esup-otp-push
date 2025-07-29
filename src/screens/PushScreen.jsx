@@ -139,6 +139,13 @@ const styles = StyleSheet.create({
   emptyText: {fontSize: 16, textAlign: 'center', marginTop: 20},
   header: {flexDirection: 'row', alignItems: 'center', gap: 10},
   content: {display: 'flex', flexDirection: 'column'},
+  separator: {
+    borderWidth: 1,
+    borderRadius: 1,
+    marginLeft: 12,
+    marginRight: 70,
+    borderStyle: 'dotted',
+  },
 });
 
 export default PushScreen;
