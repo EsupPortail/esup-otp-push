@@ -320,11 +320,11 @@ export const sync = async (
       showToast('Synchronisation effectuée');
 
       if (response.data.autoActivateTotp) {
-        const serverName = getName(otpServerKey, updatedOtpServers);
         await autoActivateTotp(
           otpServerKey,
           response.data.totpKey,
           updatedOtpServers,
+          response.data.totpName
         );
       }
 
@@ -627,6 +627,7 @@ export const autoActivateTotp = async (
   otpServerKey,
   totpKey,
   otpServersObjects,
+  totpName
 ) => {
   try {
     const server = otpServersObjects[otpServerKey];
@@ -649,7 +650,7 @@ export const autoActivateTotp = async (
       console.log('✅ autoActivateTotp OK');
 
       // Stocker le TOTP dans storage
-      const serverName = getName(otpServerKey, otpServersObjects);
+      const serverName = totpName || getName(otpServerKey, otpServersObjects);
       console.log('[autoActivateTotp] 📡 serverName:', serverName);
       // Ajout du nouveau TOTP
       const currentTotpObjects = useTotpStore.getState().totpObjects;
