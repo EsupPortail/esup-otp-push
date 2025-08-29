@@ -32,7 +32,7 @@ const ManualNfcScreen = ({onPressFn}) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
             <TextInput
-              placeholder="Saisissez l'url"
+              placeholder="ex. https://esup-otp-api.univ.fr"
               value={value}
               onChangeText={onChange}
               style={[

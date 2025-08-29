@@ -48,7 +48,7 @@ const ManualPushScreen = ({onPressFn}) => {
         render={({field: {onChange, value}, fieldState: {error}}) => (
           <>
             <TextInput
-              placeholder="ex: Ajouter le nom du compte"
+              placeholder="ex. login"
               value={value}
               onChangeText={onChange}
               style={[
@@ -69,7 +69,7 @@ const ManualPushScreen = ({onPressFn}) => {
         render={({field: {onChange, value}, fieldState: {error}}) => (
           <>
             <TextInput
-              placeholder="Ajouter le code"
+              placeholder="ex. 123456"
               value={value}
               onChangeText={onChange}
               style={[
@@ -90,7 +90,7 @@ const ManualPushScreen = ({onPressFn}) => {
         render={({field: {onChange, value}, fieldState: {error}}) => (
           <>
             <TextInput
-              placeholder="Ajouter l'adresse"
+              placeholder="ex. https://esup-otp-api.univ.fr"
               value={value}
               onChangeText={onChange}
               style={[

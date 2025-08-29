@@ -46,7 +46,7 @@ const ManualTotpScreen = ({ onPressFn }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
             <TextInput
-            placeholder="ex: MonCompte"
+            placeholder="ex. login"
             value={value}
             onChangeText={onChange}
             style={[
