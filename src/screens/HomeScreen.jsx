@@ -73,12 +73,20 @@ export default function HomeScreen() {
           keyExtractor={(_, index) => index.toString()}
           ListHeaderComponent={
             <>
-              <TotpScreen />
-              <View style={[styles.separator, {borderColor: 'grey'}]} />
-              <PushScreen />
-              {isNfcSupported && (
+              {Object.keys(totpObjects).length > 0 && (
                 <>
+                  <TotpScreen />
                   <View style={[styles.separator, {borderColor: 'grey'}]} />
+                </>
+              )}
+              {Object.keys(otpServers).length > 0 && (
+                <>
+                  <PushScreen />
+                  <View style={[styles.separator, {borderColor: 'grey'}]} />
+                </>
+              )}
+              {isNfcSupported && establishments.length > 0 && (
+                <>
                   <NfcScreen />
                 </>
               )}
