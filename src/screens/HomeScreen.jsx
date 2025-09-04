@@ -62,7 +62,6 @@ export default function HomeScreen() {
     <>
       {isEmpty && (
         <EmptyScreen
-          isActionSheetOpen={isActionSheetOpen}
           setIsActionSheetOpen={setIsActionSheetOpen}
         />
       )}

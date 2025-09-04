@@ -14,6 +14,7 @@ import {Totp} from '../utils/totp';
 import RenderTotp from '../components/RenderTotp';
 import {useTotpStore} from '../stores/useTotpStore';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { getHelpByKey } from '../data/helpData';
 
 // Methods
 const getTotpObjects = () => {
@@ -75,9 +76,10 @@ const TotpScreen = ({withoutAddButton}) => {
   };
 
   const howToEnable = () => {
-    Alert.alert('Aide TOTP',
-      " Pour activer cette méthode, rendez-vous dans esup-otp-manager, activez TOTP, puis scannez le QRCode affiché avec cette application d’authentification"
-    )
+    const data = getHelpByKey('totp');
+    if (data) {
+      Alert.alert(data.title, data.content)
+    }
   }
 
   return (

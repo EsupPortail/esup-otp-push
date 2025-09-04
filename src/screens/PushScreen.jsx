@@ -13,6 +13,7 @@ import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {storage} from '../utils/storage';
 import {desync, getName} from '../services/auth';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
+import { getHelpByKey } from '../data/helpData';
 
 const PushScreen = ({withoutAddButton}) => {
   const {colors} = useTheme();
@@ -36,9 +37,10 @@ const PushScreen = ({withoutAddButton}) => {
   };
 
   const howToEnable = () => {
-    Alert.alert('Aide PUSH',
-      "Pour activer cette méthode, rendez-vous dans esup-otp-manager, activez PUSH, puis scannez le QRCode affiché avec cette application d’authentification"
-    )
+    const data = getHelpByKey('push');
+    if (data) {
+      Alert.alert(data.title, data.content)
+    }
   }
 
   const handleDelete = async serverKey => {

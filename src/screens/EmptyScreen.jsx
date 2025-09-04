@@ -1,19 +1,30 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
 import { useTheme } from '@react-navigation/native';
-import CustomActionSheet from '../components/CustomActionSheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getHelpByKey } from '../data/helpData';
 
-const EmptyScreen = ({isActionSheetOpen, setIsActionSheetOpen, handleScanQrCode, handleManualInput}) => {
+const EmptyScreen = ({setIsActionSheetOpen}) => {
   const {colors} = useTheme();
+  const showHelp = (key) => {
+    const data = getHelpByKey(key);
+    if (data) {
+      Alert.alert(data.title, data.content)
+    }
+  }
   return (
     <View style={styles.container}>
       <View>
         <View style={styles.methods}>
-            <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>TOTP</Text>
-            <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>NFC</Text>
-            <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>PUSH</Text>
-            
+            <TouchableOpacity onPress={() => showHelp('totp')}>
+              <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>TOTP</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => showHelp('nfc')}>
+              <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>NFC</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => showHelp('push')}>
+              <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>Push</Text>
+            </TouchableOpacity>
         </View>
         <Text style={[styles.textInfo, {color: colors.text}]}>
             Aucune méthode d'authentification n'a été configurée. Cliquez ci-dessous pour commencer la configuration.

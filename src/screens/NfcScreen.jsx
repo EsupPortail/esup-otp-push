@@ -23,6 +23,7 @@ import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useNfcStore} from '../stores/useNfcStore';
+import { getHelpByKey } from '../data/helpData';
 
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
@@ -109,6 +110,7 @@ function NfcScreen({withoutAddButton}) {
   };
 
   const howToEnable = () => {
+    const data = getHelpByKey('nfc');
     if (!isNfcEnabled) {
       Alert.alert(
         'Activer NFC',
@@ -125,10 +127,7 @@ function NfcScreen({withoutAddButton}) {
       );
       return;
     }
-    Alert.alert(
-      'Aide NFC',
-      "Pour utiliser cette méthode, Scannez le QRCode affiché puis passez votre carte NFC. Vérifiez bien que vous avez activé le NFC sur votre téléphone.",
-    );
+    Alert.alert(data.title, data.content);
   };
   /**
    * Permet de supprimer un établissement de la liste
