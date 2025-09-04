@@ -47,6 +47,7 @@ const ManualTotpScreen = ({ onPressFn }) => {
           <>
             <TextInput
             placeholder="ex. login"
+            placeholderTextColor={colors.text}
             value={value}
             onChangeText={onChange}
             style={[
@@ -71,6 +72,7 @@ const ManualTotpScreen = ({ onPressFn }) => {
           <>
             <TextInput
             placeholder="ex: ABCDEFGH12345678"
+            placeholderTextColor={colors.text}
             value={value}
             onChangeText={onChange}
             autoCapitalize="characters"

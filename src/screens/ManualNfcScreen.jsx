@@ -33,6 +33,7 @@ const ManualNfcScreen = ({onPressFn}) => {
           <>
             <TextInput
               placeholder="ex. https://esup-otp-api.univ.fr"
+              placeholderTextColor={colors.text}
               value={value}
               onChangeText={onChange}
               style={[

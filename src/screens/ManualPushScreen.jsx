@@ -49,6 +49,7 @@ const ManualPushScreen = ({onPressFn}) => {
           <>
             <TextInput
               placeholder="ex. login"
+              placeholderTextColor={colors.text}
               value={value}
               onChangeText={onChange}
               style={[
@@ -70,6 +71,7 @@ const ManualPushScreen = ({onPressFn}) => {
           <>
             <TextInput
               placeholder="ex. 123456"
+              placeholderTextColor={colors.text}
               value={value}
               onChangeText={onChange}
               style={[
@@ -91,6 +93,7 @@ const ManualPushScreen = ({onPressFn}) => {
           <>
             <TextInput
               placeholder="ex. https://esup-otp-api.univ.fr"
+              placeholderTextColor={colors.text}
               value={value}
               onChangeText={onChange}
               style={[
