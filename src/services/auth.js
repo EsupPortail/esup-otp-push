@@ -3,9 +3,8 @@ import {storage} from '../utils/storage';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
 import {useTotpStore} from '../stores/useTotpStore';
 import {Platform, ToastAndroid, Alert} from 'react-native';
-import {fetchEtablissement} from './nfcService';
 import {useNfcStore} from '../stores/useNfcStore';
-import { use } from 'react';
+import messaging from '@react-native-firebase/messaging';
 
 export const showToast = message => {
   if (Platform.OS === 'android') {
@@ -560,6 +559,23 @@ export const otpServerStatus = async (
           otpServersStack,
         );
       }
+    }
+    if (response.data.bad_GCM_ID){
+      console.warn('📱 GCM_ID invalide');
+      // le serveur me retourne le mauvais GCM_ID
+      const bad_GCM_ID = response.data.gcm_id;
+      // On récupère le nouveau GCM_ID de Firebase
+      const newGcmId = await messaging().getToken();
+      console.log('🔄 Nouveau GCM_ID récupéré:', newGcmId);
+      // On procède au refresh
+      const result = await refresh(
+        host,
+        uid,
+        tokenSecret,
+        bad_GCM_ID,
+        newGcmId
+      );
+      console.log('📱 Résultat du refresh après bad_GCM_ID:', result);
     }
   } catch (error) {
     if (error.message.includes('Network Error')) {
