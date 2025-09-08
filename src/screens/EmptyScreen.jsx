@@ -19,12 +19,13 @@ const EmptyScreen = ({setIsActionSheetOpen}) => {
             <TouchableOpacity onPress={() => showHelp('totp')}>
               <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>TOTP</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => showHelp('push')}>
+              <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>PUSH</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => showHelp('nfc')}>
               <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>NFC</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => showHelp('push')}>
-              <Text style={[styles.methodsTitle, styles.method, {color: colors.text}]}>Push</Text>
-            </TouchableOpacity>
+            
         </View>
         <Text style={[styles.textInfo, {color: colors.text}]}>
             Aucune méthode d'authentification n'a été configurée. Cliquez ci-dessous pour commencer la configuration.
