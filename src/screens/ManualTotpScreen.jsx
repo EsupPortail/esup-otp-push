@@ -75,7 +75,7 @@ const ManualTotpScreen = ({ onPressFn }) => {
             placeholderTextColor={colors.text}
             value={value}
             onChangeText={onChange}
-            autoCapitalize="characters"
+            autoCapitalize="none"
             style={[
                 styles.input,
                 { borderColor: colors.text, color: colors.text },
