@@ -54,6 +54,7 @@ const ManualTotpScreen = ({ onPressFn }) => {
               styles.input,
               { borderColor: colors.text, color: colors.text },
             ]}
+            autoCapitalize="none"
           />
           {error &&  <Text style={{color: 'red'}}>{error.message}</Text>}
           </>
