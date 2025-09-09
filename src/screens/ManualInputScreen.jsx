@@ -12,7 +12,7 @@ import { getManufacturer, getModel } from 'react-native-device-info';
 import { useTotpStore } from '../stores/useTotpStore';
 
 const ManualInputScreen = () => {
-  const [selectedOption, setSelectedOption] = React.useState('totp');
+  const [selectedOption, setSelectedOption] = React.useState('nfc');
   const establishments = useNfcStore(state => state.establishments);
   const addEstablishment = useNfcStore(state => state.addEstablishment);
   const setTotpObjects = useTotpStore(state => state.setTotpObjects);
