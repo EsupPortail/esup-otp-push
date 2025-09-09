@@ -146,7 +146,7 @@ export async function fetchEtablissement(url) {
   try {
     console.log('[Requesting URL]--- :', url);
 
-    const response = await axios.post(url, {
+    const response = await axios.get(url, {
       headers: {'Content-Type': 'application/json'},
       timeout: 10000,
     });
