@@ -16,6 +16,8 @@ import NfcBottomSheet from './components/NfcBottomSheet';
 import {setBottomSheetRef} from './services/nfcBottomSheetService';
 import AppSplashScreen from './components/AppSplashScreen';
 import { setStorage } from './utils/secureStorage';
+import ToastManager from 'toastify-react-native'
+import { toastConfig } from './components/Toast';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -104,6 +106,7 @@ export default function App() {
             />
           </View>
           <NfcBottomSheet ref={bottomSheetRef} />
+          <ToastManager config={toastConfig} />
         </AppContext.Provider>
       </NavigationContainer>
     </GestureHandlerRootView>

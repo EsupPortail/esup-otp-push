@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { useTotpStore } from '../stores/useTotpStore';
+import { Toast } from 'toastify-react-native';
 
 const ManualTotpScreen = ({ onPressFn }) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
@@ -17,10 +18,12 @@ const ManualTotpScreen = ({ onPressFn }) => {
     const cleanedSecret = cleanInput(secret);
     const cleanedName = cleanInput(name);
     if (cleanedSecret.length < 16 || cleanedSecret.length % 2 !== 0) {
-      Alert.alert(
-        'Erreur',
-        'Clé invalide'
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Clé invalide',
+        position: 'bottom',
+        visibilityTime: 6000,
+      });
       return;
     }
 
@@ -28,10 +31,10 @@ const ManualTotpScreen = ({ onPressFn }) => {
     const updated = { ...totpObjects, [cleanedSecret]: cleanedName };
 
     
-    if (onPress) onPress(updated);
-    reset();
-
-    navigation.goBack();
+    if (onPress) onPress(updated).then(()=> {
+      reset();
+      navigation.goBack();
+    });
   };
 
   return (

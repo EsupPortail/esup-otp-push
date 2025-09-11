@@ -5,6 +5,7 @@ import {useTotpStore} from '../stores/useTotpStore';
 import {Platform, ToastAndroid, Alert} from 'react-native';
 import {useNfcStore} from '../stores/useNfcStore';
 import messaging from '@react-native-firebase/messaging';
+import { Toast } from 'toastify-react-native';
 
 export const showToast = message => {
   if (Platform.OS === 'android') {
@@ -343,11 +344,6 @@ export const sync = async (
     }
   } catch (error) {
     console.error('Erreur dans sync:', error.message, error.response?.data);
-    showToast(
-      `${error.message}${
-        error.response ? `: ${error.response.data?.message || ''}` : ''
-      }`,
-    );
     return {success: false, message: error.message};
   }
 };
@@ -579,9 +575,12 @@ export const otpServerStatus = async (
     }
   } catch (error) {
     if (error.message.includes('Network Error')) {
-      showToast(
-        '⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.',
-      );
+      Toast.show({
+        type: 'error',
+        text1: '⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.',
+        position: 'bottom',
+        visibilityTime: 6000,
+      });
     } else {
       showToast(`📱 Erreur dans otpServerStatus: ${error.message}`);
     }
@@ -674,7 +673,12 @@ export const autoActivateTotp = async (
       const updated = {...currentTotpObjects, [totpKey]: serverName};
       useTotpStore.getState().setTotpObjects(updated);
 
-      showToast('Activation TOTP effectuée');
+      Toast.show({
+        type: 'success',
+        text1: 'Activation TOTP effectuée',
+        position: 'top',
+        visibilityTime: 6000,
+      })
       return {success: true};
     } else {
       throw new Error('Réponse invalide');
@@ -698,9 +702,12 @@ export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => 
 
     const response = await axios.post(wsUrl, {}, {timeout: 10000});
     if (response.data.code !== 'Ok') {
-      showToast(
-        'Authentification NFC non disponible pour ce serveur.',
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Authentification NFC non disponible pour ce serveur.',
+        position: 'bottom',
+        visibilityTime: 6000,
+      })
       return;
     }
     console.log('[autoActivateNFC] autoActivateNfc DATA:', data);
@@ -708,7 +715,12 @@ export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => 
       est => est.url === data.url,
     );
     if (exists) {
-      showToast('NFC déjà configuré pour cet établissement');
+      Toast.show({
+        type: 'info',
+        text1: 'NFC déjà configuré pour cet établissement',
+        position: 'bottom',
+        visibilityTime: 6000,
+      })
       console.log('[autoActivateNFC] Cet établissement est déjà ajouté.');
       return;
     }

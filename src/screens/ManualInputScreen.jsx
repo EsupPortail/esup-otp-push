@@ -10,6 +10,7 @@ import { storage } from '../utils/storage';
 import { showToast, sync } from '../services/auth';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { useTotpStore } from '../stores/useTotpStore';
+import { Toast } from 'toastify-react-native';
 
 const ManualInputScreen = () => {
   const [selectedOption, setSelectedOption] = React.useState('nfc');
@@ -42,8 +43,10 @@ const ManualInputScreen = () => {
       addEstablishment(newEstablishment);
       scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId);
       console.log('Établissement ajouté:', newEstablishment);
+      return {success: true};
     } catch (error) {
       console.error('[ManualNfc] Erreur:', error.message);
+      return {success: false, error: error.message};
     }
   };
   const handlePushSubmit = async ({uid, code, host}) => {
@@ -55,11 +58,13 @@ const ManualInputScreen = () => {
     
             if (result.success) {
               console.log('📱 Sync réussi ✅', result.data);
-              showToast('Synchronisation effectuée');
+              Toast.success('Synchronisation effectuée')
+              return {success: true};
               //refreshScreen();
             }
+            return {success: false};
   };
-  const handleTotpSubmit = newTotpObjects => {
+  const handleTotpSubmit = async newTotpObjects => {
     setTotpObjects(newTotpObjects);
     console.log('[ManualInputScreen] totpObjects mis à jour:', newTotpObjects);
   }

@@ -2,6 +2,7 @@ import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation, useTheme } from '@react-navigation/native';
+import { Toast } from 'toastify-react-native';
 
 const ManualNfcScreen = ({onPressFn}) => {
   const { control, handleSubmit, reset, formState: { errors } } = useForm();
@@ -15,9 +16,19 @@ const ManualNfcScreen = ({onPressFn}) => {
   const onSubmit = ({url}) => {
     const cleanedUrl = cleanInput(url);
     if (cleanedUrl) {
-      onPress(cleanedUrl);
-      reset();
-      navigation.goBack();
+      onPress(cleanedUrl).then((result) => {
+        if (result.success) {
+          reset();
+          navigation.goBack();
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Erreur lors de l\'activation. Veuillez vérifier vos informations.',
+            position: 'bottom',
+            visibilityTime: 6000,
+          });
+        }
+      });
     }
   }
 

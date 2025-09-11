@@ -1,7 +1,8 @@
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useNavigation, useTheme} from '@react-navigation/native';
+import { Toast } from 'toastify-react-native';
 
 const ManualPushScreen = ({onPressFn}) => {
   const {
@@ -28,12 +29,23 @@ const ManualPushScreen = ({onPressFn}) => {
     console.log('cleanedHost:', cleanedHost);
 
     if (cleanedUid && cleanedCode && cleanedHost) {
-      onPress({uid: cleanedUid, code: cleanedCode, host: cleanedHost});
-      reset();
-      navigation.goBack();
+      onPress({uid: cleanedUid, code: cleanedCode, host: cleanedHost}).then((result) => {
+        if (result.success) {
+          reset();
+          navigation.goBack();
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Erreur lors de l\'activation. Veuillez vérifier vos informations.',
+            position: 'bottom',
+            visibilityTime: 6000,
+          });
+        }
+      });
     }
     } catch (error) {
         console.error('Erreur:', error);
+        Toast.error('Une erreur est survenue. Veuillez réessayer.');
     }
   };
 
