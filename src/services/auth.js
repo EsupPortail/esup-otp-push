@@ -222,9 +222,12 @@ export const accept = async (
     }
   } catch (error) {
     if (error.message.includes('Network Error')) {
-      showToast(
-        '⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.',
-      );
+      Toast.show({
+        type: 'error',
+        text1: '⚠ Connexion réseau indisponible. Veuillez vérifier votre connexion.',
+        position: 'bottom',
+        visibilityTime: 6000,
+      });
     } else {
       showToast(error.message || 'Erreur lors de la validation.');
     }
@@ -317,7 +320,7 @@ export const sync = async (
       };
       useOtpServersStore.getState().setOtpServers(updatedOtpServers);
       console.log('otpServers mis à jour:', updatedOtpServers);
-      showToast('Synchronisation effectuée');
+      //showToast('Synchronisation effectuée');
 
       if (response.data.autoActivateTotp) {
         await autoActivateTotp(
