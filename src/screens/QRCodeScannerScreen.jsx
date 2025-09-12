@@ -1,14 +1,15 @@
-import React, {useRef, useState, useEffect, useCallback} from 'react';
+import React, {useRef, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {Camera, CameraType} from 'react-native-camera-kit';
 import {useNavigation} from '@react-navigation/native';
 import { handleUniversalQrCodeScan } from '../utils/qrCodeHandler';
+import { useCameraController } from '../hooks/useCameraController';
 
 const QRCodeScannerScreen = () => {
   const {colors} = useTheme();
   const navigation = useNavigation();
-  const [isScanning, setIsScanning] = useState(true);
+  const { isScanning, setIsScanning, startReloadCamera } = useCameraController();
   const cameraRef = useRef(null);
   const hasScanned = useRef(false); // Ajout pour bloquer les scans multiples
 
@@ -51,16 +52,19 @@ const QRCodeScannerScreen = () => {
 
   return (
     <View style={[styles.container, {backgroundColor: colors.background}]}>
-      <Camera
-        ref={cameraRef}
-        cameraType={CameraType.Back}
-        style={styles.camera}
-        scanBarcode={isScanning}
-        onReadCode={onReadCode}
-        showFrame={true}
-        laserColor="#FF3B30"
-        frameColor={colors.primary}
-      />
+      {
+        startReloadCamera && 
+          <Camera
+          ref={cameraRef}
+          cameraType={CameraType.Back}
+          style={styles.camera}
+          scanBarcode={isScanning}
+          onReadCode={onReadCode}
+          showFrame={true}
+          laserColor="#FF3B30"
+          frameColor={colors.primary}
+        />
+      }
       <TouchableOpacity
         style={[styles.backButton, {backgroundColor: colors.card}]}
         onPress={() => {
