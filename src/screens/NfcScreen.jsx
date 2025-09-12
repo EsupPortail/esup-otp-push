@@ -126,9 +126,10 @@ function NfcScreen({withoutAddButton}) {
     }
   };
 
-  const howToEnable = () => {
+  const howToEnable = async () => {
     const data = getHelpByKey('nfc');
-    if (!isNfcEnabled) {
+    const {isEnabled} = await checkNfc();
+    if (!isEnabled) {
       Alert.alert(
         'Activer NFC',
         'Pour utiliser cette méthode, activez la fonctionnalité NFC dans les paramètres de votre appareil.',
