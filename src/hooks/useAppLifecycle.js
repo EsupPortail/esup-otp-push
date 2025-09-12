@@ -3,8 +3,8 @@ import { AppState } from 'react-native';
 
 export const useAppLifecycle = () => {
   const [appState, setAppState] = useState(AppState.currentState);
-  const appStateRef = useRef(AppState.currentState); // Pour garder la valeur précédente
-  const isAppResumedRef = useRef(false); // Pour indiquer si l'app est revenue au premier plan
+  const [isAppResumed, setIsAppResumed] = useState(false); // On gère l'état de reprise ici
+  const appStateRef = useRef(AppState.currentState); // Pour se souvenir de l'état précédent
 
   const handleAppStateChange = (nextAppState) => {
     const previousAppState = appStateRef.current;
@@ -16,9 +16,15 @@ export const useAppLifecycle = () => {
       previousAppState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
-      isAppResumedRef.current = true;
+      // On met à jour l'état de "reprise" à true
+      setIsAppResumed(true);
       console.log('App has resumed from background!');
     }
+  };
+
+  // Une fonction pour que le composant puisse réinitialiser l'état
+  const resetIsAppResumed = () => {
+    setIsAppResumed(false);
   };
 
   useEffect(() => {
@@ -35,11 +41,12 @@ export const useAppLifecycle = () => {
     return () => {
       subscription.remove();
     };
-  }, []);
+  }, []); // On garde le tableau de dépendances vide, car la fonction handleAppStateChange utilise une ref
 
   return {
-    appState, // Etat de l'app ('active', 'background', 'inactive')
-    isForeground: appState === 'active', // Booléen indiquant si l'app est au premier plan
-    isAppResumed: isAppResumedRef.current, // Booléen indiquant si l'app est revenue au premier plan
+    appState,
+    isForeground: appState === 'active',
+    isAppResumed,
+    resetIsAppResumed, // On expose la fonction pour réinitialiser l'état
   };
 };

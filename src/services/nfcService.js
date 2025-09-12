@@ -4,7 +4,6 @@ import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
 import { nfcSessionManager } from '../utils/nfcSessionManager';
 import { showToast } from './auth';
 import { showError, openBottomSheet, showWaiting, showSuccess, showDisabled } from './nfcBottomSheetService';
-import { useNfcStore } from '../stores/useNfcStore';
 
 // Fonction pour envoyer une commande APDU au tag NFC
 async function sendApduCommandToTag(tag, command) {
@@ -181,9 +180,8 @@ export async function fetchEtablissement(url) {
   }
 }
 
-export const scanTagForEstablishment = async (url, numeroId) => {
+export const scanTagForEstablishment = async (url, numeroId, isNfcEnabled) => {
   try {
-    const { isNfcEnabled } = useNfcStore.getState();
     console.log('[scanTagForEstablishment] état NFC:', isNfcEnabled);
     console.log('[scanTagForEstablishment] Début lecture NFC pour:', { url, numeroId });
     

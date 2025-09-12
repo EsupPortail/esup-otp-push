@@ -24,21 +24,33 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useNfcStore} from '../stores/useNfcStore';
 import { getHelpByKey } from '../data/helpData';
+import { useAppLifecycle } from '../hooks/useAppLifecycle';
 
 function NfcScreen({withoutAddButton}) {
   const {colors} = useTheme();
   const isScanningRef = useRef(false);
   const [isNfcSupported, setIsNfcSupported] = useState(null); // null = en cours de vérification
+  const {isAppResumed, resetIsAppResumed} = useAppLifecycle();
   const setIsNfcEnabled = useNfcStore(state => state.setIsNfcEnabled);
   const isNfcEnabled = useNfcStore(state => state.isNfcEnabled);
   const establishments = useNfcStore(state => state.establishments);
   const removeEstablishment = useNfcStore(state => state.removeEstablishment);
 
   useEffect(() => {
-    checkNfc().then(({ isEnabled, isSupported }) => {
+    checkNfc().then(({ isSupported, isEnabled }) => {
       setIsNfcEnabled(isEnabled);
       setIsNfcSupported(isSupported);
+    });
+    console.log('[NFC] isNfcEnabled:', isNfcEnabled);
+    console.log('[NFC] isNfcSupported:', isNfcSupported);
+    console.log('[NFC] isAppResumed:', isAppResumed);
+    resetIsAppResumed(); // On réinitialise l'état après l'avoir utilisé
+  }, [isAppResumed]);
 
+  const canNfcStart = async () => {
+    console.log('[canNfcStart] Vérification avant démarrage NFC');
+    const {isSupported, isEnabled} = await checkNfc();
+    try {
       if (!isEnabled && isSupported) {
         Alert.alert(
           'Activer NFC',
@@ -53,14 +65,19 @@ function NfcScreen({withoutAddButton}) {
             }
           ]
         );
+        return;
       }
 
       if (isEnabled) {
         NfcManager.start();
       }
-    });
 
-  }, [isNfcEnabled]);
+      return isEnabled && isSupported;
+    } catch (error) {
+      console.error('[NFC] Erreur lors de la vérification:', error);
+      return false;
+    }
+  };
 
   const cleanupNfc = async () => {
     if (isScanningRef.current) {
@@ -102,8 +119,8 @@ function NfcScreen({withoutAddButton}) {
       // Vérifier à nouveau si NFC est activé après retour des paramètres
       const enabled = await NfcManager.isEnabled();
       console.log('[NFC enabled after setting:]', enabled);
-      setIsNfcEnabled(enabled);
-      if (enabled) NfcManager.start();
+      //setIsNfcEnabled(enabled);
+      //if (enabled) NfcManager.start();
     } catch (error) {
       Alert.alert('Erreur', 'Impossible d’ouvrir les paramètres NFC.');
     }
@@ -157,9 +174,10 @@ function NfcScreen({withoutAddButton}) {
             styles.establishmentButton,
             {backgroundColor: colors.secondary},
           ]}
-          onPress={() => {
-            //if (!isNFCenabled) return;
-            scanTagForEstablishment(item.url, item.numeroId);
+          onPress={async () => {
+            const canStart = await canNfcStart();
+            //if (!canStart) return;
+            scanTagForEstablishment(item.url, item.numeroId, canStart);
           }}>
           <Text style={styles.establishmentText}>{item.etablissement}</Text>
         </TouchableOpacity>
