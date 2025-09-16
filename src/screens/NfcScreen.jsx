@@ -12,8 +12,6 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  Alert,
-  Platform,
 } from 'react-native';
 import NfcManager from 'react-native-nfc-manager';
 import {
@@ -23,7 +21,6 @@ import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useNfcStore} from '../stores/useNfcStore';
-import { getHelpByKey } from '../data/helpData';
 import { useAppLifecycle } from '../hooks/useAppLifecycle';
 import { canNfcStart, checkNfc, howToEnable } from '../utils/nfcUtils';
 
@@ -45,7 +42,7 @@ function NfcScreen({withoutAddButton}) {
     console.log('[NFC] isNfcEnabled:', isNfcEnabled);
     console.log('[NFC] isNfcSupported:', isNfcSupported);
     console.log('[NFC] isAppResumed:', isAppResumed);
-    resetIsAppResumed(); // On réinitialise l'état après l'avoir utilisé
+    //resetIsAppResumed(); // On réinitialise l'état après l'avoir utilisé
   }, [isAppResumed]);
 
   const cleanupNfc = async () => {

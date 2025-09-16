@@ -10,14 +10,17 @@ import {MigrateToMMKV} from './components/MigrateStorage';
 import useNotifications from './hooks/useNotifications';
 import {initializeFirebase} from './utils/firebase';
 import MireActionSheet from './components/MireActionSheet';
-import {cleanOtpServers} from './services/auth';
-import {Gesture, GestureHandlerRootView} from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from './components/NfcBottomSheet';
 import {setBottomSheetRef} from './services/nfcBottomSheetService';
 import AppSplashScreen from './components/AppSplashScreen';
 import { setStorage } from './utils/secureStorage';
 import ToastManager from 'toastify-react-native'
 import { toastConfig } from './components/Toast';
+import { usePushNotificationPermission } from './hooks/usePushNotificationPermission';
+import { useAppLifecycle } from './hooks/useAppLifecycle';
+import NfcManager from 'react-native-nfc-manager';
+import { useNfcStore } from './stores/useNfcStore';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -31,6 +34,7 @@ export default function App() {
   }, [isDarkTheme]);
   const bottomSheetRef = useRef(null);
   const {
+    initAuth,
     notified,
     setNotified,
     additionalData,
@@ -38,6 +42,21 @@ export default function App() {
     otpServersObjects,
     setOtpServersObjects,
   } = useNotifications();
+  const { checkPermission } = usePushNotificationPermission();
+  const setIsNfcEnabled = useNfcStore(state => state.setIsNfcEnabled);
+
+  //checker la permission pour le push
+
+  useAppLifecycle(async () => {
+    console.log('📱 [APP] App resumed');
+    await initAuth();
+    const stateOfNfc = await NfcManager.isEnabled();
+    setIsNfcEnabled(stateOfNfc);
+    
+    // Vérifie la permission avant de demander
+    console.log('📱 [APP] Vérification de la permission');
+    checkPermission();
+  });
 
   // initStorage
   useEffect(() => {

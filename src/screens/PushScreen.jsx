@@ -103,7 +103,7 @@ const PushScreen = ({withoutAddButton}) => {
       style={[styles.container, {backgroundColor: colors.background}]}>
       {!withoutAddButton && (
         <TouchableOpacity style={styles.header} onPress={howToEnable}>
-          <Icon name="notification-clear-all" color={colors.text} size={30} />
+          <Icon name="bell-badge-outline" color={colors.text} size={30} />
           <Text style={[styles.cardTitle, {color: colors.text}]}>PUSH</Text>
         </TouchableOpacity>
       )}
