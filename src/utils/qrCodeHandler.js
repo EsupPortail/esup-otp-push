@@ -47,8 +47,8 @@ export const handleUniversalQrCodeScan = async (qrCodeData) => {
       const nfcResult = await handleNfcQrCode(parsedJson);
       if (nfcResult.success) {
         const { scanTagForEstablishment } = require('../services/nfcService');
-        await canNfcStart();
-        scanTagForEstablishment(parsedJson.url, parsedJson.numeroId);
+        const canStart =await canNfcStart();
+        scanTagForEstablishment(parsedJson.url, parsedJson.numeroId, canStart);
       }
       //navigation.navigate('NfcScreen');
       return nfcResult;
