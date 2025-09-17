@@ -702,7 +702,7 @@ export const autoActivateNfc = async (otpServerKey, otpServersObjects, data) => 
       Toast.show({
         type: 'info',
         text1: 'NFC déjà configuré pour cet établissement',
-        position: 'bottom',
+        position: 'top',
         visibilityTime: 6000,
       })
       console.log('[autoActivateNFC] Cet établissement est déjà ajouté.');
