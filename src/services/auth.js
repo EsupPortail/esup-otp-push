@@ -138,6 +138,7 @@ export const notification = (
     // === Cas DESYNC ===
     //
     else if (isDesync) {
+      console.log('🔔 Notification de désactivation reçue, OtpServers :', updatedOtpServers);
       let matchingKey = findMatchingOtpServer({
         otpServers: updatedOtpServers,
         otpServerKey,
@@ -605,35 +606,15 @@ export const otpServerStatus = async (
 // Find matching OTP server
 // ===============================
 export function findMatchingOtpServer({otpServers, otpServerKey, hostToken}) {
-  // 1. Correspondance directe via la clé
-  if (otpServerKey && otpServers[otpServerKey]) {
-    console.log('✅ Match direct via otpServerKey:', otpServerKey);
-    return otpServerKey;
-  }
-
-  // 2. Fallback : recherche par hostToken
-  if (hostToken) {
-    const fallbackKey = Object.keys(otpServers).find(key => {
-      const serverToken = otpServers[key]?.hostToken || '';
-      const match = serverToken === hostToken;
-      console.log(
-        `🔍 Match hostToken ? ${serverToken} === ${hostToken} → ${match}`,
-      );
-      return match;
-    });
-
-    if (fallbackKey) {
-      console.log('✅ Match via hostToken:', fallbackKey);
-      return fallbackKey;
+      console.log('[AUTH] hostToken correspondant: '+otpServers[otpServerKey].hostToken +' == '+hostToken);
+  if (
+      otpServerKey && otpServers[otpServerKey] 
+      && (otpServers[otpServerKey].hostToken || '') === (hostToken || '')
+    ) 
+    {
+      console.log('✅ Matching:', otpServerKey);
+      return otpServerKey;
     }
-  }
-
-  // 3. Dernier recours : un seul serveur connu
-  const allKeys = Object.keys(otpServers);
-  if (allKeys.length === 1) {
-    console.warn('⚠️ Fallback : 1 seul serveur connu, on le prend par défaut');
-    return allKeys[0];
-  }
 
   // Aucun match trouvé
   return null;
