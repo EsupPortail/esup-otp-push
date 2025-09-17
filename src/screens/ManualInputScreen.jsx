@@ -11,6 +11,7 @@ import { showToast, sync } from '../services/auth';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { useTotpStore } from '../stores/useTotpStore';
 import { Toast } from 'toastify-react-native';
+import { canNfcStart } from '../utils/nfcUtils';
 
 const ManualInputScreen = () => {
   const [selectedOption, setSelectedOption] = React.useState('nfc');
@@ -41,7 +42,8 @@ const ManualInputScreen = () => {
         return;
       }
       addEstablishment(newEstablishment);
-      scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId);
+      const canstart = await canNfcStart();
+      scanTagForEstablishment(newEstablishment.url, newEstablishment.numeroId, canstart);
       console.log('Établissement ajouté:', newEstablishment);
       return {success: true};
     } catch (error) {
