@@ -1,22 +1,32 @@
 import { useState, useEffect, useRef } from 'react';
 import { storage } from '../utils/storage';
 import { otpServerStatus } from '../services/auth';
+import { useOtpServersStore } from '../stores/useOtpServersStore';
 
 export const useOtpAuth = () => {
   const [notified, setNotified] = useState(false);
   const [additionalData, setAdditionalData] = useState(null);
-  const [otpServersObjects, setOtpServersObjects] = useState(
-    storage.getString('otpServers') ? JSON.parse(storage.getString('otpServers')) : {}
-  );
+  const otpServersObjectsZustand = useOtpServersStore(state => state.otpServers);
+  const [otpServersObjects, setOtpServersObjects] = useState(otpServersObjectsZustand);
 
   const otpServersRef = useRef(otpServersObjects);
   const lastProcessedLtRef = useRef(null);
 
   useEffect(() => {
+    setOtpServersObjects(otpServersObjectsZustand);
+  }, [otpServersObjectsZustand]);
+
+  useEffect(() => {
+    console.log('[useOtpAuth] otpServersObjects changed:', otpServersObjects);
     otpServersRef.current = otpServersObjects;
   }, [otpServersObjects]);
 
   const initAuth = async () => {
+    console.log('[useOtpAuth] initAuth OtpServersObject:', otpServersObjects);
+    console.log('[useOtpAuth] initAuth OtpServersRef:', otpServersRef.current);
+    // check on zustand store
+    const otpServersFromStore = useOtpServersStore.getState().otpServers;
+    console.log('[useOtpAuth] initAuth OtpServersFromStore:', otpServersFromStore);
     const servers = otpServersRef.current;
     if (Object.keys(servers).length === 0) {
       console.warn('📱 initAuth: Aucun serveur OTP configuré');

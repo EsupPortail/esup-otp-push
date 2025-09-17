@@ -14,9 +14,9 @@ const useNotifications = () => {
 
   const isProcessingRef = useRef(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     otpServersRef.current = otpServersObjects;
-  }, [otpServersObjects]);
+  }, [otpServersObjects]);*/
 
   const initializeToken = async () => {
     try {
