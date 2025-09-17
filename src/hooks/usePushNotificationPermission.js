@@ -65,7 +65,7 @@ export const usePushNotificationPermission = () => {
     switch (status.status) {
       case RESULTS.BLOCKED:
         Alert.alert(
-          'Permission bloquée',
+          'Notification bloquée',
           'Veuillez activer les notifications dans les paramètres de votre appareil pour continuer.',
           [
             { text: 'Annuler', style: 'cancel' },
@@ -75,7 +75,7 @@ export const usePushNotificationPermission = () => {
         break;
       case RESULTS.DENIED:
         Alert.alert(
-          'Permission refusée',
+          'Notification refusée',
           'Vous avez refusé les notifications. Vous pouvez les activer dans les paramètres de l\'application.',
           [
             { text: 'Annuler', style: 'cancel' },
@@ -86,7 +86,7 @@ export const usePushNotificationPermission = () => {
       case RESULTS.GRANTED:
         if (permissionStatus !== RESULTS.GRANTED) Toast.show({
             type: 'success',
-            text1: 'Notifications activées',
+            text1: 'Notification activée',
         })
         setPermissionStatus(RESULTS.GRANTED);
         console.log('Notification permission granted.');
