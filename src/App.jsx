@@ -21,6 +21,7 @@ import { usePushNotificationPermission } from './hooks/usePushNotificationPermis
 import { useAppLifecycle } from './hooks/useAppLifecycle';
 import NfcManager from 'react-native-nfc-manager';
 import { useNfcStore } from './stores/useNfcStore';
+import { useOtpServersStore } from './stores/useOtpServersStore';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -42,20 +43,29 @@ export default function App() {
     otpServersObjects,
     setOtpServersObjects,
   } = useNotifications();
-  const { checkPermission } = usePushNotificationPermission();
   const setIsNfcEnabled = useNfcStore(state => state.setIsNfcEnabled);
+  const otpServers = useOtpServersStore(state => state.otpServers);
+  const { permissionStatus, askPermissionIfNeeded, checkPermission } = usePushNotificationPermission(otpServers);
 
-  //checker la permission pour le push
+  // Vérifie la permission avant de demander
+  useEffect(() => {
+    console.log('[App] permissionStatus:', permissionStatus);
+    if (Object.keys(otpServers).length > 0) {
+      askPermissionIfNeeded();
+    }
+  }, [otpServers]);
 
+
+// Gestion du Resume de l'application
   useAppLifecycle(async () => {
     console.log('📱 [APP] App resumed');
     await initAuth();
     const stateOfNfc = await NfcManager.isEnabled();
     setIsNfcEnabled(stateOfNfc);
-    
-    // Vérifie la permission avant de demander
-    console.log('📱 [APP] Vérification de la permission');
-    checkPermission();
+
+    if (Object.keys(otpServers).length > 0) {
+      checkPermission();
+    }
   });
 
   // initStorage

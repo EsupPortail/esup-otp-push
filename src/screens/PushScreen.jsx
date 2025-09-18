@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Linking,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -37,6 +38,27 @@ const PushScreen = ({withoutAddButton}) => {
   };
 
   const howToEnable = () => {
+    const status = storage.getString('pushPermissionStatus');
+    if (status === 'denied' || status === 'never_ask_again') {
+      Alert.alert(
+        'Autoriser les notifications PUSH',
+        'Pour utiliser cette méthode, activez la fonctionnalité PUSH dans les réglages de votre appareil.',
+        [,
+          {text: 'Plus tard'},
+          {
+            text: 'Ouvrir les réglages',
+            onPress: () => {
+              if (Platform.OS === 'ios') {
+                Linking.openURL('app-settings:');
+              } else {
+                Linking.openSettings();
+              }
+            },
+          }
+        ]
+      );
+      return;
+    }
     const data = getHelpByKey('push');
     if (data) {
       Alert.alert(data.title, data.content)
