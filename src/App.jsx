@@ -45,16 +45,7 @@ export default function App() {
   } = useNotifications();
   const setIsNfcEnabled = useNfcStore(state => state.setIsNfcEnabled);
   const otpServers = useOtpServersStore(state => state.otpServers);
-  const { permissionStatus, askPermissionIfNeeded, checkPermission } = usePushNotificationPermission(otpServers);
-
-  // Vérifie la permission avant de demander
-  useEffect(() => {
-    console.log('[App] permissionStatus:', permissionStatus);
-    if (Object.keys(otpServers).length > 0) {
-      askPermissionIfNeeded();
-    }
-  }, [otpServers]);
-
+  const { checkPermission } = usePushNotificationPermission(otpServers);
 
 // Gestion du Resume de l'application
   useAppLifecycle(async () => {

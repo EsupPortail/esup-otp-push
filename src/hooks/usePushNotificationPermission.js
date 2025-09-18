@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, useRef } from 'react';
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import {
   openSettings,
@@ -18,6 +18,7 @@ const permissionType = Platform.select({
 
 export const usePushNotificationPermission = (otpServers) => {
   const [permissionStatus, setPermissionStatus] = useState(storage.getString('pushPermissionStatus') || 'unknown');
+  const previousOtpServersCount = useRef(Object.keys(otpServers).length);
 
   // 1. Au lancement, si aucun push configuré, on considère refusé
   useEffect(() => {
@@ -27,11 +28,22 @@ export const usePushNotificationPermission = (otpServers) => {
     }
   }, [otpServers]);
 
-  // 2. Quand un push est ajouté, on demande la permission si jamais demandée
+  // 2. Quand un push est ajouté, on demande la permission
+  useEffect(() => {
+    console.log('[usePushNotificationPermission] otpServers changed, checking for additions');
+    const currentCount = Object.keys(otpServers).length;
+    if (currentCount > previousOtpServersCount.current) {
+      console.log('[usePushNotificationPermission] Detected addition of push server, asking for permission');
+      askPermissionIfNeeded();
+    }
+    previousOtpServersCount.current = currentCount;
+  }, [otpServers]);
+
+  // 3. Quand un push est ajouté, on demande la permission si jamais demandée
   const askPermissionIfNeeded = async () => {
     const current = storage.getString('pushPermissionStatus');
     console.log('[usePushNotificationPermission] askPermissionIfNeeded, current status:', current);
-    if (current === 'never_ask_again' || current === 'granted') return;
+    if (current === 'granted') return;
 
     const { status } = await requestNotifications(['alert', 'sound', 'badge']);
     console.log('[usePushNotificationPermission] askPermissionIfNeeded, new status:', status);
@@ -45,7 +57,10 @@ export const usePushNotificationPermission = (otpServers) => {
         'Notifications refusées',
         'Vous avez refusé les notifications. Pour les activer, allez dans les réglages de l’application.',
         [
-          { text: 'Plus tard' },
+          { text: 'Plus tard', onPress: () => {
+            setPermissionStatus('never_ask_again');
+            storage.set('pushPermissionStatus', 'never_ask_again');
+          } },
           { text: 'Ouvrir les réglages', onPress: () => openSettings('application') },
         ]
       );
@@ -63,8 +78,20 @@ export const usePushNotificationPermission = (otpServers) => {
       console.log('[usePushNotificationPermission] check ', permissionType);
       const status = await checkNotifications(permissionType);
       console.log('[usePushNotificationPermission] status:', status);
-      setPermissionStatus(status.status);
-      storage.set('pushPermissionStatus', status.status);
+      if (status.status === RESULTS.GRANTED) {
+        if (permissionStatus !== RESULTS.GRANTED) Toast.show({
+            type: 'success',
+            text1: 'Notifications activées',
+        })
+        setPermissionStatus(RESULTS.GRANTED);
+        storage.set('pushPermissionStatus', RESULTS.GRANTED);
+        return;
+      } else {
+        console.log('[usePushNotificationPermission] Notifications non autorisées >> never_ask_again');
+        setPermissionStatus('never_ask_again');
+        storage.set('pushPermissionStatus', 'never_ask_again');
+      }
+      
     } catch (error) {
       console.error('Erreur lors de la vérification de la permission:', error);
     }
