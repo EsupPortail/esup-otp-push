@@ -1,5 +1,5 @@
 import {Platform, StyleSheet, Text, View, ScrollView} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RadioButton from '../components/RadioButton';
 import ManualNfcScreen from './ManualNfcScreen';
 import ManualPushScreen from './ManualPushScreen';
@@ -11,13 +11,23 @@ import { showToast, sync } from '../services/auth';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { useTotpStore } from '../stores/useTotpStore';
 import { Toast } from 'toastify-react-native';
-import { canNfcStart } from '../utils/nfcUtils';
+import { canNfcStart, checkNfc } from '../utils/nfcUtils';
 
 const ManualInputScreen = () => {
   const [selectedOption, setSelectedOption] = React.useState('nfc');
   const establishments = useNfcStore(state => state.establishments);
   const addEstablishment = useNfcStore(state => state.addEstablishment);
   const setTotpObjects = useTotpStore(state => state.setTotpObjects);
+  const [isNfcSupported, setIsNfcSupported] = useState(null);
+
+  useEffect(() => {
+    checkNfc().then(({ isSupported, isEnabled }) => {
+      setIsNfcSupported(isSupported);
+      if (!isSupported) {
+        setSelectedOption('totp');
+      }
+    });
+  }, []);
 
   const handleNfcSubmit = async url => {
     try {
@@ -71,15 +81,19 @@ const ManualInputScreen = () => {
     console.log('[ManualInputScreen] totpObjects mis à jour:', newTotpObjects);
   }
 
+  const options = [
+    {label: 'TOTP', value: 'totp'},
+    {label: 'PUSH', value: 'push'},
+  ];
+  if (isNfcSupported) {
+    options.push({label: 'NFC', value: 'nfc'});
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.inputContainer}>
         <RadioButton
-          options={[
-            {label: 'TOTP', value: 'totp'},
-            {label: 'PUSH', value: 'push'},
-            {label: 'NFC', value: 'nfc'},
-          ]}
+          options={options}
           checked={selectedOption}
           onChange={option => setSelectedOption(option)}
         />
@@ -90,7 +104,7 @@ const ManualInputScreen = () => {
       {selectedOption === 'totp' && (
         <ManualTotpScreen onPressFn={{onPress: handleTotpSubmit}} />
       )}
-      {selectedOption === 'nfc' && (
+      {selectedOption === 'nfc' && isNfcSupported && (
         <ManualNfcScreen onPressFn={{onPress: handleNfcSubmit}} />
       )}
     </ScrollView>

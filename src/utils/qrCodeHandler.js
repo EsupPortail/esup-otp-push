@@ -6,7 +6,7 @@ import { sync, autoActivateTotp, showToast } from '../services/auth';
 import { Alert, Platform } from 'react-native';
 import { Totp } from '../utils/totp';
 import { getManufacturer, getModel } from 'react-native-device-info';
-import { canNfcStart } from './nfcUtils';
+import { canNfcStart, checkNfc } from './nfcUtils';
 
 export const handleUniversalQrCodeScan = async (qrCodeData) => {
   try {
@@ -44,6 +44,12 @@ export const handleUniversalQrCodeScan = async (qrCodeData) => {
     } else if (parsedJson && parsedJson.url && parsedJson.numeroId && parsedJson.etablissement) {
       // QR code NFC
       console.log('[handleUniversalQrCodeScan] Détection QR code NFC');
+      // Avant de démarrer, vérifie que le NFC est supporté
+      const { isSupported } = await checkNfc();
+      if (!isSupported) {
+        showToast('NFC non supporté sur cet appareil');
+        return { success: false, message: 'NFC non supporté sur cet appareil' };
+      }
       const nfcResult = await handleNfcQrCode(parsedJson);
       if (nfcResult.success) {
         const { scanTagForEstablishment } = require('../services/nfcService');
