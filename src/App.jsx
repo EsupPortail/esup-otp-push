@@ -14,7 +14,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from './components/NfcBottomSheet';
 import {setBottomSheetRef} from './services/nfcBottomSheetService';
 import AppSplashScreen from './components/AppSplashScreen';
-import { setStorage } from './utils/secureStorage';
+import { initializeSecureStorage, setStorage } from './utils/secureStorage';
 import ToastManager from 'toastify-react-native'
 import { toastConfig } from './components/Toast';
 import { usePushNotificationPermission } from './hooks/usePushNotificationPermission';
