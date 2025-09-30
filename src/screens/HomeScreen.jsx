@@ -18,6 +18,7 @@ import {useNfcStore} from '../stores/useNfcStore';
 import {useTotpStore} from '../stores/useTotpStore';
 import EmptyScreen from './EmptyScreen';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   const {colors} = useTheme();
@@ -25,6 +26,7 @@ export default function HomeScreen() {
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   const [isNfcSupported, setIsNfcSupported] = useState(null);
   const data = [];
+  const insets = useSafeAreaInsets();
 
   // Utilisez les hooks Zustand pour récupérer l'état.
   // Le composant s'abonne maintenant aux changements de ces états.
@@ -96,7 +98,7 @@ export default function HomeScreen() {
       )}
       {!isEmpty && (
         <TouchableOpacity
-          style={styles.floattingButton}
+          style={[  styles.floattingButton, {bottom: insets.bottom + 20}]}
           onPress={() => setIsActionSheetOpen(true)}>
           <Icon name="plus-circle" color={colors.primary} size={56} />
         </TouchableOpacity>
@@ -126,7 +128,6 @@ const styles = StyleSheet.create({
   floattingButton: {
     position: 'absolute',
     elevation: 5,
-    bottom: 5,
     right: 30,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
