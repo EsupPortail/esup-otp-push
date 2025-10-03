@@ -127,6 +127,5 @@ dependencies {
     }
     implementation project(':react-native-default-preference')
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.google.firebase:firebase-analytics")
 }
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
