@@ -107,11 +107,12 @@ const handlePushQrCode = async (url) => {
     const result = await sync(host, uid, code, gcmId, platform, manufacturer, model);
     if (!result.success) {
       showToast('Échec de la synchronisation PUSH');
+    } else {
+      showToast('Synchronisation PUSH réussie');
+      return { success: true, data: result.data };
     }
 
     console.log('[handlePushQrCode] PUSH synchronisé:', result);
-    showToast('Synchronisation PUSH réussie');
-    return { success: true, data: result.data };
   } catch (error) {
     console.error('[handlePushQrCode] Erreur:', error.message);
     throw error;
