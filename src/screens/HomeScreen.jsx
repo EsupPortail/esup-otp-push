@@ -19,6 +19,8 @@ import {useTotpStore} from '../stores/useTotpStore';
 import EmptyScreen from './EmptyScreen';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { set } from 'react-hook-form';
+import { browserManager } from '../stores/useBrowserStore';
 
 export default function HomeScreen() {
   const {colors} = useTheme();
@@ -40,6 +42,10 @@ export default function HomeScreen() {
   };
   const handleManualInput = () => {
     navigation.navigate('ManualInput');
+  };
+  const handleBrowser = () => {
+    setIsActionSheetOpen(false);
+    browserManager.show();
   };
 
   const checkNfc = async () => {
@@ -109,6 +115,7 @@ export default function HomeScreen() {
         actions={[
           {label: 'Scanner QR code', onPress: handleScanQrCode},
           {label: 'Saisie manuelle', onPress: handleManualInput},
+          {label: 'Navigateur sécurisé', onPress: handleBrowser},
         ]}
       />
     </>

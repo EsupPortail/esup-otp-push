@@ -22,6 +22,7 @@ import { useAppLifecycle } from './hooks/useAppLifecycle';
 import NfcManager from 'react-native-nfc-manager';
 import { useNfcStore } from './stores/useNfcStore';
 import { useOtpServersStore } from './stores/useOtpServersStore';
+import BrowserBottomSheet from './screens/BrowserScreen';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -126,6 +127,7 @@ export default function App() {
             />
           </View>
           <NfcBottomSheet ref={bottomSheetRef} />
+          <BrowserBottomSheet />
           <ToastManager config={toastConfig} />
         </AppContext.Provider>
       </NavigationContainer>
