@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export default function BrowserBottomSheet() {
   const bottomSheetRef = useRef(null);
   const {visible, url, hide} = useBrowserStore();
-  const snapPoints = useMemo(() => ['90%'], []);
+  const snapPoints = useMemo(() => ['40%','70%','90%'], []);
 
   return (
     <BottomSheet
@@ -24,6 +24,7 @@ export default function BrowserBottomSheet() {
       snapPoints={snapPoints}
       enablePanDownToClose
       onClose={hide}
+      enableContentPanningGesture={false}
     >
       <BottomSheetView style={styles.sheetContent}>
         <WebView source={{uri: url}} style={styles.webview} />
