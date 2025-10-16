@@ -13,12 +13,47 @@ import {useBrowserStore} from '../stores/useBrowserStore';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
+import MethodsScreen from './MethodsScreen';
+import { fetchUserInfo } from '../services/browserService';
 
 export default function BrowserBottomSheet() {
+  const [user, setUser] = React.useState(null);
   const bottomSheetRef = useRef(null);
   const {visible, url, hide} = useBrowserStore();
   const snapPoints = useMemo(() => ['10%','40%','70%','90%'], []);
-  const {webviewRef,onNavigationStateChange} = useBrowserActions(url);
+  const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
+
+  const injectedJS = `
+    (function() {
+      function checkCookie() {
+        const cookies = document.cookie;
+        if (cookies.includes('connect.sid')) {
+          window.ReactNativeWebView.postMessage(cookies);
+        } else {
+          setTimeout(checkCookie, 1000);
+        }
+      }
+      checkCookie();
+    })();
+    true;
+  `;
+
+  const handleMessage = async (event) => {
+    const cookieStr = event.nativeEvent.data;
+    console.log('🍪 Cookie détecté :', cookieStr);
+
+    const connectSidMatch = cookieStr.match(/connect\\.sid=([^;]+)/);
+    if (connectSidMatch) {
+      const connectSid = connectSidMatch[1];
+      console.log('🆔 connect.sid extrait :', connectSid);
+      try {
+        const data = await fetchUserInfo(connectSid);
+        setUser(data.user);
+      } catch (err) {
+        console.error('Erreur récupération user:', err);
+      }
+    }
+  };
 
   return (
     <BottomSheet
@@ -30,21 +65,31 @@ export default function BrowserBottomSheet() {
       enableContentPanningGesture={false}
     >
       <BottomSheetView style={styles.sheetContent}>
+        <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} />
+        {!hideWebview ?
         <WebView 
           ref={webviewRef} 
           source={{uri: url}} 
           style={styles.webview}
+          injectedJavaScript={injectedJS}
           onNavigationStateChange={onNavigationStateChange}
-        />
+          onMessage={handleMessage}
+          sharedCookiesEnabled={true}
+        /> :
+        <MethodsScreen />
+        }
       </BottomSheetView>
     </BottomSheet>
   );
 }
 
-const BrowserNavBar = () => {
-  const { canGoBack, canGoForward, goBack, goForward, reload } = useBrowserActions();
+const BrowserNavBar = ({ currentUrl, canGoBack, canGoForward, goBack, goForward, reload }) => {
   return (
     <>
+      {/* --- URL --- */}
+      <View style={styles.urlContainer}>
+        <Text style={styles.urlText}>{currentUrl}</Text>
+      </View>
       {/* --- Barre de navigation --- */}
       <View style={styles.navBar}>
         <View style={styles.actionButtons}>

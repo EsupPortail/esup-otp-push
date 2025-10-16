@@ -1,12 +1,20 @@
 import { useRef, useState, useCallback } from 'react';
 
-export function useBrowserActions(initialUrl = 'https://www.google.com') {
+export function useBrowserActions(initialUrl) {
   const webviewRef = useRef(null);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [currentUrl, setCurrentUrl] = useState(initialUrl);
+  const [hideWebview, setHideWebview] = useState(false);
 
   const onNavigationStateChange = useCallback((navState) => {
+    // Intercepteur
+    if (navState.url.includes('/preferences#')) {
+        console.log('📱 onNavigationStateChange: url contient ', navState.url);
+        setHideWebview(true);
+        return;
+    }
+
     setCanGoBack(navState.canGoBack);
     setCanGoForward(navState.canGoForward);
     setCurrentUrl(navState.url);
@@ -29,6 +37,7 @@ export function useBrowserActions(initialUrl = 'https://www.google.com') {
     canGoBack,
     canGoForward,
     currentUrl,
+    hideWebview,
     onNavigationStateChange,
     goBack,
     goForward,
