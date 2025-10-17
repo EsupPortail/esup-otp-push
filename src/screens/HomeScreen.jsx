@@ -115,7 +115,7 @@ export default function HomeScreen() {
         actions={[
           {label: 'Scanner QR code', onPress: handleScanQrCode},
           {label: 'Saisie manuelle', onPress: handleManualInput},
-          {label: 'Navigateur sécurisé', onPress: handleBrowser},
+          {label: 'Manageur', onPress: handleBrowser},
         ]}
       />
     </>
