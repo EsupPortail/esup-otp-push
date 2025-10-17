@@ -2,13 +2,12 @@ import axios from 'axios';
 
 const BASE_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
 
-export async function fetchUserInfo(connectSid) {
+export async function fetchUserInfo() {
   try {
     const response = await axios.get(`${BASE_URL}/api/user`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Cookie': `connect.sid=${connectSid}`,
       },
       withCredentials: true, // parfois utile sur iOS
     });

@@ -1,8 +1,9 @@
+import { connect } from 'rxjs';
 import { create } from 'zustand';
 
 export const useBrowserStore = create(set => ({
   visible: false,
-  url: 'https://otpmanager-test.univ-paris1.fr',
+  url: 'https://esup-otp-manager-test.univ-paris1.fr/',
   show: () => set({ visible: true }),
   hide: () => set({ visible: false }),
 }));

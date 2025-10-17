@@ -1,13 +1,11 @@
 import React, {useMemo} from 'react';
 import {
-  SafeAreaView,
   View,
   Text,
   StyleSheet,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Exemple de données (remplace par ta réponse API)
@@ -136,7 +134,8 @@ function MethodCard({id, data, lastValidated, transports}) {
   );
 }
 
-export default function MethodsScreen({user = SAMPLE.user}) {
+export default function MethodsScreen({user}) {
+  console.log('[MethodsScreen] user:', user);
   const methods = user?.methods || {};
   const lastValidated = user?.last_validated;
   const transports = user?.transports || {};

@@ -16,44 +16,14 @@ import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen from './MethodsScreen';
 import { fetchUserInfo } from '../services/browserService';
 
+const MANAGER_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
+
 export default function BrowserBottomSheet() {
   const [user, setUser] = React.useState(null);
   const bottomSheetRef = useRef(null);
   const {visible, url, hide} = useBrowserStore();
   const snapPoints = useMemo(() => ['10%','40%','70%','90%'], []);
-  const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
-
-  const injectedJS = `
-    (function() {
-      function checkCookie() {
-        const cookies = document.cookie;
-        if (cookies.includes('connect.sid')) {
-          window.ReactNativeWebView.postMessage(cookies);
-        } else {
-          setTimeout(checkCookie, 1000);
-        }
-      }
-      checkCookie();
-    })();
-    true;
-  `;
-
-  const handleMessage = async (event) => {
-    const cookieStr = event.nativeEvent.data;
-    console.log('🍪 Cookie détecté :', cookieStr);
-
-    const connectSidMatch = cookieStr.match(/connect\\.sid=([^;]+)/);
-    if (connectSidMatch) {
-      const connectSid = connectSidMatch[1];
-      console.log('🆔 connect.sid extrait :', connectSid);
-      try {
-        const data = await fetchUserInfo(connectSid);
-        setUser(data.user);
-      } catch (err) {
-        console.error('Erreur récupération user:', err);
-      }
-    }
-  };
+  const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload, methods} = useBrowserActions(url);
 
   return (
     <BottomSheet
@@ -71,12 +41,11 @@ export default function BrowserBottomSheet() {
           ref={webviewRef} 
           source={{uri: url}} 
           style={styles.webview}
-          injectedJavaScript={injectedJS}
           onNavigationStateChange={onNavigationStateChange}
-          onMessage={handleMessage}
           sharedCookiesEnabled={true}
+          userAgent="Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
         /> :
-        <MethodsScreen />
+        <MethodsScreen user={methods} />
         }
       </BottomSheetView>
     </BottomSheet>
