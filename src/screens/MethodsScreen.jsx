@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -56,9 +57,9 @@ const SAMPLE = {
 
 // helpers: label, icon, color by method key
 const METHOD_META = {
-  totp: {label: 'TOTP', icon: 'shield-key-outline', color: '#1AAA55'},
-  esupnfc: {label: 'Carte NFC (EsupNFC)', icon: 'nfc', color: '#00BCD4'},
-  push: {label: 'Notification Push', icon: 'cellphone', color: '#2B86FF'},
+  totp: {label: 'TOTP', icon: 'pin', color: '#1AAA55'},
+  esupnfc: {label: 'Carte NFC (EsupNFC)', icon: 'cellphone-nfc', color: '#00BCD4'},
+  push: {label: 'Notification Push', icon: 'bell-badge-outline', color: '#2B86FF'},
   webauthn: {label: 'WebAuthn', icon: 'usb', color: '#8E5CF8'},
   random_code: {
     label: 'Code par SMS',
@@ -101,7 +102,7 @@ function MethodCard({id, data, lastValidated, transports}) {
   return (
     <TouchableOpacity activeOpacity={0.85} style={styles.card}>
       <View style={[styles.cardIconWrap, {backgroundColor: meta.color}]}>
-        <Icon name={meta.icon} size={22} color="white" />
+        {meta.label == 'TOTP' ? <MaterialIcon name={meta.icon} size={22} color="white" /> : <Icon name={meta.icon} size={22} color="white" /> }
       </View>
 
       <View style={styles.cardBody}>
@@ -167,7 +168,6 @@ export default function MethodsScreen({user}) {
               <View style={styles.summaryRow}>
                 <Icon name="check-circle" size={18} color="#1AAA55" />
                 <Text style={styles.summaryText}>
-                  {' '}
                   {activeCount} méthodes activées
                 </Text>
               </View>
@@ -175,7 +175,7 @@ export default function MethodsScreen({user}) {
                 <View style={[styles.summaryRow, {marginTop: 8}]}>
                   <Icon name="clock-outline" size={16} color="#666" />
                   <Text style={styles.summaryTextSmall}>
-                    {'  '}Dernière validation :{' '}
+                    Dernière validation :{' '}
                     {lastValidated.method.toUpperCase()} (
                     {formatDate(lastValidated.time)})
                   </Text>
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderColor: '#ddd',
   },
-  summaryRow: {flexDirection: 'row', alignItems: 'center'},
+  summaryRow: {flexDirection: 'row', alignItems: 'center', gap: 8},
   summaryText: {fontSize: 15, color: '#111'},
   summaryTextSmall: {fontSize: 13, color: '#666'},
 

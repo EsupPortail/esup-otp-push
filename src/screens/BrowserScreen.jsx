@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {WebView} from 'react-native-webview';
-import {useBrowserStore} from '../stores/useBrowserStore';
+import {browserManager, useBrowserStore} from '../stores/useBrowserStore';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
@@ -23,7 +23,7 @@ export default function BrowserBottomSheet() {
   const bottomSheetRef = useRef(null);
   const {visible, url, hide} = useBrowserStore();
   const snapPoints = useMemo(() => ['10%','40%','70%','90%'], []);
-  const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload, methods} = useBrowserActions(url);
+  const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
 
   return (
     <BottomSheet
@@ -45,7 +45,7 @@ export default function BrowserBottomSheet() {
           sharedCookiesEnabled={true}
           userAgent="Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
         /> :
-        <MethodsScreen user={methods} />
+        <MethodsScreen user={browserManager.getUser()?.methods} />
         }
       </BottomSheetView>
     </BottomSheet>

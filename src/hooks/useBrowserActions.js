@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { fetchUserInfo } from '../services/browserService';
-import { useBrowserStore } from '../stores/useBrowserStore';
+import { fetchAllUserInfo, fetchPushActivationData, fetchUserCredentials, fetchUserInfo } from '../services/browserService';
+import { browserManager, useBrowserStore } from '../stores/useBrowserStore';
 
 export function useBrowserActions(initialUrl) {
   const webviewRef = useRef(null);
@@ -8,23 +8,21 @@ export function useBrowserActions(initialUrl) {
   const [canGoForward, setCanGoForward] = useState(false);
   const [currentUrl, setCurrentUrl] = useState(initialUrl);
   const [hideWebview, setHideWebview] = useState(false);
-  const [methods, setMethods] = useState(null);
-  const {visible} = useBrowserStore();
+  //const [methods, setMethods] = useState(null);
+  const {visible, user} = useBrowserStore();
 
   useEffect(() => {
-    fetchUserInfo().then(userInfo => {
-      setMethods(userInfo.user);
-    });
+    fetchUserInfo()
+    fetchPushActivationData();
+    fetchUserCredentials();
+    console.log('[USEEFFECT] user from store:', user);
     console.log('[useBrowserActions-UseEffect] visible changed:', visible);
   }, [visible]);
 
   const onNavigationStateChange = useCallback(async (navState) => {
     // Intercepteur
     if (navState.url.includes('/preferences#')) {
-        const userInfo = await fetchUserInfo();
-        console.log('📱 onNavigationStateChange: userInfo :', userInfo);
-        console.log('📱 onLoadEnd: userInfo :', userInfo);
-        setMethods(userInfo.user);
+        fetchAllUserInfo();
 
         setHideWebview(true);
         return;
@@ -53,7 +51,6 @@ export function useBrowserActions(initialUrl) {
     canGoForward,
     currentUrl,
     hideWebview,
-    methods,
     onNavigationStateChange,
     goBack,
     goForward,
