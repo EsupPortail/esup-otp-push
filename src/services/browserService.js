@@ -74,6 +74,6 @@ export async function fetchPushActivationData() {
 export async function fetchAllUserInfo() {
   await fetchUserInfo();
   await fetchUserCredentials();
-  await fetchPushActivationData();
+  //await fetchPushActivationData();
 }
 

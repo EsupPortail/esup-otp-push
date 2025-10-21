@@ -35,7 +35,7 @@ export default function BrowserBottomSheet() {
       enableContentPanningGesture={false}
     >
       <BottomSheetView style={styles.sheetContent}>
-        <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} />
+        {/* <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} /> */}
         {!hideWebview ?
         <WebView 
           ref={webviewRef} 

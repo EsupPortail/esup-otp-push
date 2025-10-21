@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { getSyncStatus } from '../utils/getSyncStatus';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -91,39 +92,69 @@ function getMetaFor(key) {
   );
 }
 
-function MethodCard({id, data, lastValidated, transports}) {
+function MethodCard({id, data, lastValidated, transports, syncStatus}) {
   const meta = getMetaFor(id);
   const active = !!data?.active;
-  const statusColor = active ? '#117A3A' : '#D32F2F';
   const deviceLabel =
     transports?.[id] ||
     (data?.device && `${data.device.manufacturer} ${data.device.model}`);
 
+  // Statut de synchronisation
+  const status = syncStatus?.[id];
+  const isRemote = typeof status === 'object' && status.status === 'remote';
+  const remoteLabel = isRemote ? status.label : null;
+
+  // Couleurs des pills
+  let pillBg = '#FDEDEE';
+  let pillColor = '#D32F2F';
+  let pillText = 'Désactivée';
+  let pillAction = null;
+
+  if (active) {
+    if (isRemote) {
+      pillBg = '#FFF3E0';
+      pillColor = '#E65100';
+      pillText = 'Synchroniser';
+      pillAction = () => console.log(`🔁 Sync requested for ${id}`);
+    } else {
+      pillBg = '#E8F7EE';
+      pillColor = '#117A3A';
+      pillText = 'Activée';
+    }
+  }
+
   return (
-    <TouchableOpacity activeOpacity={0.85} style={styles.card}>
+    <TouchableOpacity
+      activeOpacity={0.85}
+      style={styles.card}
+      onPress={pillAction}
+      disabled={!pillAction}
+    >
       <View style={[styles.cardIconWrap, {backgroundColor: meta.color}]}>
-        {meta.label == 'TOTP' ? <MaterialIcon name={meta.icon} size={22} color="white" /> : <Icon name={meta.icon} size={22} color="white" /> }
+        {meta.label == 'TOTP' ? (
+          <MaterialIcon name={meta.icon} size={22} color="white" />
+        ) : (
+          <Icon name={meta.icon} size={22} color="white" />
+        )}
       </View>
 
       <View style={styles.cardBody}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{meta.label}</Text>
-          <View
-            style={[
-              styles.pill,
-              {backgroundColor: active ? '#E8F7EE' : '#FDEDEE'},
-            ]}>
-            <Text
-              style={[
-                styles.pillText,
-                {color: active ? '#117A3A' : '#D32F2F'},
-              ]}>
-              {active ? 'Activée' : 'Désactivée'}
-            </Text>
+
+          <View style={[styles.pill, {backgroundColor: pillBg}]}>
+            <Text style={[styles.pillText, {color: pillColor}]}>{pillText}</Text>
           </View>
         </View>
 
-        {deviceLabel ? <Text style={styles.cardSub}>{deviceLabel}</Text> : null}
+        {/* Si push activé ailleurs */}
+        {isRemote && remoteLabel ? (
+          <Text style={[styles.cardSub, {color: '#E65100'}]}>
+            Activée sur un autre appareil : {remoteLabel}
+          </Text>
+        ) : deviceLabel ? (
+          <Text style={styles.cardSub}>{deviceLabel}</Text>
+        ) : null}
 
         {lastValidated?.method === id ? (
           <Text style={styles.cardLast}>
@@ -135,13 +166,16 @@ function MethodCard({id, data, lastValidated, transports}) {
   );
 }
 
+
 export default function MethodsScreen({user}) {
   console.log('[MethodsScreen] user:', user);
   const methods = user?.methods || {};
   const lastValidated = user?.last_validated;
   const transports = user?.transports || {};
+  const syncStatus = getSyncStatus(methods);
+  console.log('[MethodsScreen] syncStatus:', syncStatus);
 
-  // create arrays for active and inactive (so we can show “Vos méthodes actives” / “Autres”)
+  // Tableau de données pour la liste des méthodes. retourne {active: [], inactive: []}
   const flatList = useMemo(() => {
     const keys = Object.keys(methods).filter(
       k => !['codeRequired', 'waitingFor'].includes(k),
@@ -193,6 +227,7 @@ export default function MethodsScreen({user}) {
                   data={item.data}
                   lastValidated={lastValidated}
                   transports={transports}
+                  syncStatus={syncStatus}
                 />
               )}
               ListEmptyComponent={
