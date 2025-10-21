@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { getSyncStatus } from '../utils/getSyncStatus';
+import { syncHandlers } from '../services/browserService';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -115,7 +116,10 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
       pillBg = '#FFF3E0';
       pillColor = '#E65100';
       pillText = 'Synchroniser';
-      pillAction = () => console.log(`🔁 Sync requested for ${id}`);
+      pillAction = () => {
+        syncHandlers[id]();
+        console.log(`🔁 Sync requested for ${id}`)
+      };
     } else {
       pillBg = '#E8F7EE';
       pillColor = '#117A3A';
@@ -248,6 +252,7 @@ export default function MethodsScreen({user}) {
                   data={item.data}
                   lastValidated={lastValidated}
                   transports={transports}
+                  syncStatus={syncStatus}
                 />
               )}
               ListEmptyComponent={

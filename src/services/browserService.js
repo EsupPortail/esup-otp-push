@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { browserManager } from '../stores/useBrowserStore';
 import { act } from 'react';
+import { storage } from '../utils/storage';
+import { getManufacturer, getModel } from 'react-native-device-info';
+import { Platform } from 'react-native';
+import { sync } from './auth';
 
 const BASE_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
 // voici a quoi ressemble l'objet dans le store qui va stocker les infos utilisateur :  {api_url, uid, name, activationCode}
@@ -68,6 +72,21 @@ export async function fetchPushActivationData() {
   }
 }
 
+export async function deactivatePush() {
+  try {
+    const response = await axios.put(`${BASE_URL}/api/push/deactivate`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('✅ [deactivatePush] Activation data reçues:', response.data);
+    return response.data;
+  } catch (error) {
+    
+  }
+}
+
 /**
  * Récupère toutes les informations de l'utilisateur
  */
@@ -75,5 +94,28 @@ export async function fetchAllUserInfo() {
   await fetchUserInfo();
   await fetchUserCredentials();
   //await fetchPushActivationData();
+}
+
+/**
+ * Synchroniser la méthode PUSH
+ */
+export async function syncPush(){
+  const gcmId = storage.getString('gcm_id') || '';
+  const manufacturer = await getManufacturer();
+  const model = getModel();
+  const platform = Platform.OS;
+  // api_url, uid
+  const { api_url, uid } = browserManager.getUser();
+  //activationCode
+  const { activationCode } = await fetchPushActivationData();
+
+  const result = await sync(api_url, uid, activationCode, gcmId, platform, manufacturer, model);
+  console.log('[syncPush] result:', result);
+  return result;
+}
+
+export const syncHandlers = {
+  push: syncPush,
+  // d'autres méthodes de synchronisation peuvent être ajoutées ici
 }
 

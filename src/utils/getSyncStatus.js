@@ -1,7 +1,8 @@
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo, { getModel } from 'react-native-device-info';
 import { useTotpStore } from '../stores/useTotpStore';
 import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { useNfcStore } from '../stores/useNfcStore';
+import { browserManager } from '../stores/useBrowserStore';
 
 /**
  * Compare les méthodes actives côté serveur avec celles configurées localement
@@ -19,12 +20,19 @@ export const getSyncStatus = (methods) => {
   const otpServers = useOtpServersStore.getState().otpServers;
   const nfcObjects = useNfcStore.getState().establishments;
 
-  // Infos de l’appareil courant
-  const platform = DeviceInfo.getSystemName(); // "Android" | "iOS"
-  const model = DeviceInfo.getModel(); // ex: "Galaxy A40" ou "iPhone 7"
+  const localPushKeys = Object.keys(otpServers);
+  const userData = browserManager.getUser();
+
+  const remotePushKey = userData?.api_url && userData?.uid
+  ? `${userData.api_url.replace(/\/$/, '')}/${userData.uid}`
+  : null;
+  console.log('[getSyncStatus] remotePushKey:', remotePushKey);
+  console.log('[getSyncStatus] localPushKeys:', localPushKeys);
 
   // Helper : savoir si un store local est vide
   const isEmpty = (obj) => !obj || Object.keys(obj).length === 0;
+  const isPushLocal = remotePushKey && localPushKeys.includes(remotePushKey);
+  console.log('[getSyncStatus] isPushLocal:', isPushLocal);
 
   const syncStatus = {};
 
@@ -51,18 +59,13 @@ export const getSyncStatus = (methods) => {
         syncStatus[key] = 'none';
       } else {
         const device = value.device || {};
-        if (
-          device.platform === platform &&
-          device.model === model
-        ) {
+        if (isPushLocal) {
           syncStatus[key] = 'local';
-        } else if (device.platform && device.model) {
+        } else {
           syncStatus[key] = {
             status: 'remote',
-            label: `${device.platform} ${device.model}`,
+            label: `${device.platform} ${device.model}`
           };
-        } else {
-          syncStatus[key] = 'remote';
         }
       }
     }
@@ -72,6 +75,7 @@ export const getSyncStatus = (methods) => {
       syncStatus[key] = active ? 'remote' : 'none';
     }
   });
+  console.log('#####[getSyncStatus] syncStatus:', syncStatus);
 
   return syncStatus;
 };
