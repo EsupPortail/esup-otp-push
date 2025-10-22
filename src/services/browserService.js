@@ -107,11 +107,16 @@ export async function syncPush(){
   // api_url, uid
   const { api_url, uid } = browserManager.getUser();
   //activationCode
-  const { activationCode } = await fetchPushActivationData();
+  const isdeactivated = await deactivatePush();
+  if(isdeactivated?.code === 'Ok'){
+    console.log('🔔 Push désactivé avec succès avant resync');
+    const { activationCode } = await fetchPushActivationData();
 
-  const result = await sync(api_url, uid, activationCode, gcmId, platform, manufacturer, model);
-  console.log('[syncPush] result:', result);
-  return result;
+    const result = await sync(api_url, uid, activationCode, gcmId, platform, manufacturer, model);
+    console.log('[syncPush] result:', result);
+    return result;
+  }
+  return null;
 }
 
 export const syncHandlers = {
