@@ -114,6 +114,11 @@ export async function syncPush(){
 
     const result = await sync(api_url, uid, activationCode, gcmId, platform, manufacturer, model);
     console.log('[syncPush] result:', result);
+
+    if(result?.success){
+      console.log('🔔 Push resynchronisé avec succès');
+      await fetchUserInfo();
+    }
     return result;
   }
   return null;
