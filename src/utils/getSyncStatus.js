@@ -21,6 +21,7 @@ export const getSyncStatus = (methods) => {
   const nfcObjects = useNfcStore.getState().establishments;
 
   const localPushKeys = Object.keys(otpServers);
+  const localTotpKeys = Object.keys(totpObjects);
   const userData = browserManager.getUser();
 
   const remotePushKey = userData?.api_url && userData?.uid
@@ -32,6 +33,7 @@ export const getSyncStatus = (methods) => {
   // Helper : savoir si un store local est vide
   const isEmpty = (obj) => !obj || Object.keys(obj).length === 0;
   const isPushLocal = remotePushKey && localPushKeys.includes(remotePushKey);
+  
   console.log('[getSyncStatus] isPushLocal:', isPushLocal);
 
   const syncStatus = {};

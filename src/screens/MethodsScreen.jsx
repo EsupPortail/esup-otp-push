@@ -94,11 +94,12 @@ function getMetaFor(key) {
 }
 
 function MethodCard({id, data, lastValidated, transports, syncStatus}) {
+  console.log('[MethodCard] data:', data);
   const meta = getMetaFor(id);
   const active = !!data?.active;
   const deviceLabel =
     transports?.[id] ||
-    (data?.device && `${data.device.manufacturer} ${data.device.model}`);
+    (data?.device && `${data.device.manufacturer } ${data.device.model}`);
 
   // Statut de synchronisation
   const status = syncStatus?.[id];
@@ -181,14 +182,19 @@ export default function MethodsScreen({user}) {
 
   // Tableau de données pour la liste des méthodes. retourne {active: [], inactive: []}
   const flatList = useMemo(() => {
-    const keys = Object.keys(methods).filter(
-      k => !['codeRequired', 'waitingFor'].includes(k),
-    );
-    const items = keys.map(k => ({key: k, data: methods[k]}));
-    const active = items.filter(i => i.data?.active);
-    const inactive = items.filter(i => !i.data?.active);
-    return {active, inactive};
-  }, [methods]);
+  const allowedMethods = ['push', 'totp', 'esupnfc'];
+
+  const items = Object.entries(methods)
+    .filter(([key]) => allowedMethods.includes(key))
+    .map(([key, data]) => ({ key, data }));
+
+  // On sépare les actives et inactives
+  const active = items.filter(i => i.data?.active);
+  const inactive = items.filter(i => !i.data?.active);
+
+  return { active, inactive };
+}, [methods]);
+
 
   const activeCount = flatList.active.length;
 
@@ -198,28 +204,9 @@ export default function MethodsScreen({user}) {
         <View style={styles.screen}>
           <View style={styles.container}>
             <Text style={styles.title}>Méthodes d’authentification</Text>
-            <Text style={styles.subtitle}>
+            {/* <Text style={styles.subtitle}>
               Gérez vos moyens d’accès sécurisés
-            </Text>
-
-            <View style={styles.summary}>
-              <View style={styles.summaryRow}>
-                <Icon name="check-circle" size={18} color="#1AAA55" />
-                <Text style={styles.summaryText}>
-                  {activeCount} méthodes activées
-                </Text>
-              </View>
-              {lastValidated?.method ? (
-                <View style={[styles.summaryRow, {marginTop: 8}]}>
-                  <Icon name="clock-outline" size={16} color="#666" />
-                  <Text style={styles.summaryTextSmall}>
-                    Dernière validation :{' '}
-                    {lastValidated.method.toUpperCase()} (
-                    {formatDate(lastValidated.time)})
-                  </Text>
-                </View>
-              ) : null}
-            </View>
+            </Text> */}
 
             <Text style={styles.sectionTitle}>Vos méthodes actives</Text>
             <FlatList
@@ -240,9 +227,9 @@ export default function MethodsScreen({user}) {
               contentContainerStyle={{paddingBottom: 10}}
             />
 
-            <Text style={[styles.sectionTitle, {marginTop: 10}]}>
+            { flatList.inactive.length > 0 && <Text style={[styles.sectionTitle, {marginTop: 10}]}>
               Autres méthodes disponibles
-            </Text>
+            </Text>}
             <FlatList
               data={flatList.inactive}
               keyExtractor={i => i.key}
@@ -256,12 +243,31 @@ export default function MethodsScreen({user}) {
                 />
               )}
               ListEmptyComponent={
-                <Text style={styles.empty}>
+                flatList.active.length > 0 && <Text style={styles.empty}>
                   Toutes les méthodes sont activées
                 </Text>
               }
               contentContainerStyle={{paddingBottom: 40}}
             />
+
+            <View style={styles.summary}>
+              <View style={styles.summaryRow}>
+                <Icon name="check-circle" size={18} color="#1AAA55" />
+                <Text style={styles.summaryText}>
+                  {activeCount} méthodes activées
+                </Text>
+              </View>
+              {lastValidated?.method ? (
+                <View style={[styles.summaryRow, {marginTop: 8}]}>
+                  <Icon name="clock-outline" size={16} color="#666" />
+                  <Text style={styles.summaryTextSmall}>
+                    Dernière validation :{' '}
+                    {lastValidated.method.toUpperCase()} (
+                    {formatDate(lastValidated.time)})
+                  </Text>
+                </View>
+              ) : null}
+            </View>
           </View>
         </View>
       }
@@ -330,5 +336,5 @@ const styles = StyleSheet.create({
   pillText: {fontSize: 13, fontWeight: '700'},
   cardSub: {color: '#6B7280', marginTop: 6},
   cardLast: {color: '#9CA3AF', marginTop: 6, fontSize: 12},
-  empty: {textAlign: 'center', color: '#9CA3AF', marginTop: 16},
+  empty: {textAlign: 'center', color: '#9CA3AF', marginTop: 16, marginBottom: 10},
 });

@@ -87,6 +87,24 @@ export async function deactivatePush() {
   }
 }
 
+export async function deactivateTotp(){
+  try {
+    const response = await axios.put(`${BASE_URL}/api/totp/deactivate`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log('✅ [deactivateTotp] Activation data reçues:', response.data);
+    return response.data; //{code: 'Ok'}
+  } catch (error) {
+    
+  }
+}
+
+//POST https://esup-otp-manager-test.univ-paris1.fr/api/totp/activate/confirm/274441 -> {code: 'Ok'}
+//POST https://esup-otp-manager-test.univ-paris1.fr/api/generate/totp?require_method_validation=true -> {code: "Ok", message: "HIYAVDDQTOMHOYH5Z4J5PPGC6Q7MDBYW",…} message est le secret partagé
+
 /**
  * Récupère toutes les informations de l'utilisateur
  */
