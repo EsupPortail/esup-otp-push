@@ -1,4 +1,6 @@
 import {TOTP} from 'totp-generator';
+import Crypto from 'react-native-quick-crypto';
+import base64 from 'react-native-base64'
 
 export const Totp = {
   token: secret => {
@@ -85,6 +87,45 @@ export const Totp = {
       return null;
     }
   },
+  hashTotpSecret: (base32Secret, uid) => {
+    //JE suis entré ici
+    console.log('base32Secret:', base32Secret);
+    console.log('uid:', uid);
+    if (!base32Secret || !uid) return null;
+    const subStr = base32Secret.substring(0, 20);
+    const toHash = subStr + uid;
+
+    try {
+      // SHA-256
+      const hashBuffer = Crypto.createHash('sha256')
+        .update(toHash)
+        .digest(); // retourne Uint8Array ou Buffer
+
+      // Convertir le buffer en chaîne binaire (string) compatible pour base64
+      const binaryString = String.fromCharCode(...new Uint8Array(hashBuffer));
+
+      // Encoder en Base64
+      const b64 = base64.encode(binaryString);
+
+      // Transformer en Base64URL (remplacer +, / et supprimer = à la fin)
+      const base64url = b64
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+
+      return base64url;
+    } catch (error) {
+      console.error('[hashTotpSecret] Erreur durant le hachage ou l’encodage :', error);
+      return null;
+    }
+  },
+  hasMatchingTotp: (totpObjects, uid, serverHash) => {
+    if (!serverHash) return false;
+    return Object.keys(totpObjects).some(secret => {
+      const computed = Totp.hashTotpSecret(secret, uid);
+      return computed === serverHash;
+    });
+  }
 };
 
 export default Totp;

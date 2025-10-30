@@ -3,6 +3,7 @@ import { useTotpStore } from '../stores/useTotpStore';
 import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { useNfcStore } from '../stores/useNfcStore';
 import { browserManager } from '../stores/useBrowserStore';
+import Totp from './totp';
 
 /**
  * Compare les méthodes actives côté serveur avec celles configurées localement
@@ -23,12 +24,15 @@ export const getSyncStatus = (methods) => {
   const localPushKeys = Object.keys(otpServers);
   const localTotpKeys = Object.keys(totpObjects);
   const userData = browserManager.getUser();
+  const isTotpLocal = Totp.hasMatchingTotp(totpObjects, userData?.uid, userData?.methods?.methods?.totp?.secret_hash);
 
   const remotePushKey = userData?.api_url && userData?.uid
   ? `${userData.api_url.replace(/\/$/, '')}/${userData.uid}`
   : null;
   console.log('[getSyncStatus] remotePushKey:', remotePushKey);
   console.log('[getSyncStatus] localPushKeys:', localPushKeys);
+  console.log('[getSyncStatus] userData:', userData);
+  console.log('[getSyncStatus] isTotpLocal:', isTotpLocal);
 
   // Helper : savoir si un store local est vide
   const isEmpty = (obj) => !obj || Object.keys(obj).length === 0;
