@@ -60,7 +60,7 @@ const SAMPLE = {
 // helpers: label, icon, color by method key
 const METHOD_META = {
   totp: {label: 'TOTP', icon: 'pin', color: '#1AAA55'},
-  esupnfc: {label: 'Carte NFC (EsupNFC)', icon: 'cellphone-nfc', color: '#00BCD4'},
+  esupnfc: {label: 'Carte NFC', icon: 'cellphone-nfc', color: '#00BCD4'},
   push: {label: 'Notification Push', icon: 'bell-badge-outline', color: '#2B86FF'},
   webauthn: {label: 'WebAuthn', icon: 'usb', color: '#8E5CF8'},
   random_code: {
@@ -98,13 +98,13 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
   const meta = getMetaFor(id);
   const active = !!data?.active;
   const deviceLabel =
-    transports?.[id] ||
-    (data?.device && `${data.device.manufacturer } ${data.device.model}`);
+    (transports?.[id] ||
+    (data?.device && `${data.device.manufacturer } ${data.device.model}`)) == 'null null' && null;
 
   // Statut de synchronisation
   const status = syncStatus?.[id];
-  const isRemote = typeof status === 'object' && status.status === 'remote';
-  const remoteLabel = isRemote ? status.label : null;
+  const statusType = typeof status === 'object' ? status.status : status;
+  const remoteLabel = typeof status === 'object' && status.label ? status.label : null;
 
   // Couleurs des pills
   let pillBg = '#FDEDEE';
@@ -112,19 +112,29 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
   let pillText = 'Désactivée';
   let pillAction = null;
 
+  // === GESTION DES ÉTATS ===
   if (active) {
-    if (isRemote) {
-      pillBg = '#FFF3E0';
-      pillColor = '#E65100';
-      pillText = 'Synchroniser';
-      pillAction = () => {
-        syncHandlers[id]();
-        console.log(`🔁 Sync requested for ${id}`)
-      };
-    } else {
-      pillBg = '#E8F7EE';
-      pillColor = '#117A3A';
-      pillText = 'Activée';
+    switch (statusType) {
+      case 'local':
+        pillBg = '#E8F7EE';
+        pillColor = '#117A3A';
+        pillText = 'Activée';
+        break;
+
+      case 'remote':
+        pillBg = '#FFF3E0';
+        pillColor = '#E65100';
+        pillText = 'Synchroniser';
+        pillAction = () => {
+          syncHandlers[id]?.();
+          console.log(`🔁 Sync requested for ${id}`);
+        };
+        break;
+
+      default:
+        pillBg = '#FDEDEE';
+        pillColor = '#D32F2F';
+        pillText = 'Désactivée';
     }
   }
 
@@ -152,9 +162,9 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
           </View>
         </View>
 
-        {/* Si push activé ailleurs */}
-        {isRemote && remoteLabel ? (
-          <Text style={[styles.cardSub, {color: '#E65100'}]}>
+        {/* Sous-texte : appareil / autre appareil */}
+        {statusType === 'remote' && remoteLabel ? (
+          <Text style={[styles.cardSub, { color: '#E65100' }]}>
             Activée sur un autre appareil : {remoteLabel}
           </Text>
         ) : deviceLabel ? (

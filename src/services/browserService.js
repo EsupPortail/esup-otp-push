@@ -5,6 +5,9 @@ import { storage } from '../utils/storage';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { Platform } from 'react-native';
 import { sync } from './auth';
+import Totp from '../utils/totp';
+import { useTotpStore } from '../stores/useTotpStore';
+import { Toast } from 'toastify-react-native';
 
 const BASE_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
 // voici a quoi ressemble l'objet dans le store qui va stocker les infos utilisateur :  {api_url, uid, name, activationCode}
@@ -142,8 +145,84 @@ export async function syncPush(){
   return null;
 }
 
+const deleteTotp = async () => {
+  ///api/delete_method_secret/totp retourne le secret {"deleted_secret": xxx}
+  try {
+    const response = await axios.delete(`${BASE_URL}/api/delete_method_secret/totp`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    });
+
+    console.log('✅ [deleteTotp] Activation data reçues:', response.data);
+    return response.data.deleted_secret;
+  } catch (error) {
+    console.error('❌ Erreur lors de la désactivation:', error.message);
+  }
+}
+
+const generateAndConfirmTotp = async () => {
+  try {
+        const generateResponse = await axios.post(`${BASE_URL}/api/generate/totp?require_method_validation=true`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+        });
+
+      console.log('✅ [generateAndConfirmTotp] Activation data reçues:', generateResponse);
+
+      if (generateResponse.data.code === 'Ok') {
+        const {secret, name} = Totp.parseTotpUrl(generateResponse.data.uri);
+        const token = Totp.token(secret);
+        console.log('✅ [generateAndConfirmTotp] TOTP généré:', token);
+        const confirmResponse = await axios.post(`${BASE_URL}/api/totp/activate/confirm/${token}`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+        console.log('✅ [generateAndConfirmTotp] Activation data reçues:', confirmResponse.data);
+        if (confirmResponse.data.code === 'Ok') {
+          return {success: true, data: {secret: generateResponse.data.message, token: token, name: name}};
+        }
+      }
+    } catch (error) {
+      console.error('❌ Erreur lors de la validation:', error.message);
+    }
+}
+/**
+ * Synchroniser la méthode TOTP
+ */
+export const syncTotp = async () => {
+  //const totpToDelete = await deleteTotp();
+  const {success, data} = await generateAndConfirmTotp();
+  if (success) {
+    useTotpStore.getState().updateTotp(data.secret, data.name);
+    Toast.show({
+      type: 'success',
+      text1: 'TOTP synchronisé',
+      position: 'top',
+      visibilityTime: 6000,
+    })
+  } else {
+    Toast.show({
+      type: 'error',
+      text1: 'Erreur',
+      text2: "Impossible de synchroniser le TOTP",
+      position: 'top',
+    });
+  }
+  console.log('[syncTotp] data:', data);
+}
+
 export const syncHandlers = {
   push: syncPush,
+  totp: syncTotp,
   // d'autres méthodes de synchronisation peuvent être ajoutées ici
 }
 

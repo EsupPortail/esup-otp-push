@@ -50,7 +50,7 @@ export const getSyncStatus = (methods) => {
     // === TOTP ===
     if (key === 'totp') {
       if (!active) syncStatus[key] = 'none';
-      else syncStatus[key] = isEmpty(totpObjects) ? 'remote' : 'local';
+      else syncStatus[key] = isTotpLocal ? 'local' : 'remote';
     }
 
     // === NFC ===
