@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -126,8 +127,20 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
         pillColor = '#E65100';
         pillText = 'Synchroniser';
         pillAction = () => {
-          syncHandlers[id]?.();
-          console.log(`🔁 Sync requested for ${id}`);
+          Alert.alert(
+            'Synchronisation',
+            'Cette opération désactivera la méthode sur tous les autres appareils. Voulez-vous continuer ?',
+            [
+              {text: 'Annuler', style: 'cancel'},
+              {
+                text: 'Synchroniser',
+                onPress: () => {
+                  syncHandlers[id]?.();
+                  console.log(`🔁 Sync requested for ${id}`);
+                },
+              },
+            ],
+          )
         };
         break;
 
@@ -136,6 +149,27 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
         pillColor = '#D32F2F';
         pillText = 'Désactivée';
     }
+  } else {
+    // === CAS MÉTHODE DÉSACTIVÉE (AUCUNE INSTANCE ACTIVE) ===
+    pillBg = '#FDEDEE';
+    pillColor = '#D32F2F';
+    pillText = 'Désactivée';
+    pillAction = () => {
+      Alert.alert(
+        'Activation',
+        'Souhaitez-vous activer cette méthode sur cet appareil ?',
+        [
+          { text: 'Annuler', style: 'cancel' },
+          {
+            text: 'Activer',
+            onPress: () => {
+              syncHandlers[id]?.();
+              console.log(`⚙️ Activation demandée pour ${id}`);
+            },
+          },
+        ],
+      );
+    };
   }
 
   return (
