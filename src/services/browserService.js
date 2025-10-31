@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { browserManager } from '../stores/useBrowserStore';
-import { act } from 'react';
+import { act, use } from 'react';
 import { storage } from '../utils/storage';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { Platform } from 'react-native';
@@ -199,7 +199,9 @@ const generateAndConfirmTotp = async () => {
  * Synchroniser la méthode TOTP
  */
 export const syncTotp = async () => {
-  //const totpToDelete = await deleteTotp();
+  const totpToDelete = await deleteTotp();
+  useTotpStore.getState().removeTotp(totpToDelete);
+
   const {success, data} = await generateAndConfirmTotp();
   if (success) {
     useTotpStore.getState().updateTotp(data.secret, data.name);
@@ -209,6 +211,7 @@ export const syncTotp = async () => {
       position: 'top',
       visibilityTime: 6000,
     })
+    await fetchUserInfo();
   } else {
     Toast.show({
       type: 'error',
