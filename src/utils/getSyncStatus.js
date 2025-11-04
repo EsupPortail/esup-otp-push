@@ -4,6 +4,7 @@ import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { useNfcStore } from '../stores/useNfcStore';
 import { browserManager } from '../stores/useBrowserStore';
 import Totp from './totp';
+import { isNfcExists } from '../services/browserService';
 
 /**
  * Compare les méthodes actives côté serveur avec celles configurées localement
@@ -36,16 +37,8 @@ export const getSyncStatus = (methods) => {
 
   // Helper : savoir si un store local est vide
   const isEmpty = (obj) => !obj || Object.keys(obj).length === 0;
-  const isNfcUrlPresent = (urlToCheck) => {
-    if (!urlToCheck) return false;
-
-    const normalizeUrl = url =>
-    url.trim().replace(/\/+$/, '').toLowerCase(); // retire les slashs de fin et met en minuscule
-
-    const target = normalizeUrl(urlToCheck);
-    return nfcObjects.some(item => normalizeUrl(item.url) === target);
-  }
   const isPushLocal = remotePushKey && localPushKeys.includes(remotePushKey);
+  const isNfcLocal = isNfcExists();
   
   console.log('[getSyncStatus] isPushLocal:', isPushLocal);
 
@@ -65,7 +58,7 @@ export const getSyncStatus = (methods) => {
     // === NFC ===
     else if (key === 'esupnfc') {
       if (!active) syncStatus[key] = 'none';
-      else syncStatus[key] = isEmpty(nfcObjects) ? {status: 'remote', label: 'other'} : 'local';
+      else syncStatus[key] = isEmpty(nfcObjects) ? {status: 'remote', label: 'other'} : isNfcLocal ? 'local' : {status: 'remote', label: 'other'};
     }
 
     // === PUSH ===

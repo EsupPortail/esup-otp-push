@@ -8,6 +8,8 @@ import { sync } from './auth';
 import Totp from '../utils/totp';
 import { useTotpStore } from '../stores/useTotpStore';
 import { Toast } from 'toastify-react-native';
+import { fetchEtablissement } from './nfcService';
+import { useNfcStore } from '../stores/useNfcStore';
 
 const BASE_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
 // voici a quoi ressemble l'objet dans le store qui va stocker les infos utilisateur :  {api_url, uid, name, activationCode}
@@ -32,9 +34,10 @@ export async function fetchUserInfo() {
 }
 
 /**
- * Obtenir api_url, uid, name
+ * Obtenir api_url, uid, name, nfcurl si existant
  */
 export async function fetchUserCredentials() {
+  let nfcUrl = '';
   try {
     const response = await axios.get(`${BASE_URL}/manager/infos`, {
       headers: {
@@ -43,10 +46,14 @@ export async function fetchUserCredentials() {
       },
       withCredentials: true,
     });
-
     console.log('✅ User credentials reçus:', response.data);
+
+    const nfcInfos = await fetchEtablissement(response.data.api_url + '/esupnfc/infos');
+    if (nfcInfos) {
+      nfcUrl = nfcInfos.url;
+    }
     const oldUser = browserManager.getUser();
-    browserManager.setUser({...oldUser, api_url: response.data.api_url, uid: response.data.uid, name: response.data.name});
+    browserManager.setUser({...oldUser, api_url: response.data.api_url, uid: response.data.uid, name: response.data.name, nfcUrl: nfcUrl});
     return response.data;
   } catch (error) {
     console.error('❌ Erreur récupération user credentials:', error.message);
@@ -223,9 +230,67 @@ export const syncTotp = async () => {
   console.log('[syncTotp] data:', data);
 }
 
+/**
+ * Permet de vérifier si un établissement est déjà ajouté dans le store
+ * @param {*} url 
+ * @returns 
+ */
+export const isNfcExists = () => {
+  const establishments = useNfcStore.getState().establishments;
+  const url = browserManager.getUser()?.nfcUrl;
+  return establishments.some(item => item.url === url);
+};
+
+/**
+ * Synchroniser la méthode NFC
+ */
+export const syncNfc = async () => {
+  const url = browserManager.getUser()?.api_url;
+  console.log('[syncNfc] url:', url);
+  const nfcInfos = await fetchEtablissement(url + '/esupnfc/infos');
+
+  if (!nfcInfos) {
+    Toast.show({
+      type: 'error',
+      text1: 'Authentification NFC non disponible pour ce serveur.',
+      position: 'bottom',
+      visibilityTime: 6000,
+    })
+    return;
+  }
+  console.log('[syncNfc] nfcInfos:', nfcInfos);
+  const exists = isNfcExists();
+
+  if (exists) {
+    Toast.show({
+      type: 'info',
+      text1: 'Cet établissement est déjà configuré.',
+      position: 'top',
+      visibilityTime: 6000,
+    })
+    return;
+  }
+
+  const newEstablishment = {
+    url: nfcInfos.url,
+    numeroId: nfcInfos.numeroId,
+    etablissement: nfcInfos.etablissement,
+  };
+  useNfcStore.getState().addEstablishment(newEstablishment);
+  console.log('[syncNfc] Établissement ajouté:', newEstablishment);
+  await fetchUserInfo();
+  Toast.show({
+    type: 'success',
+    text1: 'Activation NFC effectuée',
+    position: 'top',
+    visibilityTime: 6000,
+  });
+}
+
 export const syncHandlers = {
   push: syncPush,
   totp: syncTotp,
+  esupnfc: syncNfc,
   // d'autres méthodes de synchronisation peuvent être ajoutées ici
 }
 
