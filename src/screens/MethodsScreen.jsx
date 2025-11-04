@@ -140,7 +140,7 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
             [
               {text: 'Annuler', style: 'cancel'},
               {
-                text: 'Synchroniser',
+                text: 'Transférer',
                 onPress: () => {
                   syncHandlers[id]?.();
                   console.log(`🔁 Sync requested for ${id}`);
