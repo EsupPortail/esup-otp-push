@@ -36,6 +36,15 @@ export const getSyncStatus = (methods) => {
 
   // Helper : savoir si un store local est vide
   const isEmpty = (obj) => !obj || Object.keys(obj).length === 0;
+  const isNfcUrlPresent = (urlToCheck) => {
+    if (!urlToCheck) return false;
+
+    const normalizeUrl = url =>
+    url.trim().replace(/\/+$/, '').toLowerCase(); // retire les slashs de fin et met en minuscule
+
+    const target = normalizeUrl(urlToCheck);
+    return nfcObjects.some(item => normalizeUrl(item.url) === target);
+  }
   const isPushLocal = remotePushKey && localPushKeys.includes(remotePushKey);
   
   console.log('[getSyncStatus] isPushLocal:', isPushLocal);
@@ -50,13 +59,13 @@ export const getSyncStatus = (methods) => {
     // === TOTP ===
     if (key === 'totp') {
       if (!active) syncStatus[key] = 'none';
-      else syncStatus[key] = isTotpLocal ? 'local' : 'remote';
+      else syncStatus[key] = isTotpLocal ? 'local' : {status: 'remote', label: 'other'};
     }
 
     // === NFC ===
     else if (key === 'esupnfc') {
       if (!active) syncStatus[key] = 'none';
-      else syncStatus[key] = isEmpty(nfcObjects) ? 'remote' : 'local';
+      else syncStatus[key] = isEmpty(nfcObjects) ? {status: 'remote', label: 'other'} : 'local';
     }
 
     // === PUSH ===

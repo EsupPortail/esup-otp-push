@@ -120,12 +120,19 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
         pillBg = '#E8F7EE';
         pillColor = '#117A3A';
         pillText = 'Activée';
+        pillAction = () => {
+          Alert.alert(
+            'Information',
+            'Cette méthode est déjà activée sur cet appareil.',
+            [{text: 'OK', style: 'cancel'}],
+          )
+        };
         break;
 
       case 'remote':
         pillBg = '#FFF3E0';
         pillColor = '#E65100';
-        pillText = 'Synchroniser';
+        pillText = 'Transférer';
         pillAction = () => {
           Alert.alert(
             'Synchronisation',
@@ -199,7 +206,7 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
         {/* Sous-texte : appareil / autre appareil */}
         {statusType === 'remote' && remoteLabel ? (
           <Text style={[styles.cardSub, { color: '#E65100' }]}>
-            Activée sur un autre appareil : {remoteLabel}
+            Activée sur un autre appareil {remoteLabel === 'other' ? '' : ': ' + remoteLabel}
           </Text>
         ) : deviceLabel ? (
           <Text style={styles.cardSub}>{deviceLabel}</Text>
@@ -241,6 +248,7 @@ export default function MethodsScreen({user}) {
 
 
   const activeCount = flatList.active.length;
+  const allMethods = [...flatList.active, ...flatList.inactive];
 
   return (
     <FlatList
@@ -252,9 +260,9 @@ export default function MethodsScreen({user}) {
               Gérez vos moyens d’accès sécurisés
             </Text> */}
 
-            <Text style={styles.sectionTitle}>Vos méthodes actives</Text>
+            <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text>
             <FlatList
-              data={flatList.active}
+              data={allMethods}
               keyExtractor={i => i.key}
               renderItem={({item}) => (
                 <MethodCard
@@ -271,7 +279,7 @@ export default function MethodsScreen({user}) {
               contentContainerStyle={{paddingBottom: 10}}
             />
 
-            { flatList.inactive.length > 0 && <Text style={[styles.sectionTitle, {marginTop: 10}]}>
+            {/* { flatList.inactive.length > 0 && <Text style={[styles.sectionTitle, {marginTop: 10}]}>
               Autres méthodes disponibles
             </Text>}
             <FlatList
@@ -292,7 +300,7 @@ export default function MethodsScreen({user}) {
                 </Text>
               }
               contentContainerStyle={{paddingBottom: 40}}
-            />
+            /> */}
 
             <View style={styles.summary}>
               <View style={styles.summaryRow}>
@@ -330,6 +338,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 14,
     marginBottom: 12,
+    marginTop: 20,
     borderWidth: 0.3,
     borderColor: '#ddd',
   },
