@@ -233,7 +233,7 @@ export default function MethodsScreen({user}) {
 
   // Tableau de données pour la liste des méthodes. retourne {active: [], inactive: []}
   const flatList = useMemo(() => {
-  const allowedMethods = ['push', 'totp', 'esupnfc'];
+  const allowedMethods = ['totp', 'push', 'esupnfc'];
 
   const items = Object.entries(methods)
     .filter(([key]) => allowedMethods.includes(key))
@@ -243,12 +243,18 @@ export default function MethodsScreen({user}) {
   const active = items.filter(i => i.data?.active);
   const inactive = items.filter(i => !i.data?.active);
 
-  return { active, inactive };
+  // Fusionner dans l’ordre voulu
+  const allMethods = allowedMethods
+    .map(methodKey =>
+      [...active, ...inactive].find(item => item.key === methodKey)
+    )
+    .filter(Boolean); // enlève les "undefined"
+
+  return { active, inactive, allMethods };
 }, [methods]);
 
 
   const activeCount = flatList.active.length;
-  const allMethods = [...flatList.active, ...flatList.inactive];
 
   return (
     <FlatList
@@ -262,7 +268,7 @@ export default function MethodsScreen({user}) {
 
             <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text>
             <FlatList
-              data={allMethods}
+              data={flatList.allMethods}
               keyExtractor={i => i.key}
               renderItem={({item}) => (
                 <MethodCard
