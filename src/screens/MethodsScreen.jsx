@@ -10,7 +10,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { getSyncStatus } from '../utils/getSyncStatus';
-import { syncHandlers } from '../services/browserService';
+import { getDomainFromBaseUrl, syncHandlers } from '../services/browserService';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -233,7 +233,7 @@ export default function MethodsScreen({user}) {
 
   // Tableau de données pour la liste des méthodes. retourne {active: [], inactive: []}
   const flatList = useMemo(() => {
-  const allowedMethods = ['totp', 'push', 'esupnfc'];
+  const allowedMethods = ['push', 'totp', 'esupnfc'];
 
   const items = Object.entries(methods)
     .filter(([key]) => allowedMethods.includes(key))
@@ -262,9 +262,9 @@ export default function MethodsScreen({user}) {
         <View style={styles.screen}>
           <View style={styles.container}>
             <Text style={styles.title}>Méthodes d’authentification</Text>
-            {/* <Text style={styles.subtitle}>
-              Gérez vos moyens d’accès sécurisés
-            </Text> */}
+            <Text style={styles.subtitle}>
+              {getDomainFromBaseUrl()}
+            </Text>
 
             <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text>
             <FlatList

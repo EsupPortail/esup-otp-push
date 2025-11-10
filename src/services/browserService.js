@@ -14,6 +14,13 @@ import { useNfcStore } from '../stores/useNfcStore';
 const BASE_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
 // voici a quoi ressemble l'objet dans le store qui va stocker les infos utilisateur :  {api_url, uid, name, activationCode}
 
+/**
+ * Récupère le nom de domaine du BaSE_URL
+ */
+export function getDomainFromBaseUrl() {
+  return BASE_URL.split('//')[1];
+}
+
 export async function fetchUserInfo() {
   try {
     const response = await axios.get(`${BASE_URL}/api/user`, {
