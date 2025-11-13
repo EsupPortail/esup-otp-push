@@ -136,7 +136,7 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
         pillAction = () => {
           Alert.alert(
             'Synchronisation',
-            'Cette opération désactivera la méthode sur tous les autres appareils. Voulez-vous continuer ?',
+            `${id != 'esupnfc' ? 'Cette opération désactivera la méthode sur tous les autres appareils. Voulez-vous continuer ?' : 'Êtes-vous sûr de vouloir transférer cette méthode sur cet appareil ?'}`,
             [
               {text: 'Annuler', style: 'cancel'},
               {
@@ -266,7 +266,7 @@ export default function MethodsScreen({user}) {
               {getDomainFromBaseUrl()}
             </Text>
 
-            <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text>
+            {/* <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text> */}
             <FlatList
               data={flatList.allMethods}
               keyExtractor={i => i.key}
