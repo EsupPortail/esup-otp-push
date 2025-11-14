@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -252,6 +252,23 @@ export default function MethodsScreen({user}) {
 
   return { active, inactive, allMethods };
 }, [methods]);
+
+const isPushActiveAlert = () => {
+  if (syncStatus['push'] !== 'local') {
+    Alert.alert(
+      'Activation PUSH',
+      "Voulez-vous activer l'authentification mobile sur ce téléphone ?",
+      [
+        {text: 'Non', style: 'cancel'},
+        {text: 'Oui', onPress: () => syncHandlers['push']()}
+      ]
+    )
+  }
+}
+
+useEffect(() => {
+  isPushActiveAlert();
+}, []);
 
 
   const activeCount = flatList.active.length;
