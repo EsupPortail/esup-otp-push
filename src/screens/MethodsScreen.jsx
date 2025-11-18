@@ -1,9 +1,8 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {use, useEffect, useMemo, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -11,6 +10,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { getSyncStatus } from '../utils/getSyncStatus';
 import { getDomainFromBaseUrl, syncHandlers } from '../services/browserService';
+import { ScrollView } from 'react-native-gesture-handler';
+import { set } from 'react-hook-form';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -223,13 +224,16 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
 }
 
 
-export default function MethodsScreen({user}) {
+export default function MethodsScreen({user, bottomSheetRef}) {
   console.log('[MethodsScreen] user:', user);
   const methods = user?.methods || {};
   const lastValidated = user?.last_validated;
   const transports = user?.transports || {};
   const syncStatus = getSyncStatus(methods);
+  const isPushOnRemote = syncStatus['push'] !== 'local';
+  const [showPushActivation, setShowPushActivation] = useState(isPushOnRemote);
   console.log('[MethodsScreen] syncStatus:', syncStatus);
+  console.log('[MethodsScreen] isPushOnRemote:', isPushOnRemote);
 
   // Tableau de données pour la liste des méthodes. retourne {active: [], inactive: []}
   const flatList = useMemo(() => {
@@ -253,100 +257,84 @@ export default function MethodsScreen({user}) {
   return { active, inactive, allMethods };
 }, [methods]);
 
-const isPushActiveAlert = () => {
-  if (syncStatus['push'] !== 'local') {
-    Alert.alert(
-      'Activation PUSH',
-      "Voulez-vous activer l'authentification mobile sur ce téléphone ?",
-      [
-        {text: 'Non', style: 'cancel'},
-        {text: 'Oui', onPress: () => syncHandlers['push']()}
-      ]
-    )
-  }
-}
-
-useEffect(() => {
-  isPushActiveAlert();
-}, []);
-
-
   const activeCount = flatList.active.length;
 
+  useEffect(() => {
+    setShowPushActivation(isPushOnRemote);
+  }, [isPushOnRemote]);
+
   return (
-    <FlatList
-      ListHeaderComponent={
-        <View style={styles.screen}>
-          <View style={styles.container}>
-            <Text style={styles.title}>Méthodes d’authentification</Text>
-            <Text style={styles.subtitle}>
-              {getDomainFromBaseUrl()}
-            </Text>
-
-            {/* <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text> */}
-            <FlatList
-              data={flatList.allMethods}
-              keyExtractor={i => i.key}
-              renderItem={({item}) => (
-                <MethodCard
-                  id={item.key}
-                  data={item.data}
-                  lastValidated={lastValidated}
-                  transports={transports}
-                  syncStatus={syncStatus}
-                />
-              )}
-              ListEmptyComponent={
-                <Text style={styles.empty}>Aucune méthode active</Text>
-              }
-              contentContainerStyle={{paddingBottom: 10}}
-            />
-
-            {/* { flatList.inactive.length > 0 && <Text style={[styles.sectionTitle, {marginTop: 10}]}>
-              Autres méthodes disponibles
-            </Text>}
-            <FlatList
-              data={flatList.inactive}
-              keyExtractor={i => i.key}
-              renderItem={({item}) => (
-                <MethodCard
-                  id={item.key}
-                  data={item.data}
-                  lastValidated={lastValidated}
-                  transports={transports}
-                  syncStatus={syncStatus}
-                />
-              )}
-              ListEmptyComponent={
-                flatList.active.length > 0 && <Text style={styles.empty}>
-                  Toutes les méthodes sont activées
-                </Text>
-              }
-              contentContainerStyle={{paddingBottom: 40}}
-            /> */}
-
-            <View style={styles.summary}>
-              <View style={styles.summaryRow}>
-                <Icon name="check-circle" size={18} color="#1AAA55" />
-                <Text style={styles.summaryText}>
-                  {activeCount} méthodes activées
-                </Text>
+    <ScrollView style={styles.screen}>
+      <View style={styles.screen}>
+          { showPushActivation ?
+            <View style={styles.pushContainer}>
+              <Text style={styles.title}>Activation Push</Text>
+              <Text style={styles.subtitle}>
+                {getDomainFromBaseUrl()}
+              </Text>
+              <Text style={{marginTop: 20, fontSize: 22}}>Voulez-vous activer l'authentification mobile sur ce téléphone ?</Text>
+              <View style={{flexDirection: 'row', marginTop: 20, gap: 10}}>
+                <TouchableOpacity 
+                  onPress={() => {syncHandlers['push'](); bottomSheetRef.current?.close();}}
+                  style={[styles.actionButton, {backgroundColor: '#1AAA55'}]}
+                >
+                  <Text style={{fontSize: 22, color: '#FFF'}}>Oui</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={() => setShowPushActivation(false)}
+                  style={[styles.actionButton, {backgroundColor: '#E65100'}]}
+                >
+                  <Text style={{fontSize: 22, color: '#FFF'}}>Non</Text>
+                </TouchableOpacity>
               </View>
-              {lastValidated?.method ? (
-                <View style={[styles.summaryRow, {marginTop: 8}]}>
-                  <Icon name="clock-outline" size={16} color="#666" />
-                  <Text style={styles.summaryTextSmall}>
-                    Dernière validation :{' '}
-                    {lastValidated.method.toUpperCase()} (
-                    {formatDate(lastValidated.time)})
+            </View>
+            : 
+            <View style={styles.container}>
+              <Text style={styles.title}>Méthodes d’authentification</Text>
+              <Text style={styles.subtitle}>
+                {getDomainFromBaseUrl()}
+              </Text>
+
+              {/* <Text style={styles.sectionTitle}>Vos méthodes disponibles</Text> */}
+              {
+                flatList.allMethods.length > 0 ? (
+                  flatList.allMethods.map(item => {
+                  return (
+                    <MethodCard
+                      key={item.key}
+                      id={item.key}
+                      data={item.data}
+                      lastValidated={lastValidated}
+                      transports={transports}
+                      syncStatus={syncStatus}
+                    />
+                  )
+                })
+                ) : <Text style={styles.empty}>Aucune méthode disponible</Text>
+              }
+
+              <View style={styles.summary}>
+                <View style={styles.summaryRow}>
+                  <Icon name="check-circle" size={18} color="#1AAA55" />
+                  <Text style={styles.summaryText}>
+                    {activeCount} méthodes activées
                   </Text>
                 </View>
-              ) : null}
+                {lastValidated?.method ? (
+                  <View style={[styles.summaryRow, {marginTop: 8}]}>
+                    <Icon name="clock-outline" size={16} color="#666" />
+                    <Text style={styles.summaryTextSmall}>
+                      Dernière validation :{' '}
+                      {lastValidated.method.toUpperCase()} (
+                      {formatDate(lastValidated.time)})
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
             </View>
-          </View>
-        </View>
-      }
-    />
+          }
+      </View>
+    </ScrollView>
   );
 }
 
@@ -413,4 +401,6 @@ const styles = StyleSheet.create({
   cardSub: {color: '#6B7280', marginTop: 6},
   cardLast: {color: '#9CA3AF', marginTop: 6, fontSize: 12},
   empty: {textAlign: 'center', color: '#9CA3AF', marginTop: 16, marginBottom: 10},
+  pushContainer: {flex: 1, justifyContent: 'center', paddingHorizontal: 18, paddingVertical: 14},
+  actionButton: {flex: 1, paddingHorizontal: 5, paddingVertical: 7, borderRadius: 10, justifyContent: 'center', alignItems: 'center'},
 });

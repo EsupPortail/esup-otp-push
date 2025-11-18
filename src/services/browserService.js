@@ -152,7 +152,14 @@ export async function syncPush(){
 
     if(result?.success){
       console.log('🔔 Push resynchronisé avec succès');
+      Toast.show({
+        type: 'success',
+        text1: 'Authentification mobile activée',
+        position: 'top',
+        visibilityTime: 6000,
+      });
       await fetchUserInfo();
+      
     }
     return result;
   }
