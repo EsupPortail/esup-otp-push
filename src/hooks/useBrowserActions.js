@@ -12,6 +12,7 @@ export function useBrowserActions(initialUrl) {
   const {visible, user} = useBrowserStore();
 
   useEffect(() => {
+    if (!visible) return;
     fetchAllUserInfo();
     console.log('[USEEFFECT] user from store:', user);
     console.log('[useBrowserActions-UseEffect] visible changed:', visible);
