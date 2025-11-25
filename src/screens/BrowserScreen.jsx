@@ -28,7 +28,7 @@ export default function BrowserBottomSheet() {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={visible ? 1 : -1}
+      index={visible ? 3 : -1}
       snapPoints={snapPoints}
       enablePanDownToClose
       onClose={hide}
