@@ -22,7 +22,7 @@ export default function BrowserBottomSheet() {
   const [user, setUser] = React.useState(null);
   const bottomSheetRef = useRef(null);
   const {visible, url, hide} = useBrowserStore();
-  const snapPoints = useMemo(() => ['10%','40%','70%','90%'], []);
+  const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
 
   return (
