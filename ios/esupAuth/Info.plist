@@ -37,6 +37,8 @@
 	<string>Accéder à la caméra pour scanner les QR codes</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Feather.ttf</string>
