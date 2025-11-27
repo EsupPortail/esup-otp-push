@@ -78,6 +78,19 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
+    packagingOptions {
+        // Add these lines to handle 16KB page size issue
+        jniLibs {
+            useLegacyPackaging = true
+        }
+
+        // Exclude problematic libraries if needed
+        exclude "lib/arm64-v8a/libgifimage.so"
+        exclude "lib/arm64-v8a/libimage_processing_util_jni.so"
+        exclude "lib/x86_64/libgifimage.so"
+        exclude "lib/x86_64/libimage_processing_util_jni.so"
+    }
+
     namespace "org.esupportail.esupauth"
     defaultConfig {
         applicationId "org.esupportail.esupAuth"
