@@ -101,12 +101,26 @@ export default function App() {
       setIsDarkTheme(darkValue === 'enabled');
     }
   }, [isMigrated]);
+  
+  const config = {
+    screens: {
+      Home: 'accueil',
+      QRCodeScanner: 'qr-code-scanner',
+      ManualInput: 'saisie-manuelle',
+    }
+  }
 
   if (!isMigrated) return <AppSplashScreen />;
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
+      <NavigationContainer 
+        linking={{
+          prefixes: ["esupauth://app"],
+          config: config,
+        }}
+        theme={isDarkTheme ? DarkTheme : LightTheme}
+      >
         <AppContext.Provider value={appContext}>
           <AppStack />
           <View
