@@ -1,4 +1,4 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {useNavigation, useRoute, useTheme} from '@react-navigation/native';
 import {
   StyleSheet,
   Text,
@@ -29,6 +29,9 @@ export default function HomeScreen() {
   const [isNfcSupported, setIsNfcSupported] = useState(null);
   const data = [];
   const insets = useSafeAreaInsets();
+  const route = useRoute();
+  const params = route.params;
+  console.log('[HomeScreen] route params : ', params);
 
   // Utilisez les hooks Zustand pour récupérer l'état.
   // Le composant s'abonne maintenant aux changements de ces états.

@@ -101,10 +101,17 @@ export default function App() {
       setIsDarkTheme(darkValue === 'enabled');
     }
   }, [isMigrated]);
-  
+
   const config = {
     screens: {
-      Home: 'accueil',
+      Home: {
+        path: 'accueil/:userId',
+        parse: {
+          userId: userId => `${userId}`,
+          foo: foo => `${foo}`,
+          bar: bar => `${bar}`,
+        }
+      },
       QRCodeScanner: 'qr-code-scanner',
       ManualInput: 'saisie-manuelle',
     }
