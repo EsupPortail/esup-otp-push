@@ -84,5 +84,14 @@
 		<string>D2760000850100</string>
 		<string>D2760000850101</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>esupauth</string>
+		</array>
+	</dict>
+	</array>
 </dict>
 </plist>
