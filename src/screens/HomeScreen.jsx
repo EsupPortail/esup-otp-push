@@ -21,6 +21,7 @@ import {useOtpServersStore} from '../stores/useOtpServersStore';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { set } from 'react-hook-form';
 import { browserManager } from '../stores/useBrowserStore';
+import useDeepLinking from '../hooks/useDeepLinking';
 
 export default function HomeScreen() {
   const {colors} = useTheme();
@@ -29,9 +30,6 @@ export default function HomeScreen() {
   const [isNfcSupported, setIsNfcSupported] = useState(null);
   const data = [];
   const insets = useSafeAreaInsets();
-  const route = useRoute();
-  const params = route.params;
-  console.log('[HomeScreen] route params : ', params);
 
   // Utilisez les hooks Zustand pour récupérer l'état.
   // Le composant s'abonne maintenant aux changements de ces états.
@@ -61,6 +59,7 @@ export default function HomeScreen() {
       setIsNfcSupported(isSupported);
     });
   }, []);
+  useDeepLinking();
 
   // On retourne un écran spécial si dans le storage aucun moyen de connexion n'est configuré
   // totpOject vide && pushObject vide && nfcObject vide

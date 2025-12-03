@@ -104,16 +104,9 @@ export default function App() {
 
   const config = {
     screens: {
-      Home: {
-        path: 'accueil/:userId',
-        parse: {
-          userId: userId => `${userId}`,
-          foo: foo => `${foo}`,
-          bar: bar => `${bar}`,
-        }
-      },
-      QRCodeScanner: 'qr-code-scanner',
-      ManualInput: 'saisie-manuelle',
+      QRCodeScanner: 'open/qr',
+      ManualInput: 'open/saisie-manuelle',
+      Home: 'auth/:method'
     }
   }
 
