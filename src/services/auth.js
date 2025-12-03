@@ -230,7 +230,7 @@ export const accept = async (
         visibilityTime: 6000,
       });
     } else {
-      showToast(error.message || 'Erreur lors de la validation.');
+      showToast('Delai expiré');
     }
     setNotified(false);
     setAdditionalData(null);
@@ -278,7 +278,17 @@ export const reject = async (
     }
   } catch (error) {
     console.error('[REJECT] Erreur dans reject:', error.message);
-    showToast(`Erreur lors du refus: ${error.message}`);
+    if (error.message.includes('Network Error')) {
+      Toast.show({
+        type: 'error',
+        text1: 'Connexion réseau indisponible. Veuillez vérifier votre connexion.',
+        position: 'bottom',
+        visibilityTime: 6000,
+      });
+    } else {
+      showToast(`Delai expiré`);
+    }
+    setNotified(false);
   }
 };
 
