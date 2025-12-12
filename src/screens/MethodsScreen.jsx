@@ -11,7 +11,8 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { getSyncStatus } from '../utils/getSyncStatus';
 import { getDomainFromBaseUrl, syncHandlers } from '../services/browserService';
 import { ScrollView } from 'react-native-gesture-handler';
-import { set } from 'react-hook-form';
+import { allManagers } from '../data/managerData';
+import { browserManager } from '../stores/useBrowserStore';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -223,6 +224,35 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
   );
 }
 
+export const ManagerChooser = () => {
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>Choisissez votre gestionnaire</Text>
+      <Text style={styles.subtitle}>
+        Vous serez redirigé vers votre université pour vous connecter
+      </Text>
+      {
+        allManagers.map((manager, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={[styles.card, {backgroundColor: '#284758'}]}
+              onPress={() => {
+                browserManager.setUrl(manager.url);
+                browserManager.show();
+              }}
+            >
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: 10, justifyContent: 'space-between', flex: 1}}>
+                <Text style={{fontSize: 18, color: '#FFF'}}>{manager.name}</Text>
+                <Icon name="arrow-right-thin" size={24} color="#FFF" />
+              </View>
+            </TouchableOpacity>
+          )
+        })
+      }
+    </ScrollView>
+  )
+};
 
 export default function MethodsScreen({user, bottomSheetRef}) {
   console.log('[MethodsScreen] user:', user);
@@ -266,7 +296,7 @@ export default function MethodsScreen({user, bottomSheetRef}) {
   return (
     <ScrollView style={styles.screen}>
       <View style={styles.screen}>
-          { showPushActivation ?
+        { showPushActivation ?
             <View style={styles.pushContainer}>
               <Text style={styles.title}>Activation Push</Text>
               <Text style={styles.subtitle}>
@@ -332,7 +362,7 @@ export default function MethodsScreen({user, bottomSheetRef}) {
                 ) : null}
               </View>
             </View>
-          }
+        }
       </View>
     </ScrollView>
   );

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { browserManager } from '../stores/useBrowserStore';
+import { browserManager, useBrowserStore } from '../stores/useBrowserStore';
 import { act, use } from 'react';
 import { storage } from '../utils/storage';
 import { getManufacturer, getModel } from 'react-native-device-info';
@@ -11,19 +11,19 @@ import { Toast } from 'toastify-react-native';
 import { fetchEtablissement } from './nfcService';
 import { useNfcStore } from '../stores/useNfcStore';
 
-const BASE_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
+const getBaseUrl = () => useBrowserStore.getState().url;
 // voici a quoi ressemble l'objet dans le store qui va stocker les infos utilisateur :  {api_url, uid, name, activationCode}
 
 /**
- * Récupère le nom de domaine du BaSE_URL
+ * Récupère le nom de domaine du BASE_URL
  */
 export function getDomainFromBaseUrl() {
-  return BASE_URL.split('//')[1];
+  return getBaseUrl().split('//')[1];
 }
 
 export async function fetchUserInfo() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/user`, {
+    const response = await axios.get(`${getBaseUrl()}/api/user`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export async function fetchUserInfo() {
 export async function fetchUserCredentials() {
   let nfcUrl = '';
   try {
-    const response = await axios.get(`${BASE_URL}/manager/infos`, {
+    const response = await axios.get(`${getBaseUrl()}/manager/infos`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export async function fetchUserCredentials() {
  */
 export async function fetchPushActivationData() {
   try {
-    const response = await axios.put(`${BASE_URL}/api/push/activate`, {
+    const response = await axios.put(`${getBaseUrl()}/api/push/activate`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export async function fetchPushActivationData() {
 
 export async function deactivatePush() {
   try {
-    const response = await axios.put(`${BASE_URL}/api/push/deactivate`, {
+    const response = await axios.put(`${getBaseUrl()}/api/push/deactivate`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export async function deactivatePush() {
 
 export async function deactivateTotp(){
   try {
-    const response = await axios.put(`${BASE_URL}/api/totp/deactivate`, {
+    const response = await axios.put(`${getBaseUrl()}/api/totp/deactivate`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ export async function syncPush(){
 const deleteTotp = async () => {
   ///api/delete_method_secret/totp retourne le secret {"deleted_secret": xxx}
   try {
-    const response = await axios.delete(`${BASE_URL}/api/delete_method_secret/totp`, {
+    const response = await axios.delete(`${getBaseUrl()}/api/delete_method_secret/totp`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ const deleteTotp = async () => {
 
 const generateAndConfirmTotp = async () => {
   try {
-        const generateResponse = await axios.post(`${BASE_URL}/api/generate/totp?require_method_validation=true`, {
+        const generateResponse = await axios.post(`${getBaseUrl()}/api/generate/totp?require_method_validation=true`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ const generateAndConfirmTotp = async () => {
         const {secret, name} = Totp.parseTotpUrl(generateResponse.data.uri);
         const token = Totp.token(secret);
         console.log('✅ [generateAndConfirmTotp] TOTP généré:', token);
-        const confirmResponse = await axios.post(`${BASE_URL}/api/totp/activate/confirm/${token}`, {
+        const confirmResponse = await axios.post(`${getBaseUrl()}/api/totp/activate/confirm/${token}`, {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

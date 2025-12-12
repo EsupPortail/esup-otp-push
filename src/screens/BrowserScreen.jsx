@@ -13,7 +13,7 @@ import {browserManager, useBrowserStore} from '../stores/useBrowserStore';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
-import MethodsScreen from './MethodsScreen';
+import MethodsScreen, { ManagerChooser } from './MethodsScreen';
 import { fetchUserInfo } from '../services/browserService';
 
 const MANAGER_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
@@ -24,6 +24,21 @@ export default function BrowserBottomSheet() {
   const {visible, url, hide} = useBrowserStore();
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
+
+  if (url === '') return (
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={visible ? 3 : -1}
+      snapPoints={snapPoints}
+      enablePanDownToClose
+      onClose={hide}
+      enableContentPanningGesture={false}
+    >
+      <BottomSheetView style={styles.sheetContent}>
+        <ManagerChooser />
+      </BottomSheetView>
+    </BottomSheet>
+  )
 
   return (
     <BottomSheet

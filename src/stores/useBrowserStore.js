@@ -1,13 +1,19 @@
-import { connect } from 'rxjs';
 import { create } from 'zustand';
+import { storage } from '../utils/storage';
+
+const initialUrl = ''
 
 export const useBrowserStore = create(set => ({
   visible: false,
-  url: 'https://esup-otp-manager-test.univ-paris1.fr/',
+  url: initialUrl,
   user: {},
   show: () => set({ visible: true }),
   hide: () => set({ visible: false }),
   setUser: (user) => set({ user }),
+  setUrl: (url) => {
+    //storage.set('managerUrl', url);
+    set({ url });
+  },
 }));
 
 export const browserManager = {
@@ -15,4 +21,5 @@ export const browserManager = {
   hide: () => useBrowserStore.getState().hide(),
   setUser: (user) => useBrowserStore.getState().setUser(user),
   getUser: () => useBrowserStore.getState().user,
+  setUrl: (url) => useBrowserStore.getState().setUrl(url),
 };
