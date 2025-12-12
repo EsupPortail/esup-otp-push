@@ -2,6 +2,10 @@ import { Alert, Platform } from "react-native";
 import { storage } from "../utils/storage";
 import { getManufacturer, getModel } from "react-native-device-info";
 import { showToast, sync } from "./auth";
+import { handleTotpQrCode } from "../utils/qrCodeHandler";
+import Totp from "../utils/totp";
+import { useTotpStore } from "../stores/useTotpStore";
+import { useNfcStore } from "../stores/useNfcStore";
 
 export const activationPush = async (params) => {
     const { host, uid, code } = params;
@@ -22,7 +26,27 @@ export const activationPush = async (params) => {
         showToast('Synchronisation PUSH réussie');
     }
 }
-export const activationTotp = async (params) => {console.log("activationTotp params :", params);}
+export const activationTotp = async (params) => {
+    console.log("[activationTotp] Paramètres :", params);
+    const { issuer, name, secret } = params;
+    if (!issuer || !name || !secret) {
+        showToast('Paramètre d\'activation TOTP manquant');
+        return;
+    }
+
+    useTotpStore.getState().updateTotp(secret, issuer + ' : ' + name);
+}
+
+export const activationNfc = (params) => {
+    console.log("[activationNfc] Paramètres :", params);
+    const { url, numeroId, etablissement } = params;
+    if (!url || !numeroId || !etablissement) {
+        showToast('Paramètres d\'activation NFC manquant');
+        return;
+    }
+
+    useNfcStore.getState().addEstablishment({ url, numeroId, etablissement });
+}
 
 const confirmAction = (method) => {
     return new Promise((resolve) => {
@@ -58,6 +82,9 @@ export async function DeepAuthHandler(params){
             break;
         case 'totp':
             await activationTotp(params);
+            break;
+        case 'esupnfc':
+            activationNfc(params);
             break;
         default:
             console.log("[DeepAuthHandler] method inconnue :", method);
