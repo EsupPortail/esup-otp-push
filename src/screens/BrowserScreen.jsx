@@ -14,13 +14,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen, { ManagerChooser } from './MethodsScreen';
-import { fetchUserInfo } from '../services/browserService';
-
-const MANAGER_URL = 'https://esup-otp-manager-test.univ-paris1.fr';
 
 export default function BrowserBottomSheet() {
-  const [user, setUser] = React.useState(null);
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef();
   const {visible, url, hide} = useBrowserStore();
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);

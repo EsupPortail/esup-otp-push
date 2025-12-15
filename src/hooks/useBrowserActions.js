@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { fetchAllUserInfo, fetchPushActivationData, fetchUserCredentials, fetchUserInfo } from '../services/browserService';
+import { fetchAllUserInfo } from '../services/browserService';
 import { browserManager, useBrowserStore } from '../stores/useBrowserStore';
 
 export function useBrowserActions(initialUrl) {
@@ -13,7 +13,7 @@ export function useBrowserActions(initialUrl) {
 
   useEffect(() => {
     if (!visible) return;
-    fetchAllUserInfo();
+    if (initialUrl !== '') fetchAllUserInfo();
     console.log('[USEEFFECT] user from store:', user);
     console.log('[useBrowserActions-UseEffect] visible changed:', visible);
   }, [visible]);

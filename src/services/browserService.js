@@ -11,14 +11,14 @@ import { Toast } from 'toastify-react-native';
 import { fetchEtablissement } from './nfcService';
 import { useNfcStore } from '../stores/useNfcStore';
 
-const getBaseUrl = () => useBrowserStore.getState().url;
-// voici a quoi ressemble l'objet dans le store qui va stocker les infos utilisateur :  {api_url, uid, name, activationCode}
+// Récupère l'URL de base du gestionnaire depuis le store en enlevant login si présent
+const getBaseUrl = () => useBrowserStore.getState().url.replace(/\/login\/?$/, '');
 
 /**
  * Récupère le nom de domaine du BASE_URL
  */
 export function getDomainFromBaseUrl() {
-  return getBaseUrl().split('//')[1];
+  return getBaseUrl().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
 }
 
 export async function fetchUserInfo() {

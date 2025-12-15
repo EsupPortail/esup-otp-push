@@ -5,6 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -225,31 +228,77 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
 }
 
 export const ManagerChooser = () => {
+  const [search, setSearch] = useState('');
+
+  const filteredManagers = useMemo(() => {
+    const q = search.trim().toLowerCase();
+
+    if (!q) return allManagers;
+
+    return allManagers.filter(manager =>
+      manager.name.toLowerCase().includes(q)
+    );
+  }, [search]);
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Choisissez votre gestionnaire</Text>
-      <Text style={styles.subtitle}>
-        Vous serez redirigé vers votre université pour vous connecter
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+      <Text style={styles.title}>Choisissez votre établissement</Text>
+      <Text style={[styles.subtitle, {marginBottom: 20, fontSize: 16}]}>
+        Si votre établissement n’apparaît pas, cela signifie qu’il ne propose pas la fonction d’activation rapide. Veuillez utiliser une autre méthode : : Scanner QR code ou Saisie manuelle
       </Text>
-      {
-        allManagers.map((manager, index) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              style={[styles.card, {backgroundColor: '#284758'}]}
-              onPress={() => {
-                browserManager.setUrl(manager.url);
-                browserManager.show();
-              }}
-            >
-              <View style={{flexDirection: 'row', alignItems: 'center', gap: 10, justifyContent: 'space-between', flex: 1}}>
-                <Text style={{fontSize: 18, color: '#FFF'}}>{manager.name}</Text>
-                <Icon name="arrow-right-thin" size={24} color="#FFF" />
-              </View>
-            </TouchableOpacity>
-          )
-        })
-      }
+
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{flex: 1}} 
+        keyboardVerticalOffset={60}>
+        {/* 🔍 Champ de recherche */}
+      <View style={styles.searchContainer}>
+        <Icon name="magnify" size={22} color="#284758" />
+        <TextInput
+          value={search}
+          onChangeText={setSearch}
+          placeholder="Rechercher un établissement"
+          placeholderTextColor="#284758"
+          style={styles.searchInput}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {search.length > 0 && (
+          <TouchableOpacity onPress={() => setSearch('')}>
+            <Icon name="close-circle" size={18} color="#888" />
+          </TouchableOpacity>
+        )}
+      </View>
+            {/* 📋 Résultats */}
+      {filteredManagers.length === 0 ? (
+        <Text style={styles.emptyText}>
+          Aucun établissement trouvé
+        </Text>
+      ) : (
+        filteredManagers.map((manager, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[styles.card, {backgroundColor: '#284758'}]}
+            onPress={() => {
+              browserManager.setUrl(manager.url);
+              browserManager.show();
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flex: 1,
+              }}>
+              <Text style={{fontSize: 18, color: '#FFF'}}>
+                {manager.name}
+              </Text>
+              <Icon name="arrow-right-thin" size={24} color="#FFF" />
+            </View>
+          </TouchableOpacity>
+        ))
+      )}
+      </KeyboardAvoidingView>
     </ScrollView>
   )
 };
@@ -260,10 +309,10 @@ export default function MethodsScreen({user, bottomSheetRef}) {
   const lastValidated = user?.last_validated;
   const transports = user?.transports || {};
   const syncStatus = getSyncStatus(methods);
-  const isPushOnRemote = syncStatus['push'] !== 'local';
-  const [showPushActivation, setShowPushActivation] = useState(isPushOnRemote);
+  const isPushNotEnabled = syncStatus['push'] === 'none';
+  const [showPushActivation, setShowPushActivation] = useState(isPushNotEnabled);
   console.log('[MethodsScreen] syncStatus:', syncStatus);
-  console.log('[MethodsScreen] isPushOnRemote:', isPushOnRemote);
+  console.log('[MethodsScreen] isPushNotEnabled:', isPushNotEnabled);
 
   // Tableau de données pour la liste des méthodes. retourne {active: [], inactive: []}
   const flatList = useMemo(() => {
@@ -290,8 +339,8 @@ export default function MethodsScreen({user, bottomSheetRef}) {
   const activeCount = flatList.active.length;
 
   useEffect(() => {
-    setShowPushActivation(isPushOnRemote);
-  }, [isPushOnRemote]);
+    setShowPushActivation(isPushNotEnabled);
+  }, [isPushNotEnabled]);
 
   return (
     <ScrollView style={styles.screen}>
@@ -433,4 +482,27 @@ const styles = StyleSheet.create({
   empty: {textAlign: 'center', color: '#9CA3AF', marginTop: 16, marginBottom: 10},
   pushContainer: {flex: 1, justifyContent: 'center', paddingHorizontal: 18, paddingVertical: 14},
   actionButton: {flex: 1, paddingHorizontal: 5, paddingVertical: 7, borderRadius: 10, justifyContent: 'center', alignItems: 'center'},
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#dde7edff',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 20,
+    gap: 8,
+},
+
+searchInput: {
+  flex: 1,
+  color: '#284758',
+  fontSize: 16,
+},
+
+emptyText: {
+  color: '#AAA',
+  textAlign: 'center',
+  marginTop: 20,
+  fontSize: 16,
+},
 });
