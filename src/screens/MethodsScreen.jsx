@@ -244,7 +244,7 @@ export const ManagerChooser = () => {
     <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
       <Text style={styles.title}>Choisissez votre établissement</Text>
       <Text style={[styles.subtitle, {marginBottom: 20, fontSize: 16}]}>
-        Si votre établissement n’apparaît pas, cela signifie qu’il ne propose pas la fonction d’activation rapide. Veuillez utiliser une autre méthode : : Scanner QR code ou Saisie manuelle
+        Si votre établissement n’apparaît pas, cela signifie qu’il ne propose pas la fonction d’activation rapide. Veuillez utiliser une autre méthode : Scanner QR code ou Saisie manuelle
       </Text>
 
       <KeyboardAvoidingView 

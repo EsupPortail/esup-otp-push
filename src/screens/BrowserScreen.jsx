@@ -7,15 +7,18 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetBackdrop, BottomSheetView} from '@gorhom/bottom-sheet';
 import {WebView} from 'react-native-webview';
 import {browserManager, useBrowserStore} from '../stores/useBrowserStore';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen, { ManagerChooser } from './MethodsScreen';
+import { useTheme } from '@react-navigation/native';
+import Animated, { interpolate } from 'react-native-reanimated';
 
 export default function BrowserBottomSheet() {
+  const {colors} = useTheme();
   const bottomSheetRef = useRef();
   const {visible, url, hide} = useBrowserStore();
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
@@ -29,6 +32,7 @@ export default function BrowserBottomSheet() {
       enablePanDownToClose
       onClose={hide}
       enableContentPanningGesture={false}
+      backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={styles.sheetContent}>
         <ManagerChooser />
@@ -44,6 +48,7 @@ export default function BrowserBottomSheet() {
       enablePanDownToClose
       onClose={hide}
       enableContentPanningGesture={false}
+      backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={styles.sheetContent}>
         {/* <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} /> */}
@@ -125,3 +130,14 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+const renderBackdrop = props => (
+  <BottomSheetBackdrop
+    {...props}
+    appearsOnIndex={2}
+    disappearsOnIndex={1}
+    pressBehavior="none"
+    opacity={0.3}   //correspond à rgba(0,0,0,0.5)
+    enableTouchThrough={true}
+  />
+);
