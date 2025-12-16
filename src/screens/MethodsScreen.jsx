@@ -16,6 +16,7 @@ import { getDomainFromBaseUrl, syncHandlers } from '../services/browserService';
 import { ScrollView } from 'react-native-gesture-handler';
 import { allManagers } from '../data/managerData';
 import { browserManager } from '../stores/useBrowserStore';
+import { useManagersStore } from '../stores/useManagersStore';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -228,17 +229,22 @@ function MethodCard({id, data, lastValidated, transports, syncStatus}) {
 }
 
 export const ManagerChooser = () => {
+  const { managers, loadManagers } = useManagersStore();
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    loadManagers();
+  }, []);
 
   const filteredManagers = useMemo(() => {
     const q = search.trim().toLowerCase();
 
-    if (!q) return allManagers;
+    if (!q) return managers;
 
-    return allManagers.filter(manager =>
+    return managers.filter(manager =>
       manager.name.toLowerCase().includes(q)
     );
-  }, [search]);
+  }, [search, managers]);
 
   return (
     <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
