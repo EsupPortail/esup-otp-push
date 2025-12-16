@@ -91,3 +91,37 @@ export async function DeepAuthHandler(params){
             break;
     }
 }
+
+export function handleOtpAuthLink(url) {
+  try {
+    console.log('[otpauth] URL:', url);
+    const parsed = new URL(url);
+    console.log('[otpauth] Parsed:', parsed);
+
+    if (parsed.protocol !== 'otpauth:') return;
+
+    const issuer = parsed.searchParams.get('issuer');
+    const secret = parsed.searchParams.get('secret');
+
+    if (!secret || !issuer) {
+      Alert.alert('Erreur', 'Données manquantes');
+      return;
+    }
+
+    Alert.alert(
+      'Activation TOTP',
+      `${issuer}`,
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Activer',
+          onPress: () => {
+            useTotpStore.getState().updateTotp(secret, issuer);
+          },
+        },
+      ],
+    );
+  } catch (e) {
+    console.error('[otpauth] URL invalide', e);
+  }
+}

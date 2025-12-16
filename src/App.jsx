@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import AppStack from './navigation/AppStack';
 import {useState, useMemo, useEffect, useRef} from 'react';
-import {View} from 'react-native';
+import {Linking, View} from 'react-native';
 import DarkTheme from './theme/DarkTheme';
 import LightTheme from './theme/LightTheme';
 import {AppContext} from './theme/AppContext';
@@ -23,6 +23,7 @@ import NfcManager from 'react-native-nfc-manager';
 import { useNfcStore } from './stores/useNfcStore';
 import { useOtpServersStore } from './stores/useOtpServersStore';
 import BrowserBottomSheet from './screens/BrowserScreen';
+import { handleOtpAuthLink } from './services/deeplinkAuthService';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -102,6 +103,26 @@ export default function App() {
     }
   }, [isMigrated]);
 
+  useEffect(() => {
+    const handleUrl = ({ url }) => {
+      if (url?.startsWith('otpauth://')) {
+        handleOtpAuthLink(url);
+      }
+    };
+
+    // App déjà ouverte
+    const subscription = Linking.addEventListener('url', handleUrl);
+
+    // App ouverte via lien
+    Linking.getInitialURL().then(url => {
+      if (url?.startsWith('otpauth://')) {
+        handleOtpAuthLink(url);
+      }
+    });
+
+  return () => subscription.remove();
+}, []);
+
   const config = {
     screens: {
       QRCodeScanner: 'open/qr',
@@ -116,7 +137,7 @@ export default function App() {
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer 
         linking={{
-          prefixes: ["esupauth://app"],
+          prefixes: ["esupauth://app", "otpauth://"],
           config: config,
         }}
         theme={isDarkTheme ? DarkTheme : LightTheme}
