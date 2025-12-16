@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Paris 1 Panthéon-Sorbonne (TEST)",
+    "url": "https://esup-otp-manager-test.univ-paris1.fr/login",
+    "imgUrl": ""
+  },
+  {
+    "name": "Université de Rouen Normandie",
+    "url": "https://esup-otp-manager.univ-rouen.fr/login",
+    "imgUrl": ""
+  }
+]
