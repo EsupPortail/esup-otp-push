@@ -223,6 +223,6 @@ const handleManagerQrCode = parsedJson => {
           );
           break;
         default:
-          showToast('Action de gestionnaire inconnue');
+          showToast('Action inconnue');
   }
 }
