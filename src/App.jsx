@@ -90,10 +90,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (bottomSheetRef.current) {
-      setBottomSheetRef(bottomSheetRef.current);
-      console.log('📱 bottomSheetRef initialisé:', bottomSheetRef.current);
-    }
+    setBottomSheetRef(bottomSheetRef.current);
+    console.log('📱 bottomSheetRef initialisé:', bottomSheetRef.current);
   }, [bottomSheetRef.current]);
 
   useEffect(() => {
