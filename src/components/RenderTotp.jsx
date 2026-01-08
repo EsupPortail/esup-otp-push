@@ -5,6 +5,8 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
 import {Totp} from '../utils/totp';
+import { Clipboard } from 'react-native';
+import { Toast } from 'toastify-react-native';
 
 const RenderTotp = ({item, code, onDelete}) => {
   const {colors} = useTheme();
@@ -17,10 +19,19 @@ const RenderTotp = ({item, code, onDelete}) => {
         <Icon name="delete" size={24} color="#fff" />
       </TouchableOpacity>
     );
+  const copyToClipboard = () => {
+    Clipboard.setString(code);
+    Toast.show({
+      type: 'success',
+      text1: 'Code copié dans le presse-papier',
+      position: 'top',
+      visibilityTime: 6000,
+    });
+  }
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={copyToClipboard}>
         <View>
           <Text style={[styles.code, {color: colors.text}]}>
             {Totp.formatCode(code)}
@@ -29,7 +40,7 @@ const RenderTotp = ({item, code, onDelete}) => {
         <View style={styles.nameRow}>
           <Text style={{color: colors.text}}>{name}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </Swipeable>
   );
 };
