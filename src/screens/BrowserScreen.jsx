@@ -16,6 +16,7 @@ import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen, { ManagerChooser } from './MethodsScreen';
 import { useTheme } from '@react-navigation/native';
 import Animated, { interpolate } from 'react-native-reanimated';
+import { ESUP_UA_SUFFIX } from '../utils/constants';
 
 export default function BrowserBottomSheet() {
   const {colors} = useTheme();
@@ -59,7 +60,7 @@ export default function BrowserBottomSheet() {
           style={styles.webview}
           onNavigationStateChange={onNavigationStateChange}
           sharedCookiesEnabled={true}
-          userAgent="Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+          userAgent={`${ESUP_UA_SUFFIX}`}
         /> :
         <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
         }
