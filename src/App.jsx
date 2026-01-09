@@ -35,7 +35,7 @@ export default function App() {
   const appContext = useMemo(() => {
     return {isDarkTheme, setIsDarkTheme};
   }, [isDarkTheme]);
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef();
   const {
     initAuth,
     notified,
