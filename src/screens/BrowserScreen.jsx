@@ -16,14 +16,29 @@ import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen, { ManagerChooser } from './MethodsScreen';
 import { useTheme } from '@react-navigation/native';
 import Animated, { interpolate } from 'react-native-reanimated';
-import { ESUP_UA_SUFFIX } from '../utils/constants';
+import DeviceInfo from 'react-native-device-info';
 
 export default function BrowserBottomSheet() {
   const {colors} = useTheme();
   const bottomSheetRef = useRef();
   const {visible, url, hide} = useBrowserStore();
+  const [userAgent, setUserAgent] = React.useState('');
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
+
+  // Construction de l'UA
+  async function buildEsupUserAgent() {
+    const baseUA = await DeviceInfo.getUserAgent();
+    const appVersion = DeviceInfo.getVersion();
+
+    console.log('[buildEsupUserAgent] baseUA:', `${baseUA} Esup Auth/${appVersion}`);
+
+    return `${baseUA} Esup Auth/${appVersion}`;
+  }
+
+  useEffect(() => {
+    buildEsupUserAgent().then(ua => setUserAgent(ua));
+  }, []);
 
   if (url === '') return (
     <BottomSheet
@@ -60,7 +75,7 @@ export default function BrowserBottomSheet() {
           style={styles.webview}
           onNavigationStateChange={onNavigationStateChange}
           sharedCookiesEnabled={true}
-          userAgent={`${ESUP_UA_SUFFIX}`}
+          userAgent={userAgent}
         /> :
         <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
         }
