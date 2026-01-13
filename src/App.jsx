@@ -92,7 +92,7 @@ export default function App() {
   useEffect(() => {
     setBottomSheetRef(bottomSheetRef.current);
     console.log('📱 bottomSheetRef initialisé:', bottomSheetRef.current);
-  }, [bottomSheetRef.current]);
+  }, []);
 
   useEffect(() => {
     if (isMigrated) {
