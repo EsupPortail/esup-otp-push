@@ -19,6 +19,7 @@ import LottieView from 'lottie-react-native';
 import nfcManager from 'react-native-nfc-manager';
 import { nfcSessionManager } from '../utils/nfcSessionManager';
 import { announce } from '../utils/accessibility';
+import { setBottomSheetRef } from '../services/nfcBottomSheetService';
 
 const NfcBottomSheet = forwardRef((props, ref) => {
   const {colors} = useTheme();
@@ -55,6 +56,10 @@ const NfcBottomSheet = forwardRef((props, ref) => {
       bottomSheetRef.current?.close();
     },
   }));
+
+  useEffect(() => {
+    setBottomSheetRef(ref.current);
+  }, [ref]);
 
   const handleClose = useCallback(() => {
     console.log('OnClose appelé: animation terminée');

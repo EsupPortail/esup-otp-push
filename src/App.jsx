@@ -12,7 +12,6 @@ import {initializeFirebase} from './utils/firebase';
 import MireActionSheet from './components/MireActionSheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from './components/NfcBottomSheet';
-import {setBottomSheetRef} from './services/nfcBottomSheetService';
 import AppSplashScreen from './components/AppSplashScreen';
 import { initializeSecureStorage, setStorage } from './utils/secureStorage';
 import ToastManager from 'toastify-react-native'
@@ -87,11 +86,6 @@ export default function App() {
 
     migrate(); // Exécute la fonction asynchrone
     initializeFirebase(); // Initialiser firebase
-  }, []);
-
-  useEffect(() => {
-    setBottomSheetRef(bottomSheetRef.current);
-    console.log('📱 bottomSheetRef initialisé:', bottomSheetRef.current);
   }, []);
 
   useEffect(() => {
