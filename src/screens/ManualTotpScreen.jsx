@@ -68,10 +68,15 @@ const ManualTotpScreen = ({ onPressFn }) => {
         control={control}
         name="secret"
         defaultValue=""
-        rules={{ required: 'champ obligatoire', minLength: {
+        rules={{ required: 'champ obligatoire', 
+          minLength: {
           value: 16,
           message: 'La clé doit faire au moins 16 caractères'
-        }}}
+          }, 
+          pattern: {
+            value: /^\S+$/,
+            message: 'La clé ne doit pas contenir d’espaces',
+          }}}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
             <TextInput
