@@ -3,7 +3,7 @@ import { useNfcStore } from '../stores/useNfcStore';
 import { useTotpStore } from '../stores/useTotpStore';
 import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { sync, autoActivateTotp, showToast } from '../services/auth';
-import { Alert, Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { Totp } from '../utils/totp';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { canNfcStart, checkNfc } from './nfcUtils';
@@ -41,6 +41,11 @@ export const handleUniversalQrCodeScan = async qrCodeData => {
       const totpResult = await handleTotpQrCode(data);
       //navigation.navigate('TotpScreen');
       return totpResult;
+    } else if (data.startsWith('FIDO:/')) {
+      // QR code WebAuthn
+      console.log('[handleUniversalQrCodeScan] Détection QR code WebAuthn');
+      handleWebAuthnQr(data);
+      return { success: true };
     } else if (data.includes('/methods/push/')) {
       // QR code PUSH
       console.log('[handleUniversalQrCodeScan] Détection QR code PUSH');
@@ -225,4 +230,10 @@ const handleManagerQrCode = parsedJson => {
         default:
           showToast('Action inconnue');
   }
+}
+
+const handleWebAuthnQr = uri => {
+  console.log('[handleWebAuthnQr] URI:', uri);
+
+  Linking.openURL(uri)
 }
