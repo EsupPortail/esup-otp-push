@@ -23,6 +23,7 @@ import { useNfcStore } from './stores/useNfcStore';
 import { useOtpServersStore } from './stores/useOtpServersStore';
 import BrowserBottomSheet from './screens/BrowserScreen';
 import { handleOtpAuthLink } from './services/deeplinkAuthService';
+import { handleWebAuthnQr } from './utils/qrCodeHandler';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -97,8 +98,14 @@ export default function App() {
 
   useEffect(() => {
     const handleUrl = ({ url }) => {
+      if (!url) return;
+
       if (url?.startsWith('otpauth://')) {
         handleOtpAuthLink(url);
+      }
+
+      if (url?.startsWith('FIDO:/')) {
+        handleWebAuthnQr(url);
       }
     };
 

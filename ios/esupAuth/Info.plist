@@ -26,6 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>esupauth</string>
+				<string>FIDO</string>
 			</array>
 		</dict>
 	</array>

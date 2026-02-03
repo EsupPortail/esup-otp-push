@@ -232,7 +232,7 @@ const handleManagerQrCode = parsedJson => {
   }
 }
 
-const handleWebAuthnQr = uri => {
+export const handleWebAuthnQr = uri => {
   console.log('[handleWebAuthnQr] URI:', uri);
 
   Linking.openURL(uri)
