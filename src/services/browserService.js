@@ -10,6 +10,7 @@ import { useTotpStore } from '../stores/useTotpStore';
 import { Toast } from 'toastify-react-native';
 import { fetchEtablissement } from './nfcService';
 import { useNfcStore } from '../stores/useNfcStore';
+import httpClient from './httpClient';
 
 // Récupère l'URL de base du gestionnaire depuis le store en enlevant login si présent
 const getBaseUrl = () => useBrowserStore.getState().url.replace(/\/login\/?$/, '');
@@ -23,13 +24,7 @@ export function getDomainFromBaseUrl() {
 
 export async function fetchUserInfo() {
   try {
-    const response = await axios.get(`${getBaseUrl()}/api/user`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true, // parfois utile sur iOS
-    });
+    const response = await httpClient.get(`${getBaseUrl()}/api/user`);
 
     console.log('✅ Données utilisateur reçues:', response.data);
     const oldUser = browserManager.getUser();
@@ -46,13 +41,7 @@ export async function fetchUserInfo() {
 export async function fetchUserCredentials() {
   let nfcUrl = '';
   try {
-    const response = await axios.get(`${getBaseUrl()}/manager/infos`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
+    const response = await httpClient.get(`${getBaseUrl()}/manager/infos`);
     console.log('✅ User credentials reçus:', response.data);
 
     const nfcInfos = await fetchEtablissement(response.data.api_url + '/esupnfc/infos');
@@ -72,13 +61,7 @@ export async function fetchUserCredentials() {
  */
 export async function fetchPushActivationData() {
   try {
-    const response = await axios.put(`${getBaseUrl()}/api/push/activate`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
+    const response = await httpClient.put(`${getBaseUrl()}/api/push/activate`);
 
     console.log('✅ [fetchPushActivationData] Activation data reçues:', response.data);
     const oldUser = browserManager.getUser();
@@ -91,31 +74,22 @@ export async function fetchPushActivationData() {
 
 export async function deactivatePush() {
   try {
-    const response = await axios.put(`${getBaseUrl()}/api/push/deactivate`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await httpClient.put(`${getBaseUrl()}/api/push/deactivate`);
+    
     console.log('✅ [deactivatePush] Activation data reçues:', response.data);
     return response.data;
   } catch (error) {
-    
+    console.error('❌ Erreur désactivation push:', error.message);
   }
 }
 
 export async function deactivateTotp(){
   try {
-    const response = await axios.put(`${getBaseUrl()}/api/totp/deactivate`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await httpClient.put(`${getBaseUrl()}/api/totp/deactivate`);
     console.log('✅ [deactivateTotp] Activation data reçues:', response.data);
     return response.data; //{code: 'Ok'}
   } catch (error) {
-    
+    console.error('❌ Erreur désactivation totp:', error.message);
   }
 }
 
@@ -169,13 +143,7 @@ export async function syncPush(){
 const deleteTotp = async () => {
   ///api/delete_method_secret/totp retourne le secret {"deleted_secret": xxx}
   try {
-    const response = await axios.delete(`${getBaseUrl()}/api/delete_method_secret/totp`, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
+    const response = await httpClient.delete(`${getBaseUrl()}/api/delete_method_secret/totp`);
 
     console.log('✅ [deleteTotp] Activation data reçues:', response.data);
     return response.data.deleted_secret;
@@ -186,13 +154,7 @@ const deleteTotp = async () => {
 
 const generateAndConfirmTotp = async () => {
   try {
-        const generateResponse = await axios.post(`${getBaseUrl()}/api/generate/totp?require_method_validation=true`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-        });
+        const generateResponse = await httpClient.post(`${getBaseUrl()}/api/generate/totp?require_method_validation=true`);
 
       console.log('✅ [generateAndConfirmTotp] Activation data reçues:', generateResponse);
 
@@ -200,13 +162,7 @@ const generateAndConfirmTotp = async () => {
         const {secret, name} = Totp.parseTotpUrl(generateResponse.data.uri);
         const token = Totp.token(secret);
         console.log('✅ [generateAndConfirmTotp] TOTP généré:', token);
-        const confirmResponse = await axios.post(`${getBaseUrl()}/api/totp/activate/confirm/${token}`, {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        });
+        const confirmResponse = await httpClient.post(`${getBaseUrl()}/api/totp/activate/confirm/${token}`);
         console.log('✅ [generateAndConfirmTotp] Activation data reçues:', confirmResponse.data);
         if (confirmResponse.data.code === 'Ok') {
           return {success: true, data: {secret: generateResponse.data.message, token: token, name: name}};

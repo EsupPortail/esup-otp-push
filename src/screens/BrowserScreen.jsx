@@ -28,7 +28,7 @@ export default function BrowserBottomSheet() {
 
   // Construction de l'UA
   async function buildEsupUserAgent() {
-    const baseUA = await DeviceInfo.getUserAgent();
+    const baseUA = DeviceInfo.getUserAgentSync();
     const appVersion = DeviceInfo.getVersion();
 
     console.log('[buildEsupUserAgent] baseUA:', `${baseUA} Esup Auth/${appVersion}`);
