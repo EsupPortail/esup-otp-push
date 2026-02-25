@@ -386,10 +386,6 @@ export const desync = async (
       timeout: 10000,
     });
 
-    const updated = {...otpServersObjects};
-    delete updated[otpServer];
-    console.log('🔁 updatedOtpServers DESYNC', updated);
-    updateOtpServersZustand(updated);
     showToast('Désactivation effectuée');
   } catch (error) {
     console.error('Erreur dans desync:', error.message, error.response?.data);
@@ -398,6 +394,11 @@ export const desync = async (
         error.response ? `: ${error.response.data?.message || ''}` : ''
       }`,
     );
+  } finally {
+    const updated = {...otpServersObjects};
+    delete updated[otpServer];
+    console.log('🔁 updatedOtpServers DESYNC', updated);
+    updateOtpServersZustand(updated);
   }
 };
 
