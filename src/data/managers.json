@@ -8,5 +8,10 @@
     "name": "Université de Rouen Normandie",
     "url": "https://esup-otp-manager.univ-rouen.fr/login",
     "imgUrl": ""
+  },
+  {
+    "name": "Université des Antilles",
+    "url": "https://manager-otp.univ-antilles.fr/login",
+    "imgUrl": ""
   }
 ]
