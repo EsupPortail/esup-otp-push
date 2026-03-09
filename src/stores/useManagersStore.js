@@ -7,9 +7,18 @@ export const useManagersStore = create((set) => ({
 
   loadManagers: async () => {
     console.log('[useManagersStore] loadManagers');
-    set({ loading: true });
-    const managers = await managersService.getManagers();
-    set({ managers, loading: false });
+    // Chargement immédiat du cache
+    const cached = managersService.getCachedManagers();
+    if (cached.length > 0) {
+      set({ managers: cached, loading: false });
+    } else {
+      set({ loading: true });
+    }
+
+    // Refresh silencieux en arrière-plan
+    managersService.fetchManagers().then((updatedManagers) => {
+      set({ managers: updatedManagers, loading: false });
+    });
   },
   addManager: async (manager) => {
     try {

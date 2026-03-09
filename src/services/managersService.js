@@ -1,11 +1,12 @@
 import { storage } from '../utils/storage';
 import { STORAGE_KEYS } from '../constants/storageKeys';
+import axios from 'axios';
 
 const GITHUB_MANAGERS_URL =
   'https://raw.githubusercontent.com/EsupPortail/esup-otp-push/refs/heads/main/src/data/managers.json';
 
 export const managersService = {
-  
+
   getCachedManagers() {
     const raw = storage.getString(STORAGE_KEYS.MANAGERS);
     return raw ? JSON.parse(raw) : [];
@@ -25,15 +26,12 @@ export const managersService = {
 
   async fetchManagers() {
     try {
-      const res = await fetch(GITHUB_MANAGERS_URL);
-      if (!res.ok) throw new Error('Fetch failed');
-
-      const data = await res.json();
+      const { data } = await axios.get(GITHUB_MANAGERS_URL, { timeout: 5000 });
       console.log('[managersService] fetched managers:', data);
 
       return this.setCachedManagers(data);
     } catch (e) {
-      console.warn('[managersService] fetch failed, fallback cache');
+      console.warn('[managersService] fetch failed (timeout or error), fallback cache');
       return this.getCachedManagers();
     }
   },
