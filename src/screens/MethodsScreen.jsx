@@ -13,10 +13,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { getSyncStatus } from '../utils/getSyncStatus';
 import { getDomainFromBaseUrl, syncHandlers } from '../services/browserService';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, Swipeable } from 'react-native-gesture-handler';
 import { allManagers } from '../data/managerData';
 import { browserManager } from '../stores/useBrowserStore';
 import { useManagersStore } from '../stores/useManagersStore';
+import { showToast } from '../services/auth';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -255,64 +256,72 @@ export const ManagerChooser = () => {
   return (
     <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
       <Text style={styles.title}>Choisissez votre établissement</Text>
-      <Text style={[styles.subtitle, {marginBottom: 20, fontSize: 16}]}>
-        Si votre établissement n’apparaît pas, cela signifie qu’il ne propose pas la fonction d’activation rapide. Veuillez utiliser une autre méthode : Scanner QR code ou Saisie manuelle
+      <Text style={[styles.subtitle, { marginBottom: 20, fontSize: 16 }]}>
+        Si votre établissement n’apparaît pas, cela signifie qu’il ne propose
+        pas la fonction d’activation rapide. Veuillez utiliser une autre méthode
+        : Scanner QR code ou Saisie manuelle
       </Text>
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{flex: 1}} 
-        keyboardVerticalOffset={60}>
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={60}
+      >
         {/* 🔍 Champ de recherche */}
-      <View style={styles.searchContainer}>
-        <Icon name="magnify" size={22} color="#284758" />
-        <TextInput
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Rechercher un établissement"
-          placeholderTextColor="#284758"
-          style={styles.searchInput}
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-        {search.length > 0 && (
-          <TouchableOpacity onPress={() => setSearch('')}>
-            <Icon name="close-circle" size={18} color="#888" />
-          </TouchableOpacity>
+        <View style={styles.searchContainer}>
+          <Icon name="magnify" size={22} color="#284758" />
+          <TextInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder="Rechercher un établissement"
+            placeholderTextColor="#284758"
+            style={styles.searchInput}
+            autoCorrect={false}
+            autoCapitalize="none"
+          />
+          {search.length > 0 && (
+            <TouchableOpacity onPress={() => setSearch('')}>
+              <Icon name="close-circle" size={18} color="#888" />
+            </TouchableOpacity>
+          )}
+        </View>
+        {/* 📋 Résultats */}
+        {filteredManagers.length === 0 ? (
+          <Text style={styles.emptyText}>Aucun établissement trouvé</Text>
+        ) : (
+          filteredManagers.map((manager) => (
+            <Swipeable
+              key={manager.url}
+              renderRightActions={() => renderRightActions(manager)}
+              enabled={!!manager.action}
+            >
+              <TouchableOpacity
+                style={[styles.card, { backgroundColor: '#284758' }]}
+                onPress={() => {
+                  browserManager.setUrl(manager.url);
+                  browserManager.show();
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flex: 1,
+                  }}
+                >
+                  <Text style={{ fontSize: 18, color: '#FFF' }}>
+                    {manager.name}
+                  </Text>
+                  <Icon name="arrow-right-thin" size={24} color="#FFF" />
+                </View>
+              </TouchableOpacity>
+            </Swipeable>
+          ))
         )}
-      </View>
-            {/* 📋 Résultats */}
-      {filteredManagers.length === 0 ? (
-        <Text style={styles.emptyText}>
-          Aucun établissement trouvé
-        </Text>
-      ) : (
-        filteredManagers.map((manager, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.card, {backgroundColor: '#284758'}]}
-            onPress={() => {
-              browserManager.setUrl(manager.url);
-              browserManager.show();
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flex: 1,
-              }}>
-              <Text style={{fontSize: 18, color: '#FFF'}}>
-                {manager.name}
-              </Text>
-              <Icon name="arrow-right-thin" size={24} color="#FFF" />
-            </View>
-          </TouchableOpacity>
-        ))
-      )}
       </KeyboardAvoidingView>
     </ScrollView>
-  )
+  );
 };
 
 export default function MethodsScreen({user, bottomSheetRef}) {
@@ -429,6 +438,20 @@ export default function MethodsScreen({user, bottomSheetRef}) {
   );
 }
 
+const renderRightActions = manager => (
+  <TouchableOpacity
+    style={[styles.deleteButton]}
+    onPress={() =>
+      useManagersStore
+        .getState()
+        .deleteManager(manager.url)
+        .then(() => showToast(`Manageur ${manager.name} supprimé`))
+    }
+  >
+    <Icon name="delete" size={24} color="red" />
+  </TouchableOpacity>
+);
+
 const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: '#F6F8FA'},
   container: {paddingHorizontal: 18, paddingTop: 14, flex: 1},
@@ -517,4 +540,10 @@ emptyText: {
   marginTop: 20,
   fontSize: 16,
 },
+  deleteButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 60,
+    borderRadius: 100,
+  },
 });
