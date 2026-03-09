@@ -239,11 +239,17 @@ export const ManagerChooser = () => {
   const filteredManagers = useMemo(() => {
     const q = search.trim().toLowerCase();
 
-    if (!q) return managers;
+    let results = q
+      ? managers.filter(m => m.name.toLowerCase().includes(q))
+      : [...managers];
 
-    return managers.filter(manager =>
-      manager.name.toLowerCase().includes(q)
-    );
+    // On trie par ordre alphabétique
+    return results.sort((a, b) => {
+      return a.name.localeCompare(b.name, undefined, {
+        sensitivity: 'base',
+        numeric: true,
+      });
+    });
   }, [search, managers]);
 
   return (
