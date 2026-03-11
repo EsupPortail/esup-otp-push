@@ -60,9 +60,6 @@ const QRCodeScannerScreen = () => {
           style={styles.camera}
           scanBarcode={isScanning}
           onReadCode={onReadCode}
-          showFrame={true}
-          laserColor="#FF3B30"
-          frameColor={colors.primary}
         />
       }
       <TouchableOpacity

@@ -1,4 +1,4 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {useNavigation, useRoute, useTheme} from '@react-navigation/native';
 import {
   StyleSheet,
   Text,
@@ -18,6 +18,10 @@ import {useNfcStore} from '../stores/useNfcStore';
 import {useTotpStore} from '../stores/useTotpStore';
 import EmptyScreen from './EmptyScreen';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { set } from 'react-hook-form';
+import { browserManager } from '../stores/useBrowserStore';
+import useDeepLinking from '../hooks/useDeepLinking';
 
 export default function HomeScreen() {
   const {colors} = useTheme();
@@ -25,6 +29,7 @@ export default function HomeScreen() {
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   const [isNfcSupported, setIsNfcSupported] = useState(null);
   const data = [];
+  const insets = useSafeAreaInsets();
 
   // Utilisez les hooks Zustand pour récupérer l'état.
   // Le composant s'abonne maintenant aux changements de ces états.
@@ -39,6 +44,10 @@ export default function HomeScreen() {
   const handleManualInput = () => {
     navigation.navigate('ManualInput');
   };
+  const handleBrowser = () => {
+    setIsActionSheetOpen(false);
+    browserManager.show();
+  };
 
   const checkNfc = async () => {
     const isSupported = await nfcManager.isSupported();
@@ -50,6 +59,7 @@ export default function HomeScreen() {
       setIsNfcSupported(isSupported);
     });
   }, []);
+  useDeepLinking();
 
   // On retourne un écran spécial si dans le storage aucun moyen de connexion n'est configuré
   // totpOject vide && pushObject vide && nfcObject vide
@@ -96,7 +106,7 @@ export default function HomeScreen() {
       )}
       {!isEmpty && (
         <TouchableOpacity
-          style={styles.floattingButton}
+          style={[  styles.floattingButton, {bottom: insets.bottom + 20}]}
           onPress={() => setIsActionSheetOpen(true)}>
           <Icon name="plus-circle" color={colors.primary} size={56} />
         </TouchableOpacity>
@@ -107,6 +117,7 @@ export default function HomeScreen() {
         actions={[
           {label: 'Scanner QR code', onPress: handleScanQrCode},
           {label: 'Saisie manuelle', onPress: handleManualInput},
+          {label: 'Activation rapide', onPress: handleBrowser},
         ]}
       />
     </>
@@ -126,7 +137,6 @@ const styles = StyleSheet.create({
   floattingButton: {
     position: 'absolute',
     elevation: 5,
-    bottom: 5,
     right: 30,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},

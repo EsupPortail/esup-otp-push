@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import AppStack from './navigation/AppStack';
 import {useState, useMemo, useEffect, useRef} from 'react';
-import {View} from 'react-native';
+import {Linking, View} from 'react-native';
 import DarkTheme from './theme/DarkTheme';
 import LightTheme from './theme/LightTheme';
 import {AppContext} from './theme/AppContext';
@@ -12,7 +12,6 @@ import {initializeFirebase} from './utils/firebase';
 import MireActionSheet from './components/MireActionSheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NfcBottomSheet from './components/NfcBottomSheet';
-import {setBottomSheetRef} from './services/nfcBottomSheetService';
 import AppSplashScreen from './components/AppSplashScreen';
 import { initializeSecureStorage, setStorage } from './utils/secureStorage';
 import ToastManager from 'toastify-react-native'
@@ -22,6 +21,9 @@ import { useAppLifecycle } from './hooks/useAppLifecycle';
 import NfcManager from 'react-native-nfc-manager';
 import { useNfcStore } from './stores/useNfcStore';
 import { useOtpServersStore } from './stores/useOtpServersStore';
+import BrowserBottomSheet from './screens/BrowserScreen';
+import { handleOtpAuthLink } from './services/deeplinkAuthService';
+import { handleWebAuthnQr } from './utils/qrCodeHandler';
 
 export default function App() {
   const [isDarkTheme, setIsDarkTheme] = useState(
@@ -33,7 +35,7 @@ export default function App() {
   const appContext = useMemo(() => {
     return {isDarkTheme, setIsDarkTheme};
   }, [isDarkTheme]);
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef();
   const {
     initAuth,
     notified,
@@ -88,24 +90,57 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (bottomSheetRef.current) {
-      setBottomSheetRef(bottomSheetRef.current);
-      console.log('📱 bottomSheetRef initialisé:', bottomSheetRef.current);
-    }
-  }, [bottomSheetRef.current]);
-
-  useEffect(() => {
     if (isMigrated) {
       const darkValue = storage.getString('darkMode');
       setIsDarkTheme(darkValue === 'enabled');
     }
   }, [isMigrated]);
 
+  useEffect(() => {
+    const handleUrl = ({ url }) => {
+      if (!url) return;
+
+      if (url?.startsWith('otpauth://')) {
+        handleOtpAuthLink(url);
+      }
+
+      if (url?.startsWith('FIDO:/')) {
+        handleWebAuthnQr(url);
+      }
+    };
+
+    // App déjà ouverte
+    const subscription = Linking.addEventListener('url', handleUrl);
+
+    // App ouverte via lien
+    Linking.getInitialURL().then(url => {
+      if (url?.startsWith('otpauth://')) {
+        handleOtpAuthLink(url);
+      }
+    });
+
+  return () => subscription.remove();
+}, []);
+
+  const config = {
+    screens: {
+      QRCodeScanner: 'open/qr',
+      ManualInput: 'open/saisie-manuelle',
+      Home: 'auth/:method'
+    }
+  }
+
   if (!isMigrated) return <AppSplashScreen />;
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
+      <NavigationContainer 
+        linking={{
+          prefixes: ["esupauth://app", "otpauth://"],
+          config: config,
+        }}
+        theme={isDarkTheme ? DarkTheme : LightTheme}
+      >
         <AppContext.Provider value={appContext}>
           <AppStack />
           <View
@@ -126,6 +161,7 @@ export default function App() {
             />
           </View>
           <NfcBottomSheet ref={bottomSheetRef} />
+          <BrowserBottomSheet />
           <ToastManager config={toastConfig} />
         </AppContext.Provider>
       </NavigationContainer>

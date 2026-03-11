@@ -3,17 +3,19 @@ import { useNfcStore } from '../stores/useNfcStore';
 import { useTotpStore } from '../stores/useTotpStore';
 import { useOtpServersStore } from '../stores/useOtpServersStore';
 import { sync, autoActivateTotp, showToast } from '../services/auth';
-import { Alert, Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 import { Totp } from '../utils/totp';
 import { getManufacturer, getModel } from 'react-native-device-info';
 import { canNfcStart, checkNfc } from './nfcUtils';
+import { useManagersStore } from '../stores/useManagersStore';
 
-export const handleUniversalQrCodeScan = async (qrCodeData) => {
+export const handleUniversalQrCodeScan = async qrCodeData => {
   try {
     console.log('[handleUniversalQrCodeScan] QR code scanné:', qrCodeData);
 
     // Extraire la valeur du QR code
-    const data = typeof qrCodeData === 'string' ? qrCodeData : qrCodeData?.codeStringValue;
+    const data =
+      typeof qrCodeData === 'string' ? qrCodeData : qrCodeData?.codeStringValue;
     if (!data) {
       showToast('QR code invalide');
       console.warn('[handleUniversalQrCodeScan] Aucun contenu valide');
@@ -24,6 +26,10 @@ export const handleUniversalQrCodeScan = async (qrCodeData) => {
     let parsedJson = null;
     try {
       parsedJson = JSON.parse(data);
+      console.log(
+        '[handleUniversalQrCodeScan] Contenu JSON détecté:',
+        parsedJson,
+      );
     } catch (e) {
       // Pas un JSON, probablement une URL
     }
@@ -35,13 +41,23 @@ export const handleUniversalQrCodeScan = async (qrCodeData) => {
       const totpResult = await handleTotpQrCode(data);
       //navigation.navigate('TotpScreen');
       return totpResult;
+    } else if (data.startsWith('FIDO:/')) {
+      // QR code WebAuthn
+      console.log('[handleUniversalQrCodeScan] Détection QR code WebAuthn');
+      handleWebAuthnQr(data);
+      return { success: true };
     } else if (data.includes('/methods/push/')) {
       // QR code PUSH
       console.log('[handleUniversalQrCodeScan] Détection QR code PUSH');
       const pushResult = await handlePushQrCode(data);
       //navigation.navigate('PushScreen');
       return pushResult;
-    } else if (parsedJson && parsedJson.url && parsedJson.numeroId && parsedJson.etablissement) {
+    } else if (
+      parsedJson &&
+      parsedJson.url &&
+      parsedJson.numeroId &&
+      parsedJson.etablissement
+    ) {
       // QR code NFC
       console.log('[handleUniversalQrCodeScan] Détection QR code NFC');
       // Avant de démarrer, vérifie que le NFC est supporté
@@ -53,14 +69,26 @@ export const handleUniversalQrCodeScan = async (qrCodeData) => {
       const nfcResult = await handleNfcQrCode(parsedJson);
       if (nfcResult.success) {
         const { scanTagForEstablishment } = require('../services/nfcService');
-        const canStart =await canNfcStart();
+        const canStart = await canNfcStart();
         scanTagForEstablishment(parsedJson.url, parsedJson.numeroId, canStart);
       }
       //navigation.navigate('NfcScreen');
       return nfcResult;
+    } else if (
+      parsedJson &&
+      parsedJson.action &&
+      parsedJson.name &&
+      parsedJson.url
+    ) {
+      console.log('[handleUniversalQrCodeScan] Détection QR code managers');
+      handleManagerQrCode(parsedJson);
+      return { success: true };
     } else {
       showToast('Type de QR code non reconnu');
-      console.warn('[handleUniversalQrCodeScan] Type de QR code inconnu:', data);
+      console.warn(
+        '[handleUniversalQrCodeScan] Type de QR code inconnu:',
+        data,
+      );
       return { success: false, message: 'Type de QR code non reconnu' };
     }
   } catch (error) {
@@ -70,7 +98,7 @@ export const handleUniversalQrCodeScan = async (qrCodeData) => {
   }
 };
 
-const handleTotpQrCode = async (url) => {
+const handleTotpQrCode = async url => {
   try {
     const parsed = Totp.parseTotpUrl(url);
     if (!parsed || !parsed.secret || !parsed.name) {
@@ -80,7 +108,10 @@ const handleTotpQrCode = async (url) => {
 
     const { setTotpObjects } = useTotpStore.getState();
     const currentTotpObjects = useTotpStore.getState().totpObjects;
-    const updatedTotpObjects = { ...currentTotpObjects, [parsed.secret]: parsed.name };
+    const updatedTotpObjects = {
+      ...currentTotpObjects,
+      [parsed.secret]: parsed.name,
+    };
     setTotpObjects(updatedTotpObjects);
 
     showToast('TOTP ajouté avec succès');
@@ -91,7 +122,7 @@ const handleTotpQrCode = async (url) => {
   }
 };
 
-const handlePushQrCode = async (url) => {
+const handlePushQrCode = async url => {
   try {
     const match = url.match(/\/users\/([^/]+)\/methods\/push\/([^/]+)/);
     if (!match) {
@@ -104,21 +135,30 @@ const handlePushQrCode = async (url) => {
     const model = getModel();
     const platform = Platform.OS;
 
-    const result = await sync(host, uid, code, gcmId, platform, manufacturer, model);
+    const result = await sync(
+      host,
+      uid,
+      code,
+      gcmId,
+      platform,
+      manufacturer,
+      model,
+    );
     if (!result.success) {
       showToast('Échec de la synchronisation PUSH');
+    } else {
+      showToast('Synchronisation PUSH réussie');
+      return { success: true, data: result.data };
     }
 
     console.log('[handlePushQrCode] PUSH synchronisé:', result);
-    showToast('Synchronisation PUSH réussie');
-    return { success: true, data: result.data };
   } catch (error) {
     console.error('[handlePushQrCode] Erreur:', error.message);
     throw error;
   }
 };
 
-const handleNfcQrCode = async (parsedJson) => {
+const handleNfcQrCode = async parsedJson => {
   try {
     const { url, numeroId, etablissement } = parsedJson;
     if (!url || !numeroId || !etablissement) {
@@ -129,7 +169,7 @@ const handleNfcQrCode = async (parsedJson) => {
     const { addEstablishment, establishments } = useNfcStore.getState();
 
     // Vérifier si l'établissement existe déjà
-    const exists = establishments.some((est) => est.url === url);
+    const exists = establishments.some(est => est.url === url);
     if (exists) {
       return { success: false, message: 'Cet établissement est déjà ajouté.' };
     }
@@ -144,3 +184,56 @@ const handleNfcQrCode = async (parsedJson) => {
     Alert.alert('Erreur', 'QR code invalide pour un établissement.');
   }
 };
+
+const handleManagerQrCode = parsedJson => {
+  switch (parsedJson.action) {
+        case 'ADD':
+          Alert.alert(
+            `Ajouter un manageur`,
+            `Voulez-vous ajouter ce manageur: ${parsedJson.name} ?`,
+            [
+              { text: 'Annuler', style: 'cancel' },
+              {
+                text: 'Confirmer',
+                onPress: () => {
+                  useManagersStore
+                    .getState()
+                    .addManager(parsedJson)
+                    .then(() =>
+                      showToast(`Manageur ${parsedJson.name} ajouté`),
+                    );
+                },
+              },
+            ],
+          );
+          break;
+        case 'DELETE':
+          Alert.alert(
+            `Supprimer un manageur`,
+            `Voulez-vous supprimer ce manageur: ${parsedJson.name} ?`,
+            [
+              { text: 'Annuler', style: 'cancel' },
+              {
+                text: 'Confirmer',
+                onPress: () => {
+                  useManagersStore
+                    .getState()
+                    .deleteManager(parsedJson.url)
+                    .then(() =>
+                      showToast(`Manageur ${parsedJson.name} supprimé`),
+                    );
+                },
+              },
+            ],
+          );
+          break;
+        default:
+          showToast('Action inconnue');
+  }
+}
+
+export const handleWebAuthnQr = uri => {
+  console.log('[handleWebAuthnQr] URI:', uri);
+
+  Linking.openURL(uri)
+}

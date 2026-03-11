@@ -18,6 +18,8 @@ import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import LottieView from 'lottie-react-native';
 import nfcManager from 'react-native-nfc-manager';
 import { nfcSessionManager } from '../utils/nfcSessionManager';
+import { announce } from '../utils/accessibility';
+import { setBottomSheetRef } from '../services/nfcBottomSheetService';
 
 const NfcBottomSheet = forwardRef((props, ref) => {
   const {colors} = useTheme();
@@ -55,6 +57,10 @@ const NfcBottomSheet = forwardRef((props, ref) => {
     },
   }));
 
+  useEffect(() => {
+    setBottomSheetRef(ref.current);
+  }, [ref]);
+
   const handleClose = useCallback(() => {
     console.log('OnClose appelé: animation terminée');
     setState('closed');
@@ -67,13 +73,37 @@ const NfcBottomSheet = forwardRef((props, ref) => {
     };
   }, []);
 
+  useEffect(() => {
+    switch (state) {
+      case 'start':
+        announce('Scannez votre carte NFC. Placez votre carte sous l’appareil.');
+        break;
+
+      case 'waiting':
+        announce('Traitement en cours. Gardez la carte posée sur le lecteur.');
+        break;
+
+      case 'success':
+        announce(message || 'Authentification réussie.');
+        break;
+
+      case 'error':
+        announce('Erreur. Carte invalide ou méthode non activée.');
+        break;
+    }
+  }, [state]);
+
   const renderContent = () => {
     const animationStyle = {};
 
     return (
       <View style={[styles.bottomSheetContent, {}]}>
         <View style={styles.sheetHeader}>
-          <Text style={[styles.sheetTitle, {color: '#fff'}]}>
+          <Text 
+            accessible
+            accessibilityRole="text"
+            accessibilityLabel="Scannez votre carte NFC."
+            style={[styles.sheetTitle, {color: '#fff'}]}>
             Scannez votre carte NFC
           </Text>
           {state === 'success' && (
@@ -141,7 +171,11 @@ const NfcBottomSheet = forwardRef((props, ref) => {
         </View>
         {state === 'start' && (
           <View style={styles.sheetBody}>
-            <Text style={[styles.instructionText, {color: '#fff'}]}>
+            <Text 
+              accessible
+              accessibilityRole="text"
+              accessibilityLabel="Placez votre carte sous l’appareil."
+              style={[styles.instructionText, {color: '#fff'}]}>
               Placez votre carte sous l'appareil.
             </Text>
           </View>

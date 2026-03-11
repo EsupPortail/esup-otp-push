@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>fr</string>
 	<key>CFBundleDisplayName</key>
 	<string>esupAuth</string>
 	<key>CFBundleExecutable</key>
@@ -17,11 +17,21 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<string>2.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>esupauth</string>
+				<string>FIDO</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>2.0</string>
+	<string>2.1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NFCReaderUsageDescription</key>
@@ -37,6 +47,8 @@
 	<string>Accéder à la caméra pour scanner les QR codes</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Feather.ttf</string>

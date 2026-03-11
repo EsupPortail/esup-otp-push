@@ -22,10 +22,14 @@ export const useTotpStore = create((set, get) => ({
 
   removeTotp: (key) => {
     const current = get().totpObjects;
+
+    if (!current[key]) return;
+
     const updated = { ...current };
     delete updated[key];
     storage.set('totpObjects', JSON.stringify(updated));
     set({ totpObjects: updated });
+    console.log(`[removeTotp] TOTP supprimé : ${key}`);
   },
 
   total: () => Object.keys(get().totpObjects).length,

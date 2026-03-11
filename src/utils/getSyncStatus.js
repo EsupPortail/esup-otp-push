@@ -1,0 +1,89 @@
+import DeviceInfo, { getModel } from 'react-native-device-info';
+import { useTotpStore } from '../stores/useTotpStore';
+import { useOtpServersStore } from '../stores/useOtpServersStore';
+import { useNfcStore } from '../stores/useNfcStore';
+import { browserManager } from '../stores/useBrowserStore';
+import Totp from './totp';
+import { isNfcExists } from '../services/browserService';
+
+/**
+ * Compare les méthodes actives côté serveur avec celles configurées localement
+ * et retourne un objet clair du type :
+ * {
+ *   totp: 'local',
+ *   push: 'remote',
+ *   esupnfc: 'local',
+ *   webauthn: 'none'
+ * }
+ */
+export const getSyncStatus = (methods) => {
+  // Lecture des stores locaux
+  const totpObjects = useTotpStore.getState().totpObjects;
+  const otpServers = useOtpServersStore.getState().otpServers;
+  const nfcObjects = useNfcStore.getState().establishments;
+
+  const localPushKeys = Object.keys(otpServers);
+  const localTotpKeys = Object.keys(totpObjects);
+  const userData = browserManager.getUser();
+  const isTotpLocal = Totp.hasMatchingTotp(totpObjects, userData?.uid, userData?.methods?.methods?.totp?.secret_hash);
+
+  const remotePushKey = userData?.api_url && userData?.uid
+  ? `${userData.api_url.replace(/\/$/, '')}/${userData.uid}`
+  : null;
+  console.log('[getSyncStatus] remotePushKey:', remotePushKey);
+  console.log('[getSyncStatus] localPushKeys:', localPushKeys);
+  console.log('[getSyncStatus] userData:', userData);
+  console.log('[getSyncStatus] isTotpLocal:', isTotpLocal);
+
+  // Helper : savoir si un store local est vide
+  const isEmpty = (obj) => !obj || Object.keys(obj).length === 0;
+  const isPushLocal = remotePushKey && localPushKeys.includes(remotePushKey);
+  const isNfcLocal = isNfcExists();
+  
+  console.log('[getSyncStatus] isPushLocal:', isPushLocal);
+
+  const syncStatus = {};
+
+  Object.entries(methods).forEach(([key, value]) => {
+    if (key === 'codeRequired' || key === 'waitingFor') return; // skip champs techniques
+
+    const active = value.active ?? false;
+
+    // === TOTP ===
+    if (key === 'totp') {
+      if (!active) syncStatus[key] = 'none';
+      else syncStatus[key] = isTotpLocal ? 'local' : {status: 'remote', label: 'other'};
+    }
+
+    // === NFC ===
+    else if (key === 'esupnfc') {
+      if (!active) syncStatus[key] = 'none';
+      else syncStatus[key] = isEmpty(nfcObjects) ? {status: 'remote', label: 'other'} : isNfcLocal ? 'local' : {status: 'remote', label: 'other'};
+    }
+
+    // === PUSH ===
+    else if (key === 'push') {
+      if (!active) {
+        syncStatus[key] = 'none';
+      } else {
+        const device = value.device || {};
+        if (isPushLocal) {
+          syncStatus[key] = 'local';
+        } else {
+          syncStatus[key] = {
+            status: 'remote',
+            label: `${device.platform} ${device.model}`
+          };
+        }
+      }
+    }
+
+    // === Autres méthodes ===
+    else {
+      syncStatus[key] = active ? 'remote' : 'none';
+    }
+  });
+  console.log('#####[getSyncStatus] syncStatus:', syncStatus);
+
+  return syncStatus;
+};

@@ -3,6 +3,7 @@ import React from 'react'
 import { useTheme } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getHelpByKey } from '../data/helpData';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EmptyScreen = ({setIsActionSheetOpen}) => {
   const {colors} = useTheme();
@@ -13,7 +14,7 @@ const EmptyScreen = ({setIsActionSheetOpen}) => {
     }
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View>
         <View style={styles.methods}>
             <TouchableOpacity onPress={() => showHelp('totp')}>
@@ -36,7 +37,7 @@ const EmptyScreen = ({setIsActionSheetOpen}) => {
         onPress={() => setIsActionSheetOpen(true)}>
         <Icon name="plus-circle" color={colors.primary} size={56} />
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }
 

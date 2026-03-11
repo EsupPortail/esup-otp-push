@@ -13,6 +13,7 @@ import ManualPushScreen from '../screens/ManualPushScreen';
 import HelpScreen from '../screens/HelpScreen';
 import ManualNfcScreen from '../screens/ManualNfcScreen';
 import ManualInputScreen from '../screens/ManualInputScreen';
+import DeviceInfo from 'react-native-device-info';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -89,9 +90,11 @@ const DrawerNavigator = () => {
 };
 
 const showAppInfos = () => {
+  const version = DeviceInfo.getVersion();
+
   Alert.alert(
     'Infos',
-    'Esup Auth 2.0\n\n' +
+    `Esup Auth ${version}\n\n` +
     'by ESUP-Portail'
   );
 };
