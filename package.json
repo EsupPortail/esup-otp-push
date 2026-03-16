@@ -21,6 +21,8 @@
     "axios": "^1.12.2",
     "buffer": "^6.0.3",
     "lottie-react-native": "^5.1.6",
+    "nanoid": "^5.1.7",
+    "nanoid-dictionary": "^5.0.0",
     "react": "19.1.4",
     "react-hook-form": "^7.55.0",
     "react-native": "^0.81.6",

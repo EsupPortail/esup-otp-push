@@ -1,15 +1,10 @@
 import { MMKV } from 'react-native-mmkv';
 import * as Keychain from 'react-native-keychain';
+import 'react-native-get-random-values'
+import { customAlphabet } from 'nanoid';
+import { alphanumeric } from 'nanoid-dictionary';
 
-const generateSecureKey = () => {
-    console.log('[secureStorage] Génération d’une clé avec Math.random (phase de test)');
-    // Générer une clé de 16 caractères alphanumériques
-    const key = Array.from({ length: 16 }, () =>
-      Math.floor(Math.random() * 36).toString(36)
-    ).join('');
-    console.warn('[secureStorage] Clé générée avec Math.random (non cryptographiquement sécurisée)');
-    return key;
-};
+const generateSecureKey = customAlphabet(alphanumeric, 16);
 
 export const initializeSecureStorage = async () => {
   try {
