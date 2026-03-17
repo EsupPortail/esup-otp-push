@@ -35,7 +35,7 @@ const QRCodeScannerScreen = () => {
           setIsScanning(false);
           Alert.alert(
             'Erreur',
-            error.message || 'QR code invalide pour TOTP.',
+            'QR code invalide.',
             [{text: 'Annuler', onPress: () => {
               if(navigation.canGoBack()) navigation.goBack();
             }}],

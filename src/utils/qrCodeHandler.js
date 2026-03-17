@@ -93,7 +93,7 @@ export const handleUniversalQrCodeScan = async qrCodeData => {
     }
   } catch (error) {
     console.error('[handleUniversalQrCodeScan] Erreur:', error.message);
-    showToast(`Erreur lors du scan: ${error.message}`);
+    //showToast(`Erreur lors du scan: ${error.message}`);
     return { success: false, message: error.message };
   }
 };
