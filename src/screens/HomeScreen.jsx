@@ -106,6 +106,8 @@ export default function HomeScreen() {
       )}
       {!isEmpty && (
         <TouchableOpacity
+          accessibilityRole='button'
+          accessibilityLabel='Ajouter'
           style={[  styles.floattingButton, {bottom: insets.bottom + 20}]}
           onPress={() => setIsActionSheetOpen(true)}>
           <Icon name="plus-circle" color={colors.primary} size={56} />

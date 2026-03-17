@@ -62,6 +62,7 @@ const MireActionSheet = ({
       <TouchableOpacity
         style={[styles.overlay, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}
         activeOpacity={1}
+        accessible={false}
         onPress={() => {}}>
         <Animated.View
           style={[
@@ -73,7 +74,11 @@ const MireActionSheet = ({
           ]}>
           {/* Boîte pour le texte */}
           <View style={[styles.textBox, {backgroundColor: '#fff'}]}>
-            <Text style={styles.title}>
+            <Text 
+              style={styles.title}
+              accessible={true}
+              accessibilityRole='text'
+            >
               {additionalData.text || 'Veuillez valider votre connexion.'}
             </Text>
             {/* Boîte pour les actions */}
@@ -81,12 +86,16 @@ const MireActionSheet = ({
             <View style={[styles.actionBox, {backgroundColor: 'transparent'}]}>
               <TouchableOpacity
                 style={[styles.button, {backgroundColor: '#4CAF50'}]}
+                accessible={true}
+                accessibilityRole="button"
                 onPress={handleAccept}>
                 <Text style={styles.buttonText}>Accepter</Text>
               </TouchableOpacity>
               <View style={styles.spacerBetween} />
               <TouchableOpacity
                 style={[styles.button, {backgroundColor: '#F44336'}]}
+                accessible={true}
+                accessibilityRole="button"
                 onPress={handleReject}>
                 <Text style={styles.buttonText}>Rejeter</Text>
               </TouchableOpacity>

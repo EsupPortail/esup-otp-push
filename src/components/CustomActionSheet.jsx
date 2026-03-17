@@ -35,6 +35,7 @@ const CustomActionSheet = ({ visible, onClose, actions }) => {
       <TouchableOpacity
         style={[styles.overlay, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}
         activeOpacity={1}
+        accessible={false}
       >
         <Animated.View
           style={[
