@@ -13,5 +13,10 @@
     "name": "Université des Antilles",
     "url": "https://manager-otp.univ-antilles.fr/login",
     "imgUrl": "https://www.univ-antilles.fr/sites/default/files/logo_couleur_ua.png"
+  },
+  {
+    "name": "Université Polytechnique Hauts-de-France",
+    "url": "https://mfa.uphf.fr/login",
+    "imgUrl": "https://www.uphf.fr/sites/default/files/media/2021-12/uphf-logo.svg"
   }
 ]
