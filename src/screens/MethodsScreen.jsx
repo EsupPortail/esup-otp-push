@@ -310,7 +310,9 @@ export const ManagerChooser = () => {
                     flex: 1,
                   }}
                 >
-                  <Text style={{ fontSize: 18, color: '#FFF' }}>
+                  <Text 
+                    style={{ fontSize: 18, color: '#FFF', flex: 1 }}
+                  >
                     {manager.name}
                   </Text>
                   <Icon name="arrow-right-thin" size={24} color="#FFF" />
