@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^5.1.6",
+    "@gorhom/bottom-sheet": "5.2.8",
     "@react-native-community/netinfo": "^11.3.3",
     "@react-native-firebase/app": "^22.1.0",
     "@react-native-firebase/messaging": "^22.1.0",
