@@ -68,6 +68,12 @@ export default function BrowserBottomSheet() {
     >
       <BottomSheetView style={styles.sheetContent}>
         {/* <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} /> */}
+        <TouchableOpacity style={{ alignSelf: 'start', paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
+          browserManager.setUrl('');
+          hide();
+        } }>
+          <Material name="home-circle-outline" size={32} color="#284758" />
+        </TouchableOpacity>
         {!hideWebview ?
         <WebView 
           ref={webviewRef} 
