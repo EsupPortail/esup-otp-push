@@ -15,9 +15,11 @@ export const managersService = {
   setCachedManagers(list) {
     const old = this.getCachedManagers();
 
+    // Priorité aux managers venant de GitHub (à jour)
     const merged = [
-      ...old,
-      ...list.filter(m => !old.some(o => o.url === m.url)),
+      ...list, // Les managers à jour depuis GitHub
+      // + les anciens managers qui n'existent plus sur GitHub (pour ne pas les perdre)
+      ...old.filter(oldManager => !list.some(newManager => newManager.url === oldManager.url))
     ];
 
     storage.set(STORAGE_KEYS.MANAGERS, JSON.stringify(merged));
