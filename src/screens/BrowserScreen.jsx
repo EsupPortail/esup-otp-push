@@ -72,7 +72,7 @@ export default function BrowserBottomSheet() {
           browserManager.setUrl('');
           hide();
         } }>
-          <Material name="home-circle-outline" size={32} color="#284758" />
+          <Material name="arrow-left-circle" size={32} color="#284758" />
         </TouchableOpacity>
         {!hideWebview ?
         <WebView 

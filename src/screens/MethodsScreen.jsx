@@ -456,24 +456,10 @@ const renderRightActions = manager => (
 );
 
 const renderManagerImage = (url) => {
-  const isSvg = url && url.toLowerCase().endsWith('.svg');
-  console.log('url :' ,isSvg, url);
-
-  if (isSvg) {
-    return (
-      <SvgUri
-        width="32"
-        height="32"
-        uri={url}
-        style={{ marginRight: 8 }}
-      />
-    );
-  }
-
   return (
     <Image
       source={{ uri: url }}
-      style={{ width: 32, height: 32, marginRight: 8 }}
+      style={{ width: 24, height: 24, marginRight: 8, borderRadius: 10 }}
     />
   );
 };
