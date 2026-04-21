@@ -70,6 +70,7 @@ export default function BrowserBottomSheet() {
         {/* <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} /> */}
         <TouchableOpacity style={{ alignSelf: 'start', paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
           browserManager.setUrl('');
+          browserManager.setUser({}); // Réinitialiser l'utilisateur pour éviter de garder les données du manager précédent
           hide();
         } }>
           <Material name="arrow-left-circle" size={32} color="#284758" />
