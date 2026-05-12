@@ -41,7 +41,7 @@ const NfcBottomSheet = forwardRef((props, ref) => {
     setSuccess: (msg) => {
       setState('success');
       setMessage(msg);
-      setTimeout(() => bottomSheetRef.current?.close(), 3000);
+      setTimeout(() => bottomSheetRef.current?.close(), 5000);
     },
     setError: () => {
       setState('error');
