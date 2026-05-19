@@ -68,13 +68,23 @@ export default function BrowserBottomSheet() {
     >
       <BottomSheetView style={styles.sheetContent}>
         {/* <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} /> */}
-        <TouchableOpacity style={{ alignSelf: 'start', paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
-          browserManager.setUrl('');
-          browserManager.setUser({}); // Réinitialiser l'utilisateur pour éviter de garder les données du manager précédent
-          hide();
-        } }>
-          <Material name="arrow-left-circle" size={32} color="#284758" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
+            browserManager.setUrl('');
+            browserManager.setUser({}); // Réinitialiser l'utilisateur pour éviter de garder les données du manager précédent
+            hide();
+          } }>
+            <Material name="arrow-left-circle" size={32} color="#284758" />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
+            if (!url) return;
+            const baseUrl = url.replace(/\/login\/?$/, '');
+            browserManager.setUrl(`${baseUrl}/logout`);
+            browserManager.setUser({});
+          }}>
+            <Material name="logout" size={32} color="#284758" />
+          </TouchableOpacity>
+        </View>
         {!hideWebview ?
         <WebView 
           ref={webviewRef} 
