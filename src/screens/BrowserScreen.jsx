@@ -43,7 +43,7 @@ export default function BrowserBottomSheet() {
   if (url === '') return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={visible ? 3 : -1}
+      index={visible ? 4 : -1}
       snapPoints={snapPoints}
       enablePanDownToClose
       onClose={hide}
@@ -59,7 +59,7 @@ export default function BrowserBottomSheet() {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={visible ? 3 : -1}
+      index={visible ? 4 : -1}
       snapPoints={snapPoints}
       enablePanDownToClose
       onClose={hide}
