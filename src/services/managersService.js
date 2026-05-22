@@ -18,8 +18,11 @@ export const managersService = {
     // Priorité aux managers venant de GitHub (à jour)
     const merged = [
       ...list, // Les managers à jour depuis GitHub
-      // + les anciens managers qui n'existent plus sur GitHub (pour ne pas les perdre)
-      ...old.filter(oldManager => !list.some(newManager => newManager.url === oldManager.url))
+      ...old.filter(oldManager => {
+        // Si le manager a une action (qui sera 'ADD'), c'est un manager de test local.
+        // On vérifie aussi qu'il n'a pas la même URL qu'un manager officiel de GitHub pour éviter les conflits.
+        return oldManager.action && !list.some(newManager => newManager.url === oldManager.url);
+      })
     ];
 
     storage.set(STORAGE_KEYS.MANAGERS, JSON.stringify(merged));
