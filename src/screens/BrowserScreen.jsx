@@ -26,6 +26,7 @@ export default function BrowserBottomSheet() {
   const [logoutInProgress, setLogoutInProgress] = useState(false);
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
+  const showLogoutButton = currentUrl?.includes('/preferences') && !logoutInProgress;
 
   // Construction de l'UA
   async function buildEsupUserAgent() {
@@ -81,7 +82,7 @@ export default function BrowserBottomSheet() {
           } }>
             <Material name="arrow-left-circle" size={32} color="#284758" />
           </TouchableOpacity>
-          {!logoutInProgress && (
+          {showLogoutButton && (
             <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
               setLogoutInProgress(true);
               if (!url) return;
