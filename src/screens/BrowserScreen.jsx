@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ export default function BrowserBottomSheet() {
   const bottomSheetRef = useRef();
   const {visible, url, hide} = useBrowserStore();
   const [userAgent, setUserAgent] = React.useState('');
+  const [logoutInProgress, setLogoutInProgress] = useState(false);
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
 
@@ -39,6 +40,10 @@ export default function BrowserBottomSheet() {
   useEffect(() => {
     buildEsupUserAgent().then(ua => setUserAgent(ua));
   }, []);
+
+  useEffect(() => {
+    setLogoutInProgress(false);
+  }, [visible]);
 
   if (url === '') return (
     <BottomSheet
@@ -76,14 +81,17 @@ export default function BrowserBottomSheet() {
           } }>
             <Material name="arrow-left-circle" size={32} color="#284758" />
           </TouchableOpacity>
-          <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
-            if (!url) return;
-            const baseUrl = url.replace(/\/login\/?$/, '');
-            browserManager.setUrl(`${baseUrl}/logout`);
-            browserManager.setUser({});
-          }}>
-            <Material name="logout" size={32} color="#284758" />
-          </TouchableOpacity>
+          {!logoutInProgress && (
+            <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
+              setLogoutInProgress(true);
+              if (!url) return;
+              const baseUrl = url.replace(/\/login\/?$/, '');
+              browserManager.setUrl(`${baseUrl}/logout`);
+              browserManager.setUser({});
+            }}>
+              <Material name="logout" size={32} color="#284758" />
+            </TouchableOpacity>
+          )}
         </View>
         {!hideWebview ?
         <WebView 
