@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import BottomSheet, {BottomSheetBackdrop, BottomSheetView} from '@gorhom/bottom-sheet';
 import {WebView} from 'react-native-webview';
+import { ActivityIndicator } from 'react-native';
 import {browserManager, useBrowserStore} from '../stores/useBrowserStore';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen, { ManagerChooser } from './MethodsScreen';
 import { useTheme } from '@react-navigation/native';
+import useAccessibilityCheck from '../hooks/useAccessibilityCheck';
 import Animated, { interpolate } from 'react-native-reanimated';
 import DeviceInfo from 'react-native-device-info';
 
@@ -26,6 +28,7 @@ export default function BrowserBottomSheet() {
   const [logoutInProgress, setLogoutInProgress] = useState(false);
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
+  const { status, retry } = useAccessibilityCheck(url, 5000);
   const showLogoutButton = currentUrl?.includes('/preferences') && !logoutInProgress;
 
   // Construction de l'UA
@@ -94,17 +97,45 @@ export default function BrowserBottomSheet() {
             </TouchableOpacity>
           )}
         </View>
-        {!hideWebview ?
-        <WebView 
-          ref={webviewRef} 
-          source={{uri: url}} 
-          style={styles.webview}
-          onNavigationStateChange={onNavigationStateChange}
-          sharedCookiesEnabled={true}
-          userAgent={userAgent}
-        /> :
-        <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
-        }
+        {!hideWebview ? (
+          status === 'checking' ? (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <ActivityIndicator size="large" />
+                <Text style={styles.messageTitle}>Vérification en cours</Text>
+                <Text style={styles.messageText}>Nous testons la disponibilité du service...</Text>
+              </View>
+            </View>
+          ) : status === 'failed' ? (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <Text style={styles.messageTitle}>Service inaccessible</Text>
+                <Text style={styles.messageText}>
+                  Nous ne parvenons pas à joindre le service. Vérifiez votre connexion Internet et assurez-vous d'être bien connecté au réseau intranet de l'établissement
+                </Text>
+                <View style={styles.buttonsRow}>
+                  <TouchableOpacity onPress={() => retry()} style={styles.primaryBtn}>
+                    <Text style={styles.btnText}>Réessayer</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => { browserManager.setUrl(''); hide(); }} style={styles.secondaryBtn}>
+                    <Text style={styles.btnText}>Retour</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ) : (
+            <WebView 
+              ref={webviewRef} 
+              source={{uri: url}} 
+              style={styles.webview}
+              onNavigationStateChange={onNavigationStateChange}
+              sharedCookiesEnabled={true}
+              userAgent={userAgent}
+            />
+          )
+        ) : (
+          <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
+        )}
       </BottomSheetView>
     </BottomSheet>
   );
@@ -170,6 +201,61 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
+  }
+  ,
+  centered: {
+    flex: 1,
+    justifyContent: 'top',
+    alignItems: 'center',
+    padding: 20,
+  },
+  messageBox: {
+    width: '100%',
+    maxWidth: 520,
+    padding: 18,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  messageTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 12,
+    color: '#222',
+  },
+  messageText: {
+    textAlign: 'center',
+    color: '#555',
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    gap: 8,
+  },
+  primaryBtn: {
+    backgroundColor: '#e6f0ff',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  secondaryBtn: {
+    backgroundColor: '#f2f2f2',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  btnText: {
+    color: '#184e8a',
+    fontWeight: '600',
   }
 });
 
