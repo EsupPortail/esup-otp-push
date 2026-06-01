@@ -114,9 +114,9 @@ export default function BrowserBottomSheet() {
           webviewError ? (
             <View style={styles.centered}>
               <View style={styles.messageBox}>
-                <Text style={styles.messageTitle}>Service inaccessible</Text>
+                <Text style={styles.messageTitle}>Réseau interne uniquement</Text>
                 <Text style={styles.messageText}>
-                  La page n'a pas pu être chargée. Vérifiez votre connexion réseau ou l'accès à l'intranet de l'établissement.
+                  Ce service est accessible uniquement via le réseau interne de votre établissement. Vérifiez votre connexion et assurez-vous d'être connecté à ce réseau.
                 </Text>
                 <View style={styles.buttonsRow}>
                   <TouchableOpacity onPress={() => { setWebviewError(false); retry(); }} style={styles.primaryBtn}>
