@@ -56,6 +56,12 @@ export default function BrowserBottomSheet() {
     }
   }, [status]);
 
+  useEffect(() => {
+    if (url !== '') {
+      setWebviewError(false);
+    }
+  }, [url]);
+
   if (url === '') return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -147,7 +153,7 @@ export default function BrowserBottomSheet() {
                 </View>
               </View>
             </View>
-          ) : (
+          ) : status === 'ok' ? (
             <WebView 
               ref={webviewRef} 
               source={{uri: url}} 
@@ -164,6 +170,14 @@ export default function BrowserBottomSheet() {
               sharedCookiesEnabled={true}
               userAgent={userAgent}
             />
+          ) : (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <ActivityIndicator size="large" />
+                <Text style={styles.messageTitle}>Vérification en cours</Text>
+                <Text style={styles.messageText}>Nous testons la disponibilité du service...</Text>
+              </View>
+            </View>
           )
         ) : (
           <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
