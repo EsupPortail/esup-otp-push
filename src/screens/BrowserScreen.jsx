@@ -26,6 +26,7 @@ export default function BrowserBottomSheet() {
   const {visible, url, hide} = useBrowserStore();
   const [userAgent, setUserAgent] = React.useState('');
   const [logoutInProgress, setLogoutInProgress] = useState(false);
+  const [webviewError, setWebviewError] = useState(false);
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
   const { status, retry } = useAccessibilityCheck(url, 5000);
@@ -48,6 +49,12 @@ export default function BrowserBottomSheet() {
   useEffect(() => {
     setLogoutInProgress(false);
   }, [visible]);
+
+  useEffect(() => {
+    if (status === 'ok') {
+      setWebviewError(false);
+    }
+  }, [status]);
 
   if (url === '') return (
     <BottomSheet
@@ -98,7 +105,24 @@ export default function BrowserBottomSheet() {
           )}
         </View>
         {!hideWebview ? (
-          status === 'checking' ? (
+          webviewError ? (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <Text style={styles.messageTitle}>Service inaccessible</Text>
+                <Text style={styles.messageText}>
+                  La page n'a pas pu être chargée. Vérifiez votre connexion réseau ou l'accès à l'intranet de l'établissement.
+                </Text>
+                <View style={styles.buttonsRow}>
+                  <TouchableOpacity onPress={() => { setWebviewError(false); retry(); }} style={styles.primaryBtn}>
+                    <Text style={styles.btnText}>Réessayer</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => { browserManager.setUrl(''); hide(); }} style={styles.secondaryBtn}>
+                    <Text style={styles.btnText}>Retour</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ) : status === 'checking' ? (
             <View style={styles.centered}>
               <View style={styles.messageBox}>
                 <ActivityIndicator size="large" />
@@ -109,9 +133,9 @@ export default function BrowserBottomSheet() {
           ) : status === 'failed' ? (
             <View style={styles.centered}>
               <View style={styles.messageBox}>
-                <Text style={styles.messageTitle}>Service inaccessible</Text>
+                <Text style={styles.messageTitle}>Réseau interne uniquement</Text>
                 <Text style={styles.messageText}>
-                  Nous ne parvenons pas à joindre le service. Vérifiez votre connexion Internet et assurez-vous d'être bien connecté au réseau intranet de l'établissement
+                  Ce service est accessible uniquement via le réseau interne de votre établissement. Vérifiez votre connexion et assurez-vous d'être connecté à ce réseau.
                 </Text>
                 <View style={styles.buttonsRow}>
                   <TouchableOpacity onPress={() => retry()} style={styles.primaryBtn}>
@@ -129,6 +153,14 @@ export default function BrowserBottomSheet() {
               source={{uri: url}} 
               style={styles.webview}
               onNavigationStateChange={onNavigationStateChange}
+              onError={() => setWebviewError(true)}
+              startInLoadingState={true}
+              renderLoading={() => (
+                <View style={styles.centered}>
+                  <ActivityIndicator size="large" />
+                  <Text style={styles.messageTitle}>Chargement de la page...</Text>
+                </View>
+              )}
               sharedCookiesEnabled={true}
               userAgent={userAgent}
             />
@@ -238,7 +270,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    gap: 8,
   },
   primaryBtn: {
     backgroundColor: '#e6f0ff',

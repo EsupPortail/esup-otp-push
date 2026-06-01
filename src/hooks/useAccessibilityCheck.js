@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 export default function useAccessibilityCheck(url, timeout = 5000) {
-  const [status, setStatus] = useState('unknown'); // 'unknown' | 'checking' | 'ok' | 'failed'
+  const [status, setStatus] = useState('unknown');
   const [attempt, setAttempt] = useState(0);
   const mounted = useRef(true);
 
@@ -24,14 +24,20 @@ export default function useAccessibilityCheck(url, timeout = 5000) {
 
     (async () => {
       try {
-        // On essaie un GET car certains serveurs refusent HEAD
-        const res = await axios.get(url, { timeout, signal: controller.signal });
+        await axios.get(url, {
+          timeout,
+          signal: controller.signal,
+          validateStatus: () => true,
+        });
         if (cancelled || !mounted.current) return;
-        if (res && res.status >= 200 && res.status < 400) setStatus('ok');
-        else setStatus('failed');
+        setStatus('ok');
       } catch (e) {
         if (cancelled || !mounted.current) return;
-        setStatus('failed');
+        if (axios.isCancel(e)) return;
+
+        // Grâce à ton idée : s'il y a une erreur réseau ou un blocage HTTP Android,
+        // on considère que c'est 'ok' et on passe la main à la WebView !
+        setStatus('ok');
       }
     })();
 
