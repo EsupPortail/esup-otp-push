@@ -35,8 +35,6 @@ export default function useAccessibilityCheck(url, timeout = 5000) {
         if (cancelled || !mounted.current) return;
         if (axios.isCancel(e)) return;
 
-        // Grâce à ton idée : s'il y a une erreur réseau ou un blocage HTTP Android,
-        // on considère que c'est 'ok' et on passe la main à la WebView !
         setStatus('ok');
       }
     })();
