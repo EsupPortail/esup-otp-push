@@ -62,6 +62,9 @@ export const Totp = {
         throw new Error('Secret manquant');
       }
 
+      // Normaliser en majuscules pour la validation Base32
+      secret = secret.toUpperCase();
+
       // Valider Base32
       if (!/^[A-Z2-7]+=*$/.test(secret)) {
         throw new Error('Secret invalide (pas Base32)');
