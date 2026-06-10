@@ -1,6 +1,7 @@
 import {TOTP} from 'totp-generator';
 import Crypto from 'react-native-quick-crypto';
 import base64 from 'react-native-base64'
+import { Alert } from 'react-native';
 
 export const Totp = {
   token: secret => {

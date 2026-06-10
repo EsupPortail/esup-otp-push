@@ -157,7 +157,7 @@ export async function fetchEtablissement(url) {
       return null;
     }
 
-    const {server_infos} = response.data;
+    const {server_infos} = response.data.methods.esupnfc;
     if (
       !server_infos?.numeroId ||
       !server_infos?.etablissement ||

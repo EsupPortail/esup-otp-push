@@ -1,4 +1,4 @@
-import {Platform, StyleSheet, Text, View, ScrollView} from 'react-native';
+import {Platform, StyleSheet, Text, View, ScrollView, Alert} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import RadioButton from '../components/RadioButton';
 import ManualNfcScreen from './ManualNfcScreen';
