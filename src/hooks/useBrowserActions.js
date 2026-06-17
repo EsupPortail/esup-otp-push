@@ -12,6 +12,10 @@ export function useBrowserActions(initialUrl) {
   const {visible, user} = useBrowserStore();
 
   useEffect(() => {
+    setHideWebview(false);
+  }, [initialUrl]);
+
+  useEffect(() => {
     if (!visible) return;
     if (initialUrl !== '') fetchAllUserInfo();
     console.log('[USEEFFECT] user from store:', user);

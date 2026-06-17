@@ -1,6 +1,7 @@
 import {TOTP} from 'totp-generator';
 import Crypto from 'react-native-quick-crypto';
 import base64 from 'react-native-base64'
+import { Alert } from 'react-native';
 
 export const Totp = {
   token: secret => {
@@ -60,6 +61,9 @@ export const Totp = {
       if (!secret) {
         throw new Error('Secret manquant');
       }
+
+      // Normaliser en majuscules pour la validation Base32
+      secret = secret.toUpperCase();
 
       // Valider Base32
       if (!/^[A-Z2-7]+=*$/.test(secret)) {

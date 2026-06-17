@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import BottomSheet, {BottomSheetBackdrop, BottomSheetView} from '@gorhom/bottom-sheet';
 import {WebView} from 'react-native-webview';
+import { ActivityIndicator } from 'react-native';
 import {browserManager, useBrowserStore} from '../stores/useBrowserStore';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBrowserActions } from '../hooks/useBrowserActions';
 import MethodsScreen, { ManagerChooser } from './MethodsScreen';
 import { useTheme } from '@react-navigation/native';
+import useAccessibilityCheck from '../hooks/useAccessibilityCheck';
 import Animated, { interpolate } from 'react-native-reanimated';
 import DeviceInfo from 'react-native-device-info';
 
@@ -23,8 +25,12 @@ export default function BrowserBottomSheet() {
   const bottomSheetRef = useRef();
   const {visible, url, hide} = useBrowserStore();
   const [userAgent, setUserAgent] = React.useState('');
+  const [logoutInProgress, setLogoutInProgress] = useState(false);
+  const [webviewError, setWebviewError] = useState(false);
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
+  const { status, retry } = useAccessibilityCheck(url, 5000);
+  const showLogoutButton = currentUrl?.includes('/preferences') && !logoutInProgress;
 
   // Construction de l'UA
   async function buildEsupUserAgent() {
@@ -40,10 +46,26 @@ export default function BrowserBottomSheet() {
     buildEsupUserAgent().then(ua => setUserAgent(ua));
   }, []);
 
+  useEffect(() => {
+    setLogoutInProgress(false);
+  }, [visible]);
+
+  useEffect(() => {
+    if (status === 'ok') {
+      setWebviewError(false);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (url !== '') {
+      setWebviewError(false);
+    }
+  }, [url]);
+
   if (url === '') return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={visible ? 3 : -1}
+      index={visible ? 4 : -1}
       snapPoints={snapPoints}
       enablePanDownToClose
       onClose={hide}
@@ -59,7 +81,7 @@ export default function BrowserBottomSheet() {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={visible ? 3 : -1}
+      index={visible ? 4 : -1}
       snapPoints={snapPoints}
       enablePanDownToClose
       onClose={hide}
@@ -68,17 +90,98 @@ export default function BrowserBottomSheet() {
     >
       <BottomSheetView style={styles.sheetContent}>
         {/* <BrowserNavBar currentUrl={currentUrl} canGoBack={canGoBack} canGoForward={canGoForward} goBack={goBack} goForward={goForward} reload={reload} /> */}
-        {!hideWebview ?
-        <WebView 
-          ref={webviewRef} 
-          source={{uri: url}} 
-          style={styles.webview}
-          onNavigationStateChange={onNavigationStateChange}
-          sharedCookiesEnabled={true}
-          userAgent={userAgent}
-        /> :
-        <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
-        }
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
+            browserManager.setUrl('');
+            browserManager.setUser({}); // Réinitialiser l'utilisateur pour éviter de garder les données du manager précédent
+            hide();
+          } }>
+            <Material name="arrow-left-circle" size={32} color="#284758" />
+          </TouchableOpacity>
+          {showLogoutButton && (
+            <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2 }} onPress={() => {
+              setLogoutInProgress(true);
+              if (!url) return;
+              const baseUrl = url.replace(/\/login\/?$/, '');
+              browserManager.setUrl(`${baseUrl}/logout`);
+              browserManager.setUser({});
+            }}>
+              <Material name="logout" size={32} color="#284758" />
+            </TouchableOpacity>
+          )}
+        </View>
+        {!hideWebview ? (
+          webviewError ? (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <Text style={styles.messageTitle}>Réseau interne uniquement</Text>
+                <Text style={styles.messageText}>
+                  Ce service est accessible uniquement via le réseau interne de votre établissement. Vérifiez votre connexion et assurez-vous d'être connecté à ce réseau.
+                </Text>
+                <View style={styles.buttonsRow}>
+                  <TouchableOpacity onPress={() => { setWebviewError(false); retry(); }} style={styles.primaryBtn}>
+                    <Text style={styles.btnText}>Réessayer</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => { browserManager.setUrl(''); hide(); }} style={styles.secondaryBtn}>
+                    <Text style={styles.btnText}>Retour</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ) : status === 'checking' ? (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <ActivityIndicator size="large" />
+                <Text style={styles.messageTitle}>Vérification en cours</Text>
+                <Text style={styles.messageText}>Nous testons la disponibilité du service...</Text>
+              </View>
+            </View>
+          ) : status === 'failed' ? (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <Text style={styles.messageTitle}>Réseau interne uniquement</Text>
+                <Text style={styles.messageText}>
+                  Ce service est accessible uniquement via le réseau interne de votre établissement. Vérifiez votre connexion et assurez-vous d'être connecté à ce réseau.
+                </Text>
+                <View style={styles.buttonsRow}>
+                  <TouchableOpacity onPress={() => retry()} style={styles.primaryBtn}>
+                    <Text style={styles.btnText}>Réessayer</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => { browserManager.setUrl(''); hide(); }} style={styles.secondaryBtn}>
+                    <Text style={styles.btnText}>Retour</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ) : status === 'ok' ? (
+            <WebView 
+              ref={webviewRef} 
+              source={{uri: url}} 
+              style={styles.webview}
+              onNavigationStateChange={onNavigationStateChange}
+              onError={() => setWebviewError(true)}
+              startInLoadingState={true}
+              renderLoading={() => (
+                <View style={styles.centered}>
+                  <ActivityIndicator size="large" />
+                  <Text style={styles.messageTitle}>Chargement de la page...</Text>
+                </View>
+              )}
+              sharedCookiesEnabled={true}
+              userAgent={userAgent}
+            />
+          ) : (
+            <View style={styles.centered}>
+              <View style={styles.messageBox}>
+                <ActivityIndicator size="large" />
+                <Text style={styles.messageTitle}>Vérification en cours</Text>
+                <Text style={styles.messageText}>Nous testons la disponibilité du service...</Text>
+              </View>
+            </View>
+          )
+        ) : (
+          <MethodsScreen user={browserManager.getUser()?.methods} bottomSheetRef={bottomSheetRef} />
+        )}
       </BottomSheetView>
     </BottomSheet>
   );
@@ -144,6 +247,60 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
+  }
+  ,
+  centered: {
+    flex: 1,
+    justifyContent: 'top',
+    alignItems: 'center',
+    padding: 20,
+  },
+  messageBox: {
+    width: '100%',
+    maxWidth: 520,
+    padding: 18,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  messageTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 12,
+    color: '#222',
+  },
+  messageText: {
+    textAlign: 'center',
+    color: '#555',
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  primaryBtn: {
+    backgroundColor: '#e6f0ff',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  secondaryBtn: {
+    backgroundColor: '#f2f2f2',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  btnText: {
+    color: '#184e8a',
+    fontWeight: '600',
   }
 });
 

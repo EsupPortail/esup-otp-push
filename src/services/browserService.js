@@ -44,7 +44,7 @@ export async function fetchUserCredentials() {
     const response = await httpClient.get(`${getBaseUrl()}/manager/infos`);
     console.log('✅ User credentials reçus:', response.data);
 
-    const nfcInfos = await fetchEtablissement(response.data.api_url + '/esupnfc/infos');
+    const nfcInfos = await fetchEtablissement(getBaseUrl() + '/api/methods');
     if (nfcInfos) {
       nfcUrl = nfcInfos.url;
     }
@@ -215,9 +215,7 @@ export const isNfcExists = () => {
  * Synchroniser la méthode NFC
  */
 export const syncNfc = async () => {
-  const url = browserManager.getUser()?.api_url;
-  console.log('[syncNfc] url:', url);
-  const nfcInfos = await fetchEtablissement(url + '/esupnfc/infos');
+  const nfcInfos = await fetchEtablissement(getBaseUrl() + '/api/methods');
 
   if (!nfcInfos) {
     Toast.show({

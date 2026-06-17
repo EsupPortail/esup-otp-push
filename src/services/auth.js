@@ -217,7 +217,7 @@ export const accept = async (
       }
       setNotified(false);
       setAdditionalData(null);
-      showToast('Authentification réussie !');
+      showToast('Authentification réussie ! Vous pouvez fermer Esup Auth.');
     } else {
       throw new Error('Réponse serveur invalide');
     }

@@ -8,6 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -18,6 +19,7 @@ import { allManagers } from '../data/managerData';
 import { browserManager } from '../stores/useBrowserStore';
 import { useManagersStore } from '../stores/useManagersStore';
 import { showToast } from '../services/auth';
+import { SvgUri } from 'react-native-svg';
 
 // Exemple de données (remplace par ta réponse API)
 const SAMPLE = {
@@ -289,7 +291,7 @@ export const ManagerChooser = () => {
         {filteredManagers.length === 0 ? (
           <Text style={styles.emptyText}>Aucun établissement trouvé</Text>
         ) : (
-          filteredManagers.map((manager) => (
+          filteredManagers.map(manager => (
             <Swipeable
               key={manager.url}
               renderRightActions={() => renderRightActions(manager)}
@@ -310,7 +312,8 @@ export const ManagerChooser = () => {
                     flex: 1,
                   }}
                 >
-                  <Text style={{ fontSize: 18, color: '#FFF' }}>
+                  {manager.imgUrl && renderManagerImage(manager.imgUrl)}
+                  <Text style={{ fontSize: 18, color: '#FFF', flex: 1 }}>
                     {manager.name}
                   </Text>
                   <Icon name="arrow-right-thin" size={24} color="#FFF" />
@@ -451,6 +454,15 @@ const renderRightActions = manager => (
     <Icon name="delete" size={24} color="red" />
   </TouchableOpacity>
 );
+
+const renderManagerImage = (url) => {
+  return (
+    <Image
+      source={{ uri: url }}
+      style={{ width: 24, height: 24, marginRight: 8, borderRadius: 10 }}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   screen: {flex: 1, backgroundColor: '#F6F8FA'},
