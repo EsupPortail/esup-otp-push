@@ -10,7 +10,8 @@ import { Toast } from 'toastify-react-native';
 
 const RenderTotp = ({item, code, onDelete}) => {
   const {colors} = useTheme();
-  const [secret, name] = item;
+  const [, entry] = item;
+  const name = Totp.getName(entry);
 
   const renderRightActions =  () => (
       <TouchableOpacity

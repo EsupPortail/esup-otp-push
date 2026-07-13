@@ -525,8 +525,13 @@ export const otpServerStatus = async (
   }
 
   const {host, uid, tokenSecret} = otpServersObjects[otpServer];
+  const logContext = {
+    otpServer,
+    host,
+    uid,
+  };
   if (!host || !uid || !tokenSecret) {
-    console.warn('📱 otpServerStatus: host, uid ou tokenSecret manquant');
+    console.warn('📱 otpServerStatus: host, uid ou tokenSecret manquant', logContext);
     if (otpServersStack.length > 0) {
       return otpServerStatus(
         otpServersStack.pop(),
@@ -599,7 +604,12 @@ export const otpServerStatus = async (
     } else {
       showToast(`📱 Erreur dans otpServerStatus: ${error.message}`);
     }
-    console.error('📱 Erreur dans otpServerStatus:', error.message);
+    console.error('📱 Erreur dans otpServerStatus:', {
+      ...logContext,
+      status: error.response?.status,
+      url: error.config?.url?.replace(tokenSecret, '[tokenSecret]'),
+      message: error.message,
+    });
     if (otpServersStack.length > 0) {
       return otpServerStatus(
         otpServersStack.pop(),

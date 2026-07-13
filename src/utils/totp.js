@@ -3,28 +3,76 @@ import Crypto from 'react-native-quick-crypto';
 import base64 from 'react-native-base64'
 import { Alert } from 'react-native';
 
+const DEFAULT_OPTIONS = {
+  digits: 6,
+  algorithm: 'SHA-1',
+  period: 30,
+};
+
+const ALGORITHMS = {
+  SHA1: 'SHA-1',
+  'SHA-1': 'SHA-1',
+  SHA224: 'SHA-224',
+  'SHA-224': 'SHA-224',
+  SHA256: 'SHA-256',
+  'SHA-256': 'SHA-256',
+  SHA384: 'SHA-384',
+  'SHA-384': 'SHA-384',
+  SHA512: 'SHA-512',
+  'SHA-512': 'SHA-512',
+};
+
+const normalizeAlgorithm = algorithm => {
+  if (!algorithm) return DEFAULT_OPTIONS.algorithm;
+  const key = String(algorithm).trim().toUpperCase();
+  return ALGORITHMS[key] || DEFAULT_OPTIONS.algorithm;
+};
+
+const normalizeInteger = (value, fallback) => {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+};
+
+const normalizeSecret = secret => String(secret || '').replace(/\s/g, '').toUpperCase();
+
 export const Totp = {
-  token: secret => {
+  getOptions: entry => {
+    if (!entry || typeof entry !== 'object') {
+      return DEFAULT_OPTIONS;
+    }
+
+    return {
+      digits: normalizeInteger(entry.digits, DEFAULT_OPTIONS.digits),
+      algorithm: normalizeAlgorithm(entry.algorithm),
+      period: normalizeInteger(entry.period, DEFAULT_OPTIONS.period),
+    };
+  },
+  getName: entry => {
+    if (!entry || typeof entry !== 'object') {
+      return entry;
+    }
+
+    return entry.name || entry.issuer || 'TOTP';
+  },
+  buildEntry: parsed => ({
+    name: parsed.name,
+    issuer: parsed.issuer || '',
+    algorithm: normalizeAlgorithm(parsed.algorithm),
+    digits: normalizeInteger(parsed.digits, DEFAULT_OPTIONS.digits),
+    period: normalizeInteger(parsed.period, DEFAULT_OPTIONS.period),
+  }),
+  token: (secret, options) => {
     try {
-      const {otp} = TOTP.generate(secret, {
-        digits: 6,
-        algorithm: 'SHA-1',
-        period: 30,
-      });
-      console.log(`TOTP généré pour ${secret}: ${otp}`); // Pour déboguer
+      const {otp} = TOTP.generate(normalizeSecret(secret), Totp.getOptions(options));
       return otp;
     } catch (error) {
       console.error('Erreur lors de la génération du TOTP:', error);
       return null;
     }
   },
-  isValid: (token, secret) => {
+  isValid: (token, secret, options) => {
     try {
-      const {otp} = TOTP.generate(secret, {
-        digits: 6,
-        algorithm: 'SHA-1',
-        period: 30,
-      });
+      const {otp} = TOTP.generate(normalizeSecret(secret), Totp.getOptions(options));
       return token === otp;
     } catch (error) {
       console.error('Erreur lors de la validation du TOTP:', error);
@@ -37,33 +85,21 @@ export const Totp = {
   },
   parseTotpUrl: url => {
     try {
-      console.log('URL scannée:', url); // Log pour déboguer
-
       // Vérifier si c'est une URL TOTP
       if (!url.startsWith('otpauth://totp/')) {
         throw new Error('URL non TOTP');
       }
 
-      // Séparer path et query
-      const [path, query] = url.split('?');
-
-      // Parser query params manuellement
-      let secret = '';
-      if (query) {
-        const params = query.split('&').reduce((acc, param) => {
-          const [key, value] = param.split('=');
-          acc[key] = value;
-          return acc;
-        }, {});
-        secret = params.secret || '';
-      }
+      const parsedUrl = new URL(url);
+      const path = url.split('?')[0];
+      let secret = parsedUrl.searchParams.get('secret') || '';
 
       if (!secret) {
         throw new Error('Secret manquant');
       }
 
       // Normaliser en majuscules pour la validation Base32
-      secret = secret.toUpperCase();
+      secret = normalizeSecret(secret);
 
       // Valider Base32
       if (!/^[A-Z2-7]+=*$/.test(secret)) {
@@ -77,14 +113,16 @@ export const Totp = {
         throw new Error('Nom manquant');
       }
 
-      // Gérer Issuer:Name
-      /*if (name.includes(':')) {
-          name = name.split(':').pop().trim();
-        }*/
+      const issuer = parsedUrl.searchParams.get('issuer') || '';
 
-      console.log('Parsed:', {secret, name}); // Log résultat
-
-      return {secret, name};
+      return {
+        secret,
+        name,
+        issuer,
+        algorithm: normalizeAlgorithm(parsedUrl.searchParams.get('algorithm')),
+        digits: normalizeInteger(parsedUrl.searchParams.get('digits'), DEFAULT_OPTIONS.digits),
+        period: normalizeInteger(parsedUrl.searchParams.get('period'), DEFAULT_OPTIONS.period),
+      };
     } catch (error) {
       console.error('Erreur de parsing:', error);
       Alert.alert('Erreur', 'QR code invalide pour TOTP.');
@@ -92,9 +130,6 @@ export const Totp = {
     }
   },
   hashTotpSecret: (base32Secret, uid) => {
-    //JE suis entré ici
-    console.log('base32Secret:', base32Secret);
-    console.log('uid:', uid);
     if (!base32Secret || !uid) return null;
     const subStr = base32Secret.substring(0, 20);
     const toHash = subStr + uid;

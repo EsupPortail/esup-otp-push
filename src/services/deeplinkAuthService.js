@@ -2,7 +2,6 @@ import { Alert, Platform } from "react-native";
 import { storage } from "../utils/storage";
 import { getManufacturer, getModel } from "react-native-device-info";
 import { showToast, sync } from "./auth";
-import { handleTotpQrCode } from "../utils/qrCodeHandler";
 import Totp from "../utils/totp";
 import { useTotpStore } from "../stores/useTotpStore";
 import { useNfcStore } from "../stores/useNfcStore";
@@ -34,7 +33,13 @@ export const activationTotp = async (params) => {
         return;
     }
 
-    useTotpStore.getState().updateTotp(secret, issuer + ' : ' + name);
+    useTotpStore.getState().updateTotp(secret, Totp.buildEntry({
+        name: issuer + ' : ' + name,
+        issuer,
+        algorithm: params.algorithm,
+        digits: params.digits,
+        period: params.period,
+    }));
 }
 
 export const activationNfc = (params) => {
@@ -94,29 +99,22 @@ export async function DeepAuthHandler(params){
 
 export function handleOtpAuthLink(url) {
   try {
-    console.log('[otpauth] URL:', url);
-    const parsed = new URL(url);
-    console.log('[otpauth] Parsed:', parsed);
+    const parsed = Totp.parseTotpUrl(url);
 
-    if (parsed.protocol !== 'otpauth:') return;
-
-    const issuer = parsed.searchParams.get('issuer');
-    const secret = parsed.searchParams.get('secret');
-
-    if (!secret || !issuer) {
+    if (!parsed?.secret || !parsed?.name) {
       Alert.alert('Erreur', 'Données manquantes');
       return;
     }
 
     Alert.alert(
       'Activation TOTP',
-      `${issuer}`,
+      `${parsed.issuer || parsed.name}`,
       [
         { text: 'Annuler', style: 'cancel' },
         {
           text: 'Activer',
           onPress: () => {
-            useTotpStore.getState().updateTotp(secret, issuer);
+            useTotpStore.getState().updateTotp(parsed.secret, Totp.buildEntry(parsed));
           },
         },
       ],

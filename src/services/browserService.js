@@ -159,13 +159,19 @@ const generateAndConfirmTotp = async () => {
       console.log('✅ [generateAndConfirmTotp] Activation data reçues:', generateResponse);
 
       if (generateResponse.data.code === 'Ok') {
-        const {secret, name} = Totp.parseTotpUrl(generateResponse.data.uri);
-        const token = Totp.token(secret);
-        console.log('✅ [generateAndConfirmTotp] TOTP généré:', token);
+        const parsed = Totp.parseTotpUrl(generateResponse.data.uri);
+        const token = Totp.token(parsed.secret, parsed);
         const confirmResponse = await httpClient.post(`${getBaseUrl()}/api/totp/activate/confirm/${token}`);
         console.log('✅ [generateAndConfirmTotp] Activation data reçues:', confirmResponse.data);
         if (confirmResponse.data.code === 'Ok') {
-          return {success: true, data: {secret: generateResponse.data.message, token: token, name: name}};
+          return {
+            success: true,
+            data: {
+              secret: parsed.secret,
+              token: token,
+              entry: Totp.buildEntry(parsed),
+            },
+          };
         }
       }
     } catch (error) {
@@ -181,7 +187,7 @@ export const syncTotp = async () => {
 
   const {success, data} = await generateAndConfirmTotp();
   if (success) {
-    useTotpStore.getState().updateTotp(data.secret, data.name);
+    useTotpStore.getState().updateTotp(data.secret, data.entry);
     Toast.show({
       type: 'success',
       text1: 'TOTP synchronisé',
@@ -261,4 +267,3 @@ export const syncHandlers = {
   esupnfc: syncNfc,
   // d'autres méthodes de synchronisation peuvent être ajoutées ici
 }
-

@@ -98,7 +98,7 @@ export const handleUniversalQrCodeScan = async qrCodeData => {
   }
 };
 
-const handleTotpQrCode = async url => {
+export const handleTotpQrCode = async url => {
   try {
     const parsed = Totp.parseTotpUrl(url);
     if (!parsed || !parsed.secret || !parsed.name) {
@@ -110,7 +110,7 @@ const handleTotpQrCode = async url => {
     const currentTotpObjects = useTotpStore.getState().totpObjects;
     const updatedTotpObjects = {
       ...currentTotpObjects,
-      [parsed.secret]: parsed.name,
+      [parsed.secret]: Totp.buildEntry(parsed),
     };
     setTotpObjects(updatedTotpObjects);
 

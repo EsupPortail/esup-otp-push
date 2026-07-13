@@ -42,7 +42,7 @@ const TotpScreen = ({withoutAddButton}) => {
     const updateCodes = () => {
       const newCodes = {};
       Object.keys(totpObjects).forEach(secret => {
-        newCodes[secret] = Totp.token(secret);
+        newCodes[secret] = Totp.token(secret, totpObjects[secret]);
       });
       setCodes(newCodes);
     };
@@ -104,7 +104,7 @@ const TotpScreen = ({withoutAddButton}) => {
               // Met à jour les codes quand le timer atteint 0
               const newCodes = {};
               Object.keys(totpObjects).forEach(secret => {
-                newCodes[secret] = Totp.token(secret);
+                newCodes[secret] = Totp.token(secret, totpObjects[secret]);
               });
               setCodes(newCodes);
               return {shouldRepeat: true};
