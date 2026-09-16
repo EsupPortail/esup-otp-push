@@ -5,6 +5,12 @@ import { showToast, sync } from "./auth";
 import Totp from "../utils/totp";
 import { useTotpStore } from "../stores/useTotpStore";
 import { useNfcStore } from "../stores/useNfcStore";
+import { Toast } from "toastify-react-native";
+import { canNfcStart } from "../utils/nfcUtils";
+import { scanTagForEstablishment } from "./nfcService";
+
+const sameEstablishmentUrl = (a, b) =>
+    a?.replace(/\/+$/, '') === b?.replace(/\/+$/, '');
 
 export const activationPush = async (params) => {
     const { host, uid, code } = params;
@@ -42,7 +48,7 @@ export const activationTotp = async (params) => {
     }));
 }
 
-export const activationNfc = (params) => {
+export const activationNfc = async (params) => {
     console.log("[activationNfc] Paramètres :", params);
     const { url, numeroId, etablissement } = params;
     if (!url || !numeroId || !etablissement) {
@@ -50,7 +56,32 @@ export const activationNfc = (params) => {
         return;
     }
 
-    useNfcStore.getState().addEstablishment({ url, numeroId, etablissement });
+    const { establishments, addEstablishment } = useNfcStore.getState();
+    const exists = establishments.some(est =>
+        sameEstablishmentUrl(est.url, url),
+    );
+
+    if (!exists) {
+        addEstablishment({ url, numeroId, etablissement });
+        Toast.show({
+            type: 'success',
+            text1: 'Méthode NFC configurée',
+            text2: 'Lancement du scan NFC.',
+            position: 'top',
+            visibilityTime: 4000,
+        });
+    } else {
+        Toast.show({
+            type: 'info',
+            text1: 'NFC déjà configuré pour cet établissement',
+            text2: 'Lancement du scan NFC.',
+            position: 'top',
+            visibilityTime: 4000,
+        });
+    }
+
+    const canStart = await canNfcStart();
+    await scanTagForEstablishment(url, numeroId, canStart);
 }
 
 const confirmAction = (method) => {
@@ -89,7 +120,7 @@ export async function DeepAuthHandler(params){
             await activationTotp(params);
             break;
         case 'esupnfc':
-            activationNfc(params);
+            await activationNfc(params);
             break;
         default:
             console.log("[DeepAuthHandler] method inconnue :", method);

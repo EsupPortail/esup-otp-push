@@ -6,6 +6,7 @@ import {
   StyleSheet,
   SafeAreaView,
   Platform,
+  Linking,
 } from 'react-native';
 import BottomSheet, {BottomSheetBackdrop, BottomSheetView} from '@gorhom/bottom-sheet';
 import {WebView} from 'react-native-webview';
@@ -137,7 +138,7 @@ export default function BrowserBottomSheet() {
     }
   }, [visible]);
 
-  const handleEsupNfcDeeplink = async (href, {force = false} = {}) => {
+  const handleEsupNfcDeeplink = async href => {
     const nfcInfos = parseEsupNfcDeeplink(href);
     if (!nfcInfos) return false;
 
@@ -146,7 +147,7 @@ export default function BrowserBottomSheet() {
       return true;
     }
 
-    if (!force && lastNfcDeeplink.current === deeplinkKey) {
+    if (lastNfcDeeplink.current === deeplinkKey) {
       return true;
     }
 
@@ -154,13 +155,13 @@ export default function BrowserBottomSheet() {
     lastNfcDeeplink.current = deeplinkKey;
 
     try {
-      const {establishments, addEstablishment} = useNfcStore.getState();
+      const {establishments} = useNfcStore.getState();
       const exists = establishments.some(est =>
         sameEstablishmentUrl(est.url, nfcInfos.url),
       );
 
       if (!exists) {
-        addEstablishment(nfcInfos);
+        return true;
       }
 
       const canStart = await canNfcStart();
@@ -188,7 +189,7 @@ export default function BrowserBottomSheet() {
 
   const handleShouldStartLoad = request => {
     if (request.url?.startsWith('esupauth://app/auth/esupnfc')) {
-      handleEsupNfcDeeplink(request.url, {force: true});
+      Linking.openURL(request.url);
       return false;
     }
 
