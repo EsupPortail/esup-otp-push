@@ -19,6 +19,70 @@ import { useTheme } from '@react-navigation/native';
 import useAccessibilityCheck from '../hooks/useAccessibilityCheck';
 import Animated, { interpolate } from 'react-native-reanimated';
 import DeviceInfo from 'react-native-device-info';
+import { useNfcStore } from '../stores/useNfcStore';
+import { scanTagForEstablishment } from '../services/nfcService';
+import { canNfcStart } from '../utils/nfcUtils';
+
+const ESUPNFC_DEEPLINK_ID = 'esupnfc_deeplink';
+
+const detectEsupNfcDeeplinkScript = `
+  (function () {
+    if (window.__esupAuthNfcDeeplinkWatcherStarted) {
+      return true;
+    }
+    window.__esupAuthNfcDeeplinkWatcherStarted = true;
+
+    var attempts = 0;
+    var maxAttempts = 30;
+
+    function sendDeeplinkIfPresent() {
+      attempts += 1;
+      var link = document.getElementById('${ESUPNFC_DEEPLINK_ID}');
+
+      if (link && link.href) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({
+          type: 'ESUPNFC_DEEPLINK_FOUND',
+          href: link.href
+        }));
+        clearInterval(interval);
+        return;
+      }
+
+      if (attempts >= maxAttempts) {
+        clearInterval(interval);
+      }
+    }
+
+    var interval = setInterval(sendDeeplinkIfPresent, 500);
+    sendDeeplinkIfPresent();
+    return true;
+  })();
+`;
+
+const parseEsupNfcDeeplink = href => {
+  const normalizedHref = href?.replace(/&amp;/g, '&');
+
+  if (!normalizedHref?.startsWith('esupauth://app/auth/esupnfc')) {
+    return null;
+  }
+
+  const query = normalizedHref.split('?')[1];
+  if (!query) return null;
+
+  const params = new URLSearchParams(query);
+  const numeroId = params.get('numeroId');
+  const url = params.get('url');
+  const etablissement = params.get('etablissement');
+
+  if (!numeroId || !url || !etablissement) {
+    return null;
+  }
+
+  return {numeroId, url, etablissement};
+};
+
+const sameEstablishmentUrl = (a, b) =>
+  a?.replace(/\/+$/, '') === b?.replace(/\/+$/, '');
 
 export default function BrowserBottomSheet() {
   const {colors} = useTheme();
@@ -27,6 +91,8 @@ export default function BrowserBottomSheet() {
   const [userAgent, setUserAgent] = React.useState('');
   const [logoutInProgress, setLogoutInProgress] = useState(false);
   const [webviewError, setWebviewError] = useState(false);
+  const nfcDeeplinkInProgress = useRef(false);
+  const lastNfcDeeplink = useRef(null);
   const snapPoints = useMemo(() => ['10%','40%','70%','75%', '90%'], []);
   const {webviewRef, hideWebview, onNavigationStateChange, canGoBack, canGoForward, currentUrl, goBack, goForward, reload} = useBrowserActions(url);
   const { status, retry } = useAccessibilityCheck(url, 5000);
@@ -59,8 +125,75 @@ export default function BrowserBottomSheet() {
   useEffect(() => {
     if (url !== '') {
       setWebviewError(false);
+      nfcDeeplinkInProgress.current = false;
+      lastNfcDeeplink.current = null;
     }
   }, [url]);
+
+  useEffect(() => {
+    if (!visible) {
+      nfcDeeplinkInProgress.current = false;
+      lastNfcDeeplink.current = null;
+    }
+  }, [visible]);
+
+  const handleEsupNfcDeeplink = async (href, {force = false} = {}) => {
+    const nfcInfos = parseEsupNfcDeeplink(href);
+    if (!nfcInfos) return false;
+
+    const deeplinkKey = `${nfcInfos.url}|${nfcInfos.numeroId}`;
+    if (nfcDeeplinkInProgress.current) {
+      return true;
+    }
+
+    if (!force && lastNfcDeeplink.current === deeplinkKey) {
+      return true;
+    }
+
+    nfcDeeplinkInProgress.current = true;
+    lastNfcDeeplink.current = deeplinkKey;
+
+    try {
+      const {establishments, addEstablishment} = useNfcStore.getState();
+      const exists = establishments.some(est =>
+        sameEstablishmentUrl(est.url, nfcInfos.url),
+      );
+
+      if (!exists) {
+        addEstablishment(nfcInfos);
+      }
+
+      const canStart = await canNfcStart();
+      await scanTagForEstablishment(nfcInfos.url, nfcInfos.numeroId, canStart);
+    } catch (error) {
+      console.error('[BrowserBottomSheet] Erreur activation NFC deeplink:', error);
+      lastNfcDeeplink.current = null;
+    } finally {
+      nfcDeeplinkInProgress.current = false;
+    }
+
+    return true;
+  };
+
+  const handleWebViewMessage = event => {
+    try {
+      const message = JSON.parse(event.nativeEvent.data);
+      if (message?.type === 'ESUPNFC_DEEPLINK_FOUND') {
+        handleEsupNfcDeeplink(message.href);
+      }
+    } catch (error) {
+      console.warn('[BrowserBottomSheet] Message WebView ignoré:', error.message);
+    }
+  };
+
+  const handleShouldStartLoad = request => {
+    if (request.url?.startsWith('esupauth://app/auth/esupnfc')) {
+      handleEsupNfcDeeplink(request.url, {force: true});
+      return false;
+    }
+
+    return true;
+  };
 
   if (url === '') return (
     <BottomSheet
@@ -159,6 +292,9 @@ export default function BrowserBottomSheet() {
               source={{uri: url}} 
               style={styles.webview}
               onNavigationStateChange={onNavigationStateChange}
+              onMessage={handleWebViewMessage}
+              injectedJavaScript={detectEsupNfcDeeplinkScript}
+              onShouldStartLoadWithRequest={handleShouldStartLoad}
               onError={() => setWebviewError(true)}
               startInLoadingState={true}
               renderLoading={() => (

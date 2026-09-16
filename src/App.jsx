@@ -160,8 +160,8 @@ export default function App() {
               setAdditionalData={setAdditionalData}
             />
           </View>
-          <NfcBottomSheet ref={bottomSheetRef} />
           <BrowserBottomSheet />
+          <NfcBottomSheet ref={bottomSheetRef} />
           <ToastManager config={toastConfig} />
         </AppContext.Provider>
       </NavigationContainer>
