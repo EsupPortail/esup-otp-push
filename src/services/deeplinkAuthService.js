@@ -5,7 +5,6 @@ import { showToast, sync } from "./auth";
 import Totp from "../utils/totp";
 import { useTotpStore } from "../stores/useTotpStore";
 import { useNfcStore } from "../stores/useNfcStore";
-import { Toast } from "toastify-react-native";
 import { canNfcStart } from "../utils/nfcUtils";
 import { scanTagForEstablishment } from "./nfcService";
 
@@ -63,21 +62,6 @@ export const activationNfc = async (params) => {
 
     if (!exists) {
         addEstablishment({ url, numeroId, etablissement });
-        Toast.show({
-            type: 'success',
-            text1: 'Méthode NFC configurée',
-            text2: 'Lancement du scan NFC.',
-            position: 'top',
-            visibilityTime: 4000,
-        });
-    } else {
-        Toast.show({
-            type: 'info',
-            text1: 'NFC déjà configuré pour cet établissement',
-            text2: 'Lancement du scan NFC.',
-            position: 'top',
-            visibilityTime: 4000,
-        });
     }
 
     const canStart = await canNfcStart();
@@ -105,7 +89,7 @@ export async function DeepAuthHandler(params){
 
     console.log("[DeepAuthHandler] method :", method);
 
-    const confirmed = await confirmAction(method);
+    const confirmed = method === 'esupnfc' || await confirmAction(method);
 
     if (!confirmed) {
         console.log("[DeepAuthHandler] Activation annulée");

@@ -20,9 +20,7 @@ import { useTheme } from '@react-navigation/native';
 import useAccessibilityCheck from '../hooks/useAccessibilityCheck';
 import Animated, { interpolate } from 'react-native-reanimated';
 import DeviceInfo from 'react-native-device-info';
-import { useNfcStore } from '../stores/useNfcStore';
-import { scanTagForEstablishment } from '../services/nfcService';
-import { canNfcStart } from '../utils/nfcUtils';
+import { activationNfc } from '../services/deeplinkAuthService';
 
 const ESUPNFC_DEEPLINK_ID = 'esupnfc_deeplink';
 
@@ -81,9 +79,6 @@ const parseEsupNfcDeeplink = href => {
 
   return {numeroId, url, etablissement};
 };
-
-const sameEstablishmentUrl = (a, b) =>
-  a?.replace(/\/+$/, '') === b?.replace(/\/+$/, '');
 
 export default function BrowserBottomSheet() {
   const {colors} = useTheme();
@@ -155,17 +150,7 @@ export default function BrowserBottomSheet() {
     lastNfcDeeplink.current = deeplinkKey;
 
     try {
-      const {establishments} = useNfcStore.getState();
-      const exists = establishments.some(est =>
-        sameEstablishmentUrl(est.url, nfcInfos.url),
-      );
-
-      if (!exists) {
-        return true;
-      }
-
-      const canStart = await canNfcStart();
-      await scanTagForEstablishment(nfcInfos.url, nfcInfos.numeroId, canStart);
+      await activationNfc(nfcInfos);
     } catch (error) {
       console.error('[BrowserBottomSheet] Erreur activation NFC deeplink:', error);
       lastNfcDeeplink.current = null;
