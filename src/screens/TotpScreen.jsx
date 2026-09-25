@@ -30,7 +30,7 @@ const getTimeToNextPeriod = () => {
 };
 
 // Component
-const TotpScreen = ({withoutAddButton}) => {
+const TotpScreen = ({withoutAddButton, containerStyle}) => {
   const {colors} = useTheme();
   const totpObjects = useTotpStore(state => state.totpObjects);
   const removeTotp = useTotpStore(state => state.removeTotp);
@@ -83,7 +83,7 @@ const TotpScreen = ({withoutAddButton}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.header}>
         {!withoutAddButton && (
           <TouchableOpacity style={styles.headerLeft} onPress={howToEnable}>

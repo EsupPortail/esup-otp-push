@@ -24,7 +24,7 @@ import {useNfcStore} from '../stores/useNfcStore';
 import { useAppLifecycle } from '../hooks/useAppLifecycle';
 import { canNfcStart, checkNfc, howToEnable } from '../utils/nfcUtils';
 
-function NfcScreen({withoutAddButton}) {
+function NfcScreen({withoutAddButton, containerStyle}) {
   const {colors} = useTheme();
   const isScanningRef = useRef(false);
   const [isNfcSupported, setIsNfcSupported] = useState(null); // null = en cours de vérification
@@ -117,7 +117,7 @@ function NfcScreen({withoutAddButton}) {
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
+    <View style={[styles.container, {backgroundColor: colors.background}, containerStyle]}>
       {!withoutAddButton && (
         <TouchableOpacity style={styles.header} onPress={howToEnable}>
           <Icon name="cellphone-nfc" color={colors.text} size={30} />

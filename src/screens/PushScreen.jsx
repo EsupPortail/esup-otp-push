@@ -17,7 +17,7 @@ import {desync, getName} from '../services/auth';
 import {useOtpServersStore} from '../stores/useOtpServersStore';
 import { getHelpByKey } from '../data/helpData';
 
-const PushScreen = ({withoutAddButton}) => {
+const PushScreen = ({withoutAddButton, containerStyle}) => {
   const {colors} = useTheme();
   const otpServers = useOtpServersStore(state => state.otpServers);
   const setOtpServers = useOtpServersStore(state => state.setOtpServers);
@@ -123,7 +123,7 @@ const PushScreen = ({withoutAddButton}) => {
 
   return (
     <GestureHandlerRootView
-      style={[styles.container, {backgroundColor: colors.background}]}>
+      style={[styles.container, {backgroundColor: colors.background}, containerStyle]}>
       {!withoutAddButton && (
         <TouchableOpacity style={styles.header} onPress={howToEnable}>
           <Icon name="bell-badge-outline" color={colors.text} size={30} />

@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import AppStack from './navigation/AppStack';
 import {useState, useMemo, useEffect, useRef} from 'react';
-import {Linking, View} from 'react-native';
+import {Linking, StatusBar, View} from 'react-native';
 import DarkTheme from './theme/DarkTheme';
 import LightTheme from './theme/LightTheme';
 import {AppContext} from './theme/AppContext';
@@ -134,6 +134,10 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
+      <StatusBar
+        barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+        backgroundColor={isDarkTheme ? DarkTheme.colors.card : LightTheme.colors.card}
+      />
       <NavigationContainer 
         linking={{
           prefixes: ["esupauth://app", "otpauth://"],

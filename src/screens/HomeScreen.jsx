@@ -24,7 +24,7 @@ import { browserManager } from '../stores/useBrowserStore';
 import useDeepLinking from '../hooks/useDeepLinking';
 
 export default function HomeScreen() {
-  const {colors} = useTheme();
+  const {colors, dark} = useTheme();
   const navigation = useNavigation();
   const [isActionSheetOpen, setIsActionSheetOpen] = useState(false);
   const [isNfcSupported, setIsNfcSupported] = useState(null);
@@ -67,6 +67,8 @@ export default function HomeScreen() {
     establishments.length === 0 &&
     Object.keys(totpObjects).length === 0 &&
     Object.keys(otpServers).length === 0;
+  const homeBackground = dark ? colors.background : '#EAF0F2';
+  const cardBorderColor = dark ? colors.border : '#D6E0E5';
 
   return (
     <>
@@ -77,29 +79,28 @@ export default function HomeScreen() {
       )}
       {!isEmpty && (
         <FlatList
+          style={{backgroundColor: homeBackground}}
           data={data}
           renderItem={null}
           keyExtractor={(_, index) => index.toString()}
           ListHeaderComponent={
-            <>
+            <View style={styles.content}>
               {Object.keys(totpObjects).length > 0 && (
-                <>
-                  <TotpScreen />
-                  <View style={[styles.separator, {borderColor: 'grey'}]} />
-                </>
+                <View style={[styles.methodCard, !dark && styles.lightMethodCard, {backgroundColor: colors.card, borderColor: cardBorderColor}]}>
+                  <TotpScreen containerStyle={{backgroundColor: colors.card}} />
+                </View>
               )}
               {Object.keys(otpServers).length > 0 && (
-                <>
-                  <PushScreen />
-                  <View style={[styles.separator, {borderColor: 'grey'}]} />
-                </>
+                <View style={[styles.methodCard, !dark && styles.lightMethodCard, {backgroundColor: colors.card, borderColor: cardBorderColor}]}>
+                  <PushScreen containerStyle={{backgroundColor: colors.card}} />
+                </View>
               )}
               {isNfcSupported && establishments.length > 0 && (
-                <>
-                  <NfcScreen />
-                </>
+                <View style={[styles.methodCard, !dark && styles.lightMethodCard, {backgroundColor: colors.card, borderColor: cardBorderColor}]}>
+                  <NfcScreen containerStyle={{backgroundColor: colors.card}} />
+                </View>
               )}
-            </>
+            </View>
           }
           ListFooterComponent={<View style={{height: 80}} />}
         />
@@ -130,11 +131,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  separator: {
-    borderWidth: 1,
-    borderRadius: 1,
-    marginHorizontal: 12,
-    borderStyle: 'dotted',
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    gap: 14,
+  },
+  methodCard: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  lightMethodCard: {
+    shadowOpacity: 0.04,
+    elevation: 1,
   },
   floattingButton: {
     position: 'absolute',
